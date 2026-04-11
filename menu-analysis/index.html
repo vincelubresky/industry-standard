@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Jefferson County Jail — Vendor Price Comparison & Menu Analysis. Industry Standard internal report.">
+  <title>Jefferson County | Menu Analysis | Industry Standard</title>
+
+  <!-- Favicon (inline SVG data URI) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233b82f6'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-family='sans-serif' font-weight='bold'%3EIS%3C/text%3E%3C/svg%3E">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Libraries (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     APP WRAPPER
+══════════════════════════════════════════ -->
+<div class="app">
+
+  <!-- ╔══════════════════════════════════════╗
+       ║  SIDEBAR                             ║
+       ╚══════════════════════════════════════╝ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">
+          <i class="fa-solid fa-utensils"></i>
+        </div>
+        <div class="sidebar-logo-text">
+          <div class="sidebar-logo-name">Industry Standard</div>
+          <div class="sidebar-logo-sub">Menu Analysis</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+
+      <a href="#overview" class="nav-item active">
+        <i class="fa-solid fa-chart-line"></i>
+        Overview
+      </a>
+
+      <div class="nav-section-label">Vendor Comparison</div>
+
+      <a href="#switch-to-shaver" class="nav-item">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        Switch to Shaver
+        <span class="nav-badge red">22</span>
+      </a>
+
+      <a href="#keep-with-pfg" class="nav-item">
+        <i class="fa-solid fa-shield-check"></i>
+        Keep with PFG
+        <span class="nav-badge green">6</span>
+      </a>
+
+      <a href="#monthly-savings" class="nav-item">
+        <i class="fa-solid fa-piggy-bank"></i>
+        Monthly Savings
+        <span class="nav-badge amber">$1K+</span>
+      </a>
+
+      <div class="nav-section-label">Menu Strategy</div>
+
+      <a href="#new-items" class="nav-item">
+        <i class="fa-solid fa-circle-plus"></i>
+        New Items to Add
+        <span class="nav-badge">21</span>
+      </a>
+
+      <a href="#menu-assessment" class="nav-item">
+        <i class="fa-solid fa-clipboard-list"></i>
+        Menu Assessment
+      </a>
+
+      <a href="#menu-ideas" class="nav-item">
+        <i class="fa-solid fa-lightbulb"></i>
+        New Menu Ideas
+      </a>
+
+      <a href="#priority-actions" class="nav-item">
+        <i class="fa-solid fa-bullseye"></i>
+        Priority Actions
+        <span class="nav-badge red">12</span>
+      </a>
+
+      <div class="nav-section-label">Reference</div>
+
+      <a href="#full-catalog" class="nav-item">
+        <i class="fa-solid fa-book-open"></i>
+        Full Shaver Catalog
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-meta">
+        <strong>Jefferson County Jail</strong><br>
+        PFG Invoice #6776963 · 04/07/26<br>
+        Shaver ISP 03/01/26–03/31/26
+      </div>
+    </div>
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <!-- ╔══════════════════════════════════════╗
+       ║  MAIN                                ║
+       ╚══════════════════════════════════════╝ -->
+  <div class="main" id="main">
+
+    <!-- ── Top Bar ─────────────────────────── -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburger" title="Toggle sidebar">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div class="topbar-breadcrumb">
+        <span class="topbar-crumb">Industry Standard</span>
+        <span class="topbar-sep"><i class="fa-solid fa-chevron-right" style="font-size:9px"></i></span>
+        <span class="topbar-crumb">Jefferson County</span>
+        <span class="topbar-sep"><i class="fa-solid fa-chevron-right" style="font-size:9px"></i></span>
+        <span class="topbar-crumb active">Menu Analysis</span>
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Theme Toggle -->
+        <button class="theme-btn" id="themeBtn" title="Toggle theme">
+          <i class="fa-solid fa-sun"></i>
+        </button>
+
+        <!-- Global Export -->
+        <div class="export-wrap" id="exportWrap">
+          <button class="export-btn">
+            <i class="fa-solid fa-file-export"></i>
+            <span>Export All</span>
+            <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:2px"></i>
+          </button>
+          <div class="export-dropdown">
+            <button class="export-option excel" onclick="exportExcel()">
+              <i class="fa-solid fa-file-excel"></i>
+              Excel Workbook (.xlsx)
+            </button>
+            <button class="export-option csv" onclick="exportCSV()">
+              <i class="fa-solid fa-file-csv"></i>
+              CSV File
+            </button>
+            <button class="export-option pdf" onclick="exportPDF()">
+              <i class="fa-solid fa-file-pdf"></i>
+              PDF Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Page Content ───────────────────── -->
+    <div class="content">
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: OVERVIEW                      │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="overview">
+        <!-- Hero -->
+        <div class="overview-hero" id="hero">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: SWITCH TO SHAVER              │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="switch-to-shaver">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon red"><i class="fa-solid fa-arrows-rotate"></i></div>
+            <div>
+              <div class="section-title">Switch to Shaver</div>
+              <div class="section-subtitle">Items where Shaver is cheaper — switch these on your next order</div>
+            </div>
+          </div>
+          <div id="switchExport"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-table" style="color:var(--accent)"></i>
+              Head-to-Head Price Comparison
+            </div>
+            <div class="flex gap-8 items-center">
+              <span class="card-badge red">HIGH priority</span>
+              <span class="card-badge amber">MED priority</span>
+              <span class="card-badge blue">LOW priority</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th class="right">PFG Price</th>
+                  <th>PFG Unit</th>
+                  <th class="right">Shaver Price</th>
+                  <th>Shaver Unit</th>
+                  <th class="right">Savings/Case</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+              <tbody id="switchTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: KEEP WITH PFG                 │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="keep-with-pfg">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon green"><i class="fa-solid fa-shield-check"></i></div>
+            <div>
+              <div class="section-title">Keep with PFG</div>
+              <div class="section-subtitle">PFG wins on price — maintain current supplier for these items</div>
+            </div>
+          </div>
+          <div id="keepExport"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-check-circle" style="color:var(--green)"></i>
+              PFG Cheaper — No Action Needed
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th class="right">PFG Price</th>
+                  <th class="right">Shaver Price</th>
+                  <th class="right">PFG Saves/Case</th>
+                </tr>
+              </thead>
+              <tbody id="keepTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: MONTHLY SAVINGS               │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="monthly-savings">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon amber"><i class="fa-solid fa-piggy-bank"></i></div>
+            <div>
+              <div class="section-title">Estimated Monthly Savings</div>
+              <div class="section-subtitle">Projected savings by switching to Shaver, based on typical reorder volumes</div>
+            </div>
+          </div>
+          <div id="savingsExport"></div>
+        </div>
+
+        <div class="two-col">
+          <!-- Savings Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="fa-solid fa-calculator" style="color:var(--amber)"></i>
+                Savings Breakdown by Item
+              </div>
+              <span class="card-badge amber">~$1,041/month total</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th class="right">Est. Qty/Mo</th>
+                    <th class="right">Saves/Case</th>
+                    <th class="right">Monthly Savings</th>
+                  </tr>
+                </thead>
+                <tbody id="savingsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="chart-card">
+            <div class="card-title" style="margin-bottom:4px">
+              <i class="fa-solid fa-chart-bar" style="color:var(--accent)"></i>
+              Monthly Savings by Category
+            </div>
+            <div class="small text-muted" style="margin-bottom:4px">Green bars = $150+/mo  ·  Blue = $50–149  ·  Light = under $50</div>
+            <div class="chart-wrap">
+              <canvas id="savingsChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: NEW ITEMS TO ADD              │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="new-items">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon cyan"><i class="fa-solid fa-circle-plus"></i></div>
+            <div>
+              <div class="section-title">New Items Worth Adding</div>
+              <div class="section-subtitle">Shaver catalog items not currently ordered — available to add now</div>
+            </div>
+          </div>
+          <div id="newItemsExport"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <i class="fa-solid fa-star" style="color:var(--cyan)"></i>
+              21 Recommended Additions from Shaver Catalog
+            </div>
+            <div class="flex gap-8 items-center wrap">
+              <span class="card-badge blue">Protein</span>
+              <span class="card-badge blue">Breakfast</span>
+              <span class="card-badge blue">Vegetables</span>
+              <span class="card-badge blue">Seafood</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Item</th>
+                  <th class="right">Price/Case</th>
+                  <th>Use Case / Notes</th>
+                  <th>Vendor</th>
+                </tr>
+              </thead>
+              <tbody id="newItemsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: MENU ASSESSMENT               │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="menu-assessment">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon purple"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div>
+              <div class="section-title">Current Menu Assessment</div>
+              <div class="section-subtitle">4-week rotation analysis — what's working and where the gaps are</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="assessment-grid">
+          <!-- What's Working -->
+          <div class="assessment-col">
+            <div class="assessment-col-header green">
+              <i class="fa-solid fa-circle-check"></i>
+              What's Working
+            </div>
+            <div id="whatsWorking"></div>
+          </div>
+
+          <!-- Pain Points -->
+          <div class="assessment-col">
+            <div class="assessment-col-header red">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              Pain Points &amp; Gaps
+            </div>
+            <div id="painPoints"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: NEW MENU IDEAS                │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="menu-ideas">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon amber"><i class="fa-solid fa-lightbulb"></i></div>
+            <div>
+              <div class="section-title">New Menu Ideas</div>
+              <div class="section-subtitle">All items available from PFG or Shaver — no new vendors required</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="menuIdeas"></div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: PRIORITY ACTIONS              │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="priority-actions">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon red"><i class="fa-solid fa-bullseye"></i></div>
+            <div>
+              <div class="section-title">Priority Action Plan</div>
+              <div class="section-subtitle">12 actions across 3 tiers — from next order through quarterly review</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="priorityContent"></div>
+      </section>
+
+      <!-- ┌─────────────────────────────────────────┐
+           │  SECTION: FULL SHAVER CATALOG           │
+           └─────────────────────────────────────────┘ -->
+      <section class="section" id="full-catalog">
+        <div class="section-header">
+          <div class="section-title-group">
+            <div class="section-icon blue"><i class="fa-solid fa-book-open"></i></div>
+            <div>
+              <div class="section-title">Full Shaver Catalog</div>
+              <div class="section-subtitle">Complete Shaver Foods pricing — effective 03/01/26–03/31/26 · Min 2 pallets · Net 30</div>
+            </div>
+          </div>
+          <div id="catalogExport"></div>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="catalog-controls">
+          <div class="search-input-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              class="search-input"
+              id="catalogSearch"
+              placeholder="Search catalog items..."
+              autocomplete="off"
+            >
+          </div>
+        </div>
+
+        <!-- Categories rendered by JS -->
+        <div id="catalogContent"></div>
+      </section>
+
+      <!-- Bottom padding -->
+      <div style="height: 40px"></div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<!-- Scripts -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

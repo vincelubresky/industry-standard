@@ -1,0 +1,479 @@
+// ============================================================
+//  INDUSTRY STANDARD — Jefferson County Menu Analysis Data
+// ============================================================
+
+const DATA = {
+  meta: {
+    title: "Jefferson County Jail",
+    subtitle: "Vendor Price Comparison & Menu Analysis",
+    prepared: "April 11, 2026",
+    sources: [
+      "PFG Invoice #6776963 (04/07/26)",
+      "Shaver ISP Price List (03/01/26–03/31/26)"
+    ],
+    preparedBy: "Industry Standard"
+  },
+
+  stats: [
+    { label: "Est. Monthly Savings", value: "$1,041+", icon: "fa-piggy-bank", color: "success", note: "By switching key items to Shaver" },
+    { label: "Items: Switch to Shaver", value: "22", icon: "fa-arrows-rotate", color: "danger", note: "Shaver is cheaper" },
+    { label: "Items: Keep with PFG", value: "6", icon: "fa-shield-check", color: "accent", note: "PFG wins on price" },
+    { label: "New Items Available", value: "21+", icon: "fa-circle-plus", color: "warning", note: "From Shaver catalog" }
+  ],
+
+  switchToShaver: [
+    { item: "Grape Drink Mix 1000/1gm",      pfgPrice: 49.95,  pfgUnit: "1000/1gm",   shaverPrice: 20.63, shaverUnit: "1000/1gm",   savings: 29.32, priority: "high" },
+    { item: "Great Northern Beans Dry",       pfgPrice: 56.05,  pfgUnit: "50 LB",      shaverPrice: 39.00, shaverUnit: "50 LB",       savings: 17.05, priority: "high" },
+    { item: "Jelly Assorted 200ct",           pfgPrice: 19.20,  pfgUnit: "200/.5oz",   shaverPrice: 9.53,  shaverUnit: "200 LC",      savings: 9.67,  priority: "high" },
+    { item: "Rotini Pasta",                   pfgPrice: 23.83,  pfgUnit: "2/10 LB",    shaverPrice: 13.73, shaverUnit: "2/10 LB",     savings: 10.10, priority: "high" },
+    { item: "Carrots Sliced Frozen",          pfgPrice: 22.43,  pfgUnit: "20 LB",      shaverPrice: 14.34, shaverUnit: "20 LB",       savings: 8.09,  priority: "high" },
+    { item: "Ziti Pasta",                     pfgPrice: 21.77,  pfgUnit: "2/10 LB",    shaverPrice: 13.73, shaverUnit: "2/10 LB",     savings: 8.04,  priority: "high" },
+    { item: "Onion Powder",                   pfgPrice: 32.26,  pfgUnit: "5 LB",       shaverPrice: 24.64, shaverUnit: "6/1 LB",      savings: 7.62,  priority: "med"  },
+    { item: "Potato Flakes Dehydrated",       pfgPrice: 59.35,  pfgUnit: "40 LB",      shaverPrice: 51.62, shaverUnit: "40 LB",       savings: 7.73,  priority: "med"  },
+    { item: "Garlic Powder",                  pfgPrice: 30.77,  pfgUnit: "5 LB",       shaverPrice: 24.02, shaverUnit: "6/1 LB",      savings: 6.75,  priority: "med"  },
+    { item: "Cheese Sauce",                   pfgPrice: 55.09,  pfgUnit: "6/#10",      shaverPrice: 48.12, shaverUnit: "6/10",        savings: 6.97,  priority: "med"  },
+    { item: "Elbow Macaroni",                 pfgPrice: 19.81,  pfgUnit: "2/10 LB",    shaverPrice: 13.10, shaverUnit: "2/10 LB",     savings: 6.71,  priority: "high" },
+    { item: "Oats / Oatmeal",                 pfgPrice: 35.15,  pfgUnit: "50 LB",      shaverPrice: 28.33, shaverUnit: "50 LB",       savings: 6.82,  priority: "med"  },
+    { item: "Grits Quick",                    pfgPrice: 38.47,  pfgUnit: "8/5 LB",     shaverPrice: 28.00, shaverUnit: "50 LB",       savings: 8.00,  priority: "med"  },
+    { item: "Yellow Cake Mix",                pfgPrice: 42.77,  pfgUnit: "50 LB",      shaverPrice: 40.42, shaverUnit: "50 LB",       savings: 2.35,  priority: "low"  },
+    { item: "Coffee Cake Mix",                pfgPrice: 45.04,  pfgUnit: "50 LB",      shaverPrice: 42.88, shaverUnit: "50 LB",       savings: 2.16,  priority: "low"  },
+    { item: "Strawberry Cake Mix",            pfgPrice: 46.13,  pfgUnit: "50 LB",      shaverPrice: 44.63, shaverUnit: "50 LB",       savings: 1.50,  priority: "low"  },
+    { item: "Tomato Sauce",                   pfgPrice: 29.67,  pfgUnit: "6/#10",      shaverPrice: 28.89, shaverUnit: "6/10",        savings: 0.78,  priority: "low"  },
+    { item: "Diced Tomatoes",                 pfgPrice: 30.94,  pfgUnit: "6/#10",      shaverPrice: 30.36, shaverUnit: "6/10",        savings: 0.58,  priority: "low"  },
+    { item: "Margarine Solid",                pfgPrice: 38.73,  pfgUnit: "30/1 LB",    shaverPrice: 38.46, shaverUnit: "30/1 LB",     savings: 0.27,  priority: "low"  },
+    { item: "Peas & Carrots Frozen",          pfgPrice: 22.35,  pfgUnit: "20 LB",      shaverPrice: 29.77, shaverUnit: "30 LB",       savings: null,  priority: "med", note: "$0.13/lb cheaper at Shaver" },
+    { item: "Fry Oil Clear",                  pfgPrice: 35.70,  pfgUnit: "35 LB",      shaverPrice: 35.07, shaverUnit: "35 LB",       savings: 0.63,  priority: "low"  },
+    { item: "Gravy Mix (Country)",            pfgPrice: 29.92,  pfgUnit: "6/16 OZ",    shaverPrice: 37.82, shaverUnit: "6/3 LB",      savings: null,  priority: "med", note: "$2.89/lb cheaper at Shaver" }
+  ],
+
+  keepWithPFG: [
+    { item: "AP Flour 50 LB",             pfgPrice: 20.44, shaverPrice: 23.61, pfgSavings: 3.17  },
+    { item: "Granulated Sugar 50 LB",     pfgPrice: 35.14, shaverPrice: 36.52, pfgSavings: 1.38  },
+    { item: "Parboiled Rice 50 LB",       pfgPrice: 26.38, shaverPrice: 31.46, pfgSavings: 5.08  },
+    { item: "Cream of Mushroom Soup",     pfgPrice: 54.94, shaverPrice: 60.50, pfgSavings: 5.56, unitNote: "12ct" },
+    { item: "Bread Pullman",              pfgPrice: 24.90, shaverPrice: 29.06, pfgSavings: null,  unitNote: "PFG 10/24oz vs Shaver 12/28oz — PFG wins on price" },
+    { item: "Pinto Beans Dry 50 LB",      pfgPrice: 25.67, shaverPrice: 29.15, pfgSavings: 3.48  }
+  ],
+
+  monthlySavings: [
+    { item: "Grape Drink Mix",            qtyPerMonth: 8,  savingsPerCase: 29.32, monthlySavings: 234.56 },
+    { item: "All Pasta (rotini+elbow+ziti)", qtyPerMonth: 26, savingsPerCase: 8.00, monthlySavings: 208.00 },
+    { item: "Carrots Sliced Frozen",      qtyPerMonth: 24, savingsPerCase: 8.09,  monthlySavings: 194.16 },
+    { item: "Great Northern Beans",       qtyPerMonth: 6,  savingsPerCase: 17.05, monthlySavings: 102.30 },
+    { item: "Grits",                      qtyPerMonth: 12, savingsPerCase: 8.00,  monthlySavings: 96.00  },
+    { item: "Cake Mixes (all 3)",         qtyPerMonth: 32, savingsPerCase: 2.00,  monthlySavings: 64.00  },
+    { item: "Potato Flakes",              qtyPerMonth: 7,  savingsPerCase: 7.73,  monthlySavings: 54.11  },
+    { item: "Oats",                       qtyPerMonth: 6,  savingsPerCase: 6.82,  monthlySavings: 40.92  },
+    { item: "Jelly 200ct",                qtyPerMonth: 2,  savingsPerCase: 9.67,  monthlySavings: 19.34  },
+    { item: "Cheese Sauce",               qtyPerMonth: 2,  savingsPerCase: 6.97,  monthlySavings: 13.94  },
+    { item: "Onion + Garlic Powder",      qtyPerMonth: 2,  savingsPerCase: 7.00,  monthlySavings: 14.00  },
+    { item: "TOTAL",                      qtyPerMonth: null, savingsPerCase: null, monthlySavings: 1041.00, isTotal: true }
+  ],
+
+  newItemsToAdd: [
+    { category: "Protein",      item: "Tuna Chunk Light Water Pouch 12/5oz",  price: 21.45,  useCase: "Tuna salad sandwiches",                vendor: "Shaver" },
+    { category: "Protein",      item: "Tuna Chunk Light VBR 6/66.5oz",        price: 58.27,  useCase: "Bulk tuna for casseroles",             vendor: "Shaver" },
+    { category: "Protein",      item: "Fish Patty Breaded 3oz 25#",           price: 56.38,  useCase: "Fish sandwich (dinner protein)",        vendor: "Shaver" },
+    { category: "Protein",      item: "Corn Dog Chicken 72/2.5oz",            price: 48.45,  useCase: "Easy hot lunch protein ($0.67/ea)",     vendor: "Shaver" },
+    { category: "Protein",      item: "Burrito Bean & Beef 80/4oz",           price: 44.36,  useCase: "Ready-to-serve lunch entrée ($0.55/ea)",vendor: "Shaver" },
+    { category: "Protein",      item: "Burrito Bean & Cheese 80/4oz",         price: 43.40,  useCase: "Vegetarian option ($0.54/ea)",          vendor: "Shaver" },
+    { category: "Protein",      item: "Bologna Logs Chik 3/8#",               price: 39.02,  useCase: "Sandwich protein variety",             vendor: "Shaver" },
+    { category: "Protein",      item: "TVP Beef Chunks 25#",                  price: 60.46,  useCase: "Meat extender / cost reducer",          vendor: "Shaver" },
+    { category: "Protein",      item: "TVP Chicken Chunks 25#",               price: 61.74,  useCase: "Meat extender",                        vendor: "Shaver" },
+    { category: "Dry Goods",    item: "Beans Dry Lentil 50#",                 price: 49.26,  useCase: "High-protein soup base",               vendor: "Shaver" },
+    { category: "Dry Goods",    item: "Beans Dry Navy 50#",                   price: 36.49,  useCase: "Navy bean soup",                       vendor: "Shaver" },
+    { category: "Breakfast",    item: "Pancake 144/1.2oz",                    price: 23.08,  useCase: "Breakfast variety ($0.16/serving)",    vendor: "Shaver" },
+    { category: "Breakfast",    item: "Waffle 12/12/1.25oz",                  price: 22.97,  useCase: "Breakfast variety ($0.16/serving)",    vendor: "Shaver" },
+    { category: "Breakfast",    item: "French Toast 144/1.5oz",               price: 40.09,  useCase: "Breakfast variety ($0.28/serving)",    vendor: "Shaver" },
+    { category: "Dry Goods",    item: "Raisin Seedless 30#",                  price: 61.59,  useCase: "Oatmeal topping, baking",              vendor: "Shaver" },
+    { category: "Vegetables",   item: "Mixed Vegetables California Blend 30#",price: 26.75,  useCase: "Side dish",                            vendor: "Shaver" },
+    { category: "Vegetables",   item: "Broccoli Cuts 30#",                    price: 27.47,  useCase: "Side dish",                            vendor: "Shaver" },
+    { category: "Vegetables",   item: "Cauliflower 30#",                      price: 31.30,  useCase: "Side dish",                            vendor: "Shaver" },
+    { category: "Vegetables",   item: "Okra Cut Breaded 20#",                 price: 26.77,  useCase: "Southern side",                        vendor: "Shaver" },
+    { category: "Vegetables",   item: "Corn Cut 30#",                         price: 27.03,  useCase: "Side dish",                            vendor: "Shaver" },
+    { category: "Seafood",      item: "Sardines Oil Pouch 36/3.53oz",         price: 30.59,  useCase: "High-protein PC serving",              vendor: "Shaver" }
+  ],
+
+  menuAssessment: {
+    whatsWorking: [
+      { point: "Consistent Structure", detail: "Breakfast / Hot Lunch / Sandwich Dinner format is operationally simple and clear" },
+      { point: "Yellow Cake Utilization", detail: "Used heavily across all three meals — cost effective at $0.08–$0.11/serving" },
+      { point: "Cornbread at Every Meal", detail: "Appears at every lunch and dinner — strong value filler with familiar appeal" },
+      { point: "Bean Variety", detail: "Good variety across pinto, northern, green beans, and peas & carrots" }
+    ],
+    painPoints: [
+      { number: 1, issue: "No Hot Dinner Protein", detail: "Dinner is sandwich-only every night — 4 proteins rotating (salami, turkey, PB&J, chicken patty). Nutritionally limited and monotonous for long-stay residents.", severity: "high" },
+      { number: 2, issue: "Limited Breakfast Protein", detail: "Breakfast protein alternates only sausage and egg — no variety across the 4-week rotation.", severity: "med" },
+      { number: 3, issue: "No Fish on the Menu", detail: "Tuna and fish patties add important nutrition and variety at low cost. Currently absent from the entire rotation.", severity: "high" },
+      { number: 4, issue: "No Vitamin C Source", detail: "No canned fruit, citrus, or fresh produce visible in the rotation. Applesauce cups from Shaver cost $0.30/serving.", severity: "high" },
+      { number: 5, issue: "Limited Beverage Options", detail: "Fortified drink mix is the only non-water option aside from milk twice weekly.", severity: "low" },
+      { number: 6, issue: "Dessert is Only Cake", detail: "No gelatin, pudding, or fruit options. Shaver has gelatin at ~$0.04/serving and pudding at ~$0.05/serving.", severity: "med" }
+    ]
+  },
+
+  newMenuIdeas: {
+    hotLunch: [
+      {
+        name: "Tuna Noodle Casserole",
+        ingredients: [
+          { item: "Tuna Chunk Light VBR", vendor: "Shaver", price: "$58.27/case" },
+          { item: "Elbow Macaroni", vendor: "Shaver", price: "$13.10" },
+          { item: "Cream of Mushroom Soup", vendor: "PFG", price: "$54.94" },
+          { item: "Peas & Carrots", vendor: "Shaver", price: "$29.77/30#" }
+        ],
+        note: "Cost-effective, high protein, uses existing inventory"
+      },
+      {
+        name: "Bean & Cheese Burrito Plate",
+        ingredients: [
+          { item: "Bean & Cheese Burritos 80/4oz", vendor: "Shaver", price: "$43.40 ($0.54/ea)" },
+          { item: "Parboiled Rice", vendor: "PFG", price: "$26.38/50#" },
+          { item: "Tomato Sauce (salsa)", vendor: "Shaver", price: "$28.89" }
+        ],
+        note: "Fully turnkey, zero prep, cheap hot entrée"
+      },
+      {
+        name: "Chicken Corn Dog Plate",
+        ingredients: [
+          { item: "Corn Dog Chicken 72/2.5oz", vendor: "Shaver", price: "$48.45 ($0.67/ea)" },
+          { item: "Mixed Vegetables", vendor: "Shaver", price: "$26.75/30#" },
+          { item: "Cornbread", vendor: "PFG", price: "existing" }
+        ],
+        note: "Simple, fast, universally popular"
+      },
+      {
+        name: "Fish Sandwich (Hot Lunch)",
+        ingredients: [
+          { item: "Fish Patty Breaded 3oz", vendor: "Shaver", price: "$56.38/25# (~$0.68/serving)" },
+          { item: "Bread Pullman", vendor: "PFG", price: "$24.90" },
+          { item: "Mustard/Mayo", vendor: "Shaver", price: "existing" }
+        ],
+        note: "Replace one chicken fritter day per week — adds variety and omega-3s"
+      },
+      {
+        name: "Beef & Vegetable Stew",
+        ingredients: [
+          { item: "TVP Beef Chunks 25#", vendor: "Shaver", price: "$60.46" },
+          { item: "Mixed Vegetables", vendor: "Shaver", price: "$26.75/30#" },
+          { item: "Diced Tomatoes", vendor: "Shaver", price: "$30.36" },
+          { item: "Rice / Cornbread", vendor: "PFG/Shaver", price: "existing" }
+        ],
+        note: "TVP extends real beef dollars significantly — same texture, fraction of cost"
+      },
+      {
+        name: "Turkey Meatball Marinara",
+        ingredients: [
+          { item: "Meatballs FC 0.5oz 40#", vendor: "Shaver", price: "$83.84 (~$2.10/lb)" },
+          { item: "Tomato Sauce", vendor: "Shaver", price: "$28.89" },
+          { item: "Pasta", vendor: "Shaver", price: "$13.10" }
+        ],
+        note: "Upscale feel at low cost — pairs with any pasta"
+      },
+      {
+        name: "Southern Beans & Rice Bowl",
+        ingredients: [
+          { item: "Black Beans 6/10", vendor: "Shaver", price: "$31.60" },
+          { item: "Parboiled Rice 50#", vendor: "PFG", price: "$26.38" },
+          { item: "Sausage crumble", vendor: "Shaver", price: "existing" }
+        ],
+        note: "Flavorful, filling, dirt cheap per serving"
+      },
+      {
+        name: "Lentil Soup",
+        ingredients: [
+          { item: "Beans Dry Lentil 50#", vendor: "Shaver", price: "$49.26" },
+          { item: "Carrots Sliced Frozen", vendor: "Shaver", price: "$14.34/20#" },
+          { item: "Celery Diced 30#", vendor: "Shaver", price: "$29.10" },
+          { item: "Chicken Base", vendor: "Shaver", price: "$13.34" }
+        ],
+        note: "Very low cost per serving, high fiber and protein"
+      }
+    ],
+    breakfast: [
+      {
+        name: "Pancake Day",
+        detail: "Shaver Pancake 144/1.2oz — $23.08/case = $0.16/serving",
+        note: "Replaces bread slice on one morning per week. Add syrup ($15.83/4gal) for <$0.02/serving."
+      },
+      {
+        name: "Waffle Day",
+        detail: "Shaver Waffle 12/12/1.25oz — $22.97/case = $0.16/serving",
+        note: "Same cost as pancakes, different texture — easy rotation variety"
+      },
+      {
+        name: "French Toast",
+        detail: "Shaver French Toast 144/1.5oz — $40.09/case = $0.28/serving",
+        note: "Slightly higher cost but a distinct, popular offering"
+      },
+      {
+        name: "Oatmeal with Raisins",
+        detail: "Existing oatmeal + Shaver Raisins 30# ($61.59 = ~$0.04/serving added cost)",
+        note: "Adds nutrition and variety to current oatmeal days with minimal cost increase"
+      }
+    ],
+    dinner: [
+      {
+        name: "Tuna Salad Sandwich",
+        detail: "Shaver Tuna 12/5oz ($21.45) + Bread + Mayo ($41.48/4gal) + Mustard",
+        note: "~$0.45/serving all-in. Adds fish protein and omega-3s to evening rotation."
+      },
+      {
+        name: "Bologna Sandwich",
+        detail: "Shaver Bologna Logs Chik 3/8# ($39.02 = $1.63/lb)",
+        note: "Cheaper per serving than turkey or salami — adds protein variety at lower cost"
+      }
+    ],
+    sides: [
+      {
+        name: "Gelatin (Jell-O)",
+        detail: "Shaver: Cherry, Lime, Orange, Raspberry — all $23.32/case (6/16oz)",
+        cost: "~$0.04/serving",
+        note: "Nearly free dessert upgrade. Rotate 4 flavors across the week."
+      },
+      {
+        name: "Vanilla or Chocolate Pudding",
+        detail: "Vanilla 25# ($63.84) / Chocolate 25# ($68.93)",
+        cost: "~$0.05/serving",
+        note: "Replaces cake 1–2x per week — adds variety without cost increase"
+      },
+      {
+        name: "Applesauce Cup",
+        detail: "Shaver Applesauce Unsweet 96/4.5oz — $28.49/case",
+        cost: "$0.30/serving",
+        note: "The only vitamin C source available in current catalog. Priority add."
+      },
+      {
+        name: "Corn on the Cob (Summer)",
+        detail: "Shaver Corn Cob 3in 96ea — $33.74/case",
+        cost: "$0.35/serving",
+        note: "Seasonal crowd-pleaser, easy to serve, no prep required"
+      },
+      {
+        name: "Broccoli or Cauliflower Side",
+        detail: "Broccoli Cuts 30# ($27.47) or Cauliflower 30# ($31.30)",
+        cost: "<$0.20/serving",
+        note: "Adds vegetable variety beyond current carrot/peas rotation"
+      },
+      {
+        name: "Breaded Okra",
+        detail: "Shaver Okra Cut Breaded 20# — $26.77/case",
+        cost: "<$0.20/serving",
+        note: "Southern staple, pairs with any protein, adds texture variety"
+      }
+    ]
+  },
+
+  priorityActions: {
+    immediate: [
+      { num: 1, action: "Switch Drink Mix to Shaver",          detail: "Saves $29.32/case — exact same product",                                impact: "$234/mo" },
+      { num: 2, action: "Switch All Pasta to Shaver",          detail: "Saves $6–$10/case across rotini, elbow, ziti",                          impact: "$208/mo" },
+      { num: 3, action: "Switch Frozen Carrots to Shaver",     detail: "Saves $8.09/case",                                                      impact: "$194/mo" },
+      { num: 4, action: "Switch Great Northern Beans to Shaver",detail: "Saves $17.05/case",                                                    impact: "$102/mo" },
+      { num: 5, action: "Switch Jelly to Shaver",              detail: "Saves $9.67/case",                                                      impact: "$19/mo"  }
+    ],
+    nextMenuCycle: [
+      { num: 6,  action: "Add Tuna Noodle Casserole",   detail: "Week 3 or 4 Wednesday lunch — uses Shaver tuna + existing pasta",  impact: "Nutrition + variety" },
+      { num: 7,  action: "Add Fish Sandwich to Dinner",  detail: "Replace one PB&J or salami night per week",                       impact: "Omega-3s, variety" },
+      { num: 8,  action: "Add Gelatin Dessert 2x/Week",  detail: "Replace cake on off days — $0.04/serving",                        impact: "<$20/mo added cost" },
+      { num: 9,  action: "Add Applesauce Cup 1x/Week",   detail: "Only vitamin C source in current catalog — $0.30/serving",        impact: "Nutritional compliance" }
+    ],
+    quarterly: [
+      { num: 10, action: "Pilot Burritos as Friday Lunch",         detail: "Zero prep, consistent, $0.54/serving — easy test",              impact: "Resident satisfaction" },
+      { num: 11, action: "Add Pancake/Waffle/French Toast Rotation",detail: "One each per week — replaces plain bread on breakfast days",    impact: "Breakfast variety" },
+      { num: 12, action: "Evaluate TVP as Meat Extender",           detail: "Test in spaghetti, beef mac, white bean chili",                  impact: "Protein cost reduction" }
+    ]
+  },
+
+  catalog: {
+    bakery: [
+      { item: "Bread Bun Hamburger",       pack: "10/12ea",    price: 26.89 },
+      { item: "Bread Bun Hoagie",          pack: "18/6ea",     price: 28.25 },
+      { item: "Bread Bun Hot Dog",         pack: "12/12ea",    price: 30.12 },
+      { item: "Bread Wheat Slice",         pack: "12/28oz",    price: 29.06 },
+      { item: "Bread White Slice",         pack: "12/28oz",    price: 29.06 },
+      { item: "French Toast",              pack: "144/1.5oz",  price: 40.09 },
+      { item: "Pancake",                   pack: "144/1.2oz",  price: 23.08 },
+      { item: "Waffle",                    pack: "12/12/1.25oz",price: 22.97 }
+    ],
+    bakingMixes: [
+      { item: "Biscuit Mix",               pack: "50#",        price: 34.90 },
+      { item: "Brownie Mix",               pack: "50#",        price: 48.48 },
+      { item: "Cake Mix Blueberry",        pack: "50#",        price: 47.21 },
+      { item: "Cake Mix Carrot",           pack: "50#",        price: 43.69 },
+      { item: "Cake Mix Chocolate",        pack: "50#",        price: 43.57 },
+      { item: "Cake Mix Coffee",           pack: "50#",        price: 42.88 },
+      { item: "Cake Mix Spice",            pack: "50#",        price: 42.99 },
+      { item: "Cake Mix Strawberry",       pack: "50#",        price: 44.63 },
+      { item: "Cake Mix White",            pack: "50#",        price: 40.04 },
+      { item: "Cake Mix Yellow",           pack: "50#",        price: 40.42 },
+      { item: "Cookie Mix Oatmeal",        pack: "50#",        price: 41.58 },
+      { item: "Cornbread Mix Southern",    pack: "50#",        price: 39.02 },
+      { item: "Cornbread Mix Sweet",       pack: "50#",        price: 39.80 },
+      { item: "Muffin Mix Blueberry",      pack: "50#",        price: 46.86 },
+      { item: "Muffin Mix Plain",          pack: "50#",        price: 37.45 },
+      { item: "Pancake Mix",               pack: "50#",        price: 37.14 }
+    ],
+    cereals: [
+      { item: "Grits Quick White",         pack: "50#",        price: 28.00 },
+      { item: "Grits Quick Yellow",        pack: "50#",        price: 22.54 },
+      { item: "Oats Quick",                pack: "50#",        price: 28.33 },
+      { item: "Farina",                    pack: "50#",        price: 28.95 }
+    ],
+    meat: [
+      { item: "Chicken Brst Filt Pieces RTC",  pack: "6/6#",         price: 73.94 },
+      { item: "Chicken Brst Fil RTC 4oz",      pack: "6/6#",         price: 73.90 },
+      { item: "Chicken Fried Stk Pty FC 3oz",  pack: "40#",          price: 92.62 },
+      { item: "Chicken Nugget BRD RTC .7oz",   pack: "20#",          price: 39.15 },
+      { item: "Chicken Patty BRD FC 3oz",      pack: "40#",          price: 86.29 },
+      { item: "Chicken Patty BRD FC 4oz",      pack: "40#",          price: 86.29 },
+      { item: "Corn Dog Chicken",              pack: "72/2.5oz",     price: 48.45 },
+      { item: "Fish Patty BRD 3oz",            pack: "25#",          price: 56.38 },
+      { item: "Fish Patty BRD 4oz",            pack: "25#",          price: 56.38 },
+      { item: "Ground Chicken",               pack: "40#",          price: 31.44 },
+      { item: "Hot Dog Chicken 1.6oz",         pack: "10/2.4#",      price: 33.00 },
+      { item: "Meatballs FC 0.5oz",            pack: "40#",          price: 83.84 },
+      { item: "Meatballs FC 1oz",              pack: "40#",          price: 83.84 },
+      { item: "Meatloaf Patty FC 3oz",         pack: "40#",          price: 83.81 },
+      { item: "Salisbury Patty FC 3oz",        pack: "40#",          price: 85.76 },
+      { item: "Salisbury Patty FC 4oz",        pack: "40#",          price: 85.76 },
+      { item: "Salami Logs Chik",              pack: "2/10#",        price: 31.82 },
+      { item: "Sausage Bkfst Patty FC 1oz",    pack: "40#",          price: 82.54 },
+      { item: "Sausage Hot Link FC 3.2oz",     pack: "6/5#",         price: 61.08 },
+      { item: "Sausage Polish FC 3.2oz",       pack: "6/5#",         price: 61.08 },
+      { item: "BBQ Patty FC 3oz",              pack: "40#",          price: 85.46 },
+      { item: "Bologna Logs Chik",             pack: "3/8#",         price: 39.02 },
+      { item: "TVP Beef Chunks",               pack: "25#",          price: 60.46 },
+      { item: "TVP Chicken Chunks",            pack: "25#",          price: 61.74 },
+      { item: "Vegetarian Burger",             pack: "40/4oz",       price: 68.36 },
+      { item: "Burrito Bean & Beef",           pack: "80/4oz",       price: 44.36 },
+      { item: "Burrito Bean & Cheese",         pack: "80/4oz",       price: 43.40 }
+    ],
+    pasta: [
+      { item: "Pasta Egg Noodle Wide",     pack: "10#",        price: 10.27 },
+      { item: "Pasta Elbow Mac",           pack: "2/10#",      price: 13.10 },
+      { item: "Pasta Lasagna",             pack: "10#",        price: 13.85 },
+      { item: "Pasta Rotini",              pack: "2/10#",      price: 13.73 },
+      { item: "Pasta Spaghetti",           pack: "2/10#",      price: 13.13 },
+      { item: "Pasta Ziti",                pack: "2/10#",      price: 13.73 }
+    ],
+    riceAndPotato: [
+      { item: "Rice Parboiled",            pack: "50#",        price: 31.46 },
+      { item: "Rice White",                pack: "50#",        price: 25.06 },
+      { item: "Rice Parboiled Brown",      pack: "25#",        price: 26.66 },
+      { item: "Potato Dehy Flakes",        pack: "40#",        price: 51.62 },
+      { item: "Potato Dehy Diced",         pack: "40#",        price: 56.70 },
+      { item: "Potato Dehy Shredded",      pack: "25#",        price: 31.72 },
+      { item: "Fries Shoestring",          pack: "6/5.5#",     price: 18.43 },
+      { item: "Fries Tater Tots",          pack: "6/5#",       price: 28.85 }
+    ],
+    cannedVeggies: [
+      { item: "Beans Black",               pack: "6/10",       price: 31.60 },
+      { item: "Beans Garbanzo",            pack: "6/10",       price: 31.61 },
+      { item: "Beans Green Cut",           pack: "6/10",       price: 30.84 },
+      { item: "Beans Kidney Red",          pack: "6/10",       price: 33.60 },
+      { item: "Beans Navy",                pack: "6/10",       price: 32.71 },
+      { item: "Beans Pinto",               pack: "6/10",       price: 31.46 },
+      { item: "Beans Pork",                pack: "6/10",       price: 36.18 },
+      { item: "Beans Refried Vegetarian",  pack: "6/10",       price: 52.90 },
+      { item: "Beets Sliced",              pack: "6/10",       price: 36.95 },
+      { item: "Carrots Sliced",            pack: "6/10",       price: 28.96 },
+      { item: "Corn Whole Kernel",         pack: "6/10",       price: 33.40 },
+      { item: "Greens Collard Chopped",    pack: "6/10",       price: 44.89 },
+      { item: "Greens Mixed Chopped",      pack: "6/10",       price: 44.95 },
+      { item: "Greens Mustard Chopped",    pack: "6/10",       price: 44.89 },
+      { item: "Hominy White",              pack: "6/10",       price: 36.91 },
+      { item: "Mixed Vegetables",          pack: "6/10",       price: 33.19 },
+      { item: "Peas and Carrots",          pack: "6/10",       price: 31.10 },
+      { item: "Peas Blackeye",             pack: "6/10",       price: 37.87 },
+      { item: "Peas Green",               pack: "6/10",       price: 28.50 },
+      { item: "Spinach Leaf",             pack: "6/10",       price: 47.35 },
+      { item: "Tomato Crushed",           pack: "6/10",       price: 29.28 },
+      { item: "Tomato Diced",             pack: "6/10",       price: 30.36 },
+      { item: "Tomato Paste",             pack: "6/10",       price: 37.47 },
+      { item: "Tomato Sauce",             pack: "6/10",       price: 28.89 }
+    ],
+    cannedFruit: [
+      { item: "Apple Diced Water",         pack: "6/10",       price: 29.63 },
+      { item: "Apple Sliced Water",        pack: "6/10",       price: 35.56 },
+      { item: "Applesauce Sweet",          pack: "6/10",       price: 34.24 },
+      { item: "Applesauce Unsweet",        pack: "6/10",       price: 33.19 },
+      { item: "Applesauce Unsweet",        pack: "96/4.5oz",   price: 28.49 },
+      { item: "Fruit Mix LS",             pack: "6/10",       price: 41.12 },
+      { item: "Orange Mandarin Seg LS",   pack: "6/10",       price: 33.52 },
+      { item: "Peach Diced Juice",        pack: "6/10",       price: 32.19 },
+      { item: "Peach Sliced LS",          pack: "6/10",       price: 41.02 },
+      { item: "Pear Diced Juice",         pack: "6/10",       price: 32.18 },
+      { item: "Pineapple Crushed Juice",  pack: "6/10",       price: 47.18 }
+    ],
+    frozenVeggies: [
+      { item: "Beans Green Cut",           pack: "30#",        price: 33.06 },
+      { item: "Broccoli Cuts",             pack: "30#",        price: 27.47 },
+      { item: "Carrots Sliced",            pack: "20#",        price: 14.34 },
+      { item: "Cauliflower",              pack: "30#",        price: 31.30 },
+      { item: "Celery Diced",             pack: "30#",        price: 29.10 },
+      { item: "Corn Cob 3in",             pack: "96ea",       price: 33.74 },
+      { item: "Corn Cut",                 pack: "30#",        price: 27.03 },
+      { item: "Greens Collard Chopped",   pack: "12/3#",      price: 37.81 },
+      { item: "Mixed Vegetables 3-Way",   pack: "12/2.2#",    price: 25.77 },
+      { item: "Mixed Vegetables CA Blend",pack: "30#",        price: 26.75 },
+      { item: "Okra Cut Breaded",         pack: "20#",        price: 26.77 },
+      { item: "Onion Diced",              pack: "20#",        price: 15.67 },
+      { item: "Peas and Carrots",         pack: "30#",        price: 29.77 },
+      { item: "Peas Green",              pack: "30#",        price: 33.16 },
+      { item: "Peppers Diced",           pack: "30#",        price: 28.56 },
+      { item: "Spinach Chopped",         pack: "30#",        price: 32.46 },
+      { item: "Zucchini Sliced",         pack: "30#",        price: 28.75 }
+    ],
+    dryBeans: [
+      { item: "Beans Dry Black",           pack: "50#",        price: 32.27 },
+      { item: "Beans Dry Great Northern",  pack: "50#",        price: 39.00 },
+      { item: "Beans Dry Kidney",          pack: "50#",        price: 41.98 },
+      { item: "Beans Dry Lentil",          pack: "50#",        price: 49.26 },
+      { item: "Beans Dry Lima",            pack: "50#",        price: 58.32 },
+      { item: "Beans Dry Navy",            pack: "50#",        price: 36.49 },
+      { item: "Beans Dry Pinto",           pack: "50#",        price: 29.15 },
+      { item: "Beans Dry Pinto Splits",    pack: "50#",        price: 24.39 },
+      { item: "Peas Dry Blackeye",         pack: "50#",        price: 44.31 }
+    ],
+    seafood: [
+      { item: "Sardines Oil Pouch",        pack: "36/3.53oz",  price: 30.59 },
+      { item: "Tuna Chunk Light Water Pouch",pack: "12/5oz",   price: 21.45 },
+      { item: "Tuna Chunk Light VBR",      pack: "6/66.5oz",  price: 58.27 }
+    ],
+    desserts: [
+      { item: "Gelatin Cherry",            pack: "6/16oz",     price: 23.32 },
+      { item: "Gelatin Lemon",             pack: "6/16oz",     price: 23.32 },
+      { item: "Gelatin Lime",             pack: "6/16oz",     price: 23.32 },
+      { item: "Gelatin Orange",           pack: "6/16oz",     price: 23.32 },
+      { item: "Gelatin Raspberry",        pack: "6/16oz",     price: 23.32 },
+      { item: "Pudding Banana Instant",   pack: "25#",        price: 61.65 },
+      { item: "Pudding Butterscotch Inst",pack: "25#",        price: 63.84 },
+      { item: "Pudding Chocolate Instant",pack: "25#",        price: 68.93 },
+      { item: "Pudding Lemon Instant",    pack: "25#",        price: 63.84 },
+      { item: "Pudding Vanilla Instant",  pack: "25#",        price: 63.84 },
+      { item: "Cookie Choc Chip .278oz",  pack: "24/18ea",    price: 20.91 },
+      { item: "Cookie Oatmeal Ice",       pack: "24/18ea",    price: 20.91 }
+    ],
+    condiments: [
+      { item: "Jelly Assorted",           pack: "200ea",      price: 9.88  },
+      { item: "Jelly Assorted LC",        pack: "200ea",      price: 9.53  },
+      { item: "Peanut Butter Creamy",     pack: "35#",        price: 47.01 },
+      { item: "Mayo",                     pack: "4/1gal",     price: 41.48 },
+      { item: "Mustard",                  pack: "4/1gal",     price: 23.05 },
+      { item: "Catsup Pouch",             pack: "6/112oz",    price: 35.99 },
+      { item: "Sauce BBQ",               pack: "4/1gal",     price: 28.16 },
+      { item: "Dressing Italian",        pack: "4/1gal",     price: 19.34 },
+      { item: "Dressing Ranch",          pack: "4/1gal",     price: 38.62 },
+      { item: "Syrup Maple",             pack: "4/1gal",     price: 15.83 },
+      { item: "Sauce Soy",               pack: "4/1gal",     price: 18.30 }
+    ],
+    beverages: [
+      { item: "Drink Mix Grape 1000/1gm", pack: "1000/1gm",  price: 20.63 },
+      { item: "Drink Mix Fruit Punch",    pack: "1000/1gm",  price: 20.63 },
+      { item: "Drink Mix Orange",         pack: "1000/1gm",  price: 20.63 },
+      { item: "Drink Mix Dairy",          pack: "25#",        price: 47.37 },
+      { item: "Coffee Instant",           pack: "1000/1gm",  price: 36.99 },
+      { item: "Water Bottled",            pack: "24/.5ltr",   price: 7.28  }
+    ]
+  }
+};
