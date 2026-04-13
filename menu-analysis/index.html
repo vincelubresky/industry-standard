@@ -40,7 +40,7 @@
     <a href="#new-items" class="nav-item"><i class="fa-solid fa-circle-plus"></i>New Items to Add<span class="nav-badge">21</span></a>
     <a href="#menu-assessment" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Menu Assessment</a>
     <a href="#menu-ideas" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas</a>
-    <a href="#cost-calculator" class="nav-item"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
+    <a href="#cost-calculator" class="nav-item" data-tab="calculator"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
@@ -84,12 +84,22 @@
     </div>
   </header>
 
+  <!-- ══════════ TAB BAR ══════════ -->
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="analysis" onclick="switchTab('analysis')">
+      <i class="fa-solid fa-chart-line"></i>Vendor Analysis
+    </button>
+    <button class="tab-btn" data-tab="calculator" onclick="switchTab('calculator')">
+      <i class="fa-solid fa-calculator"></i>Cost Calculator
+    </button>
+  </div>
+
   <div class="content">
 
   <!-- ══════════════════════════════════════
        OVERVIEW
   ══════════════════════════════════════ -->
-  <section class="section" id="overview">
+  <section class="section analysis-section" id="overview">
     <div class="overview-hero">
       <div class="overview-hero-top">
         <div>
@@ -129,7 +139,7 @@
   <!-- ══════════════════════════════════════
        SWITCH TO SHAVER
   ══════════════════════════════════════ -->
-  <section class="section" id="switch-to-shaver">
+  <section class="section analysis-section" id="switch-to-shaver">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon red"><i class="fa-solid fa-arrows-rotate"></i></div>
@@ -190,7 +200,7 @@
   <!-- ══════════════════════════════════════
        KEEP WITH PFG
   ══════════════════════════════════════ -->
-  <section class="section" id="keep-with-pfg">
+  <section class="section analysis-section" id="keep-with-pfg">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon green"><i class="fa-solid fa-shield-check"></i></div>
@@ -230,7 +240,7 @@
   <!-- ══════════════════════════════════════
        MONTHLY SAVINGS
   ══════════════════════════════════════ -->
-  <section class="section" id="monthly-savings">
+  <section class="section analysis-section" id="monthly-savings">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon amber"><i class="fa-solid fa-piggy-bank"></i></div>
@@ -284,7 +294,7 @@
   <!-- ══════════════════════════════════════
        NEW ITEMS TO ADD
   ══════════════════════════════════════ -->
-  <section class="section" id="new-items">
+  <section class="section analysis-section" id="new-items">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon cyan"><i class="fa-solid fa-circle-plus"></i></div>
@@ -339,7 +349,7 @@
   <!-- ══════════════════════════════════════
        MENU ASSESSMENT
   ══════════════════════════════════════ -->
-  <section class="section" id="menu-assessment">
+  <section class="section analysis-section" id="menu-assessment">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon purple"><i class="fa-solid fa-clipboard-list"></i></div>
@@ -402,7 +412,7 @@
   <!-- ══════════════════════════════════════
        NEW MENU IDEAS
   ══════════════════════════════════════ -->
-  <section class="section" id="menu-ideas">
+  <section class="section analysis-section" id="menu-ideas">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon amber"><i class="fa-solid fa-lightbulb"></i></div>
@@ -535,7 +545,7 @@
   <!-- ══════════════════════════════════════
        PRIORITY ACTIONS
   ══════════════════════════════════════ -->
-  <section class="section" id="priority-actions">
+  <section class="section analysis-section" id="priority-actions">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon red"><i class="fa-solid fa-bullseye"></i></div>
@@ -580,7 +590,7 @@
   <!-- ══════════════════════════════════════
        FULL SHAVER CATALOG
   ══════════════════════════════════════ -->
-  <section class="section" id="full-catalog">
+  <section class="section analysis-section" id="full-catalog">
     <div class="section-header">
       <div class="section-title-group">
         <div class="section-icon blue"><i class="fa-solid fa-book-open"></i></div>

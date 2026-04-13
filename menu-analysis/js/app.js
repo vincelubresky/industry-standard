@@ -411,6 +411,56 @@ function exportSectionCSV(key) {
   showToast(`CSV: ${c.file}`);
 }
 
+/* ── Tabs ─────────────────────────────────────────────────── */
+const TAB_KEY = 'is_tab';
+
+function switchTab(tab, persist = true) {
+  if (persist) localStorage.setItem(TAB_KEY, tab);
+
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+
+  // Show/hide sections
+  document.querySelectorAll('.analysis-section').forEach(s => {
+    s.style.display = (tab === 'analysis') ? '' : 'none';
+  });
+  const calcSection = document.getElementById('cost-calculator');
+  if (calcSection) calcSection.style.display = (tab === 'calculator') ? '' : 'none';
+
+  // Sync active nav item
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (tab === 'calculator') {
+    const calcNav = document.querySelector('.nav-item[data-tab="calculator"]');
+    if (calcNav) calcNav.classList.add('active');
+  }
+
+  // Scroll to top of content on switch
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function initTabs() {
+  const saved = localStorage.getItem(TAB_KEY) || 'analysis';
+  switchTab(saved, false);
+
+  // Sidebar: calculator link → switch tab
+  document.querySelectorAll('.nav-item[data-tab="calculator"]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('calculator');
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
+    });
+  });
+
+  // Sidebar: analysis links → ensure analysis tab is active
+  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab="calculator"])').forEach(el => {
+    el.addEventListener('click', () => {
+      if (localStorage.getItem(TAB_KEY) !== 'analysis') switchTab('analysis');
+    });
+  });
+}
+
 /* ══════════════════════════════════════════════════════════
    MEAL COST CALCULATOR
    ══════════════════════════════════════════════════════════ */
@@ -599,6 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-item').forEach(item => item.addEventListener('click', () => { if(window.innerWidth<=768){sidebarOpen=false;applySidebarState(true);} }));
   window.addEventListener('resize', () => applySidebarState(false));
   setTimeout(renderChart, 150);
+  initTabs();
   initScrollSpy();
   initDropdowns();
   initCatalog();

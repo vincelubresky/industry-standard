@@ -56,6 +56,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 
   --sidebar-w:      268px;
   --header-h:       64px;
+  --tab-bar-h:      45px;
   --radius-s:       6px;
   --radius-m:       10px;
   --radius-l:       16px;
@@ -508,6 +509,45 @@ body {
 /* ============================================================
    CONTENT
    ============================================================ */
+/* ── Tab Bar ──────────────────────────────────────────────── */
+.tab-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 790;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 24px;
+  height: var(--tab-bar-h);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-300);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  margin-bottom: -1px;
+  white-space: nowrap;
+}
+.tab-btn i { font-size: 12px; }
+.tab-btn:hover { color: var(--text-100); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn.active i { color: var(--accent); }
+
+[data-theme="light"] .tab-bar { background: #fff; }
+[data-theme="light"] .tab-btn.active { color: var(--accent); }
+
 .content {
   padding: 32px;
   flex: 1;
@@ -518,7 +558,7 @@ body {
 /* Section */
 .section {
   margin-bottom: 56px;
-  scroll-margin-top: calc(var(--header-h) + 16px);
+  scroll-margin-top: calc(var(--header-h) + var(--tab-bar-h) + 16px);
 }
 
 .section-header {
@@ -1442,6 +1482,8 @@ tbody tr.row-total td { color: var(--green); }
   .topbar { padding: 0 16px; }
   .topbar-crumb:not(.active) { display: none; }
   .topbar-sep { display: none; }
+  .tab-bar { padding: 0 16px; }
+  .tab-btn { padding: 0 14px; font-size: 12px; }
 
   .section-title { font-size: 18px; }
   .export-btn span { display: none; }
