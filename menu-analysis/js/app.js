@@ -413,22 +413,39 @@ function exportSectionCSV(key) {
 }
 
 /* ── Shaver Order List Exports ───────────────────────────── */
+const ORDER_LIST_SWITCH = [
+  { item: 'Grape Drink Mix',          unit: '1000/1gm',    price: 20.63, savings: 'saves $29.32' },
+  { item: 'Grits Quick',              unit: '50 LB',       price: 28.00, savings: 'saves ~$16.07 (per 40 LB eq.)' },
+  { item: 'Great Northern Beans Dry', unit: '50 LB',       price: 39.00, savings: 'saves $17.05' },
+  { item: 'Gravy Mix (Country)',       unit: '6/3 LB',      price: 37.82, savings: 'saves ~$17.31 (per 6 LB eq.)' },
+  { item: 'Rotini Pasta',             unit: '2/10 LB',     price: 13.73, savings: 'saves $10.10' },
+  { item: 'Onion Powder',             unit: '6/1 LB',      price: 24.64, savings: 'saves ~$11.73 (per 5 LB eq.)' },
+  { item: 'Garlic Powder',            unit: '6/1 LB',      price: 24.02, savings: 'saves ~$10.75 (per 5 LB eq.)' },
+  { item: 'Jelly Assorted 200ct',     unit: '200 LC',      price: 9.53,  savings: 'saves $9.67' },
+  { item: 'Carrots Sliced Frozen',    unit: '20 LB',       price: 14.34, savings: 'saves $8.09' },
+  { item: 'Ziti Pasta',               unit: '2/10 LB',     price: 13.73, savings: 'saves $8.04' },
+  { item: 'Potato Flakes Dehydrated', unit: '40 LB',       price: 51.62, savings: 'saves $7.73' },
+  { item: 'Cheese Sauce',             unit: '6/10',        price: 48.12, savings: 'saves $6.97' },
+  { item: 'Oats / Oatmeal',           unit: '50 LB',       price: 28.33, savings: 'saves $6.82' },
+  { item: 'Elbow Macaroni',           unit: '2/10 LB',     price: 13.10, savings: 'saves $6.71' },
+];
+
 function exportOrderExcel() {
   if (typeof XLSX === 'undefined') { showToast('Loading...','error'); return; }
   const wb = XLSX.utils.book_new();
 
-  const switchRows = DATA.switchToShaver.map(r => [r.item, r.shaverUnit, r.shaverPrice, r.savings ? `saves $${r.savings.toFixed(2)}` : (r.note || '')]);
+  const switchRows = ORDER_LIST_SWITCH.map(r => [r.item, r.unit, `$${r.price.toFixed(2)}`, r.savings]);
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
     ['SHAVER ORDER LIST — Jefferson County Jail', '', '', ''],
-    ['Prepared by Industry Standard', '', '', ''],
+    ['Prepared by Industry Standard  ·  $5+ savings items only', '', '', ''],
     [''],
-    ['SWITCH FROM PFG TO SHAVER'],
+    ['SWITCH FROM PFG TO SHAVER  (14 items)'],
     ['Item', 'Unit', 'Shaver Price', 'vs PFG'],
     ...switchRows,
     [''],
-    ['NEW ITEMS TO ADD FROM SHAVER'],
-    ['Category', 'Item', 'Unit', 'Price', 'Use'],
-    ...DATA.newItemsToAdd.map(r => [r.category, r.item, '', r.price, r.useCase])
+    ['NEW ITEMS TO ADD FROM SHAVER  (18 items)'],
+    ['Category', 'Item', 'Price', 'Use'],
+    ...DATA.newItemsToAdd.map(r => [r.category, r.item, `$${r.price.toFixed(2)}`, r.useCase])
   ]), 'Shaver Order List');
 
   XLSX.writeFile(wb, 'Shaver-Order-List-Jefferson-County.xlsx');
@@ -436,17 +453,17 @@ function exportOrderExcel() {
 }
 
 function exportOrderCSV() {
-  const switchRows = DATA.switchToShaver.map(r =>
-    `"${r.item}","${r.shaverUnit}",${r.shaverPrice},"${r.savings ? 'saves $'+r.savings.toFixed(2) : (r.note||'')}"`
+  const switchRows = ORDER_LIST_SWITCH.map(r =>
+    `"${r.item}","${r.unit}",$${r.price.toFixed(2)},"${r.savings}"`
   );
   const newRows = DATA.newItemsToAdd.map(r =>
     `"${r.category}","${r.item}",${r.price},"${r.useCase}"`
   );
   const lines = [
     'SHAVER ORDER LIST — Jefferson County Jail',
-    'Prepared by Industry Standard',
+    'Prepared by Industry Standard — $5+ savings items only',
     '',
-    'SWITCH FROM PFG TO SHAVER',
+    'SWITCH FROM PFG TO SHAVER (14 items)',
     'Item,Unit,Shaver Price,vs PFG',
     ...switchRows,
     '',
@@ -478,11 +495,11 @@ function exportOrderPDF() {
     doc.text(title, M+10, y+15); y += 30;
   };
 
-  sectionHeader('SWITCH FROM PFG TO SHAVER  (22 items — ~$1,146/mo savings)', GRN);
+  sectionHeader('SWITCH FROM PFG TO SHAVER  (14 items · $5+ savings · ~$1,130/mo)', GRN);
   doc.autoTable({
     startY: y,
     head: [['Item','Unit','Shaver Price','vs PFG']],
-    body: DATA.switchToShaver.map(r => [r.item, r.shaverUnit, `$${r.shaverPrice.toFixed(2)}`, r.savings ? `saves $${r.savings.toFixed(2)}` : (r.note||'')]),
+    body: ORDER_LIST_SWITCH.map(r => [r.item, r.unit, `$${r.price.toFixed(2)}`, r.savings]),
     margin: {left:M, right:M},
     styles: {fontSize:9, cellPadding:4},
     headStyles: {fillColor:[16,185,129], textColor:255},
