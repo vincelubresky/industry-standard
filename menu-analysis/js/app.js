@@ -20,6 +20,7 @@ function toggleTheme() {
   localStorage.setItem(THEME_KEY, next);
   updateThemeIcon(next);
   setTimeout(renderChart, 50);
+  if (localStorage.getItem(TAB_KEY) === 'report') setTimeout(renderReportCharts, 80);
 }
 
 function updateThemeIcon(theme) {
@@ -411,6 +412,140 @@ function exportSectionCSV(key) {
   showToast(`CSV: ${c.file}`);
 }
 
+/* ── Weekly Report Charts ────────────────────────────────── */
+function renderReportCharts() {
+  if (typeof Chart === 'undefined') return;
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+  const textColor  = isDark ? '#8ba5c0' : '#556880';
+  const gridColor  = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+  const tooltipBg  = isDark ? '#1a2540' : '#fff';
+  const tooltipTxt = isDark ? '#f0f6ff' : '#0a1526';
+
+  // Revenue comparison chart
+  const revCtx = document.getElementById('revChart');
+  if (revCtx) {
+    if (revCtx._chart) revCtx._chart.destroy();
+    const bham = REPORT.locations.birmingham;
+    const bess = REPORT.locations.bessemer;
+    const cats    = ['Population','Cafe / Academy / JBS','Soft Trays','Milk','JBS / Other'];
+    const bhamRev = [50447.63, 9654.60, 5460.00, 2130.00, 0];
+    const bessRev = [14665.38, 3181.50, 1890.00,  600.00, 0];
+    revCtx._chart = new Chart(revCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Population','Cafe+Acad+JBS','Soft Trays','Milk'],
+        datasets: [
+          { label: 'Birmingham', data: [50447.63, 9654.60, 5460.00, 2130.00], backgroundColor: 'rgba(59,130,246,0.75)', borderColor: 'rgba(59,130,246,1)', borderWidth: 1.5, borderRadius: 5 },
+          { label: 'Bessemer',   data: [14665.38, 3181.50, 1890.00,  600.00], backgroundColor: 'rgba(167,139,250,0.75)', borderColor: 'rgba(167,139,250,1)', borderWidth: 1.5, borderRadius: 5 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: textColor, font: { size: 11 } } },
+          tooltip: { backgroundColor: tooltipBg, titleColor: tooltipTxt, bodyColor: textColor, borderColor: gridColor, borderWidth: 1, padding: 10, callbacks: { label: c => ` $${c.raw.toLocaleString('en-US', {minimumFractionDigits:2})}` } }
+        },
+        scales: {
+          x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+          y: { ticks: { color: textColor, font: { size: 11 }, callback: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'K' : v) }, grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+
+  // COGS % chart
+  const cogsCtx = document.getElementById('cogsChart');
+  if (cogsCtx) {
+    if (cogsCtx._chart) cogsCtx._chart.destroy();
+    const cats    = ['Population','Cafe / Acad / JBS','Soft Trays','Milk'];
+    const bhamPct = [29.01, 44.52, 47.07, 65.00];
+    const bessPct = [44.81, 69.75, 47.07, 65.00];
+    cogsCtx._chart = new Chart(cogsCtx, {
+      type: 'bar',
+      data: {
+        labels: cats,
+        datasets: [
+          { label: 'Birmingham %', data: bhamPct, backgroundColor: 'rgba(59,130,246,0.70)', borderColor: 'rgba(59,130,246,1)', borderWidth: 1.5, borderRadius: 5 },
+          { label: 'Bessemer %',   data: bessPct, backgroundColor: 'rgba(167,139,250,0.70)', borderColor: 'rgba(167,139,250,1)', borderWidth: 1.5, borderRadius: 5 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: textColor, font: { size: 11 } } },
+          tooltip: { backgroundColor: tooltipBg, titleColor: tooltipTxt, bodyColor: textColor, borderColor: gridColor, borderWidth: 1, padding: 10, callbacks: { label: c => ` ${c.raw.toFixed(2)}% COGS` } }
+        },
+        scales: {
+          x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+          y: { min: 0, max: 80, ticks: { color: textColor, font: { size: 11 }, callback: v => v + '%' }, grid: { color: gridColor } }
+        }
+      }
+    });
+  }
+}
+
+/* ── Weekly Report Exports ───────────────────────────────── */
+function exportReportExcel() {
+  if (typeof XLSX === 'undefined') { showToast('Loading…', 'error'); return; }
+  const wb = XLSX.utils.book_new();
+  const add = (name, headers, rows) => XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([headers, ...rows]), name);
+
+  add('Revenue', ['Category','Birmingham $','Bham %','Bessemer $','Bess %'],
+    [...REPORT.locations.birmingham.revenue.items.map(r => {
+      const b = REPORT.locations.bessemer.revenue.items.find(x => x.cat === r.cat);
+      return [r.cat, r.amount, r.pct + '%', b ? b.amount : 0, b ? b.pct + '%' : '—'];
+    }),
+    ['TOTAL', REPORT.locations.birmingham.revenue.total, '', REPORT.locations.bessemer.revenue.total, '']]
+  );
+  add('COGS', ['Category','Birmingham $','Bham %','Bessemer $','Bess %'],
+    [...REPORT.locations.birmingham.materialCOGS.items.map((r,i) => {
+      const b = REPORT.locations.bessemer.materialCOGS.items[i] || {};
+      return [r.cat, r.amount, r.pct + '%', b.amount || '', b.pct ? b.pct + '%' : ''];
+    }),
+    ['Total Material', REPORT.locations.birmingham.materialCOGS.total, REPORT.locations.birmingham.materialCOGS.totalPct + '%', REPORT.locations.bessemer.materialCOGS.total, REPORT.locations.bessemer.materialCOGS.totalPct + '%'],
+    ['Labor', REPORT.locations.birmingham.labor.amount, REPORT.locations.birmingham.labor.pct + '%', REPORT.locations.bessemer.labor.amount, REPORT.locations.bessemer.labor.pct + '%'],
+    ['Total COGS', REPORT.locations.birmingham.totalCOGS.amount, REPORT.locations.birmingham.totalCOGS.pct + '%', REPORT.locations.bessemer.totalCOGS.amount, REPORT.locations.bessemer.totalCOGS.pct + '%']]
+  );
+  add('Payroll & Net', ['Line','Birmingham $','% Rev.','Bessemer $','% Rev.'],
+    [['Salaries', REPORT.locations.birmingham.payroll.salaries.amount, REPORT.locations.birmingham.payroll.salaries.pct + '%', REPORT.locations.bessemer.payroll.salaries.amount, REPORT.locations.bessemer.payroll.salaries.pct + '%'],
+    ['Employer Taxes', REPORT.locations.birmingham.payroll.taxes.amount, REPORT.locations.birmingham.payroll.taxes.pct + '%', REPORT.locations.bessemer.payroll.taxes.amount, REPORT.locations.bessemer.payroll.taxes.pct + '%'],
+    ['NET / Location', REPORT.locations.birmingham.netLocation.amount, REPORT.locations.birmingham.netLocation.pct + '%', REPORT.locations.bessemer.netLocation.amount, REPORT.locations.bessemer.netLocation.pct + '%'],
+    ['TOTAL WEEKLY NET', REPORT.weeklyNet, REPORT.netMarginPct + '%', '', '']]
+  );
+  XLSX.writeFile(wb, `Weekly-Report-${REPORT.week.replace(/[–,\s]+/g,'-')}.xlsx`);
+  showToast('Weekly Report Excel downloaded — 3 sheets');
+}
+
+function exportReportCSV() {
+  const lines = [
+    `Industry Standard — Weekly Report — ${REPORT.week}`, '',
+    '=== REVENUE ===',
+    'Category,Birmingham $,Bham %,Bessemer $,Bess %',
+    ...REPORT.locations.birmingham.revenue.items.map(r => {
+      const b = REPORT.locations.bessemer.revenue.items.find(x => x.cat === r.cat);
+      return `"${r.cat}",${r.amount},${r.pct}%,${b ? b.amount : ''},${b ? b.pct + '%' : ''}`;
+    }),
+    `"TOTAL",${REPORT.locations.birmingham.revenue.total},,${REPORT.locations.bessemer.revenue.total},`,
+    '', '=== COGS ===',
+    'Category,Birmingham $,Bham %,Bessemer $,Bess %',
+    ...REPORT.locations.birmingham.materialCOGS.items.map((r,i) => {
+      const b = REPORT.locations.bessemer.materialCOGS.items[i] || {};
+      return `"${r.cat}",${r.amount},${r.pct}%,${b.amount||''},${b.pct ? b.pct+'%' : ''}`;
+    }),
+    `"Total Material COGS",${REPORT.locations.birmingham.materialCOGS.total},${REPORT.locations.birmingham.materialCOGS.totalPct}%,${REPORT.locations.bessemer.materialCOGS.total},${REPORT.locations.bessemer.materialCOGS.totalPct}%`,
+    `"Labor",${REPORT.locations.birmingham.labor.amount},${REPORT.locations.birmingham.labor.pct}%,${REPORT.locations.bessemer.labor.amount},${REPORT.locations.bessemer.labor.pct}%`,
+    `"Total COGS",${REPORT.locations.birmingham.totalCOGS.amount},${REPORT.locations.birmingham.totalCOGS.pct}%,${REPORT.locations.bessemer.totalCOGS.amount},${REPORT.locations.bessemer.totalCOGS.pct}%`,
+    '', '=== PAYROLL & NET ===',
+    'Line,Birmingham $,% Rev,Bessemer $,% Rev',
+    `"Salaries",${REPORT.locations.birmingham.payroll.salaries.amount},${REPORT.locations.birmingham.payroll.salaries.pct}%,${REPORT.locations.bessemer.payroll.salaries.amount},${REPORT.locations.bessemer.payroll.salaries.pct}%`,
+    `"Employer Taxes",${REPORT.locations.birmingham.payroll.taxes.amount},${REPORT.locations.birmingham.payroll.taxes.pct}%,${REPORT.locations.bessemer.payroll.taxes.amount},${REPORT.locations.bessemer.payroll.taxes.pct}%`,
+    `"NET / Location",${REPORT.locations.birmingham.netLocation.amount},${REPORT.locations.birmingham.netLocation.pct}%,${REPORT.locations.bessemer.netLocation.amount},${REPORT.locations.bessemer.netLocation.pct}%`,
+    `"TOTAL WEEKLY NET",${REPORT.weeklyNet},${REPORT.netMarginPct}%,,`
+  ];
+  downloadBlob(new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' }), `Weekly-Report-${REPORT.week.replace(/[–,\s]+/g,'-')}.csv`);
+  showToast('Weekly Report CSV downloaded');
+}
+
 /* ── Tabs ─────────────────────────────────────────────────── */
 const TAB_KEY = 'is_tab';
 
@@ -429,14 +564,30 @@ function switchTab(tab, persist = true) {
   const calcSection = document.getElementById('cost-calculator');
   if (calcSection) calcSection.style.display = (tab === 'calculator') ? '' : 'none';
 
+  document.querySelectorAll('.report-section').forEach(s => {
+    s.style.display = (tab === 'report') ? '' : 'none';
+  });
+
+  // Show/hide report nav labels
+  document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
+    el.style.display = (tab === 'report') ? '' : 'none';
+  });
+
   // Sync active nav item
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if (tab === 'calculator') {
-    const calcNav = document.querySelector('.nav-item[data-tab="calculator"]');
-    if (calcNav) calcNav.classList.add('active');
+    const el = document.querySelector('.nav-item[data-tab="calculator"]');
+    if (el) el.classList.add('active');
+  }
+  if (tab === 'report') {
+    const el = document.querySelector('.nav-item[href="#report-overview"]');
+    if (el) el.classList.add('active');
   }
 
-  // Scroll to top of content on switch
+  // Render report charts when switching to report tab
+  if (tab === 'report') setTimeout(renderReportCharts, 80);
+
+  // Scroll to top on switch
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -444,17 +595,28 @@ function initTabs() {
   const saved = localStorage.getItem(TAB_KEY) || 'analysis';
   switchTab(saved, false);
 
-  // Sidebar: calculator link → switch tab
-  document.querySelectorAll('.nav-item[data-tab="calculator"]').forEach(el => {
+  // Tab-switching nav links (calculator + all report links)
+  document.querySelectorAll('.nav-item[data-tab]').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
-      switchTab('calculator');
+      switchTab(el.dataset.tab);
       if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
     });
   });
 
-  // Sidebar: analysis links → ensure analysis tab is active
-  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab="calculator"])').forEach(el => {
+  // Report nav links — also scroll within report pane
+  document.querySelectorAll('.nav-item[href^="#report-"]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('report');
+      const target = document.getElementById(el.getAttribute('href').slice(1));
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
+    });
+  });
+
+  // Analysis links → ensure analysis tab is active first
+  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab])').forEach(el => {
     el.addEventListener('click', () => {
       if (localStorage.getItem(TAB_KEY) !== 'analysis') switchTab('analysis');
     });

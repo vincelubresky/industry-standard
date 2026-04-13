@@ -1513,6 +1513,187 @@ tbody tr.row-total td { color: var(--green); }
 }
 
 /* ============================================================
+   WEEKLY REPORT
+   ============================================================ */
+
+/* KPI row */
+.report-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.report-kpi-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+}
+.report-kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.report-kpi-icon.accent  { background: var(--accent-dim);  color: var(--accent); }
+.report-kpi-icon.amber   { background: var(--amber-dim);   color: var(--amber);  }
+.report-kpi-icon.green   { background: var(--green-dim);   color: var(--green);  }
+.report-kpi-icon.red     { background: var(--red-dim);     color: var(--red);    }
+.report-kpi-body { display: flex; flex-direction: column; gap: 3px; }
+.report-kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-100);
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.1;
+}
+.report-kpi-value.green  { color: var(--green); }
+.report-kpi-value.amber  { color: var(--amber); }
+.report-kpi-value.red    { color: var(--red);   }
+.report-kpi-label { font-size: 12px; font-weight: 600; color: var(--text-200); }
+.report-kpi-sub   { font-size: 11px; color: var(--text-400); }
+
+/* Location comparison */
+.loc-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.loc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  padding: 20px 22px;
+}
+.loc-card.loc-bham { border-left: 3px solid var(--accent); }
+.loc-card.loc-bess { border-left: 3px solid var(--purple); }
+.loc-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.loc-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.loc-dot.bham { background: var(--accent); }
+.loc-dot.bess { background: var(--purple); }
+.loc-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-100);
+  font-family: 'Space Grotesk', sans-serif;
+  flex: 1;
+}
+.loc-card-share {
+  font-size: 11px;
+  color: var(--text-400);
+}
+.loc-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+.loc-stat-row:last-child { border-bottom: none; }
+.loc-stat-label { font-size: 12px; color: var(--text-300); }
+.loc-stat-value { font-size: 13px; font-weight: 500; color: var(--text-100); }
+.loc-net-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 0;
+  margin-top: 8px;
+  border-top: 1px solid var(--border-strong);
+}
+.loc-net-value {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.loc-net-value.green { color: var(--green); }
+.loc-net-value.amber { color: var(--amber); }
+.loc-net-value small { font-size: 11px; font-weight: 400; color: var(--text-400); }
+
+/* % pills */
+.pct-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.pct-pill.green  { background: var(--green-dim);  color: var(--green);  border: 1px solid var(--green-border); }
+.pct-pill.amber  { background: var(--amber-dim);  color: var(--amber);  border: 1px solid var(--amber-border); }
+.pct-pill.red    { background: var(--red-dim);    color: var(--red);    border: 1px solid var(--red-border);   }
+
+/* P&L table */
+.pl-table { width: 100%; }
+.pl-section-row td {
+  background: var(--bg-body) !important;
+  color: var(--text-400);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: 10px 12px 6px;
+}
+.pl-subtotal-row td {
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.pl-total-row td {
+  background: var(--bg-body);
+  padding: 12px 12px;
+  font-size: 13px;
+  border-top: 2px solid var(--border-strong);
+}
+
+/* Section icon: purple */
+.section-icon.purple { background: var(--purple-dim); color: var(--purple); }
+
+/* Weekly net banner */
+.weekly-net-banner {
+  background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(16,185,129,0.05) 100%);
+  border: 1px solid var(--green-border);
+  border-radius: var(--radius-m);
+  padding: 28px 32px;
+  text-align: center;
+}
+.wn-label  { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-400); margin-bottom: 6px; }
+.wn-amount { font-size: 48px; font-weight: 800; color: var(--green); font-family: 'Space Grotesk', sans-serif; line-height: 1; }
+.wn-pct    { font-size: 16px; color: var(--green); margin-top: 4px; font-weight: 600; }
+.wn-sub    { font-size: 13px; color: var(--text-400); margin-top: 10px; }
+
+/* mt-16 helper */
+.mt-16 { margin-top: 16px; }
+
+/* Responsive overrides */
+@media (max-width: 900px) {
+  .report-kpi-grid  { grid-template-columns: repeat(2, 1fr); }
+  .loc-compare-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .report-kpi-grid  { grid-template-columns: 1fr 1fr; }
+  .wn-amount        { font-size: 36px; }
+}
+
+/* ============================================================
    MEAL COST CALCULATOR
    ============================================================ */
 .calc-controls {

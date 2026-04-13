@@ -477,3 +477,93 @@ const DATA = {
     ]
   }
 };
+
+// ============================================================
+//  WEEKLY REPORT — April 6–12, 2026
+// ============================================================
+const REPORT = {
+  week:    "April 6–12, 2026",
+  prepared:"April 13, 2026",
+  totalRevenue: 88029.11,
+  totalCOGS:    43553.59,
+  totalCOGSPct: 49.48,
+  weeklyNet:    25889.21,
+  netMarginPct: 29.41,
+
+  locations: {
+    birmingham: {
+      label: "Birmingham",
+      revenue: {
+        total: 67692.23,
+        items: [
+          { cat: "Population",        amount: 50447.63, pct: 74.52 },
+          { cat: "Cafe",              amount:  5090.40, pct:  7.52 },
+          { cat: "Academy",           amount:  2545.20, pct:  3.76 },
+          { cat: "Soft Trays",        amount:  5460.00, pct:  8.07 },
+          { cat: "Milk",              amount:  2130.00, pct:  3.15 },
+          { cat: "JBS",               amount:  2019.00, pct:  2.98 }
+        ]
+      },
+      materialCOGS: {
+        total: 24291.07, totalPct: 35.88,
+        items: [
+          { cat: "Population",        amount: 14632.84, pct: 29.01 },
+          { cat: "Cafe / Acad / JBS", amount:  4298.01, pct: 44.52 },
+          { cat: "Soft Trays",        amount:  2570.10, pct: 47.07 },
+          { cat: "Milk",              amount:  1384.50, pct: 65.00 },
+          { cat: "Chem / Disp.",      amount:  1405.62, pct:  2.08 }
+        ]
+      },
+      labor:     { amount:  5851.66, pct:  8.64 },
+      totalCOGS: { amount: 30142.73, pct: 44.53 },
+      detailedNet: [
+        { cat: "Population",        amount: 35814.79, pct: 52.91 },
+        { cat: "Cafe / Acad / JBS", amount:  5356.59, pct:  7.91 },
+        { cat: "Soft Trays",        amount:  2889.90, pct:  4.27 },
+        { cat: "Milk",              amount:   745.50, pct:  1.10 },
+        { cat: "Chem / Disp.",      amount: -1405.62, pct: -2.08 }
+      ],
+      payroll: {
+        salaries: { amount: 12714.23, pct: 18.78 },
+        taxes:    { amount:  1225.50, pct:  1.81 }
+      },
+      netLocation: { amount: 23609.77, pct: 34.88 }
+    },
+    bessemer: {
+      label: "Bessemer",
+      revenue: {
+        total: 20336.88,
+        items: [
+          { cat: "Population",  amount: 14665.38, pct: 72.11 },
+          { cat: "Cafe",        amount:  3181.50, pct: 15.64 },
+          { cat: "Soft Trays",  amount:  1890.00, pct:  9.29 },
+          { cat: "Milk",        amount:   600.00, pct:  2.95 }
+        ]
+      },
+      materialCOGS: {
+        total: 10526.98, totalPct: 51.76,
+        items: [
+          { cat: "Population",  amount:  6571.74, pct: 44.81 },
+          { cat: "Cafe",        amount:  2219.01, pct: 69.75 },
+          { cat: "Soft Trays",  amount:   889.65, pct: 47.07 },
+          { cat: "Milk",        amount:   390.00, pct: 65.00 },
+          { cat: "Chem / Disp.",amount:   456.58, pct:  2.25 }
+        ]
+      },
+      labor:     { amount:  2883.88, pct: 14.18 },
+      totalCOGS: { amount: 13410.86, pct: 65.94 },
+      detailedNet: [
+        { cat: "Population",  amount:  8093.64, pct: 39.80 },
+        { cat: "Cafe",        amount:   962.49, pct:  4.73 },
+        { cat: "Soft Trays",  amount:  1000.35, pct:  4.92 },
+        { cat: "Milk",        amount:   210.00, pct:  1.03 },
+        { cat: "Chem / Disp.",amount:  -456.58, pct: -2.25 }
+      ],
+      payroll: {
+        salaries: { amount: 4238.08, pct: 20.84 },
+        taxes:    { amount:  408.50, pct:  2.01 }
+      },
+      netLocation: { amount: 2279.44, pct: 11.21 }
+    }
+  }
+};

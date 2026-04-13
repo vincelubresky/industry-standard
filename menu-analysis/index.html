@@ -44,6 +44,12 @@
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
+    <div class="nav-section-label" data-tab="report">Weekly Report</div>
+    <a href="#report-overview"  class="nav-item" data-tab="report"><i class="fa-solid fa-gauge-high"></i>Overview</a>
+    <a href="#report-revenue"   class="nav-item" data-tab="report"><i class="fa-solid fa-dollar-sign"></i>Revenue</a>
+    <a href="#report-cogs"      class="nav-item" data-tab="report"><i class="fa-solid fa-boxes-stacked"></i>COGS</a>
+    <a href="#report-net"       class="nav-item" data-tab="report"><i class="fa-solid fa-chart-line"></i>Net Margins</a>
+    <a href="#report-payroll"   class="nav-item" data-tab="report"><i class="fa-solid fa-users"></i>Payroll &amp; Net</a>
   </nav>
   <div class="sidebar-footer">
     <div class="sidebar-meta">
@@ -91,6 +97,9 @@
     </button>
     <button class="tab-btn" data-tab="calculator" onclick="switchTab('calculator')">
       <i class="fa-solid fa-calculator"></i>Cost Calculator
+    </button>
+    <button class="tab-btn" data-tab="report" onclick="switchTab('report')">
+      <i class="fa-solid fa-file-invoice-dollar"></i>Weekly Report
     </button>
   </div>
 
@@ -835,6 +844,387 @@
   </section>
 
   <div style="height:40px"></div>
+
+  <!-- ══════════════════════════════════════
+       WEEKLY REPORT — OVERVIEW
+  ══════════════════════════════════════ -->
+  <section class="section report-section" id="report-overview">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon cyan"><i class="fa-solid fa-gauge-high"></i></div>
+        <div>
+          <div class="section-title">Weekly Report — Overview</div>
+          <div class="section-subtitle">April 6–12, 2026 &nbsp;·&nbsp; Birmingham &amp; Bessemer &nbsp;·&nbsp; All figures before owner distributions</div>
+        </div>
+      </div>
+      <div class="sec-export-btn">
+        <i class="fa-solid fa-download"></i> Export <i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:2px"></i>
+        <div class="sec-export-menu">
+          <button class="sec-export-opt" onclick="exportReportExcel()"><i class="fa-solid fa-file-excel" style="color:var(--green)"></i>Excel (.xlsx)</button>
+          <button class="sec-export-opt" onclick="exportReportCSV()"><i class="fa-solid fa-file-csv" style="color:var(--cyan)"></i>CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI row -->
+    <div class="report-kpi-grid">
+      <div class="report-kpi-card">
+        <div class="report-kpi-icon accent"><i class="fa-solid fa-dollar-sign"></i></div>
+        <div class="report-kpi-body">
+          <div class="report-kpi-value">$88,029</div>
+          <div class="report-kpi-label">Total Revenue</div>
+          <div class="report-kpi-sub">Both locations combined</div>
+        </div>
+      </div>
+      <div class="report-kpi-card">
+        <div class="report-kpi-icon amber"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="report-kpi-body">
+          <div class="report-kpi-value amber">49.48%</div>
+          <div class="report-kpi-label">Blended COGS</div>
+          <div class="report-kpi-sub">$43,554 of $88,029</div>
+        </div>
+      </div>
+      <div class="report-kpi-card">
+        <div class="report-kpi-icon green"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="report-kpi-body">
+          <div class="report-kpi-value green">$25,889</div>
+          <div class="report-kpi-label">Weekly Net</div>
+          <div class="report-kpi-sub">After COGS + payroll</div>
+        </div>
+      </div>
+      <div class="report-kpi-card">
+        <div class="report-kpi-icon green"><i class="fa-solid fa-chart-pie"></i></div>
+        <div class="report-kpi-body">
+          <div class="report-kpi-value green">29.41%</div>
+          <div class="report-kpi-label">Net Margin</div>
+          <div class="report-kpi-sub">$25,889 ÷ $88,029</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location comparison -->
+    <div class="loc-compare-grid">
+      <div class="loc-card loc-bham">
+        <div class="loc-card-header">
+          <div class="loc-dot bham"></div>
+          <div class="loc-card-title">Birmingham</div>
+          <div class="loc-card-share">76.9% of revenue</div>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Revenue</span>
+          <span class="loc-stat-value">$67,692.23</span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Material COGS</span>
+          <span class="loc-stat-value"><span class="pct-pill amber">35.88%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Labor</span>
+          <span class="loc-stat-value"><span class="pct-pill green">8.64%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Total COGS</span>
+          <span class="loc-stat-value"><span class="pct-pill amber">44.53%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Payroll</span>
+          <span class="loc-stat-value"><span class="pct-pill amber">20.59%</span></span>
+        </div>
+        <div class="loc-net-row">
+          <span class="loc-stat-label">Net / Location</span>
+          <span class="loc-net-value green">$23,609.77 <small>(34.88%)</small></span>
+        </div>
+      </div>
+
+      <div class="loc-card loc-bess">
+        <div class="loc-card-header">
+          <div class="loc-dot bess"></div>
+          <div class="loc-card-title">Bessemer</div>
+          <div class="loc-card-share">23.1% of revenue</div>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Revenue</span>
+          <span class="loc-stat-value">$20,336.88</span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Material COGS</span>
+          <span class="loc-stat-value"><span class="pct-pill red">51.76%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Labor</span>
+          <span class="loc-stat-value"><span class="pct-pill amber">14.18%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Total COGS</span>
+          <span class="loc-stat-value"><span class="pct-pill red">65.94%</span></span>
+        </div>
+        <div class="loc-stat-row">
+          <span class="loc-stat-label">Payroll</span>
+          <span class="loc-stat-value"><span class="pct-pill red">22.85%</span></span>
+        </div>
+        <div class="loc-net-row">
+          <span class="loc-stat-label">Net / Location</span>
+          <span class="loc-net-value amber">$2,279.44 <small>(11.21%)</small></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue chart -->
+    <div class="card mt-16">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--accent)"></i>Revenue by Category — Location Comparison</div>
+      </div>
+      <div style="height:260px;padding:8px 0"><canvas id="revChart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       WEEKLY REPORT — REVENUE
+  ══════════════════════════════════════ -->
+  <section class="section report-section" id="report-revenue">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon green"><i class="fa-solid fa-dollar-sign"></i></div>
+        <div>
+          <div class="section-title">Revenue Breakdown</div>
+          <div class="section-subtitle">By category and location · Week of April 6–12, 2026</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table class="pl-table">
+          <thead><tr>
+            <th>Category</th>
+            <th class="right">Birmingham</th><th class="right">% Loc.</th>
+            <th class="right">Bessemer</th><th class="right">% Loc.</th>
+            <th class="right">Combined</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="item-name">Population</td>
+              <td class="right">$50,447.63</td><td class="right"><span class="pct-pill green">74.52%</span></td>
+              <td class="right">$14,665.38</td><td class="right"><span class="pct-pill green">72.11%</span></td>
+              <td class="right savings-val">$65,113.01</td></tr>
+            <tr><td class="item-name">Cafe</td>
+              <td class="right">$5,090.40</td><td class="right text-muted">7.52%</td>
+              <td class="right">$3,181.50</td><td class="right text-muted">15.64%</td>
+              <td class="right savings-val">$8,271.90</td></tr>
+            <tr><td class="item-name">Academy</td>
+              <td class="right">$2,545.20</td><td class="right text-muted">3.76%</td>
+              <td class="right text-muted">—</td><td class="right text-muted">—</td>
+              <td class="right savings-val">$2,545.20</td></tr>
+            <tr><td class="item-name">Soft Trays</td>
+              <td class="right">$5,460.00</td><td class="right text-muted">8.07%</td>
+              <td class="right">$1,890.00</td><td class="right text-muted">9.29%</td>
+              <td class="right savings-val">$7,350.00</td></tr>
+            <tr><td class="item-name">Milk</td>
+              <td class="right">$2,130.00</td><td class="right text-muted">3.15%</td>
+              <td class="right">$600.00</td><td class="right text-muted">2.95%</td>
+              <td class="right savings-val">$2,730.00</td></tr>
+            <tr><td class="item-name">JBS</td>
+              <td class="right">$2,019.00</td><td class="right text-muted">2.98%</td>
+              <td class="right text-muted">—</td><td class="right text-muted">—</td>
+              <td class="right savings-val">$2,019.00</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="pl-total-row">
+              <td><strong>Total Revenue</strong></td>
+              <td class="right"><strong>$67,692.23</strong></td><td class="right text-muted">76.90%</td>
+              <td class="right"><strong>$20,336.88</strong></td><td class="right text-muted">23.10%</td>
+              <td class="right"><span class="savings-val" style="font-size:1.05em;color:var(--green)">$88,029.11</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       WEEKLY REPORT — COGS
+  ══════════════════════════════════════ -->
+  <section class="section report-section" id="report-cogs">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon red"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div>
+          <div class="section-title">Cost of Goods Sold</div>
+          <div class="section-subtitle">Material COGS + labor by category · % is cost as share of that category's revenue</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table class="pl-table">
+          <thead><tr>
+            <th>Category</th>
+            <th class="right">Birmingham $</th><th class="right">COGS %</th>
+            <th class="right">Bessemer $</th><th class="right">COGS %</th>
+            <th class="right">Total $</th>
+          </tr></thead>
+          <tbody>
+            <tr class="pl-section-row"><td colspan="6"><i class="fa-solid fa-tag" style="font-size:10px;margin-right:6px;color:var(--text-400)"></i>Material COGS</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Population</td>
+              <td class="right price-pfg">$14,632.84</td><td class="right"><span class="pct-pill green">29.01%</span></td>
+              <td class="right price-pfg">$6,571.74</td><td class="right"><span class="pct-pill amber">44.81%</span></td>
+              <td class="right">$21,204.58</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Cafe / Acad / JBS</td>
+              <td class="right price-pfg">$4,298.01</td><td class="right"><span class="pct-pill amber">44.52%</span></td>
+              <td class="right price-pfg">$2,219.01</td><td class="right"><span class="pct-pill red">69.75%</span></td>
+              <td class="right">$6,517.02</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Soft Trays</td>
+              <td class="right price-pfg">$2,570.10</td><td class="right"><span class="pct-pill amber">47.07%</span></td>
+              <td class="right price-pfg">$889.65</td><td class="right"><span class="pct-pill amber">47.07%</span></td>
+              <td class="right">$3,459.75</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Milk</td>
+              <td class="right price-pfg">$1,384.50</td><td class="right"><span class="pct-pill red">65.00%</span></td>
+              <td class="right price-pfg">$390.00</td><td class="right"><span class="pct-pill red">65.00%</span></td>
+              <td class="right">$1,774.50</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Chem / Disp.</td>
+              <td class="right price-pfg">$1,405.62</td><td class="right text-muted">2.08%</td>
+              <td class="right price-pfg">$456.58</td><td class="right text-muted">2.25%</td>
+              <td class="right">$1,862.20</td></tr>
+            <tr class="pl-subtotal-row"><td><strong>Total Material COGS</strong></td>
+              <td class="right"><strong>$24,291.07</strong></td><td class="right"><span class="pct-pill amber">35.88%</span></td>
+              <td class="right"><strong>$10,526.98</strong></td><td class="right"><span class="pct-pill red">51.76%</span></td>
+              <td class="right"><strong>$34,818.05</strong></td></tr>
+            <tr class="pl-section-row"><td colspan="6"><i class="fa-solid fa-tag" style="font-size:10px;margin-right:6px;color:var(--text-400)"></i>Labor</td></tr>
+            <tr><td class="item-name" style="padding-left:20px">Labor</td>
+              <td class="right price-pfg">$5,851.66</td><td class="right text-muted">8.64%</td>
+              <td class="right price-pfg">$2,883.88</td><td class="right"><span class="pct-pill amber">14.18%</span></td>
+              <td class="right">$8,735.54</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="pl-total-row">
+              <td><strong>Total COGS</strong></td>
+              <td class="right"><strong>$30,142.73</strong></td><td class="right"><span class="pct-pill amber">44.53%</span></td>
+              <td class="right"><strong>$13,410.86</strong></td><td class="right"><span class="pct-pill red">65.94%</span></td>
+              <td class="right"><span class="savings-val" style="color:var(--red)">$43,553.59 <small style="color:var(--text-300)">(49.48%)</small></span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- COGS chart -->
+    <div class="card mt-16">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--red)"></i>COGS % by Category — Birmingham vs Bessemer</div>
+      </div>
+      <div style="height:240px;padding:8px 0"><canvas id="cogsChart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       WEEKLY REPORT — NET MARGINS
+  ══════════════════════════════════════ -->
+  <section class="section report-section" id="report-net">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon amber"><i class="fa-solid fa-chart-line"></i></div>
+        <div>
+          <div class="section-title">Detailed Net Margins</div>
+          <div class="section-subtitle">Revenue minus material COGS per category · Before labor and payroll</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table class="pl-table">
+          <thead><tr>
+            <th>Category</th>
+            <th class="right">Birmingham $</th><th class="right">% of Rev.</th>
+            <th class="right">Bessemer $</th><th class="right">% of Rev.</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="item-name">Population</td>
+              <td class="right price-shaver">$35,814.79</td><td class="right"><span class="pct-pill green">52.91%</span></td>
+              <td class="right price-shaver">$8,093.64</td><td class="right"><span class="pct-pill amber">39.80%</span></td></tr>
+            <tr><td class="item-name">Cafe / Acad / JBS</td>
+              <td class="right price-shaver">$5,356.59</td><td class="right text-muted">7.91%</td>
+              <td class="right price-shaver">$962.49</td><td class="right text-muted">4.73%</td></tr>
+            <tr><td class="item-name">Soft Trays</td>
+              <td class="right price-shaver">$2,889.90</td><td class="right text-muted">4.27%</td>
+              <td class="right price-shaver">$1,000.35</td><td class="right text-muted">4.92%</td></tr>
+            <tr><td class="item-name">Milk</td>
+              <td class="right price-shaver">$745.50</td><td class="right text-muted">1.10%</td>
+              <td class="right price-shaver">$210.00</td><td class="right text-muted">1.03%</td></tr>
+            <tr><td class="item-name">Chem / Disp. <span class="small text-muted">(cost only)</span></td>
+              <td class="right" style="color:var(--red)">-$1,405.62</td><td class="right" style="color:var(--red)">-2.08%</td>
+              <td class="right" style="color:var(--red)">-$456.58</td><td class="right" style="color:var(--red)">-2.25%</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="pl-total-row">
+              <td><strong>Gross Contribution</strong></td>
+              <td class="right"><span class="price-shaver" style="font-weight:700">$43,400.76</span></td><td class="right text-muted">64.11%</td>
+              <td class="right"><span class="price-shaver" style="font-weight:700">$9,809.90</span></td><td class="right text-muted">48.24%</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       WEEKLY REPORT — PAYROLL & NET
+  ══════════════════════════════════════ -->
+  <section class="section report-section" id="report-payroll">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon purple"><i class="fa-solid fa-users"></i></div>
+        <div>
+          <div class="section-title">Payroll &amp; Location Net</div>
+          <div class="section-subtitle">Salaries + employer taxes · Final net per location and combined</div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-16">
+      <div class="table-wrap">
+        <table class="pl-table">
+          <thead><tr>
+            <th>Line Item</th>
+            <th class="right">Birmingham $</th><th class="right">% of Rev.</th>
+            <th class="right">Bessemer $</th><th class="right">% of Rev.</th>
+            <th class="right">Combined $</th>
+          </tr></thead>
+          <tbody>
+            <tr><td class="item-name">Salaries</td>
+              <td class="right price-pfg">$12,714.23</td><td class="right"><span class="pct-pill amber">18.78%</span></td>
+              <td class="right price-pfg">$4,238.08</td><td class="right"><span class="pct-pill amber">20.84%</span></td>
+              <td class="right">$16,952.31</td></tr>
+            <tr><td class="item-name">Employer Taxes</td>
+              <td class="right price-pfg">$1,225.50</td><td class="right text-muted">1.81%</td>
+              <td class="right price-pfg">$408.50</td><td class="right text-muted">2.01%</td>
+              <td class="right">$1,634.00</td></tr>
+          </tbody>
+          <tfoot>
+            <tr class="pl-subtotal-row">
+              <td><strong>Total Payroll</strong></td>
+              <td class="right"><strong>$13,939.73</strong></td><td class="right text-muted">20.59%</td>
+              <td class="right"><strong>$4,646.58</strong></td><td class="right text-muted">22.85%</td>
+              <td class="right"><strong>$18,586.31</strong></td>
+            </tr>
+            <tr class="pl-total-row">
+              <td><strong>NET / Location</strong></td>
+              <td class="right"><span class="savings-val" style="color:var(--green);font-size:1.05em">$23,609.77</span></td>
+              <td class="right"><span class="pct-pill green">34.88%</span></td>
+              <td class="right"><span class="savings-val" style="color:var(--amber);font-size:1.05em">$2,279.44</span></td>
+              <td class="right"><span class="pct-pill amber">11.21%</span></td>
+              <td class="right"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Total weekly net highlight -->
+    <div class="weekly-net-banner">
+      <div class="wn-label">Total Weekly Net</div>
+      <div class="wn-amount">$25,889.21</div>
+      <div class="wn-pct">29.41% net margin</div>
+      <div class="wn-sub">Birmingham $23,609.77 &nbsp;+&nbsp; Bessemer $2,279.44</div>
+    </div>
+  </section>
+
   </div><!-- /content -->
 </div><!-- /main -->
 </div><!-- /app -->
