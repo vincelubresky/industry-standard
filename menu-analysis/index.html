@@ -41,6 +41,7 @@
     <a href="#menu-assessment" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Menu Assessment</a>
     <a href="#menu-ideas" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas</a>
     <a href="#cost-calculator" class="nav-item" data-tab="calculator"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
+    <a href="#shaver-order-list" class="nav-item"><i class="fa-solid fa-clipboard-check"></i>Shaver Order List<span class="nav-badge green">40</span></a>
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
@@ -543,6 +544,99 @@
           </thead>
           <tbody id="calcBreakdownBody"></tbody>
           <tfoot id="calcBreakdownFoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SHAVER ORDER LIST
+  ══════════════════════════════════════ -->
+  <section class="section analysis-section" id="shaver-order-list">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon green"><i class="fa-solid fa-clipboard-check"></i></div>
+        <div>
+          <div class="section-title">Shaver Order List</div>
+          <div class="section-subtitle">Complete list of all items to order from Shaver — switches from PFG + new additions</div>
+        </div>
+      </div>
+      <div class="sec-export-btn">
+        <i class="fa-solid fa-download"></i> Export <i class="fa-solid fa-chevron-down" style="font-size:9px;margin-left:2px"></i>
+        <div class="sec-export-menu">
+          <button class="sec-export-opt" onclick="exportOrderExcel()"><i class="fa-solid fa-file-excel" style="color:var(--green)"></i>Excel (.xlsx)</button>
+          <button class="sec-export-opt" onclick="exportOrderCSV()"><i class="fa-solid fa-file-csv" style="color:var(--cyan)"></i>CSV</button>
+          <button class="sec-export-opt" onclick="exportOrderPDF()"><i class="fa-solid fa-file-pdf" style="color:var(--red)"></i>PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Switch from PFG -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-arrows-rotate" style="color:var(--red)"></i>Switch from PFG to Shaver <span style="color:var(--text-muted);font-weight:400;font-size:0.85em">(22 items)</span></div>
+        <span class="card-badge red">Savings: ~$1,146/mo</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>Shaver Unit</th><th class="right">Shaver Price</th><th class="right">vs PFG</th></tr></thead>
+          <tbody>
+            <tr class="row-high"><td><span class="item-name">Grape Drink Mix</span></td><td><span class="small text-muted">1000/1gm</span></td><td class="right"><span class="price-shaver">$20.63</span></td><td class="right"><span class="savings-val">saves $29.32</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Great Northern Beans Dry</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$39.00</span></td><td class="right"><span class="savings-val">saves $17.05</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Rotini Pasta</span></td><td><span class="small text-muted">2/10 LB</span></td><td class="right"><span class="price-shaver">$13.73</span></td><td class="right"><span class="savings-val">saves $10.10</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Jelly Assorted 200ct</span></td><td><span class="small text-muted">200 LC</span></td><td class="right"><span class="price-shaver">$9.53</span></td><td class="right"><span class="savings-val">saves $9.67</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Carrots Sliced Frozen</span></td><td><span class="small text-muted">20 LB</span></td><td class="right"><span class="price-shaver">$14.34</span></td><td class="right"><span class="savings-val">saves $8.09</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Ziti Pasta</span></td><td><span class="small text-muted">2/10 LB</span></td><td class="right"><span class="price-shaver">$13.73</span></td><td class="right"><span class="savings-val">saves $8.04</span></td></tr>
+            <tr class="row-high"><td><span class="item-name">Elbow Macaroni</span></td><td><span class="small text-muted">2/10 LB</span></td><td class="right"><span class="price-shaver">$13.10</span></td><td class="right"><span class="savings-val">saves $6.71</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Potato Flakes Dehydrated</span></td><td><span class="small text-muted">40 LB</span></td><td class="right"><span class="price-shaver">$51.62</span></td><td class="right"><span class="savings-val">saves $7.73</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Oats / Oatmeal</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$28.33</span></td><td class="right"><span class="savings-val">saves $6.82</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Cheese Sauce</span></td><td><span class="small text-muted">6/10</span></td><td class="right"><span class="price-shaver">$48.12</span></td><td class="right"><span class="savings-val">saves $6.97</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Grits Quick</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$28.00</span></td><td class="right"><span class="savings-val">$0.40/lb cheaper</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Onion Powder</span></td><td><span class="small text-muted">6/1 LB</span></td><td class="right"><span class="price-shaver">$24.64</span></td><td class="right"><span class="savings-val">$2.35/lb cheaper</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Garlic Powder</span></td><td><span class="small text-muted">6/1 LB</span></td><td class="right"><span class="price-shaver">$24.02</span></td><td class="right"><span class="savings-val">$2.15/lb cheaper</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Peas &amp; Carrots Frozen</span></td><td><span class="small text-muted">30 LB</span></td><td class="right"><span class="price-shaver">$29.77</span></td><td class="right"><span class="savings-val">$0.13/lb cheaper</span></td></tr>
+            <tr class="row-med"><td><span class="item-name">Gravy Mix (Country)</span></td><td><span class="small text-muted">6/3 LB</span></td><td class="right"><span class="price-shaver">$37.82</span></td><td class="right"><span class="savings-val">$2.89/lb cheaper</span></td></tr>
+            <tr><td><span class="item-name">Yellow Cake Mix</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$40.42</span></td><td class="right"><span class="savings-val">saves $2.35</span></td></tr>
+            <tr><td><span class="item-name">Coffee Cake Mix</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$42.88</span></td><td class="right"><span class="savings-val">saves $2.16</span></td></tr>
+            <tr><td><span class="item-name">Strawberry Cake Mix</span></td><td><span class="small text-muted">50 LB</span></td><td class="right"><span class="price-shaver">$44.63</span></td><td class="right"><span class="savings-val">saves $1.50</span></td></tr>
+            <tr><td><span class="item-name">Tomato Sauce</span></td><td><span class="small text-muted">6/10</span></td><td class="right"><span class="price-shaver">$28.89</span></td><td class="right"><span class="savings-val">saves $0.78</span></td></tr>
+            <tr><td><span class="item-name">Diced Tomatoes</span></td><td><span class="small text-muted">6/10</span></td><td class="right"><span class="price-shaver">$30.36</span></td><td class="right"><span class="savings-val">saves $0.58</span></td></tr>
+            <tr><td><span class="item-name">Fry Oil Clear</span></td><td><span class="small text-muted">35 LB</span></td><td class="right"><span class="price-shaver">$35.07</span></td><td class="right"><span class="savings-val">saves $0.63</span></td></tr>
+            <tr><td><span class="item-name">Margarine Solid</span></td><td><span class="small text-muted">30/1 LB</span></td><td class="right"><span class="price-shaver">$38.46</span></td><td class="right"><span class="savings-val">saves $0.27</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- New Items to Add -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-circle-plus" style="color:var(--green)"></i>New Items to Add from Shaver <span style="color:var(--text-muted);font-weight:400;font-size:0.85em">(18 items)</span></div>
+        <span class="card-badge green">Not currently ordered anywhere</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Category</th><th>Item</th><th>Unit</th><th class="right">Price</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">Corn Dog Chicken</span></td><td><span class="small text-muted">72/2.5oz</span></td><td class="right"><span class="price-shaver">$48.45</span></td><td>Easy hot lunch — $0.67/ea</td></tr>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">Burrito Bean &amp; Beef</span></td><td><span class="small text-muted">80/4oz</span></td><td class="right"><span class="price-shaver">$44.36</span></td><td>Ready-to-serve lunch — $0.55/ea</td></tr>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">Burrito Bean &amp; Cheese</span></td><td><span class="small text-muted">80/4oz</span></td><td class="right"><span class="price-shaver">$43.40</span></td><td>Vegetarian — $0.54/ea</td></tr>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">Bologna Logs Chik</span></td><td><span class="small text-muted">3/8#</span></td><td class="right"><span class="price-shaver">$39.02</span></td><td>Cold dinner sandwich protein</td></tr>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">TVP Beef Chunks</span></td><td><span class="small text-muted">25#</span></td><td class="right"><span class="price-shaver">$60.46</span></td><td>Meat extender / cost reducer</td></tr>
+            <tr><td><span class="pill cat">Protein</span></td><td><span class="item-name">TVP Chicken Chunks</span></td><td><span class="small text-muted">25#</span></td><td class="right"><span class="price-shaver">$61.74</span></td><td>Meat extender</td></tr>
+            <tr><td><span class="pill cat">Dry Goods</span></td><td><span class="item-name">Beans Dry Lentil</span></td><td><span class="small text-muted">50#</span></td><td class="right"><span class="price-shaver">$49.26</span></td><td>Lentil soup base</td></tr>
+            <tr><td><span class="pill cat">Dry Goods</span></td><td><span class="item-name">Beans Dry Navy</span></td><td><span class="small text-muted">50#</span></td><td class="right"><span class="price-shaver">$36.49</span></td><td>Navy bean soup</td></tr>
+            <tr><td><span class="pill cat">Dry Goods</span></td><td><span class="item-name">Raisin Seedless</span></td><td><span class="small text-muted">30#</span></td><td class="right"><span class="price-shaver">$61.59</span></td><td>Oatmeal topping, baking</td></tr>
+            <tr><td><span class="pill cat">Breakfast</span></td><td><span class="item-name">Pancake</span></td><td><span class="small text-muted">144/1.2oz</span></td><td class="right"><span class="price-shaver">$23.08</span></td><td>Breakfast variety — $0.16/serving</td></tr>
+            <tr><td><span class="pill cat">Breakfast</span></td><td><span class="item-name">Waffle</span></td><td><span class="small text-muted">12/12/1.25oz</span></td><td class="right"><span class="price-shaver">$22.97</span></td><td>Breakfast variety — $0.16/serving</td></tr>
+            <tr><td><span class="pill cat">Breakfast</span></td><td><span class="item-name">French Toast</span></td><td><span class="small text-muted">144/1.5oz</span></td><td class="right"><span class="price-shaver">$40.09</span></td><td>Breakfast variety — $0.28/serving</td></tr>
+            <tr><td><span class="pill cat">Vegetables</span></td><td><span class="item-name">Mixed Vegetables California Blend</span></td><td><span class="small text-muted">30#</span></td><td class="right"><span class="price-shaver">$26.75</span></td><td>Side dish</td></tr>
+            <tr><td><span class="pill cat">Vegetables</span></td><td><span class="item-name">Broccoli Cuts</span></td><td><span class="small text-muted">30#</span></td><td class="right"><span class="price-shaver">$27.47</span></td><td>Side dish</td></tr>
+            <tr><td><span class="pill cat">Vegetables</span></td><td><span class="item-name">Cauliflower</span></td><td><span class="small text-muted">30#</span></td><td class="right"><span class="price-shaver">$31.30</span></td><td>Side dish</td></tr>
+            <tr><td><span class="pill cat">Vegetables</span></td><td><span class="item-name">Okra Cut Breaded</span></td><td><span class="small text-muted">20#</span></td><td class="right"><span class="price-shaver">$26.77</span></td><td>Southern side</td></tr>
+            <tr><td><span class="pill cat">Vegetables</span></td><td><span class="item-name">Corn Cut</span></td><td><span class="small text-muted">30#</span></td><td class="right"><span class="price-shaver">$27.03</span></td><td>Side dish</td></tr>
+            <tr><td><span class="pill cat">Seafood</span></td><td><span class="item-name">Sardines Oil Pouch</span></td><td><span class="small text-muted">36/3.53oz</span></td><td class="right"><span class="price-shaver">$30.59</span></td><td>High-protein individual serving</td></tr>
+          </tbody>
         </table>
       </div>
     </div>

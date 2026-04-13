@@ -412,6 +412,106 @@ function exportSectionCSV(key) {
   showToast(`CSV: ${c.file}`);
 }
 
+/* ── Shaver Order List Exports ───────────────────────────── */
+function exportOrderExcel() {
+  if (typeof XLSX === 'undefined') { showToast('Loading...','error'); return; }
+  const wb = XLSX.utils.book_new();
+
+  const switchRows = DATA.switchToShaver.map(r => [r.item, r.shaverUnit, r.shaverPrice, r.savings ? `saves $${r.savings.toFixed(2)}` : (r.note || '')]);
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+    ['SHAVER ORDER LIST — Jefferson County Jail', '', '', ''],
+    ['Prepared by Industry Standard', '', '', ''],
+    [''],
+    ['SWITCH FROM PFG TO SHAVER'],
+    ['Item', 'Unit', 'Shaver Price', 'vs PFG'],
+    ...switchRows,
+    [''],
+    ['NEW ITEMS TO ADD FROM SHAVER'],
+    ['Category', 'Item', 'Unit', 'Price', 'Use'],
+    ...DATA.newItemsToAdd.map(r => [r.category, r.item, '', r.price, r.useCase])
+  ]), 'Shaver Order List');
+
+  XLSX.writeFile(wb, 'Shaver-Order-List-Jefferson-County.xlsx');
+  showToast('Excel downloaded');
+}
+
+function exportOrderCSV() {
+  const switchRows = DATA.switchToShaver.map(r =>
+    `"${r.item}","${r.shaverUnit}",${r.shaverPrice},"${r.savings ? 'saves $'+r.savings.toFixed(2) : (r.note||'')}"`
+  );
+  const newRows = DATA.newItemsToAdd.map(r =>
+    `"${r.category}","${r.item}",${r.price},"${r.useCase}"`
+  );
+  const lines = [
+    'SHAVER ORDER LIST — Jefferson County Jail',
+    'Prepared by Industry Standard',
+    '',
+    'SWITCH FROM PFG TO SHAVER',
+    'Item,Unit,Shaver Price,vs PFG',
+    ...switchRows,
+    '',
+    'NEW ITEMS TO ADD FROM SHAVER',
+    'Category,Item,Price,Use',
+    ...newRows
+  ];
+  downloadBlob(new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'}), 'Shaver-Order-List-Jefferson-County.csv');
+  showToast('CSV downloaded');
+}
+
+function exportOrderPDF() {
+  if (typeof jspdf === 'undefined') { showToast('Loading...','error'); return; }
+  const { jsPDF } = jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'pt', format:'letter' });
+  const M = 40, pageW = doc.internal.pageSize.getWidth();
+  const DARK = [10,21,38], MID = [44,64,96], SUB = [85,104,128], GRN = [16,185,129], AMB = [245,158,11];
+
+  doc.setFillColor(...DARK); doc.rect(0,0,pageW,72,'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(240,246,255);
+  doc.text('Shaver Order List', M, 32);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...SUB);
+  doc.text('Jefferson County Jail  ·  Industry Standard  ·  April 2026', M, 52);
+
+  let y = 90;
+  const sectionHeader = (title, color) => {
+    doc.setFillColor(...color); doc.roundedRect(M, y, pageW-M*2, 22, 3, 3, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
+    doc.text(title, M+10, y+15); y += 30;
+  };
+
+  sectionHeader('SWITCH FROM PFG TO SHAVER  (22 items — ~$1,146/mo savings)', GRN);
+  doc.autoTable({
+    startY: y,
+    head: [['Item','Unit','Shaver Price','vs PFG']],
+    body: DATA.switchToShaver.map(r => [r.item, r.shaverUnit, `$${r.shaverPrice.toFixed(2)}`, r.savings ? `saves $${r.savings.toFixed(2)}` : (r.note||'')]),
+    margin: {left:M, right:M},
+    styles: {fontSize:9, cellPadding:4},
+    headStyles: {fillColor:[16,185,129], textColor:255},
+    alternateRowStyles: {fillColor:[240,248,245]},
+    columnStyles: {2:{halign:'right'}, 3:{halign:'right'}},
+    theme:'grid'
+  });
+
+  y = doc.lastAutoTable.finalY + 20;
+  if (y > doc.internal.pageSize.getHeight() - 80) { doc.addPage(); y = 40; }
+  sectionHeader('NEW ITEMS TO ADD FROM SHAVER  (18 items)', [59,130,246]);
+  doc.autoTable({
+    startY: y,
+    head: [['Category','Item','Price','Use']],
+    body: DATA.newItemsToAdd.map(r => [r.category, r.item, `$${r.price.toFixed(2)}`, r.useCase]),
+    margin: {left:M, right:M},
+    styles: {fontSize:9, cellPadding:4},
+    headStyles: {fillColor:[59,130,246], textColor:255},
+    alternateRowStyles: {fillColor:[240,244,255]},
+    columnStyles: {2:{halign:'right'}},
+    theme:'grid'
+  });
+
+  const total = doc.internal.getNumberOfPages();
+  for(let i=1;i<=total;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...SUB);doc.text(`Page ${i} of ${total}`,pageW-M-40,doc.internal.pageSize.getHeight()-12);}
+  doc.save('Shaver-Order-List-Jefferson-County.pdf');
+  showToast('PDF downloaded');
+}
+
 /* ── Weekly Report Charts ────────────────────────────────── */
 function renderReportCharts() {
   if (typeof Chart === 'undefined') return;
