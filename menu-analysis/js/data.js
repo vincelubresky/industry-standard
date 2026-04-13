@@ -15,7 +15,7 @@ const DATA = {
   },
 
   stats: [
-    { label: "Est. Monthly Savings", value: "$1,041+", icon: "fa-piggy-bank", color: "success", note: "By switching key items to Shaver" },
+    { label: "Est. Monthly Savings", value: "$1,146+", icon: "fa-piggy-bank", color: "success", note: "By switching key items to Shaver" },
     { label: "Items: Switch to Shaver", value: "22", icon: "fa-arrows-rotate", color: "danger", note: "Shaver is cheaper" },
     { label: "Items: Keep with PFG", value: "6", icon: "fa-shield-check", color: "accent", note: "PFG wins on price" },
     { label: "New Items Available", value: "21+", icon: "fa-circle-plus", color: "warning", note: "From Shaver catalog" }
@@ -28,13 +28,13 @@ const DATA = {
     { item: "Rotini Pasta",                   pfgPrice: 23.83,  pfgUnit: "2/10 LB",    shaverPrice: 13.73, shaverUnit: "2/10 LB",     savings: 10.10, priority: "high" },
     { item: "Carrots Sliced Frozen",          pfgPrice: 22.43,  pfgUnit: "20 LB",      shaverPrice: 14.34, shaverUnit: "20 LB",       savings: 8.09,  priority: "high" },
     { item: "Ziti Pasta",                     pfgPrice: 21.77,  pfgUnit: "2/10 LB",    shaverPrice: 13.73, shaverUnit: "2/10 LB",     savings: 8.04,  priority: "high" },
-    { item: "Onion Powder",                   pfgPrice: 32.26,  pfgUnit: "5 LB",       shaverPrice: 24.64, shaverUnit: "6/1 LB",      savings: 7.62,  priority: "med"  },
+    { item: "Onion Powder",                   pfgPrice: 32.26,  pfgUnit: "5 LB",       shaverPrice: 24.64, shaverUnit: "6/1 LB",      savings: null,  priority: "med", note: "Saves $2.35/lb — PFG 5 LB vs Shaver 6 LB" },
     { item: "Potato Flakes Dehydrated",       pfgPrice: 59.35,  pfgUnit: "40 LB",      shaverPrice: 51.62, shaverUnit: "40 LB",       savings: 7.73,  priority: "med"  },
-    { item: "Garlic Powder",                  pfgPrice: 30.77,  pfgUnit: "5 LB",       shaverPrice: 24.02, shaverUnit: "6/1 LB",      savings: 6.75,  priority: "med"  },
+    { item: "Garlic Powder",                  pfgPrice: 30.77,  pfgUnit: "5 LB",       shaverPrice: 24.02, shaverUnit: "6/1 LB",      savings: null,  priority: "med", note: "Saves $2.15/lb — PFG 5 LB vs Shaver 6 LB" },
     { item: "Cheese Sauce",                   pfgPrice: 55.09,  pfgUnit: "6/#10",      shaverPrice: 48.12, shaverUnit: "6/10",        savings: 6.97,  priority: "med"  },
     { item: "Elbow Macaroni",                 pfgPrice: 19.81,  pfgUnit: "2/10 LB",    shaverPrice: 13.10, shaverUnit: "2/10 LB",     savings: 6.71,  priority: "high" },
     { item: "Oats / Oatmeal",                 pfgPrice: 35.15,  pfgUnit: "50 LB",      shaverPrice: 28.33, shaverUnit: "50 LB",       savings: 6.82,  priority: "med"  },
-    { item: "Grits Quick",                    pfgPrice: 38.47,  pfgUnit: "8/5 LB",     shaverPrice: 28.00, shaverUnit: "50 LB",       savings: 8.00,  priority: "med"  },
+    { item: "Grits Quick",                    pfgPrice: 38.47,  pfgUnit: "8/5 LB",     shaverPrice: 28.00, shaverUnit: "50 LB",       savings: null,  priority: "med", note: "Saves $0.40/lb — PFG 40 LB vs Shaver 50 LB" },
     { item: "Yellow Cake Mix",                pfgPrice: 42.77,  pfgUnit: "50 LB",      shaverPrice: 40.42, shaverUnit: "50 LB",       savings: 2.35,  priority: "low"  },
     { item: "Coffee Cake Mix",                pfgPrice: 45.04,  pfgUnit: "50 LB",      shaverPrice: 42.88, shaverUnit: "50 LB",       savings: 2.16,  priority: "low"  },
     { item: "Strawberry Cake Mix",            pfgPrice: 46.13,  pfgUnit: "50 LB",      shaverPrice: 44.63, shaverUnit: "50 LB",       savings: 1.50,  priority: "low"  },
@@ -51,7 +51,7 @@ const DATA = {
     { item: "Granulated Sugar 50 LB",     pfgPrice: 35.14, shaverPrice: 36.52, pfgSavings: 1.38  },
     { item: "Parboiled Rice 50 LB",       pfgPrice: 26.38, shaverPrice: 31.46, pfgSavings: 5.08  },
     { item: "Cream of Mushroom Soup",     pfgPrice: 54.94, shaverPrice: 60.50, pfgSavings: 5.56, unitNote: "12ct" },
-    { item: "Bread Pullman",              pfgPrice: 24.90, shaverPrice: 29.06, pfgSavings: null,  unitNote: "PFG 10/24oz vs Shaver 12/28oz — PFG wins on price" },
+    { item: "Bread Pullman",              pfgPrice: 24.90, shaverPrice: 29.06, pfgSavings: null,  unitNote: "PFG 10/24oz ($0.1038/oz) vs Shaver 12/28oz ($0.0865/oz) — Shaver cheaper per oz" },
     { item: "Pinto Beans Dry 50 LB",      pfgPrice: 25.67, shaverPrice: 29.15, pfgSavings: 3.48  }
   ],
 
@@ -60,14 +60,14 @@ const DATA = {
     { item: "All Pasta (rotini+elbow+ziti)", qtyPerMonth: 26, savingsPerCase: 8.00, monthlySavings: 208.00 },
     { item: "Carrots Sliced Frozen",      qtyPerMonth: 24, savingsPerCase: 8.09,  monthlySavings: 194.16 },
     { item: "Great Northern Beans",       qtyPerMonth: 6,  savingsPerCase: 17.05, monthlySavings: 102.30 },
-    { item: "Grits",                      qtyPerMonth: 12, savingsPerCase: 8.00,  monthlySavings: 96.00  },
+    { item: "Grits",                      qtyPerMonth: 12, savingsPerCase: 20.09, monthlySavings: 192.84 },
     { item: "Cake Mixes (all 3)",         qtyPerMonth: 32, savingsPerCase: 2.00,  monthlySavings: 64.00  },
     { item: "Potato Flakes",              qtyPerMonth: 7,  savingsPerCase: 7.73,  monthlySavings: 54.11  },
     { item: "Oats",                       qtyPerMonth: 6,  savingsPerCase: 6.82,  monthlySavings: 40.92  },
     { item: "Jelly 200ct",                qtyPerMonth: 2,  savingsPerCase: 9.67,  monthlySavings: 19.34  },
     { item: "Cheese Sauce",               qtyPerMonth: 2,  savingsPerCase: 6.97,  monthlySavings: 13.94  },
-    { item: "Onion + Garlic Powder",      qtyPerMonth: 2,  savingsPerCase: 7.00,  monthlySavings: 14.00  },
-    { item: "TOTAL",                      qtyPerMonth: null, savingsPerCase: null, monthlySavings: 1041.00, isTotal: true }
+    { item: "Onion + Garlic Powder",      qtyPerMonth: 2,  savingsPerCase: 11.24, monthlySavings: 22.48  },
+    { item: "TOTAL",                      qtyPerMonth: null, savingsPerCase: null, monthlySavings: 1146.32, isTotal: true }
   ],
 
   newItemsToAdd: [

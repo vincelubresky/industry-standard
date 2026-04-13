@@ -152,11 +152,11 @@ function renderChart() {
     { label: 'All Pasta',    val: 208.00 },
     { label: 'Carrots',      val: 194.16 },
     { label: 'Gr. Northern', val: 102.30 },
-    { label: 'Grits',        val: 96.00  },
+    { label: 'Grits',        val: 192.84 },
     { label: 'Cake Mixes',   val: 64.00  },
     { label: 'Potato Flakes',val: 54.11  },
     { label: 'Oats',         val: 40.92  },
-    { label: 'Onion+Garlic', val: 14.00  },
+    { label: 'Onion+Garlic', val: 22.48  },
     { label: 'Jelly',        val: 19.34  },
     { label: 'Cheese Sauce', val: 13.94  },
   ];
