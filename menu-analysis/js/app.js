@@ -411,6 +411,184 @@ function exportSectionCSV(key) {
   showToast(`CSV: ${c.file}`);
 }
 
+/* ══════════════════════════════════════════════════════════
+   MEAL COST CALCULATOR
+   ══════════════════════════════════════════════════════════ */
+
+const CALC_MEALS = {
+  breakfast: [
+    { id: 'b0', name: 'Oatmeal (plain)',          cost: 0.24 },
+    { id: 'b1', name: 'Oatmeal + Raisins',        cost: 0.31 },
+    { id: 'b2', name: 'Grits Bowl + Jelly',       cost: 0.28 },
+    { id: 'b3', name: 'Pancakes + Syrup',         cost: 0.35 },
+    { id: 'b4', name: 'Waffles + Syrup',          cost: 0.35 },
+    { id: 'b5', name: 'French Toast',             cost: 0.43 },
+    { id: 'b6', name: 'Biscuits & Gravy',         cost: 0.34 },
+    { id: 'b7', name: 'Eggs + Sausage + Bread',   cost: 0.45 },
+  ],
+  lunch: [
+    { id: 'l0',  name: 'Navy Bean Soup + Cornbread',  cost: 0.32 },
+    { id: 'l1',  name: 'Pinto Beans & Rice',          cost: 0.35 },
+    { id: 'l2',  name: 'Southern Beans & Rice',       cost: 0.38 },
+    { id: 'l3',  name: 'Mac & Cheese + Veg',          cost: 0.39 },
+    { id: 'l4',  name: 'Lentil Soup + Cornbread',     cost: 0.40 },
+    { id: 'l5',  name: 'Pasta + Tomato Sauce + TVP',  cost: 0.44 },
+    { id: 'l6',  name: 'Chili Mac',                   cost: 0.49 },
+    { id: 'l7',  name: 'Beef & Veg Stew (TVP)',       cost: 0.52 },
+    { id: 'l8',  name: 'Tuna Noodle Casserole',       cost: 0.56 },
+    { id: 'l9',  name: 'Fish Patty + Rice + Veg',     cost: 0.59 },
+    { id: 'l10', name: 'Bean & Cheese Burrito Plate', cost: 0.64 },
+    { id: 'l11', name: 'Turkey Meatball Marinara',    cost: 0.68 },
+    { id: 'l12', name: 'Chicken Corn Dog + Veg',      cost: 0.80 },
+  ],
+  dinner: [
+    { id: 'd0', name: 'PB&J Sandwich',          cost: 0.28 },
+    { id: 'd1', name: 'Tuna Salad Sandwich',    cost: 0.30 },
+    { id: 'd2', name: 'Bologna Sandwich',       cost: 0.32 },
+    { id: 'd3', name: 'Turkey Sandwich',        cost: 0.35 },
+    { id: 'd4', name: 'Salami Sandwich',        cost: 0.38 },
+    { id: 'd5', name: 'Lentil Soup + Bread',    cost: 0.38 },
+    { id: 'd6', name: 'Fish Sandwich',          cost: 0.40 },
+    { id: 'd7', name: 'Chicken Patty Sandwich', cost: 0.45 },
+  ],
+};
+
+const PLANNER_DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+// Default 7-day plan: [breakfastId, lunchId, dinnerId]
+const DEFAULT_PLAN = [
+  ['b1', 'l1',  'd0'],  // Mon
+  ['b3', 'l3',  'd2'],  // Tue
+  ['b2', 'l8',  'd1'],  // Wed
+  ['b4', 'l6',  'd3'],  // Thu
+  ['b0', 'l10', 'd4'],  // Fri
+  ['b6', 'l0',  'd5'],  // Sat
+  ['b5', 'l9',  'd6'],  // Sun
+];
+
+function initCalculator() {
+  const grid = document.getElementById('plannerGrid');
+  if (!grid) return;
+
+  const types = ['breakfast', 'lunch', 'dinner'];
+  const labels = ['🌅 Breakfast', '☀️ Lunch', '🌙 Dinner'];
+  const rowClasses = ['breakfast', 'lunch', 'dinner'];
+
+  let html = '<div class="planner-header-cell"></div>';
+  PLANNER_DAYS.forEach(d => { html += `<div class="planner-header-cell">${d}</div>`; });
+
+  types.forEach((type, ti) => {
+    html += `<div class="planner-row-label ${rowClasses[ti]}-label">${labels[ti]}</div>`;
+    PLANNER_DAYS.forEach((d, di) => {
+      const defaultId = DEFAULT_PLAN[di][ti];
+      const opts = CALC_MEALS[type].map(m =>
+        `<option value="${m.id}"${m.id === defaultId ? ' selected' : ''}>${m.name} — $${m.cost.toFixed(2)}</option>`
+      ).join('');
+      html += `<div class="planner-cell"><select class="planner-select ${rowClasses[ti]}-select" data-day="${di}" data-type="${type}" onchange="calcUpdate()">${opts}</select></div>`;
+    });
+  });
+
+  html += '<div class="planner-row-label total-label">Day Total</div>';
+  PLANNER_DAYS.forEach((d, di) => {
+    html += `<div class="planner-cell planner-total-cell" id="dayTotal_${di}">—</div>`;
+  });
+
+  grid.innerHTML = html;
+  calcUpdate();
+}
+
+function calcUpdate() {
+  const inmateCount = parseInt(document.getElementById('inmateInput').value) || 1150;
+  const target = parseFloat(document.getElementById('targetInput').value) || 0.65;
+  const types = ['breakfast', 'lunch', 'dinner'];
+
+  const plan = PLANNER_DAYS.map(() => ({ breakfast: null, lunch: null, dinner: null }));
+  document.querySelectorAll('.planner-select').forEach(sel => {
+    const di = parseInt(sel.dataset.day);
+    const type = sel.dataset.type;
+    plan[di][type] = CALC_MEALS[type].find(m => m.id === sel.value) || CALC_MEALS[type][0];
+  });
+
+  const fmt  = n => `$${Math.round(n).toLocaleString('en-US')}`;
+  const fmtC = n => `$${n.toFixed(2)}`;
+
+  let weeklyServingCost = 0;
+  const tbody = document.getElementById('calcBreakdownBody');
+  if (tbody) tbody.innerHTML = '';
+
+  PLANNER_DAYS.forEach((day, di) => {
+    const b = plan[di].breakfast, l = plan[di].lunch, d = plan[di].dinner;
+    const dayCostPP = (b?.cost || 0) + (l?.cost || 0) + (d?.cost || 0);
+    const dayTotal  = dayCostPP * inmateCount;
+    weeklyServingCost += dayCostPP;
+
+    const cell = document.getElementById(`dayTotal_${di}`);
+    if (cell) cell.textContent = fmt(dayTotal);
+
+    if (tbody) {
+      const blended = dayCostPP / 3;
+      const rowCls  = blended > target * 1.05 ? 'row-over' : blended < target * 0.90 ? 'row-under' : '';
+      tbody.innerHTML += `<tr class="${rowCls}">
+        <td><strong>${day}</strong></td>
+        <td>${b?.name || '—'}</td><td class="right"><span class="price-shaver">${fmtC(b?.cost || 0)}</span></td>
+        <td>${l?.name || '—'}</td><td class="right"><span class="price-shaver">${fmtC(l?.cost || 0)}</span></td>
+        <td>${d?.name || '—'}</td><td class="right"><span class="price-shaver">${fmtC(d?.cost || 0)}</span></td>
+        <td class="right"><span class="savings-val">${fmt(dayTotal)}</span></td>
+      </tr>`;
+    }
+  });
+
+  const weeklyTotal  = weeklyServingCost * inmateCount;
+  const monthlyTotal = weeklyTotal * 4.33;
+  const blendedAvg   = weeklyServingCost / 7 / 3;
+  const vsTarget     = blendedAvg - target;
+
+  function setKpi(id, val, colorClass) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const lbl = el.querySelector('.calc-kpi-lbl').textContent;
+    el.innerHTML = `<span class="calc-kpi-val ${colorClass}">${val}</span><span class="calc-kpi-lbl">${lbl}</span>`;
+  }
+
+  setKpi('kpiDailyTotal',   fmt(weeklyTotal / 7),  '');
+  setKpi('kpiWeeklyTotal',  fmt(weeklyTotal),       '');
+  setKpi('kpiMonthlyTotal', fmt(monthlyTotal),      '');
+  setKpi('kpiBlendedAvg',   fmtC(blendedAvg),       blendedAvg > target ? 'kpi-over' : blendedAvg < target * 0.90 ? 'kpi-under' : 'kpi-good');
+
+  const absV = Math.abs(vsTarget);
+  const statusText  = absV < 0.005 ? 'On Target' : vsTarget > 0 ? `+${fmtC(vsTarget)} over` : `${fmtC(absV)} under`;
+  const statusClass = vsTarget > 0.02 ? 'kpi-over' : vsTarget < -0.05 ? 'kpi-under' : 'kpi-good';
+  setKpi('kpiBudgetStatus', statusText, statusClass);
+
+  const tfoot = document.getElementById('calcBreakdownFoot');
+  if (tfoot) {
+    tfoot.innerHTML = `
+      <tr class="calc-tfoot-row">
+        <td colspan="7" style="text-align:right;font-weight:700">Weekly Total &nbsp;<span style="color:var(--text-400);font-weight:400">(${inmateCount.toLocaleString()} inmates × 3 meals × 7 days)</span></td>
+        <td class="right"><span class="savings-val" style="color:var(--green)">${fmt(weeklyTotal)}</span></td>
+      </tr>
+      <tr class="calc-tfoot-row">
+        <td colspan="7" style="text-align:right;font-weight:700">Monthly Estimate &nbsp;<span style="color:var(--text-400);font-weight:400">(× 4.33 weeks)</span></td>
+        <td class="right"><span class="savings-val" style="color:var(--green)">${fmt(monthlyTotal)}</span></td>
+      </tr>
+      <tr class="calc-tfoot-row">
+        <td colspan="7" style="text-align:right;font-weight:700">Blended Avg / Meal &nbsp;<span style="color:var(--text-400);font-weight:400">target: ${fmtC(target)}</span></td>
+        <td class="right"><span class="savings-val" style="${vsTarget > 0.02 ? 'color:var(--red)' : 'color:var(--green)'}">${fmtC(blendedAvg)}</span></td>
+      </tr>`;
+  }
+}
+
+function resetPlanner() {
+  PLANNER_DAYS.forEach((d, di) => {
+    document.querySelectorAll(`.planner-select[data-day="${di}"]`).forEach(sel => {
+      const ti = ['breakfast','lunch','dinner'].indexOf(sel.dataset.type);
+      sel.value = DEFAULT_PLAN[di][ti];
+    });
+  });
+  calcUpdate();
+  showToast('Planner reset to defaults');
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -424,4 +602,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollSpy();
   initDropdowns();
   initCatalog();
+  initCalculator();
+  document.getElementById('inmateSlider').addEventListener('input', e => {
+    document.getElementById('inmateInput').value = e.target.value;
+    calcUpdate();
+  });
+  document.getElementById('inmateInput').addEventListener('input', e => {
+    const v = Math.min(1500, Math.max(900, parseInt(e.target.value) || 900));
+    document.getElementById('inmateSlider').value = v;
+    calcUpdate();
+  });
+  document.getElementById('targetInput').addEventListener('input', calcUpdate);
 });

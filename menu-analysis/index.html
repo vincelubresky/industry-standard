@@ -40,6 +40,7 @@
     <a href="#new-items" class="nav-item"><i class="fa-solid fa-circle-plus"></i>New Items to Add<span class="nav-badge">21</span></a>
     <a href="#menu-assessment" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Menu Assessment</a>
     <a href="#menu-ideas" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas</a>
+    <a href="#cost-calculator" class="nav-item"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
@@ -446,6 +447,88 @@
       <div class="idea-card"><div class="idea-name"><i class="fa-solid fa-utensils" style="color:var(--cyan);font-size:12px"></i>Corn on the Cob (Summer)</div><div class="idea-cost"><i class="fa-solid fa-tag"></i>$0.35/serving</div><div class="idea-detail">Shaver Corn Cob 3in 96ea — $33.74/case</div><div class="idea-note">Seasonal crowd-pleaser, easy to serve, no prep required</div></div>
       <div class="idea-card"><div class="idea-name"><i class="fa-solid fa-utensils" style="color:var(--cyan);font-size:12px"></i>Broccoli or Cauliflower</div><div class="idea-cost"><i class="fa-solid fa-tag"></i>&lt;$0.20/serving</div><div class="idea-detail">Broccoli Cuts 30# ($27.47) or Cauliflower 30# ($31.30)</div><div class="idea-note">Adds vegetable variety beyond current carrot/peas rotation</div></div>
       <div class="idea-card"><div class="idea-name"><i class="fa-solid fa-utensils" style="color:var(--cyan);font-size:12px"></i>Breaded Okra</div><div class="idea-cost"><i class="fa-solid fa-tag"></i>&lt;$0.20/serving</div><div class="idea-detail">Shaver Okra Cut Breaded 20# — $26.77/case</div><div class="idea-note">Southern staple, pairs with any protein, adds texture variety</div></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       MEAL COST CALCULATOR
+  ══════════════════════════════════════ -->
+  <section class="section" id="cost-calculator">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon cyan"><i class="fa-solid fa-calculator"></i></div>
+        <div>
+          <div class="section-title">Meal Cost Calculator</div>
+          <div class="section-subtitle">Build a 7-day menu, set inmate count — see daily, weekly &amp; monthly food cost in real time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="calc-controls">
+        <div class="calc-control-group">
+          <label class="calc-label">Inmate Count</label>
+          <div class="calc-slider-row">
+            <input type="range" id="inmateSlider" min="900" max="1500" value="1150" step="10" class="calc-slider">
+            <input type="number" id="inmateInput" min="1" max="9999" value="1150" class="calc-number-input">
+          </div>
+          <div class="calc-hint">Jefferson County range: 1,100–1,200</div>
+        </div>
+        <div class="calc-control-group">
+          <label class="calc-label">Target $/Meal</label>
+          <div class="calc-target-row">
+            <span class="calc-prefix">$</span>
+            <input type="number" id="targetInput" min="0.01" max="5.00" step="0.01" value="0.65" class="calc-number-input" style="width:72px">
+            <span class="calc-suffix">per serving</span>
+          </div>
+          <div class="calc-hint">Jefferson County target: $0.60–$0.70</div>
+        </div>
+        <div class="calc-summary-bar">
+          <div class="calc-kpi-row">
+            <div class="calc-kpi" id="kpiDailyTotal"><span class="calc-kpi-val">—</span><span class="calc-kpi-lbl">Avg Daily Cost</span></div>
+            <div class="calc-kpi" id="kpiWeeklyTotal"><span class="calc-kpi-val">—</span><span class="calc-kpi-lbl">Weekly Total</span></div>
+            <div class="calc-kpi" id="kpiMonthlyTotal"><span class="calc-kpi-val">—</span><span class="calc-kpi-lbl">Monthly Est.</span></div>
+            <div class="calc-kpi" id="kpiBlendedAvg"><span class="calc-kpi-val">—</span><span class="calc-kpi-lbl">Blended Avg/Meal</span></div>
+            <div class="calc-kpi" id="kpiBudgetStatus"><span class="calc-kpi-val">—</span><span class="calc-kpi-lbl">vs Target</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7-Day Planner -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-calendar-week" style="color:var(--accent)"></i>7-Day Planner</div>
+        <button class="calc-reset-btn" onclick="resetPlanner()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+      </div>
+      <div class="planner-wrap">
+        <div class="planner-grid" id="plannerGrid">
+          <!-- populated by initCalculator() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Breakdown table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><i class="fa-solid fa-table" style="color:var(--amber)"></i>Per-Day Breakdown</div>
+      </div>
+      <div class="table-wrap">
+        <table id="calcBreakdownTable">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Breakfast</th><th class="right">$/Serv</th>
+              <th>Lunch</th><th class="right">$/Serv</th>
+              <th>Dinner</th><th class="right">$/Serv</th>
+              <th class="right">Day Total</th>
+            </tr>
+          </thead>
+          <tbody id="calcBreakdownBody"></tbody>
+          <tfoot id="calcBreakdownFoot"></tfoot>
+        </table>
+      </div>
     </div>
   </section>
 
