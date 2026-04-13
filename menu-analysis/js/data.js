@@ -18,7 +18,7 @@ const DATA = {
     { label: "Est. Monthly Savings", value: "$1,146+", icon: "fa-piggy-bank", color: "success", note: "By switching key items to Shaver" },
     { label: "Items: Switch to Shaver", value: "22", icon: "fa-arrows-rotate", color: "danger", note: "Shaver is cheaper" },
     { label: "Items: Keep with PFG", value: "6", icon: "fa-shield-check", color: "accent", note: "PFG wins on price" },
-    { label: "New Items Available", value: "21+", icon: "fa-circle-plus", color: "warning", note: "From Shaver catalog" }
+    { label: "New Items Available", value: "18+", icon: "fa-circle-plus", color: "warning", note: "From Shaver catalog" }
   ],
 
   switchToShaver: [
@@ -71,9 +71,6 @@ const DATA = {
   ],
 
   newItemsToAdd: [
-    { category: "Protein",      item: "Tuna Chunk Light Water Pouch 12/5oz",  price: 21.45,  useCase: "Tuna salad sandwiches",                vendor: "Shaver" },
-    { category: "Protein",      item: "Tuna Chunk Light VBR 6/66.5oz",        price: 58.27,  useCase: "Bulk tuna for casseroles",             vendor: "Shaver" },
-    { category: "Protein",      item: "Fish Patty Breaded 3oz 25#",           price: 56.38,  useCase: "Fish sandwich (dinner protein)",        vendor: "Shaver" },
     { category: "Protein",      item: "Corn Dog Chicken 72/2.5oz",            price: 48.45,  useCase: "Easy hot lunch protein ($0.67/ea)",     vendor: "Shaver" },
     { category: "Protein",      item: "Burrito Bean & Beef 80/4oz",           price: 44.36,  useCase: "Ready-to-serve lunch entrée ($0.55/ea)",vendor: "Shaver" },
     { category: "Protein",      item: "Burrito Bean & Cheese 80/4oz",         price: 43.40,  useCase: "Vegetarian option ($0.54/ea)",          vendor: "Shaver" },
@@ -104,7 +101,6 @@ const DATA = {
     painPoints: [
       { number: 1, issue: "No Hot Dinner Protein", detail: "Dinner is sandwich-only every night — 4 proteins rotating (salami, turkey, PB&J, chicken patty). Nutritionally limited and monotonous for long-stay residents.", severity: "high" },
       { number: 2, issue: "Limited Breakfast Protein", detail: "Breakfast protein alternates only sausage and egg — no variety across the 4-week rotation.", severity: "med" },
-      { number: 3, issue: "No Fish on the Menu", detail: "Tuna and fish patties add important nutrition and variety at low cost. Currently absent from the entire rotation.", severity: "high" },
       { number: 4, issue: "No Vitamin C Source", detail: "No canned fruit, citrus, or fresh produce visible in the rotation. Applesauce cups from Shaver cost $0.30/serving.", severity: "high" },
       { number: 5, issue: "Limited Beverage Options", detail: "Fortified drink mix is the only non-water option aside from milk twice weekly.", severity: "low" },
       { number: 6, issue: "Dessert is Only Cake", detail: "No gelatin, pudding, or fruit options. Shaver has gelatin at ~$0.04/serving and pudding at ~$0.05/serving.", severity: "med" }
@@ -175,17 +171,6 @@ const DATA = {
         note: "Fully turnkey, zero prep — no cooking equipment needed"
       },
       {
-        name: "Tuna Noodle Casserole",
-        costPerServing: "$0.42",
-        ingredients: [
-          { item: "Tuna Chunk Light VBR 6/66.5oz", vendor: "Shaver", price: "$58.27/case" },
-          { item: "Elbow Macaroni 2/10 LB", vendor: "Shaver", price: "$13.10" },
-          { item: "Cream of Mushroom Soup 12ct", vendor: "PFG", price: "$54.94" },
-          { item: "Peas & Carrots 30#", vendor: "Shaver", price: "$29.77" }
-        ],
-        note: "High protein, adds fish to the menu — uses existing inventory"
-      },
-      {
         name: "Southern Beans & Rice Bowl",
         costPerServing: "$0.22",
         ingredients: [
@@ -240,12 +225,6 @@ const DATA = {
     ],
     dinner: [
       {
-        name: "Tuna Salad Sandwich",
-        costPerServing: "~$0.45",
-        detail: "Shaver Tuna 12/5oz ($21.45) + Bread Pullman + Mayo ($41.48/4gal) + Mustard",
-        note: "Adds fish and omega-3s to the rotation — pouch tuna requires no equipment"
-      },
-      {
         name: "Bologna & Mustard Sandwich",
         costPerServing: "~$0.25",
         detail: "Shaver Bologna Logs Chik 3/8# ($39.02 = $1.63/lb) + Bread + Mustard",
@@ -255,7 +234,7 @@ const DATA = {
         name: "Chicken Salad Sandwich",
         costPerServing: "~$0.50",
         detail: "Shaver Chicken Pouch or canned chicken + Mayo + Bread Pullman",
-        note: "Cold prep, no equipment needed — rotate with tuna for variety"
+        note: "Cold prep, no equipment needed — good rotation alongside bologna and turkey"
       },
       {
         name: "PB&J",
@@ -325,15 +304,15 @@ const DATA = {
       { num: 5, action: "Switch Jelly to Shaver",              detail: "Saves $9.67/case",                                                      impact: "$19/mo"  }
     ],
     nextMenuCycle: [
-      { num: 6,  action: "Add Tuna Noodle Casserole",   detail: "Week 3 or 4 Wednesday lunch — uses Shaver tuna + existing pasta",  impact: "Nutrition + variety" },
-      { num: 7,  action: "Add Fish Sandwich to Dinner",  detail: "Replace one PB&J or salami night per week",                       impact: "Omega-3s, variety" },
-      { num: 8,  action: "Add Gelatin Dessert 2x/Week",  detail: "Replace cake on off days — $0.04/serving",                        impact: "<$20/mo added cost" },
-      { num: 9,  action: "Add Applesauce Cup 1x/Week",   detail: "Only vitamin C source in current catalog — $0.30/serving",        impact: "Nutritional compliance" }
+      { num: 6,  action: "Add Red Beans & Rice with Sausage",  detail: "Week 1 Wednesday lunch — pinto beans + rice + sausage crumble, ~$0.22/serving",  impact: "$0.22/serving" },
+      { num: 7,  action: "Add Chili Mac",                      detail: "High-volume, hearty, uses existing pasta — TVP extends meat dollars",             impact: "~$0.32/serving" },
+      { num: 8,  action: "Add Gelatin Dessert 2x/Week",        detail: "Replace cake on off days — $0.04/serving",                                        impact: "<$20/mo added cost" },
+      { num: 9,  action: "Add Applesauce Cup 1x/Week",         detail: "Only vitamin C source in current catalog — $0.30/serving",                        impact: "Nutritional compliance" }
     ],
     quarterly: [
-      { num: 10, action: "Pilot Burritos as Friday Lunch",         detail: "Zero prep, consistent, $0.54/serving — easy test",              impact: "Resident satisfaction" },
-      { num: 11, action: "Add Pancake/Waffle/French Toast Rotation",detail: "One each per week — replaces plain bread on breakfast days",    impact: "Breakfast variety" },
-      { num: 12, action: "Evaluate TVP as Meat Extender",           detail: "Test in spaghetti, beef mac, white bean chili",                  impact: "Protein cost reduction" }
+      { num: 10, action: "Pilot Burritos as Friday Lunch",          detail: "Zero prep, consistent, $0.54/serving — easy test",             impact: "Resident satisfaction" },
+      { num: 11, action: "Add Pancake/Waffle/French Toast Rotation", detail: "One each per week — replaces plain bread on breakfast days",   impact: "Breakfast variety" },
+      { num: 12, action: "Evaluate TVP as Meat Extender",            detail: "Test in chili mac, white bean chili, pasta marinara",          impact: "Protein cost reduction" }
     ]
   },
 
