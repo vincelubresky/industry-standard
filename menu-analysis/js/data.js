@@ -114,79 +114,106 @@ const DATA = {
   newMenuIdeas: {
     hotLunch: [
       {
-        name: "Tuna Noodle Casserole",
+        name: "Mac & Cheese",
+        costPerServing: "$0.28",
         ingredients: [
-          { item: "Tuna Chunk Light VBR", vendor: "Shaver", price: "$58.27/case" },
-          { item: "Elbow Macaroni", vendor: "Shaver", price: "$13.10" },
-          { item: "Cream of Mushroom Soup", vendor: "PFG", price: "$54.94" },
-          { item: "Peas & Carrots", vendor: "Shaver", price: "$29.77/30#" }
+          { item: "Elbow Macaroni 2/10 LB", vendor: "Shaver", price: "$13.10" },
+          { item: "Cheese Sauce 6/#10", vendor: "Shaver", price: "$48.12" }
         ],
-        note: "Cost-effective, high protein, uses existing inventory"
+        note: "One of the cheapest hot lunches possible — universally popular, zero waste"
+      },
+      {
+        name: "Chili Mac",
+        costPerServing: "$0.32",
+        ingredients: [
+          { item: "TVP Beef Chunks 25#", vendor: "Shaver", price: "$60.46" },
+          { item: "Elbow Macaroni 2/10 LB", vendor: "Shaver", price: "$13.10" },
+          { item: "Diced Tomatoes 6/#10", vendor: "Shaver", price: "$30.36" },
+          { item: "Tomato Sauce 6/#10", vendor: "Shaver", price: "$28.89" }
+        ],
+        note: "TVP doubles as a beef extender — hearty, filling, under $0.35/serving"
+      },
+      {
+        name: "Red Beans & Rice",
+        costPerServing: "$0.22",
+        ingredients: [
+          { item: "Pinto Beans Dry 50 LB", vendor: "PFG", price: "$25.67" },
+          { item: "Parboiled Rice 50 LB", vendor: "PFG", price: "$26.38" },
+          { item: "Sausage crumble", vendor: "Shaver", price: "existing" }
+        ],
+        note: "Dirt cheap per serving, high protein and fiber — classic Southern staple"
+      },
+      {
+        name: "Navy Bean Soup",
+        costPerServing: "$0.15",
+        ingredients: [
+          { item: "Beans Dry Navy 50#", vendor: "Shaver", price: "$36.49" },
+          { item: "Carrots Sliced Frozen 20#", vendor: "Shaver", price: "$14.34" },
+          { item: "Chicken Base", vendor: "Shaver", price: "$13.34" },
+          { item: "Cornbread", vendor: "PFG", price: "existing" }
+        ],
+        note: "Lowest cost hot lunch on this list — high protein, serve with cornbread"
+      },
+      {
+        name: "Pasta Marinara",
+        costPerServing: "$0.20",
+        ingredients: [
+          { item: "Rotini or Ziti Pasta 2/10 LB", vendor: "Shaver", price: "$13.73" },
+          { item: "Tomato Sauce 6/#10", vendor: "Shaver", price: "$28.89" },
+          { item: "Diced Tomatoes 6/#10", vendor: "Shaver", price: "$30.36" }
+        ],
+        note: "Under $0.20/serving — add TVP or meatballs to boost protein when budget allows"
       },
       {
         name: "Bean & Cheese Burrito Plate",
+        costPerServing: "$0.54",
         ingredients: [
           { item: "Bean & Cheese Burritos 80/4oz", vendor: "Shaver", price: "$43.40 ($0.54/ea)" },
-          { item: "Parboiled Rice", vendor: "PFG", price: "$26.38/50#" },
+          { item: "Parboiled Rice 50 LB", vendor: "PFG", price: "$26.38" },
           { item: "Tomato Sauce (salsa)", vendor: "Shaver", price: "$28.89" }
         ],
-        note: "Fully turnkey, zero prep, cheap hot entrée"
+        note: "Fully turnkey, zero prep — no cooking equipment needed"
       },
       {
-        name: "Chicken Corn Dog Plate",
+        name: "Tuna Noodle Casserole",
+        costPerServing: "$0.42",
         ingredients: [
-          { item: "Corn Dog Chicken 72/2.5oz", vendor: "Shaver", price: "$48.45 ($0.67/ea)" },
-          { item: "Mixed Vegetables", vendor: "Shaver", price: "$26.75/30#" },
-          { item: "Cornbread", vendor: "PFG", price: "existing" }
+          { item: "Tuna Chunk Light VBR 6/66.5oz", vendor: "Shaver", price: "$58.27/case" },
+          { item: "Elbow Macaroni 2/10 LB", vendor: "Shaver", price: "$13.10" },
+          { item: "Cream of Mushroom Soup 12ct", vendor: "PFG", price: "$54.94" },
+          { item: "Peas & Carrots 30#", vendor: "Shaver", price: "$29.77" }
         ],
-        note: "Simple, fast, universally popular"
-      },
-      {
-        name: "Fish Sandwich (Hot Lunch)",
-        ingredients: [
-          { item: "Fish Patty Breaded 3oz", vendor: "Shaver", price: "$56.38/25# (~$0.68/serving)" },
-          { item: "Bread Pullman", vendor: "PFG", price: "$24.90" },
-          { item: "Mustard/Mayo", vendor: "Shaver", price: "existing" }
-        ],
-        note: "Replace one chicken fritter day per week — adds variety and omega-3s"
-      },
-      {
-        name: "Beef & Vegetable Stew",
-        ingredients: [
-          { item: "TVP Beef Chunks 25#", vendor: "Shaver", price: "$60.46" },
-          { item: "Mixed Vegetables", vendor: "Shaver", price: "$26.75/30#" },
-          { item: "Diced Tomatoes", vendor: "Shaver", price: "$30.36" },
-          { item: "Rice / Cornbread", vendor: "PFG/Shaver", price: "existing" }
-        ],
-        note: "TVP extends real beef dollars significantly — same texture, fraction of cost"
-      },
-      {
-        name: "Turkey Meatball Marinara",
-        ingredients: [
-          { item: "Meatballs FC 0.5oz 40#", vendor: "Shaver", price: "$83.84 (~$2.10/lb)" },
-          { item: "Tomato Sauce", vendor: "Shaver", price: "$28.89" },
-          { item: "Pasta", vendor: "Shaver", price: "$13.10" }
-        ],
-        note: "Upscale feel at low cost — pairs with any pasta"
+        note: "High protein, adds fish to the menu — uses existing inventory"
       },
       {
         name: "Southern Beans & Rice Bowl",
+        costPerServing: "$0.22",
         ingredients: [
-          { item: "Black Beans 6/10", vendor: "Shaver", price: "$31.60" },
-          { item: "Parboiled Rice 50#", vendor: "PFG", price: "$26.38" },
+          { item: "Great Northern Beans Dry 50#", vendor: "Shaver", price: "$39.00" },
+          { item: "Parboiled Rice 50 LB", vendor: "PFG", price: "$26.38" },
           { item: "Sausage crumble", vendor: "Shaver", price: "existing" }
         ],
         note: "Flavorful, filling, dirt cheap per serving"
       },
       {
         name: "Lentil Soup",
+        costPerServing: "$0.15",
         ingredients: [
           { item: "Beans Dry Lentil 50#", vendor: "Shaver", price: "$49.26" },
-          { item: "Carrots Sliced Frozen", vendor: "Shaver", price: "$14.34/20#" },
-          { item: "Celery Diced 30#", vendor: "Shaver", price: "$29.10" },
+          { item: "Carrots Sliced Frozen 20#", vendor: "Shaver", price: "$14.34" },
           { item: "Chicken Base", vendor: "Shaver", price: "$13.34" }
         ],
-        note: "Very low cost per serving, high fiber and protein"
+        note: "Tied for cheapest — very high fiber and protein, serve with cornbread"
+      },
+      {
+        name: "Chicken Corn Dog Plate",
+        costPerServing: "$0.67",
+        ingredients: [
+          { item: "Corn Dog Chicken 72/2.5oz", vendor: "Shaver", price: "$48.45 ($0.67/ea)" },
+          { item: "Mixed Vegetables 30#", vendor: "Shaver", price: "$26.75" },
+          { item: "Cornbread", vendor: "PFG", price: "existing" }
+        ],
+        note: "Simple, fast, universally popular — no prep required"
       }
     ],
     breakfast: [
@@ -214,13 +241,39 @@ const DATA = {
     dinner: [
       {
         name: "Tuna Salad Sandwich",
-        detail: "Shaver Tuna 12/5oz ($21.45) + Bread + Mayo ($41.48/4gal) + Mustard",
-        note: "~$0.45/serving all-in. Adds fish protein and omega-3s to evening rotation."
+        costPerServing: "~$0.45",
+        detail: "Shaver Tuna 12/5oz ($21.45) + Bread Pullman + Mayo ($41.48/4gal) + Mustard",
+        note: "Adds fish and omega-3s to the rotation — pouch tuna requires no equipment"
       },
       {
-        name: "Bologna Sandwich",
-        detail: "Shaver Bologna Logs Chik 3/8# ($39.02 = $1.63/lb)",
-        note: "Cheaper per serving than turkey or salami — adds protein variety at lower cost"
+        name: "Bologna & Mustard Sandwich",
+        costPerServing: "~$0.25",
+        detail: "Shaver Bologna Logs Chik 3/8# ($39.02 = $1.63/lb) + Bread + Mustard",
+        note: "One of the cheapest protein sandwiches available — slices easily at scale"
+      },
+      {
+        name: "Chicken Salad Sandwich",
+        costPerServing: "~$0.50",
+        detail: "Shaver Chicken Pouch or canned chicken + Mayo + Bread Pullman",
+        note: "Cold prep, no equipment needed — rotate with tuna for variety"
+      },
+      {
+        name: "PB&J",
+        costPerServing: "~$0.18",
+        detail: "Peanut Butter (existing) + Jelly Assorted 200ct — Shaver $9.53 + Bread",
+        note: "Lowest cost dinner option — keep on rotation as a budget anchor night"
+      },
+      {
+        name: "Turkey & Mustard Sandwich",
+        costPerServing: "~$0.45",
+        detail: "Turkey deli meat (existing) + Bread Pullman + Mustard/Mayo",
+        note: "Clean, familiar protein — switch bread to Shaver for per-oz savings"
+      },
+      {
+        name: "Salami Sandwich",
+        costPerServing: "~$0.40",
+        detail: "Salami (existing rotation) + Bread + Mustard",
+        note: "Already on current rotation — maintain as one of the weekly nights"
       }
     ],
     sides: [
