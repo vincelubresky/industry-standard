@@ -1034,9 +1034,15 @@ function showMenuWeek(weekIdx) {
     week.days.forEach(day => {
       const meal = day[key];
       const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(' · ') : '';
-      const altOpts = alts.filter(a => a.main !== meal.main);
+      const seenProteins = new Set([meal.protein]);
+      const altOpts = alts.filter(a => {
+        if (a.main === meal.main) return false;
+        if (seenProteins.has(a.protein)) return false;
+        seenProteins.add(a.protein);
+        return true;
+      });
       const altHtml = altOpts.length
-        ? `<div class="menu-cell-alts"><span class="menu-cell-alt-label">Swap:</span>${altOpts.slice(0,3).map(a =>
+        ? `<div class="menu-cell-alts"><span class="menu-cell-alt-label">Swap:</span>${altOpts.slice(0,4).map(a =>
             `<span class="menu-cell-alt-chip" title="${a.main} · ${a.cost}">${a.protein}</span>`
           ).join('')}</div>`
         : '';
