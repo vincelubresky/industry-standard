@@ -706,3 +706,186 @@ const BIDS = {
     { name: "Alabama Bid Network",    url: "https://www.alabamabids.com" }
   ]
 };
+
+/* ============================================================
+   4-WEEK MENU ROTATION
+   Edit meals here — changes reflect instantly in the Menus tab.
+   Structure: { day, breakfast:{main,sides,cost}, lunch:{main,sides,cost}, dinner:{main,sides,cost} }
+   ============================================================ */
+const MENU_ROTATION = [
+  {
+    week: 1, label: "Week 1",
+    days: [
+      { day: "Monday",
+        breakfast: { main: "Grits + Sausage",        sides: ["Bread", "Jelly"],           cost: "$0.25" },
+        lunch:     { main: "Mac & Cheese",            sides: ["Green Beans", "Cornbread"], cost: "$0.32" },
+        dinner:    { main: "Turkey Sandwich",          sides: ["Gelatin"],                  cost: "$0.50" } },
+      { day: "Tuesday",
+        breakfast: { main: "Oatmeal",                 sides: ["Bread", "Jelly"],           cost: "$0.20" },
+        lunch:     { main: "Red Beans & Rice w/ Sausage", sides: ["Cornbread"],            cost: "$0.27" },
+        dinner:    { main: "Bologna Sandwich",         sides: ["Cake"],                     cost: "$0.30" } },
+      { day: "Wednesday",
+        breakfast: { main: "Pancakes + Syrup",        sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Chili Mac",               sides: ["Cornbread"],                cost: "$0.38" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Gelatin"],                  cost: "$0.23" } },
+      { day: "Thursday",
+        breakfast: { main: "Eggs Scrambled + Sausage", sides: ["Bread"],                  cost: "$0.40" },
+        lunch:     { main: "Navy Bean Soup",           sides: ["Cornbread"],               cost: "$0.20" },
+        dinner:    { main: "Salami Sandwich",          sides: ["Pudding"],                 cost: "$0.45" } },
+      { day: "Friday",
+        breakfast: { main: "Grits",                   sides: ["Bread", "Jelly"],           cost: "$0.18" },
+        lunch:     { main: "Pasta Marinara",           sides: ["Cornbread"],               cost: "$0.25" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Cake"],                     cost: "$0.23" } },
+      { day: "Saturday",
+        breakfast: { main: "Oatmeal w/ Raisins",      sides: ["Bread"],                   cost: "$0.24" },
+        lunch:     { main: "Chicken Corn Dog",         sides: ["Mixed Veg", "Cornbread"],  cost: "$0.75" },
+        dinner:    { main: "Turkey Sandwich",          sides: ["Gelatin"],                 cost: "$0.50" } },
+      { day: "Sunday",
+        breakfast: { main: "Waffles + Syrup",         sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Bean & Cheese Burrito",   sides: ["Rice"],                     cost: "$0.62" },
+        dinner:    { main: "Chicken Patty Sandwich",  sides: ["Cake"],                     cost: "$0.52" } }
+    ]
+  },
+  {
+    week: 2, label: "Week 2",
+    days: [
+      { day: "Monday",
+        breakfast: { main: "Grits + Sausage",        sides: ["Bread", "Jelly"],           cost: "$0.25" },
+        lunch:     { main: "Lentil Soup",             sides: ["Cornbread"],                cost: "$0.20" },
+        dinner:    { main: "Bologna Sandwich",        sides: ["Gelatin"],                  cost: "$0.30" } },
+      { day: "Tuesday",
+        breakfast: { main: "French Toast + Syrup",   sides: [],                           cost: "$0.32" },
+        lunch:     { main: "Mac & Cheese",            sides: ["Peas & Carrots", "Cornbread"], cost: "$0.35" },
+        dinner:    { main: "Turkey Sandwich",         sides: ["Pudding"],                  cost: "$0.50" } },
+      { day: "Wednesday",
+        breakfast: { main: "Oatmeal",                sides: ["Bread", "Jelly"],           cost: "$0.20" },
+        lunch:     { main: "Red Beans & Rice w/ Sausage", sides: ["Cornbread"],           cost: "$0.27" },
+        dinner:    { main: "Chicken Patty Sandwich", sides: ["Gelatin"],                  cost: "$0.52" } },
+      { day: "Thursday",
+        breakfast: { main: "Pancakes + Syrup",       sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Chili Mac",              sides: ["Cornbread"],                cost: "$0.38" },
+        dinner:    { main: "PB&J Sandwich",          sides: ["Cake"],                     cost: "$0.23" } },
+      { day: "Friday",
+        breakfast: { main: "Eggs Scrambled + Sausage", sides: ["Bread"],                 cost: "$0.40" },
+        lunch:     { main: "Southern Beans & Rice Bowl", sides: ["Cornbread"],            cost: "$0.28" },
+        dinner:    { main: "Salami Sandwich",         sides: ["Gelatin"],                 cost: "$0.45" } },
+      { day: "Saturday",
+        breakfast: { main: "Grits",                  sides: ["Bread", "Jelly"],           cost: "$0.18" },
+        lunch:     { main: "Navy Bean Soup",          sides: ["Cornbread"],               cost: "$0.20" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Pudding"],                 cost: "$0.23" } },
+      { day: "Sunday",
+        breakfast: { main: "Oatmeal w/ Raisins",     sides: ["Bread"],                   cost: "$0.24" },
+        lunch:     { main: "Chicken Corn Dog",        sides: ["Mixed Veg", "Cornbread"],  cost: "$0.75" },
+        dinner:    { main: "Turkey Sandwich",         sides: ["Cake"],                    cost: "$0.50" } }
+    ]
+  },
+  {
+    week: 3, label: "Week 3",
+    days: [
+      { day: "Monday",
+        breakfast: { main: "Grits + Sausage",        sides: ["Bread", "Jelly"],           cost: "$0.25" },
+        lunch:     { main: "Pasta Marinara",          sides: ["Cornbread"],               cost: "$0.25" },
+        dinner:    { main: "Salami Sandwich",         sides: ["Gelatin"],                 cost: "$0.45" } },
+      { day: "Tuesday",
+        breakfast: { main: "Oatmeal",                sides: ["Bread", "Jelly"],           cost: "$0.20" },
+        lunch:     { main: "Mac & Cheese",            sides: ["Green Beans", "Cornbread"], cost: "$0.32" },
+        dinner:    { main: "Bologna Sandwich",        sides: ["Cake"],                    cost: "$0.30" } },
+      { day: "Wednesday",
+        breakfast: { main: "Waffles + Syrup",        sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Red Beans & Rice w/ Sausage", sides: ["Cornbread"],           cost: "$0.27" },
+        dinner:    { main: "Turkey Sandwich",         sides: ["Pudding"],                 cost: "$0.50" } },
+      { day: "Thursday",
+        breakfast: { main: "Eggs Scrambled + Sausage", sides: ["Bread"],                 cost: "$0.40" },
+        lunch:     { main: "Chili Mac",               sides: ["Cornbread"],               cost: "$0.38" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Gelatin"],                 cost: "$0.23" } },
+      { day: "Friday",
+        breakfast: { main: "Grits",                  sides: ["Bread", "Jelly"],           cost: "$0.18" },
+        lunch:     { main: "Lentil Soup",             sides: ["Cornbread"],               cost: "$0.20" },
+        dinner:    { main: "Chicken Patty Sandwich", sides: ["Cake"],                     cost: "$0.52" } },
+      { day: "Saturday",
+        breakfast: { main: "French Toast + Syrup",   sides: [],                           cost: "$0.32" },
+        lunch:     { main: "Bean & Cheese Burrito",  sides: ["Rice"],                     cost: "$0.62" },
+        dinner:    { main: "PB&J Sandwich",          sides: ["Gelatin"],                  cost: "$0.23" } },
+      { day: "Sunday",
+        breakfast: { main: "Oatmeal w/ Raisins",     sides: ["Bread"],                   cost: "$0.24" },
+        lunch:     { main: "Southern Beans & Rice Bowl", sides: ["Cornbread"],            cost: "$0.28" },
+        dinner:    { main: "Bologna Sandwich",        sides: ["Pudding"],                 cost: "$0.30" } }
+    ]
+  },
+  {
+    week: 4, label: "Week 4",
+    days: [
+      { day: "Monday",
+        breakfast: { main: "Grits + Sausage",        sides: ["Bread", "Jelly"],           cost: "$0.25" },
+        lunch:     { main: "Navy Bean Soup",          sides: ["Cornbread"],               cost: "$0.20" },
+        dinner:    { main: "Turkey Sandwich",         sides: ["Cake"],                    cost: "$0.50" } },
+      { day: "Tuesday",
+        breakfast: { main: "Pancakes + Syrup",       sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Mac & Cheese",            sides: ["Peas & Carrots", "Cornbread"], cost: "$0.35" },
+        dinner:    { main: "Salami Sandwich",         sides: ["Gelatin"],                 cost: "$0.45" } },
+      { day: "Wednesday",
+        breakfast: { main: "Oatmeal",                sides: ["Bread", "Jelly"],           cost: "$0.20" },
+        lunch:     { main: "Red Beans & Rice w/ Sausage", sides: ["Cornbread"],           cost: "$0.27" },
+        dinner:    { main: "Bologna Sandwich",        sides: ["Pudding"],                 cost: "$0.30" } },
+      { day: "Thursday",
+        breakfast: { main: "Eggs Scrambled + Sausage", sides: ["Bread"],                 cost: "$0.40" },
+        lunch:     { main: "Chili Mac",               sides: ["Cornbread"],               cost: "$0.38" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Cake"],                    cost: "$0.23" } },
+      { day: "Friday",
+        breakfast: { main: "Grits",                  sides: ["Bread", "Jelly"],           cost: "$0.18" },
+        lunch:     { main: "Pasta Marinara",          sides: ["Cornbread"],               cost: "$0.25" },
+        dinner:    { main: "Chicken Patty Sandwich", sides: ["Gelatin"],                  cost: "$0.52" } },
+      { day: "Saturday",
+        breakfast: { main: "Oatmeal w/ Raisins",     sides: ["Bread"],                   cost: "$0.24" },
+        lunch:     { main: "Chicken Corn Dog",        sides: ["Mixed Veg", "Cornbread"],  cost: "$0.75" },
+        dinner:    { main: "PB&J Sandwich",           sides: ["Pudding"],                 cost: "$0.23" } },
+      { day: "Sunday",
+        breakfast: { main: "Waffles + Syrup",        sides: [],                           cost: "$0.20" },
+        lunch:     { main: "Lentil Soup",             sides: ["Cornbread"],               cost: "$0.20" },
+        dinner:    { main: "Turkey Sandwich",         sides: ["Cake"],                    cost: "$0.50" } }
+    ]
+  }
+];
+
+/* ============================================================
+   MEAL IDEAS LIBRARY
+   Separate from the rotation — ideas to pull from or add next cycle.
+   ============================================================ */
+const MEAL_IDEAS = {
+  breakfast: [
+    { name: "Biscuits & Gravy",       cost: "$0.34", note: "Biscuit mix + country gravy — comfort staple, zero waste, easy batch" },
+    { name: "Cinnamon Oatmeal",       cost: "$0.22", note: "Existing oatmeal + cinnamon + sugar packets — simple upgrade" },
+    { name: "Grits Bar",              cost: "$0.28", note: "Grits base + rotating toppings (butter, sausage, cheese sauce) — adds variety to existing grits days" },
+    { name: "Egg & Sausage Sandwich", cost: "$0.48", note: "Scrambled egg + sausage patty on bread — hot sandwich format, no new equipment" },
+    { name: "Oatmeal Cookie",         cost: "$0.12", note: "Shaver Oatmeal Cookie Mix 50# ($41.58) — bake as breakfast dessert or snack" }
+  ],
+  lunch: [
+    { name: "White Bean Chili",       cost: "$0.24", note: "Great Northern Beans + tomatoes + chicken base + spices — hearty, filling, very cheap" },
+    { name: "Beef Vegetable Soup",    cost: "$0.35", note: "TVP beef chunks + mixed veg + chicken base + tomato — volume extender, high perceived value" },
+    { name: "Split Pea Soup",         cost: "$0.18", note: "Split peas (add to Shaver order) + carrots + chicken base — cheapest soup option" },
+    { name: "Potato Soup",            cost: "$0.22", note: "Dehy potato flakes + chicken base + margarine — thick, filling, uses existing inventory" },
+    { name: "Rice & Brown Gravy",     cost: "$0.19", note: "Parboiled rice + country gravy mix — ultra-low cost, serves as a side or main" },
+    { name: "Tater Tot Casserole",    cost: "$0.58", note: "Shaver Tater Tots 6/5# ($28.85) + cheese sauce + TVP — crowd favorite, simple assembly" },
+    { name: "Sloppy Joe (TVP)",       cost: "$0.38", note: "TVP beef + tomato sauce + seasoning on bread — familiar protein that stretches budget" },
+    { name: "Black Bean Rice Bowl",   cost: "$0.25", note: "Shaver Black Beans 6/10 ($31.60) + rice + cumin — add hot sauce packs for variety" },
+    { name: "Pinto Bean Stew",        cost: "$0.20", note: "Pinto beans + diced tomatoes + chicken base — thicker than soup, serve over cornbread" },
+    { name: "Collard Greens & Ham",   cost: "$0.30", note: "Shaver Collard Greens 6/10 ($44.89) + ham bits + cornbread — Southern classic" }
+  ],
+  dinner: [
+    { name: "Grilled Cheese",         cost: "$0.28", note: "Cheese sauce or slice + bread on flat top — hot dinner option when equipment allows" },
+    { name: "Ham & Mustard Sandwich", cost: "$0.42", note: "Deli ham + bread + mustard — solid alternative to turkey or bologna rotation" },
+    { name: "Egg Salad Sandwich",     cost: "$0.30", note: "Hard cooked eggs + mayo + bread — different protein source, low cost" },
+    { name: "Pimento Cheese Sandwich",cost: "$0.28", note: "Southern staple — shelf stable spread + bread, very popular in AL facilities" },
+    { name: "Hoagie Sub",             cost: "$0.55", note: "Shaver Hoagie Bun 18/6ea ($28.25) + 2 meats + condiments — higher perceived value, once per rotation" }
+  ],
+  sides: [
+    { name: "Applesauce Cup",         cost: "$0.30", note: "Priority add — only vitamin C source in catalog. Shaver 96/4.5oz ($28.49)" },
+    { name: "Gelatin Rotation",       cost: "$0.04", note: "Cherry, Lime, Orange, Raspberry — all $23.32/case. Replace cake 2x/week" },
+    { name: "Pudding Cup",            cost: "$0.05", note: "Vanilla ($63.84/25#) or Chocolate ($68.93/25#) — dessert variety with minimal cost" },
+    { name: "Corn on the Cob",        cost: "$0.35", note: "Shaver 96ea ($33.74) — seasonal, easy, crowd favorite. No prep needed" },
+    { name: "Collard Greens",         cost: "$0.20", note: "Shaver 6/10 ($44.89) — adds vegetable variety, Southern appeal" },
+    { name: "Blackeye Peas",          cost: "$0.20", note: "Shaver 6/10 ($37.87) — New Year's tradition, rotate in January" },
+    { name: "Breaded Okra",           cost: "$0.20", note: "Shaver 20# ($26.77) — Southern staple, pairs with any protein" },
+    { name: "Coleslaw Mix",           cost: "$0.15", note: "Shredded cabbage + mayo + vinegar — fresh side option, low prep" }
+  ]
+};

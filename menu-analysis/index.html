@@ -45,6 +45,9 @@
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
+    <div class="nav-section-label" data-tab="menus">Menus</div>
+    <a href="#menu-rotation" class="nav-item" data-tab="menus"><i class="fa-solid fa-calendar-week"></i>4-Week Rotation</a>
+    <a href="#meal-ideas" class="nav-item" data-tab="menus"><i class="fa-solid fa-lightbulb"></i>Meal Ideas Library</a>
     <div class="nav-section-label" data-tab="report">Weekly Report</div>
     <a href="#report-overview"  class="nav-item" data-tab="report"><i class="fa-solid fa-gauge-high"></i>Overview</a>
     <a href="#report-revenue"   class="nav-item" data-tab="report"><i class="fa-solid fa-dollar-sign"></i>Revenue</a>
@@ -100,6 +103,9 @@
   <div class="tab-bar" id="tabBar">
     <button class="tab-btn active" data-tab="bids" onclick="switchTab('bids')">
       <i class="fa-solid fa-gavel"></i>Bid Tracker
+    </button>
+    <button class="tab-btn" data-tab="menus" onclick="switchTab('menus')">
+      <i class="fa-solid fa-utensils"></i>Menus
     </button>
     <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-chart-line"></i>Vendor Analysis
@@ -1319,6 +1325,53 @@
   <!-- ══════════════════════════════════════
        BID TRACKER
   ══════════════════════════════════════ -->
+
+
+  <!-- ══════════════════════════════════════
+       MENUS TAB
+  ══════════════════════════════════════ -->
+  <div id="menus-wrap" style="display:none">
+
+    <!-- 4-Week Rotation -->
+    <section class="section" id="menu-rotation">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(16,185,129,.12)"><i class="fa-solid fa-calendar-week" style="color:var(--success)"></i></div>
+          <div>
+            <div class="section-title">4-Week Menu Rotation</div>
+            <div class="section-subtitle">Breakfast · Hot Lunch · Sandwich Dinner — edit in data.js to adjust</div>
+          </div>
+        </div>
+        <button class="calc-reset-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> Print</button>
+      </div>
+
+      <!-- Week selector -->
+      <div class="menu-week-bar" id="menuWeekBar">
+        <button class="menu-week-btn active" data-week="0" onclick="showMenuWeek(0)">Week 1</button>
+        <button class="menu-week-btn" data-week="1" onclick="showMenuWeek(1)">Week 2</button>
+        <button class="menu-week-btn" data-week="2" onclick="showMenuWeek(2)">Week 3</button>
+        <button class="menu-week-btn" data-week="3" onclick="showMenuWeek(3)">Week 4</button>
+      </div>
+
+      <!-- Grid rendered by JS -->
+      <div id="menuGrid"></div>
+    </section>
+
+    <!-- Meal Ideas Library -->
+    <section class="section" id="meal-ideas">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon amber"><i class="fa-solid fa-lightbulb"></i></div>
+          <div>
+            <div class="section-title">Meal Ideas Library</div>
+            <div class="section-subtitle">Ideas to pull from for future rotation cycles</div>
+          </div>
+        </div>
+      </div>
+      <div id="mealIdeasContainer"></div>
+    </section>
+
+  </div><!-- /menus-wrap -->
 
   <div id="bid-tracker-wrap">
 

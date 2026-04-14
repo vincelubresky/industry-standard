@@ -2058,3 +2058,179 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   .bid-portals-grid{ grid-template-columns: repeat(2, 1fr); }
   .bid-card-top    { flex-direction: column; }
 }
+
+/* ============================================================
+   MENU ROTATION TAB
+   ============================================================ */
+
+/* Week selector */
+.menu-week-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.menu-week-btn {
+  padding: 8px 22px;
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-300);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.menu-week-btn:hover { border-color: var(--accent); color: var(--text-100); }
+.menu-week-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Day grid */
+.menu-grid {
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-size: 12px;
+}
+.menu-grid-header {
+  background: var(--bg-2);
+  padding: 10px 8px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-400);
+  text-align: center;
+  border-bottom: 2px solid var(--border);
+}
+.menu-grid-header:first-child { text-align: left; padding-left: 14px; }
+.menu-row-label {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.menu-row-label.breakfast { color: var(--amber); background: rgba(245,158,11,.04); }
+.menu-row-label.lunch     { color: var(--accent); background: rgba(59,130,246,.04); }
+.menu-row-label.dinner    { color: var(--success); background: rgba(16,185,129,.04); }
+.menu-cell {
+  padding: 10px 9px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.menu-cell:last-child { border-right: none; }
+.menu-cell-main {
+  font-weight: 600;
+  color: var(--text-100);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+.menu-cell-sides {
+  color: var(--text-400);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.menu-cell-cost {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-400);
+  background: var(--bg-2);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+.menu-cell.b-cell { background: rgba(245,158,11,.03); }
+.menu-cell.l-cell { background: rgba(59,130,246,.03); }
+.menu-cell.d-cell { background: rgba(16,185,129,.03); }
+
+/* last row — no bottom border */
+.menu-grid > :nth-last-child(-n+8) { border-bottom: none; }
+
+/* Meal Ideas library */
+.ideas-category-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--text-400);
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.ideas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.idea-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  transition: border-color 0.15s;
+}
+.idea-card:hover { border-color: var(--accent); }
+.idea-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.idea-card-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-100);
+}
+.idea-card-cost {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--success);
+  white-space: nowrap;
+  background: rgba(16,185,129,.1);
+  border-radius: 12px;
+  padding: 2px 9px;
+}
+.idea-card-note {
+  font-size: 12px;
+  color: var(--text-300);
+  line-height: 1.5;
+}
+
+/* Print styles */
+@media print {
+  .sidebar, .topbar, .tab-bar, .menu-week-bar { display: none !important; }
+  .menu-grid { font-size: 10px; }
+  .menu-cell { padding: 6px 5px; }
+  #main { margin-left: 0 !important; }
+}
+
+@media (max-width: 900px) {
+  .menu-grid {
+    grid-template-columns: 70px repeat(7, 1fr);
+    font-size: 11px;
+  }
+  .menu-row-label { font-size: 9px; padding: 0 6px; }
+  .menu-cell { padding: 7px 5px; }
+}
+@media (max-width: 640px) {
+  .menu-grid {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .ideas-grid { grid-template-columns: 1fr; }
+}

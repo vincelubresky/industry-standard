@@ -689,12 +689,19 @@ function switchTab(tab, persist = true) {
   const bidWrap = document.getElementById('bid-tracker-wrap');
   if (bidWrap) bidWrap.style.display = (tab === 'bids') ? 'block' : 'none';
 
+  // Show/hide menus
+  const menusWrap = document.getElementById('menus-wrap');
+  if (menusWrap) menusWrap.style.display = (tab === 'menus') ? 'block' : 'none';
+
   // Show/hide tab-specific nav labels and items
   document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
     el.style.display = (tab === 'report') ? '' : 'none';
   });
   document.querySelectorAll('.nav-section-label[data-tab="bids"], .nav-item[data-tab="bids"]').forEach(el => {
     el.style.display = (tab === 'bids') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="menus"], .nav-item[data-tab="menus"]').forEach(el => {
+    el.style.display = (tab === 'menus') ? '' : 'none';
   });
 
   // Sync active nav item
@@ -935,6 +942,88 @@ function resetPlanner() {
   showToast('Planner reset to defaults');
 }
 
+/* ── Menu Rotation ────────────────────────────────────────── */
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+function renderMenuRotation() {
+  showMenuWeek(0);
+  renderMealIdeas();
+}
+
+function showMenuWeek(weekIdx) {
+  // Update buttons
+  document.querySelectorAll('.menu-week-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.week) === weekIdx);
+  });
+
+  const week = MENU_ROTATION[weekIdx];
+  const grid = document.getElementById('menuGrid');
+  if (!grid || !week) return;
+
+  const mealTypes = [
+    { key: 'breakfast', label: 'Breakfast', cls: 'breakfast b-cell' },
+    { key: 'lunch',     label: 'Lunch',     cls: 'lunch l-cell' },
+    { key: 'dinner',    label: 'Dinner',    cls: 'dinner d-cell' }
+  ];
+
+  let html = '<div class="menu-grid">';
+
+  // Header row
+  html += '<div class="menu-grid-header">Meal</div>';
+  DAYS.forEach(d => {
+    html += `<div class="menu-grid-header">${d.slice(0,3)}</div>`;
+  });
+
+  // One row per meal type
+  mealTypes.forEach(({ key, label, cls }) => {
+    const [labelCls, cellCls] = cls.split(' ');
+    html += `<div class="menu-row-label ${labelCls}">${label}</div>`;
+    week.days.forEach(day => {
+      const meal = day[key];
+      const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(', ') : '';
+      html += `<div class="menu-cell ${cellCls}">
+        <div class="menu-cell-main">${meal.main}</div>
+        ${sidesStr ? `<div class="menu-cell-sides">${sidesStr}</div>` : ''}
+        <span class="menu-cell-cost">${meal.cost}</span>
+      </div>`;
+    });
+  });
+
+  html += '</div>';
+  grid.innerHTML = html;
+}
+
+function renderMealIdeas() {
+  const container = document.getElementById('mealIdeasContainer');
+  if (!container || typeof MEAL_IDEAS === 'undefined') return;
+
+  const categories = [
+    { key: 'breakfast', label: 'Breakfast Ideas', icon: 'fa-sun',       color: 'var(--amber)' },
+    { key: 'lunch',     label: 'Lunch Ideas',      icon: 'fa-bowl-food', color: 'var(--accent)' },
+    { key: 'dinner',    label: 'Dinner / Sandwich Ideas', icon: 'fa-bread-slice', color: 'var(--success)' },
+    { key: 'sides',     label: 'Sides & Desserts', icon: 'fa-apple-whole', color: 'var(--text-300)' }
+  ];
+
+  let html = '';
+  categories.forEach(({ key, label, icon, color }) => {
+    const items = MEAL_IDEAS[key] || [];
+    html += `<div class="ideas-category-label"><i class="fa-solid ${icon}" style="color:${color};margin-right:6px"></i>${label}</div>`;
+    html += '<div class="ideas-grid">';
+    items.forEach(item => {
+      html += `<div class="idea-card">
+        <div class="idea-card-top">
+          <div class="idea-card-name">${item.name}</div>
+          <div class="idea-card-cost">${item.cost}</div>
+        </div>
+        <div class="idea-card-note">${item.note}</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
+}
+
 /* ── Bid Tracker ──────────────────────────────────────────── */
 function initBidTracker() {
   // Countdown: days until Montgomery Municipal Jail expected RFP (Aug 1, 2026)
@@ -979,6 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(renderChart, 150);
   initTabs();
   initBidTracker();
+  renderMenuRotation();
   initScrollSpy();
   initDropdowns();
   initCatalog();
