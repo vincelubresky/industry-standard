@@ -1155,7 +1155,7 @@ function showMenuWeek(weekIdx) {
     { key: 'dinner',    label: 'Dinner',    cls: 'dinner d-cell' }
   ];
 
-  let html = '<div class="menu-grid">';
+  let html = '<div class="menu-grid-scroll"><div class="menu-grid">';
 
   // Header row
   html += '<div class="menu-grid-header">Meal</div>';
@@ -1217,7 +1217,7 @@ function showMenuWeek(weekIdx) {
     </div>`;
   });
 
-  html += '</div>';
+  html += '</div></div>'; // close .menu-grid + .menu-grid-scroll
 
   // Weekly summary bar
   const allMeals = week.days.flatMap(d => [d.breakfast, d.lunch, d.dinner]);

@@ -2088,14 +2088,21 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   color: #fff;
 }
 
+/* Scroll wrapper — always scrollable, even on desktop */
+.menu-grid-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+}
+
 /* Day grid */
 .menu-grid {
   display: grid;
-  grid-template-columns: 100px repeat(7, 1fr);
+  grid-template-columns: 100px repeat(7, minmax(120px, 1fr));
+  min-width: 760px;
   gap: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
   font-size: 12px;
 }
 .menu-grid-header {
@@ -2219,19 +2226,12 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
 }
 
 @media (max-width: 900px) {
-  .menu-grid {
-    grid-template-columns: 70px repeat(7, 1fr);
-    font-size: 11px;
-  }
+  .menu-grid { font-size: 11px; }
   .menu-row-label { font-size: 9px; padding: 0 6px; }
   .menu-cell { padding: 7px 5px; }
 }
 @media (max-width: 640px) {
-  .menu-grid {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+  .menu-grid { font-size: 10px; }
   .ideas-grid { grid-template-columns: 1fr; }
 }
 
