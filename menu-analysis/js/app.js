@@ -1042,9 +1042,14 @@ function showMenuWeek(weekIdx) {
         return true;
       });
       const altHtml = altOpts.length
-        ? `<div class="menu-cell-alts"><span class="menu-cell-alt-label">Swap:</span>${altOpts.slice(0,4).map(a =>
-            `<span class="menu-cell-alt-chip" title="${a.main} · ${a.cost}">${a.protein}</span>`
-          ).join('')}</div>`
+        ? `<div class="menu-cell-alts">
+            <span class="menu-cell-alt-label">Options:</span>
+            ${altOpts.slice(0,5).map(a =>
+              `<span class="menu-cell-alt-chip${a.vendor === 'BD' ? ' chip-bd' : ''}" title="${a.main}">
+                ${a.protein}<span class="chip-cost">${a.cost}</span>
+              </span>`
+            ).join('')}
+          </div>`
         : '';
       html += `<div class="menu-cell ${cellCls}">
         <div class="menu-cell-main">${meal.main}</div>

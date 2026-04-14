@@ -2290,16 +2290,20 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   text-transform: uppercase;
   letter-spacing: .5px;
   color: var(--text-500);
-  margin-right: 1px;
+  margin-right: 2px;
+  flex-shrink: 0;
 }
 .menu-cell-alt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   font-size: 9px;
   font-weight: 600;
-  color: var(--text-400);
+  color: var(--text-300);
   background: var(--bg-3);
   border: 1px solid var(--border);
   border-radius: 3px;
-  padding: 1px 5px;
+  padding: 2px 5px;
   cursor: default;
   white-space: nowrap;
 }
@@ -2307,6 +2311,26 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   color: var(--text-100);
   border-color: var(--accent);
   background: rgba(59,130,246,.08);
+}
+.menu-cell-alt-chip.chip-bd {
+  border-color: rgba(245,158,11,.4);
+  color: var(--amber);
+  background: rgba(245,158,11,.06);
+}
+.menu-cell-alt-chip.chip-bd:hover {
+  background: rgba(245,158,11,.14);
+  border-color: var(--amber);
+}
+.chip-cost {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--text-500);
+  padding-left: 1px;
+}
+.menu-cell-alt-chip:hover .chip-cost,
+.menu-cell-alt-chip.chip-bd .chip-cost {
+  color: inherit;
+  opacity: .85;
 }
 
 /* ── Protein Vendor Cards ────────────────────────────────── */

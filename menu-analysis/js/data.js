@@ -1035,26 +1035,28 @@ const PROTEIN_VENDORS = [
    ============================================================ */
 const MEAL_ALTS = {
   breakfast: [
-    { main: "Grits + Sausage Patty",    protein: "Sausage",        cost: "$0.52" },
-    { main: "Oatmeal + Boiled Eggs",    protein: "Eggs",           cost: "$0.48" },
-    { main: "Eggs Scrambled + Sausage", protein: "Eggs & Sausage", cost: "$0.55" },
-    { main: "Grits + Boiled Eggs",      protein: "Eggs",           cost: "$0.45" }
+    { main: "Grits + Sausage Patty",       protein: "Sausage",        cost: "$0.52", vendor: "" },
+    { main: "Oatmeal + Boiled Eggs",       protein: "Eggs",           cost: "$0.48", vendor: "" },
+    { main: "Eggs Scrambled + Sausage",    protein: "Eggs & Sausage", cost: "$0.55", vendor: "" },
+    { main: "Grits + Boiled Eggs",         protein: "Eggs",           cost: "$0.45", vendor: "" },
+    { main: "Pancakes + Sausage Patty",    protein: "Pancakes (BD)",  cost: "$0.68", vendor: "BD" }
   ],
   lunch: [
-    { main: "Pinto Beans & Rice + Sausage",      protein: "Sausage",      cost: "$0.65" },
-    { main: "Mac & Cheese + Bologna",            protein: "Bologna",      cost: "$0.65" },
-    { main: "Pasta w/ Meat Sauce",               protein: "Sausage",      cost: "$0.65" },
-    { main: "Northern Beans & Rice + Sausage",   protein: "Sausage",      cost: "$0.65" },
-    { main: "Mashed Potatoes & Gravy + Sausage", protein: "Sausage",      cost: "$0.68" },
-    { main: "Pasta & Veg + Bologna",             protein: "Bologna",      cost: "$0.62" },
-    { main: "Beans & Rice + Ground Beef",        protein: "Ground Beef",  cost: "$0.68" },
-    { main: "Mac & Cheese + Ground Beef",        protein: "Ground Beef",  cost: "$0.68" }
+    { main: "Pinto Beans & Rice + Sausage",      protein: "Sausage",       cost: "$0.65", vendor: "" },
+    { main: "Mac & Cheese + Bologna",            protein: "Bologna",       cost: "$0.65", vendor: "" },
+    { main: "Pasta w/ Meat Sauce",               protein: "Sausage",       cost: "$0.65", vendor: "" },
+    { main: "Northern Beans & Rice + Sausage",   protein: "Sausage",       cost: "$0.65", vendor: "" },
+    { main: "Mashed Potatoes & Gravy + Sausage", protein: "Sausage",       cost: "$0.68", vendor: "" },
+    { main: "Pasta & Veg + Bologna",             protein: "Bologna",       cost: "$0.62", vendor: "" },
+    { main: "Beans & Rice + Ground Beef",        protein: "Ground Beef",   cost: "$0.68", vendor: "BD" },
+    { main: "Mac & Cheese + Ground Beef",        protein: "Ground Beef",   cost: "$0.68", vendor: "BD" }
   ],
   dinner: [
-    { main: "Turkey Sandwich",         protein: "Turkey",        cost: "$0.72" },
-    { main: "Salami Sandwich",         protein: "Salami",        cost: "$0.65" },
-    { main: "Chicken Patty Sandwich",  protein: "Chicken Patty", cost: "$0.78" },
-    { main: "Burger Patty Sandwich",   protein: "Burger Patty",  cost: "$0.62" },
-    { main: "PB&J + Boiled Egg",       protein: "PB & Egg",      cost: "$0.62" }
+    { main: "Turkey Sandwich",          protein: "Turkey",         cost: "$0.72", vendor: "" },
+    { main: "Salami Sandwich",          protein: "Salami",         cost: "$0.65", vendor: "" },
+    { main: "Chicken Patty Sandwich",   protein: "Chicken Patty",  cost: "$0.78", vendor: "" },
+    { main: "Chicken Nugget Plate",     protein: "Chicken (BD)",   cost: "$0.55", vendor: "BD" },
+    { main: "Burger Patty Sandwich",    protein: "Burger Patty",   cost: "$0.62", vendor: "BD" },
+    { main: "PB&J + Boiled Egg",        protein: "PB & Egg",       cost: "$0.62", vendor: "" }
   ]
 };
