@@ -1038,14 +1038,21 @@ const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sun
 function renderMenuRotation() {
   showMenuWeek(0);
   renderMealIdeas();
+  renderProteinComparison();
   renderProteinVendors();
   renderBigDaddyInvoice();
+}
+
+function getBdInmateCount() {
+  const el = document.getElementById('bdInmateInput');
+  return (el ? parseInt(el.value) : 0) || 300;
 }
 
 function renderBigDaddyInvoice() {
   const container = document.getElementById('bdInvoiceContainer');
   if (!container || typeof BIG_DADDY_INVOICE === 'undefined') return;
   const inv = BIG_DADDY_INVOICE;
+  const inmateCount = getBdInmateCount();
   const f  = v  => v  != null ? '$' + v.toFixed(2) : '—';
   const fc = v  => v  != null ? '$' + v.toFixed(3) : '—';
   const fn = v  => v  != null ? v.toLocaleString() : '—';
@@ -1127,7 +1134,7 @@ function renderBigDaddyInvoice() {
           <div class="bd-savings-nums">
             <span class="bd-save-chip">-${f(v.savings)}/serving</span>
             <span class="bd-save-chip">${v.pct}% cheaper</span>
-            ${v.annual300 > 0 ? `<span class="bd-save-chip bd-save-annual">~$${v.annual300.toLocaleString()}/yr at 300 inmates</span>` : ''}
+            ${v.annual300 > 0 ? `<span class="bd-save-chip bd-save-annual">~$${Math.round(v.annual300 / 300 * inmateCount).toLocaleString()}/yr at ${inmateCount.toLocaleString()} inmates</span>` : ''}
           </div>
         </div>`;
       });
@@ -1152,7 +1159,7 @@ function renderBigDaddyInvoice() {
             <div class="bd-kpi"><div class="bd-kpi-val">${fc(item.perLb)}</div><div class="bd-kpi-lbl">Per LB</div></div>
             <div class="bd-kpi"><div class="bd-kpi-val">${fn(item.totalLbs)}</div><div class="bd-kpi-lbl">Total LB</div></div>
           </div>
-          <div class="bd-use-note"><i class="fa-solid fa-utensils" style="opacity:.5;margin-right:5px"></i>${item.menuNote}</div>
+          <div class="bd-use-note"><i class="fa-solid fa-utensils" style="opacity:.5;margin-right:5px"></i>${item.menuUse}</div>
           ${savingsHtml}
         </div>
       </div>
@@ -1164,13 +1171,14 @@ function renderBigDaddyInvoice() {
   const allSavings = inv.items.flatMap(i => (i.vs || []).filter(v => v.annual300 > 0));
   if (allSavings.length) {
     const totalAnnual300 = allSavings.reduce((s, v) => s + v.annual300, 0);
+    const totalAnnualDynamic = Math.round(totalAnnual300 / 300 * inmateCount);
     html += `<div class="bd-savings-banner">
       <div class="bd-savings-banner-icon"><i class="fa-solid fa-piggy-bank"></i></div>
       <div>
-        <div class="bd-savings-banner-title">Estimated Annual Savings at 300 Inmates</div>
+        <div class="bd-savings-banner-title">Estimated Annual Savings at ${inmateCount.toLocaleString()} Inmates</div>
         <div class="bd-savings-banner-detail">Switching chicken protein to Big Daddy (PP90377) vs current vendors</div>
       </div>
-      <div class="bd-savings-banner-val">~$${totalAnnual300.toLocaleString()}/yr</div>
+      <div class="bd-savings-banner-val">~$${totalAnnualDynamic.toLocaleString()}/yr</div>
     </div>`;
   }
 
@@ -1227,6 +1235,180 @@ function renderProteinVendors() {
   });
 
   container.innerHTML = html;
+}
+
+function renderProteinComparison() {
+  const container = document.getElementById('pfgSummaryContainer');
+  if (!container || typeof PROTEIN_VENDORS === 'undefined') return;
+
+  const VENDOR_KEYS = ['pfg', 'shaver', 'bigDaddy'];
+  const VENDOR_LABELS = { pfg: 'PFG', shaver: 'Shaver', bigDaddy: 'Big Daddy' };
+
+  let html = `<div class="pvt-wrap">
+    <div class="pvt-header">
+      <div class="pvt-title"><i class="fa-solid fa-table" style="margin-right:8px;opacity:.6"></i>Full Vendor Comparison — All Proteins at a Glance</div>
+      <div class="pvt-subtitle">Every protein in the current rotation · per-serving cost · best price highlighted green</div>
+    </div>
+    <div class="pvt-scroll">
+    <table class="pvt-table">
+      <thead>
+        <tr>
+          <th class="pvt-th pvt-th-name">Protein</th>
+          <th class="pvt-th pvt-th-srv">Serving</th>
+          <th class="pvt-th pvt-th-pfg">PFG</th>
+          <th class="pvt-th pvt-th-shaver">Shaver ISP</th>
+          <th class="pvt-th pvt-th-bd">Big Daddy</th>
+          <th class="pvt-th pvt-th-best">Best Price</th>
+          <th class="pvt-th pvt-th-use">Menu Use</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+  PROTEIN_VENDORS.forEach(item => {
+    const prices = VENDOR_KEYS.map(k => item.vendors[k].perServing);
+    const validPrices = prices.filter(p => p != null);
+    const minPrice = validPrices.length ? Math.min(...validPrices) : null;
+    const bestKey  = minPrice != null ? VENDOR_KEYS.find(k => item.vendors[k].perServing === minPrice) : null;
+
+    const fmtCell = (key) => {
+      const v = item.vendors[key];
+      if (v.perServing == null) return `<td class="pvt-td pvt-tbd">—<div class="pvt-quote">Get Quote</div></td>`;
+      const isBest = v.perServing === minPrice;
+      return `<td class="pvt-td${isBest ? ' pvt-best-cell' : ''}">$${v.perServing.toFixed(2)}${isBest ? '<span class="pvt-best-star">★</span>' : ''}</td>`;
+    };
+
+    const savingVsPfg = (item.vendors.pfg.perServing != null && item.vendors.bigDaddy.perServing != null)
+      ? (item.vendors.pfg.perServing - item.vendors.bigDaddy.perServing)
+      : null;
+    const savingTag = savingVsPfg != null && savingVsPfg > 0.005
+      ? `<span class="pvt-save-tag">-$${savingVsPfg.toFixed(2)} vs PFG</span>` : '';
+
+    html += `<tr class="pvt-row">
+      <td class="pvt-td pvt-td-name">${item.name}</td>
+      <td class="pvt-td pvt-td-srv">${item.servingSize}</td>
+      ${fmtCell('pfg')}
+      ${fmtCell('shaver')}
+      ${fmtCell('bigDaddy')}
+      <td class="pvt-td pvt-td-best">
+        <span class="pvt-best-chip pvt-best-${bestKey || 'none'}">${bestKey ? VENDOR_LABELS[bestKey] : '—'}</span>
+        ${savingTag}
+      </td>
+      <td class="pvt-td pvt-td-use">${item.usedIn}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+/* ── PDF Export ───────────────────────────────────────────── */
+function downloadMenuPDF() {
+  if (typeof window.jspdf === 'undefined') { showToast('PDF library loading — try again in a moment', 'error'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc       = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'letter' });
+  const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const prepared  = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const pageW     = doc.internal.pageSize.getWidth();   // 792 pt
+  const pageH     = doc.internal.pageSize.getHeight();  // 612 pt
+  const mg        = 36;
+
+  MENU_ROTATION.forEach((week, wi) => {
+    if (wi > 0) doc.addPage('letter', 'landscape');
+
+    // ── Header band ──────────────────────────────────────────
+    doc.setFillColor(30, 58, 95);
+    doc.rect(mg, mg, pageW - mg * 2, 50, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(13);
+    doc.text('Jefferson County Jail', mg + 12, mg + 18);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8.5);
+    doc.text(`4-Week Menu Rotation \u2014 ${week.label}`, mg + 12, mg + 33);
+    doc.text(`Prepared by Industry Standard  \u00b7  ${prepared}`, mg + 12, mg + 46);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text(`Week ${week.week} of 4`, pageW - mg - 12, mg + 32, { align: 'right' });
+
+    // ── Menu table ───────────────────────────────────────────
+    const BF_CLR = [255, 251, 235];
+    const LN_CLR = [239, 246, 255];
+    const DN_CLR = [240, 253, 244];
+    const TL_CLR = [243, 244, 246];
+
+    const bodyRows = ['breakfast', 'lunch', 'dinner'].map((key) => {
+      const label = key.charAt(0).toUpperCase() + key.slice(1);
+      return [label, ...week.days.map(day => {
+        const m    = day[key];
+        const side = (m.sides || []).slice(0, 2).join(', ');
+        return `${m.main}\n${m.protein}${side ? '\n' + side : ''}\n${m.cost}  ${m.cal} cal`;
+      })];
+    });
+
+    const totalsRow = ['Daily\nTotal', ...week.days.map(day => {
+      const cal  = (day.breakfast.cal||0) + (day.lunch.cal||0) + (day.dinner.cal||0);
+      const cost = (parseFloat(day.breakfast.cost.replace('$','')) +
+                    parseFloat(day.lunch.cost.replace('$',''))    +
+                    parseFloat(day.dinner.cost.replace('$',''))).toFixed(2);
+      return `${cal.toLocaleString()} cal\n$${cost}`;
+    })];
+    bodyRows.push(totalsRow);
+
+    doc.autoTable({
+      startY: mg + 56,
+      margin: { left: mg, right: mg },
+      head: [['Meal', ...DAYS_FULL]],
+      body: bodyRows,
+      tableWidth: pageW - mg * 2,
+      styles: {
+        fontSize: 7, overflow: 'linebreak', valign: 'top',
+        cellPadding: { top: 4, bottom: 3, left: 4, right: 3 },
+        lineColor: [210, 210, 210], lineWidth: 0.4
+      },
+      headStyles: {
+        fillColor: [30, 58, 95], textColor: 255,
+        fontSize: 8, fontStyle: 'bold', halign: 'center', cellPadding: 5
+      },
+      columnStyles: {
+        0: { cellWidth: 46, fontStyle: 'bold', halign: 'center', valign: 'middle', fillColor: [245, 247, 250] }
+      },
+      didParseCell: function(data) {
+        if (data.section !== 'body' || data.column.index === 0) return;
+        const clrs = [BF_CLR, LN_CLR, DN_CLR, TL_CLR];
+        data.cell.styles.fillColor = clrs[data.row.index];
+        if (data.row.index === 3) {
+          data.cell.styles.fontStyle = 'bold';
+          data.cell.styles.halign    = 'center';
+          data.cell.styles.fontSize  = 8;
+        }
+      }
+    });
+
+    // ── Footer bar ───────────────────────────────────────────
+    const allMeals = week.days.flatMap(d => [d.breakfast, d.lunch, d.dinner]);
+    const avgCost  = (allMeals.reduce((s,m) => s + parseFloat(m.cost.replace('$','')), 0) / allMeals.length).toFixed(2);
+    const avgCal   = Math.round(allMeals.reduce((s,m) => s + (m.cal||0), 0) / allMeals.length);
+    const footY    = doc.lastAutoTable.finalY + 8;
+
+    doc.setDrawColor(30, 58, 95);
+    doc.setLineWidth(1.2);
+    doc.line(mg, footY, pageW - mg, footY);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(70, 70, 70);
+    doc.text('\u2713 Protein in every meal', mg, footY + 11);
+    doc.text(`Avg cost: $${avgCost} / meal`, mg + 145, footY + 11);
+    doc.text(`Avg calories: ${avgCal.toLocaleString()} / meal`, mg + 300, footY + 11);
+    doc.setTextColor(170, 170, 170);
+    doc.text('Industry Standard  \u00b7  Jefferson County Jail', pageW - mg, footY + 11, { align: 'right' });
+
+    doc.setFontSize(6.5);
+    doc.text(`Page ${wi + 1} of ${MENU_ROTATION.length}`, pageW - mg, pageH - 18, { align: 'right' });
+  });
+
+  doc.save('Jefferson-County-4-Week-Menu.pdf');
+  showToast('Menu PDF downloaded \u2014 4 pages', 'success');
 }
 
 function showMenuWeek(weekIdx) {
@@ -1411,4 +1593,7 @@ document.addEventListener('DOMContentLoaded', () => {
     calcUpdate();
   });
   document.getElementById('targetInput').addEventListener('input', calcUpdate);
+
+  const bdInmateEl = document.getElementById('bdInmateInput');
+  if (bdInmateEl) bdInmateEl.addEventListener('input', () => renderBigDaddyInvoice());
 });
