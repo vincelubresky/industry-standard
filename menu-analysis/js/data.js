@@ -864,7 +864,8 @@ const MEAL_IDEAS = {
     { name: "Cinnamon Oatmeal",       cost: "$0.22", note: "Existing oatmeal + cinnamon + sugar packets — simple upgrade" },
     { name: "Grits Bar",              cost: "$0.28", note: "Grits base + rotating toppings (butter, sausage, cheese sauce) — adds variety to existing grits days" },
     { name: "Egg & Sausage Sandwich", cost: "$0.48", note: "Scrambled egg + sausage patty on bread — hot sandwich format, no new equipment" },
-    { name: "Oatmeal Cookie",         cost: "$0.12", note: "Shaver Oatmeal Cookie Mix 50# ($41.58) — bake as breakfast dessert or snack" }
+    { name: "Oatmeal Cookie",         cost: "$0.12", note: "Shaver Oatmeal Cookie Mix 50# ($41.58) — bake as breakfast dessert or snack" },
+    { name: "Golden Brown Pancakes",  cost: "$0.53", note: "Big Daddy GSS MF 7000 · 144/1.25oz IQF · $38/case · 2 pancakes per serving — no prep, just heat" }
   ],
   lunch: [
     { name: "White Bean Chili",       cost: "$0.24", note: "Great Northern Beans + tomatoes + chicken base + spices — hearty, filling, very cheap" },
@@ -874,6 +875,7 @@ const MEAL_IDEAS = {
     { name: "Rice & Brown Gravy",     cost: "$0.19", note: "Parboiled rice + country gravy mix — ultra-low cost, serves as a side or main" },
     { name: "Tater Tot Casserole",    cost: "$0.58", note: "Shaver Tater Tots 6/5# ($28.85) + cheese sauce + TVP — crowd favorite, simple assembly" },
     { name: "Sloppy Joe (TVP)",       cost: "$0.38", note: "TVP beef + tomato sauce + seasoning on bread — familiar protein that stretches budget" },
+    { name: "Ground Beef & Rice",     cost: "$0.68", note: "Big Daddy SEP-4/10 · 40 LB/$107.60 · $2.69/lb · $0.34/2oz serving — real beef protein in hot lunch rotation" },
     { name: "Black Bean Rice Bowl",   cost: "$0.25", note: "Shaver Black Beans 6/10 ($31.60) + rice + cumin — add hot sauce packs for variety" },
     { name: "Pinto Bean Stew",        cost: "$0.20", note: "Pinto beans + diced tomatoes + chicken base — thicker than soup, serve over cornbread" },
     { name: "Collard Greens & Ham",   cost: "$0.30", note: "Shaver Collard Greens 6/10 ($44.89) + ham bits + cornbread — Southern classic" }
@@ -943,9 +945,9 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — Chicken Patty Sandwich",
     servingSize: "3 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 89.50, perLb: 2.24, perServing: 0.42, note: "Verify current contract price",    status: "current" },
-      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 86.29, perLb: 2.16, perServing: 0.41, note: "Chicken Patty BRD FC 3oz · ISP",   status: "best" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 89.50, perLb: 2.24, perServing: 0.42, note: "Verify current contract price",                    status: "available" },
+      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 86.29, perLb: 2.16, perServing: 0.41, note: "Chicken Patty BRD FC 3oz · ISP",                   status: "available" },
+      bigDaddy: { label: "Big Daddy", pack: "6/6 LB",   casePrice: 53.46, perLb: 1.49, perServing: 0.28, note: "PP90377 Seasoned Breast Nuggets · 3oz · S.O. BA24865", status: "best" }
     }
   },
   {
@@ -998,9 +1000,31 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — Burger Patty Sandwich (2× / week)",
     servingSize: "1 patty (2 oz)",
     vendors: {
-      pfg:      { label: "PFG",       pack: "Per unit", casePrice: null,  perLb: null, perServing: 0.45, note: "$0.45 each — verify case qty & price", status: "current" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Request current quote",               status: "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",                  status: "quote" }
+      pfg:      { label: "PFG",       pack: "Per unit", casePrice: null,  perLb: null,  perServing: 0.45, note: "$0.45 each — verify case qty & price",                    status: "available" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null,  perServing: null,  note: "Request current quote",                                   status: "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "20 LB",    casePrice: 45.00, perLb: 2.25,  perServing: 0.45, note: "FG-BC/TVP-20-3.2 · 3.2oz patty · 100/case · S.O. BA24865", status: "current" }
+    }
+  },
+  {
+    name: "Ground Beef w/ TVP (Lunch)",
+    icon: "fa-circle",
+    usedIn: "Lunch — Beans & Rice · Mac & Cheese · Pasta",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "Contact",  casePrice: null,   perLb: null, perServing: null,  note: "Not in current PFG order — request quote",           status: "quote" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,   perLb: null, perServing: null,  note: "Not in current ISP — request quote",                 status: "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "4/10 LB",  casePrice: 107.60, perLb: 2.69, perServing: 0.34,  note: "SEP-4/10 · Ground Beef w/ TVP · 40 LB · S.O. BA24865", status: "current" }
+    }
+  },
+  {
+    name: "Pancakes (Breakfast)",
+    icon: "fa-circle",
+    usedIn: "Breakfast — Golden Brown Pancakes (2/serving)",
+    servingSize: "2 pancakes (2.5 oz)",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current PFG order — request quote", status: "quote" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote",        status: "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "144 ct",   casePrice: 38.00, perLb: 3.38, perServing: 0.53,  note: "GSS MF 7000 · IQF Golden Brown · S.O. BA24865", status: "current" }
     }
   }
 ];
@@ -1017,12 +1041,14 @@ const MEAL_ALTS = {
     { main: "Grits + Boiled Eggs",      protein: "Eggs",           cost: "$0.45" }
   ],
   lunch: [
-    { main: "Pinto Beans & Rice + Sausage",      protein: "Sausage",  cost: "$0.65" },
-    { main: "Mac & Cheese + Bologna",            protein: "Bologna",  cost: "$0.65" },
-    { main: "Pasta w/ Meat Sauce",               protein: "Sausage",  cost: "$0.65" },
-    { main: "Northern Beans & Rice + Sausage",   protein: "Sausage",  cost: "$0.65" },
-    { main: "Mashed Potatoes & Gravy + Sausage", protein: "Sausage",  cost: "$0.68" },
-    { main: "Pasta & Veg + Bologna",             protein: "Bologna",  cost: "$0.62" }
+    { main: "Pinto Beans & Rice + Sausage",      protein: "Sausage",      cost: "$0.65" },
+    { main: "Mac & Cheese + Bologna",            protein: "Bologna",      cost: "$0.65" },
+    { main: "Pasta w/ Meat Sauce",               protein: "Sausage",      cost: "$0.65" },
+    { main: "Northern Beans & Rice + Sausage",   protein: "Sausage",      cost: "$0.65" },
+    { main: "Mashed Potatoes & Gravy + Sausage", protein: "Sausage",      cost: "$0.68" },
+    { main: "Pasta & Veg + Bologna",             protein: "Bologna",      cost: "$0.62" },
+    { main: "Beans & Rice + Ground Beef",        protein: "Ground Beef",  cost: "$0.68" },
+    { main: "Mac & Cheese + Ground Beef",        protein: "Ground Beef",  cost: "$0.68" }
   ],
   dinner: [
     { main: "Turkey Sandwich",         protein: "Turkey",        cost: "$0.72" },
