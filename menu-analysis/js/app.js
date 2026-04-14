@@ -685,9 +685,17 @@ function switchTab(tab, persist = true) {
     s.style.display = (tab === 'report') ? '' : 'none';
   });
 
-  // Show/hide report nav labels
+  // Show/hide bid sections
+  document.querySelectorAll('.bid-section').forEach(s => {
+    s.style.display = (tab === 'bids') ? '' : 'none';
+  });
+
+  // Show/hide tab-specific nav labels and items
   document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
     el.style.display = (tab === 'report') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="bids"], .nav-item[data-tab="bids"]').forEach(el => {
+    el.style.display = (tab === 'bids') ? '' : 'none';
   });
 
   // Sync active nav item
@@ -698,6 +706,10 @@ function switchTab(tab, persist = true) {
   }
   if (tab === 'report') {
     const el = document.querySelector('.nav-item[href="#report-overview"]');
+    if (el) el.classList.add('active');
+  }
+  if (tab === 'bids') {
+    const el = document.querySelector('.nav-item[href="#bids-open"]');
     if (el) el.classList.add('active');
   }
 

@@ -599,3 +599,110 @@ const REPORT = {
     }
   }
 };
+
+// ============================================================
+//  BID TRACKER — Alabama Food Service Opportunities
+// ============================================================
+const BIDS = {
+
+  verify: [
+    {
+      id: "montgomery-county-detention",
+      agency: "Montgomery County",
+      facility: "Mac Sim Butler Detention Facility",
+      scope: "Inmate food service operations",
+      bid: "IFB 52200-25B-009",
+      status: "verify",
+      statusLabel: "VERIFY STATUS",
+      note: "Issued FY2025 — award status unconfirmed. Call today to determine if still open.",
+      contact: { name: "Myrtle Singleton", title: "Administrative Services Manager", phone: "334-832-7705" },
+      location: "Montgomery, AL"
+    }
+  ],
+
+  upcoming: [
+    {
+      id: "montgomery-municipal-jail",
+      agency: "City of Montgomery",
+      facility: "Municipal Jail",
+      scope: "Full inmate food service operations",
+      bid: "Re-bid of Contract 26-923",
+      status: "upcoming",
+      statusLabel: "COMING UP",
+      contractExpires: "November 21, 2026",
+      expectedRFP: "August–October 2026",
+      actionDate: "2026-08-01",
+      note: "Current contract ends Nov 21, 2026. RFP expected 60–90 days prior. Incumbent unknown — call now to position.",
+      contact: { name: "Ken Barwick", title: "Purchasing", phone: "334-625-2610", email: "kbarwick@montgomeryal.gov" },
+      location: "Montgomery, AL"
+    },
+    {
+      id: "jefferson-county-paca",
+      agency: "Jefferson County / PACA",
+      facility: "County Facilities incl. Youth Detention",
+      scope: "Food supply — frozen, chilled, and dry goods (commodity supply, not full service)",
+      bid: "Annual PACA Supply Bids",
+      status: "upcoming",
+      statusLabel: "COMING UP",
+      contractExpires: "Feb–Sep 2026 (rolling)",
+      expectedRFP: "Rolling — monitor quarterly",
+      actionDate: "2026-06-01",
+      note: "Multiple annual supply bids (BID #14-25, #51-25, etc.) with renewal cycles. Piggyback contracts available to member agencies.",
+      contact: { name: "PACA Purchasing", title: "", phone: "", email: "", url: "paca.jccal.org" },
+      location: "Birmingham, AL"
+    }
+  ],
+
+  radar: [
+    {
+      id: "adoc-canteen",
+      agency: "Alabama Dept. of Corrections",
+      facility: "17 ADOC Facilities Statewide",
+      scope: "Inmate canteen / commissary operations",
+      bid: "RFP 005-25000000002",
+      status: "radar",
+      statusLabel: "ON RADAR",
+      contractExpires: "~2028–2030",
+      expectedRFP: "~2028",
+      note: "Closed Oct 2025, recently awarded. Estimated $500K–$2M/yr. Next cycle in ~3 years.",
+      contact: { name: "Niketta Jeans", title: "ADOC Buyer", phone: "334-353-5515", email: "niketta.jeans@doc.alabama.gov" },
+      location: "Statewide, AL"
+    },
+    {
+      id: "adoc-statewide",
+      agency: "Alabama Dept. of Corrections",
+      facility: "All 27 ADOC Prisons",
+      scope: "Full food service management — all 27 facilities",
+      bid: "Statewide Food Service Contract",
+      status: "radar",
+      statusLabel: "ON RADAR",
+      contractExpires: "~2028–2030",
+      expectedRFP: "~2028",
+      note: "Awarded to Aramark Nov 2025. Largest food service contract in Alabama corrections. Monitor for performance issues or early re-bid.",
+      contact: { name: "ADOC Procurement", title: "", phone: "334-353-3870", email: "", url: "doc.alabama.gov" },
+      location: "Statewide, AL"
+    },
+    {
+      id: "jefferson-county-jail",
+      agency: "Jefferson County Sheriff",
+      facility: "Jefferson County Jail (Birmingham + Bessemer)",
+      scope: "Inmate food service — ~1,100–1,200 daily population",
+      bid: "Unknown — Sheriff discretion",
+      status: "radar",
+      statusLabel: "ON RADAR",
+      contractExpires: "Unknown",
+      expectedRFP: "Unknown — monitor",
+      note: "No public RFP found. Alabama sheriff's food fund law allows direct contracting. Contact Sheriff's Office to learn current vendor and contract term.",
+      contact: { name: "Jefferson County Sheriff's Office", title: "Corrections Division", phone: "", email: "", url: "jeffcosheriffal.com/corrections" },
+      location: "Birmingham, AL"
+    }
+  ],
+
+  portals: [
+    { name: "ADOC RFP Page",         url: "http://www.doc.state.al.us/RequestForProposals" },
+    { name: "Alabama STAARS/AlabamaBuys", url: "https://procurement.staars.alabama.gov" },
+    { name: "BidNet Direct — Alabama", url: "https://www.bidnetdirect.com/alabama" },
+    { name: "Jefferson County PACA",  url: "https://paca.jccal.org" },
+    { name: "Alabama Bid Network",    url: "https://www.alabamabids.com" }
+  ]
+};
