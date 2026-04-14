@@ -559,11 +559,6 @@ body {
   width: 100%;
 }
 
-/* Default tab visibility — JS overrides with inline styles */
-.analysis-section { display: none; }
-.report-section   { display: none; }
-#cost-calculator  { display: none; }
-
 /* Section */
 .section {
   margin-bottom: 56px;
