@@ -980,13 +980,27 @@ function showMenuWeek(weekIdx) {
     html += `<div class="menu-row-label ${labelCls}">${label}</div>`;
     week.days.forEach(day => {
       const meal = day[key];
-      const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(', ') : '';
+      const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(' · ') : '';
       html += `<div class="menu-cell ${cellCls}">
         <div class="menu-cell-main">${meal.main}</div>
         ${sidesStr ? `<div class="menu-cell-sides">${sidesStr}</div>` : ''}
-        <span class="menu-cell-cost">${meal.cost}</span>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px">
+          <span class="menu-cell-cost">${meal.cost}</span>
+          <span class="menu-cell-cal">${meal.cal} cal</span>
+        </div>
       </div>`;
     });
+  });
+
+  // Daily calorie totals row
+  html += '<div class="menu-row-label" style="color:var(--text-400);font-size:9px">Daily Cal</div>';
+  week.days.forEach(day => {
+    const total = (day.breakfast.cal || 0) + (day.lunch.cal || 0) + (day.dinner.cal || 0);
+    const color = total >= 2500 ? 'var(--success)' : 'var(--amber)';
+    html += `<div class="menu-cell" style="text-align:center;vertical-align:middle;border-bottom:none">
+      <span style="font-size:13px;font-weight:800;color:${color}">~${total.toLocaleString()}</span>
+      <div style="font-size:10px;color:var(--text-400)">cal/day</div>
+    </div>`;
   });
 
   html += '</div>';
