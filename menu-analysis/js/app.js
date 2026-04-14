@@ -948,6 +948,58 @@ const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sun
 function renderMenuRotation() {
   showMenuWeek(0);
   renderMealIdeas();
+  renderProteinVendors();
+}
+
+function renderProteinVendors() {
+  const container = document.getElementById('proteinVendorsContainer');
+  if (!container || typeof PROTEIN_VENDORS === 'undefined') return;
+
+  let html = '';
+  PROTEIN_VENDORS.forEach(item => {
+    html += `<div class="vendor-card">
+      <div class="vendor-card-header">
+        <div class="vendor-card-title">${item.name}</div>
+        <div class="vendor-card-meta">
+          <span class="vendor-card-used"><i class="fa-solid fa-utensils" style="opacity:.5;margin-right:4px"></i>${item.usedIn}</span>
+          <span class="vendor-card-serving">Serving: ${item.servingSize}</span>
+        </div>
+      </div>
+      <div class="vendor-tiles">`;
+
+    ['pfg', 'shaver', 'bigDaddy'].forEach(key => {
+      const v = item.vendors[key];
+      const isBest    = v.status === 'best';
+      const isCurrent = v.status === 'current';
+      const isQuote   = v.status === 'quote';
+
+      let badge = '';
+      if (isBest)    badge = '<span class="vendor-badge best">Best Price</span>';
+      else if (isCurrent) badge = '<span class="vendor-badge current">Current</span>';
+      else if (isQuote)   badge = '<span class="vendor-badge quote">Get Quote</span>';
+      else               badge = '<span class="vendor-badge avail">Available</span>';
+
+      const priceHtml = v.perServing != null
+        ? `<div class="vendor-tile-price">$${v.perServing.toFixed(2)}<span class="vendor-tile-unit">/serving</span></div>`
+        : `<div class="vendor-tile-price tbd">—</div>`;
+
+      const packHtml = v.pack
+        ? `<div class="vendor-tile-pack">${v.pack}${v.casePrice ? ` · $${v.casePrice.toFixed(2)}/case` : ''}</div>`
+        : '';
+
+      html += `<div class="vendor-tile${isBest ? ' tile-best' : ''}${isQuote ? ' tile-quote' : ''}">
+          <div class="vendor-tile-label">${v.label}</div>
+          ${badge}
+          ${priceHtml}
+          ${packHtml}
+          <div class="vendor-tile-note">${v.note}</div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  container.innerHTML = html;
 }
 
 function showMenuWeek(weekIdx) {
@@ -978,9 +1030,16 @@ function showMenuWeek(weekIdx) {
   mealTypes.forEach(({ key, label, cls }) => {
     const [labelCls, cellCls] = cls.split(' ');
     html += `<div class="menu-row-label ${labelCls}">${label}</div>`;
+    const alts = (typeof MEAL_ALTS !== 'undefined' && MEAL_ALTS[key]) ? MEAL_ALTS[key] : [];
     week.days.forEach(day => {
       const meal = day[key];
       const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(' · ') : '';
+      const altOpts = alts.filter(a => a.main !== meal.main);
+      const altHtml = altOpts.length
+        ? `<div class="menu-cell-alts"><span class="menu-cell-alt-label">Swap:</span>${altOpts.slice(0,3).map(a =>
+            `<span class="menu-cell-alt-chip" title="${a.main} · ${a.cost}">${a.protein}</span>`
+          ).join('')}</div>`
+        : '';
       html += `<div class="menu-cell ${cellCls}">
         <div class="menu-cell-main">${meal.main}</div>
         ${meal.protein ? `<span class="menu-cell-protein"><i class="fa-solid fa-drumstick-bite"></i> ${meal.protein}</span>` : ''}
@@ -989,6 +1048,7 @@ function showMenuWeek(weekIdx) {
           <span class="menu-cell-cost">${meal.cost}</span>
           <span class="menu-cell-cal">${meal.cal} cal</span>
         </div>
+        ${altHtml}
       </div>`;
     });
   });

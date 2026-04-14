@@ -746,11 +746,11 @@ const MENU_ROTATION = [
       { day: "Friday",
         breakfast: { main: "Grits + Sausage Patty",          protein: "Sausage",       sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.52", cal: 640 },
         lunch:     { main: "Mac & Cheese + Bologna",         protein: "Bologna",       sides: ["Cornbread (2)","Peas & Carrots","Cake"],          cost: "$0.65", cal: 1060 },
-        dinner:    { main: "Salami Sandwich",                protein: "Salami",        sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.65", cal: 840 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.62", cal: 850 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",        protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.48", cal: 620 },
         lunch:     { main: "Pasta & Veg + Bologna",          protein: "Bologna",       sides: ["Cornbread (2)","Green Beans","Cake"],             cost: "$0.62", cal: 1020 },
-        dinner:    { main: "PB&J + Boiled Egg",              protein: "PB & Egg",      sides: ["Cornbread","Mixed Veg","Cake"],                   cost: "$0.62", cal: 860 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Mixed Veg","Cake"],                   cost: "$0.62", cal: 850 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",       protein: "Eggs & Sausage",sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.55", cal: 710 },
         lunch:     { main: "Mashed Potatoes & Gravy + Sausage",protein:"Sausage",      sides: ["Cornbread (2)","Mixed Veg","Cake"],               cost: "$0.68", cal: 1080 },
@@ -767,7 +767,7 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",        protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.48", cal: 620 },
         lunch:     { main: "Pasta w/ Meat Sauce",            protein: "Sausage",       sides: ["Cornbread (2)","Peas & Carrots","Cake"],          cost: "$0.65", cal: 1040 },
-        dinner:    { main: "Salami Sandwich",                protein: "Salami",        sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.65", cal: 840 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.62", cal: 850 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",       protein: "Eggs & Sausage",sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.55", cal: 710 },
         lunch:     { main: "Northern Beans & Rice + Sausage",protein: "Sausage",       sides: ["Cornbread (2)","Mixed Veg","Cake"],               cost: "$0.65", cal: 1090 },
@@ -775,7 +775,7 @@ const MENU_ROTATION = [
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",          protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.45", cal: 600 },
         lunch:     { main: "Mac & Cheese + Bologna",         protein: "Bologna",       sides: ["Cornbread (2)","Green Beans","Cake"],             cost: "$0.65", cal: 1060 },
-        dinner:    { main: "PB&J + Boiled Egg",              protein: "PB & Egg",      sides: ["Cornbread","Mixed Veg","Cake"],                   cost: "$0.62", cal: 860 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Mixed Veg","Cake"],                   cost: "$0.62", cal: 850 } },
       { day: "Friday",
         breakfast: { main: "Grits + Sausage Patty",          protein: "Sausage",       sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.52", cal: 640 },
         lunch:     { main: "Mashed Potatoes & Gravy + Sausage",protein:"Sausage",      sides: ["Cornbread (2)","Peas & Carrots","Cake"],          cost: "$0.68", cal: 1080 },
@@ -796,7 +796,7 @@ const MENU_ROTATION = [
       { day: "Monday",
         breakfast: { main: "Grits + Sausage Patty",          protein: "Sausage",       sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.52", cal: 640 },
         lunch:     { main: "Northern Beans & Rice + Sausage",protein: "Sausage",       sides: ["Cornbread (2)","Peas & Carrots","Cake"],          cost: "$0.65", cal: 1090 },
-        dinner:    { main: "Salami Sandwich",                protein: "Salami",        sides: ["Cornbread","Mixed Veg","Cake"],                    cost: "$0.65", cal: 840 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Mixed Veg","Cake"],                    cost: "$0.62", cal: 850 } },
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",        protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.48", cal: 620 },
         lunch:     { main: "Mac & Cheese + Bologna",         protein: "Bologna",       sides: ["Cornbread (2)","Green Beans","Cake"],             cost: "$0.65", cal: 1060 },
@@ -804,7 +804,7 @@ const MENU_ROTATION = [
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",       protein: "Eggs & Sausage",sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.55", cal: 710 },
         lunch:     { main: "Pasta w/ Meat Sauce",            protein: "Sausage",       sides: ["Cornbread (2)","Mixed Veg","Cake"],               cost: "$0.65", cal: 1040 },
-        dinner:    { main: "PB&J + Boiled Egg",              protein: "PB & Egg",      sides: ["Cornbread","Green Beans","Cake"],                 cost: "$0.62", cal: 860 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Green Beans","Cake"],                 cost: "$0.62", cal: 850 } },
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",          protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.45", cal: 600 },
         lunch:     { main: "Mashed Potatoes & Gravy + Sausage",protein:"Sausage",      sides: ["Cornbread (2)","Green Beans","Cake"],             cost: "$0.68", cal: 1080 },
@@ -833,7 +833,7 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",        protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.48", cal: 620 },
         lunch:     { main: "Mashed Potatoes & Gravy + Sausage",protein:"Sausage",      sides: ["Cornbread (2)","Peas & Carrots","Cake"],          cost: "$0.68", cal: 1080 },
-        dinner:    { main: "Salami Sandwich",                protein: "Salami",        sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.65", cal: 840 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Green Beans","Cake"],                  cost: "$0.62", cal: 850 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",       protein: "Eggs & Sausage",sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.55", cal: 710 },
         lunch:     { main: "Mac & Cheese + Bologna",         protein: "Bologna",       sides: ["Cornbread (2)","Mixed Veg","Cake"],               cost: "$0.65", cal: 1060 },
@@ -841,7 +841,7 @@ const MENU_ROTATION = [
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",          protein: "Eggs",          sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.45", cal: 600 },
         lunch:     { main: "Pinto Beans & Rice + Sausage",   protein: "Sausage",       sides: ["Cornbread (2)","Green Beans","Cake"],             cost: "$0.65", cal: 1090 },
-        dinner:    { main: "PB&J + Boiled Egg",              protein: "PB & Egg",      sides: ["Cornbread","Peas & Carrots","Cake"],              cost: "$0.62", cal: 860 } },
+        dinner:    { main: "Burger Patty Sandwich",          protein: "Burger Patty",  sides: ["Cornbread","Peas & Carrots","Cake"],              cost: "$0.62", cal: 850 } },
       { day: "Friday",
         breakfast: { main: "Grits + Sausage Patty",          protein: "Sausage",       sides: ["Bread (2 sl)","Jelly","Drink Mix"],               cost: "$0.52", cal: 640 },
         lunch:     { main: "Northern Beans & Rice + Sausage",protein: "Sausage",       sides: ["Cornbread (2)","Mixed Veg","Cake"],               cost: "$0.65", cal: 1090 },
@@ -894,5 +894,141 @@ const MEAL_IDEAS = {
     { name: "Blackeye Peas",          cost: "$0.20", note: "Shaver 6/10 ($37.87) — New Year's tradition, rotate in January" },
     { name: "Breaded Okra",           cost: "$0.20", note: "Shaver 20# ($26.77) — Southern staple, pairs with any protein" },
     { name: "Coleslaw Mix",           cost: "$0.15", note: "Shredded cabbage + mayo + vinegar — fresh side option, low prep" }
+  ]
+};
+
+
+/* ============================================================
+   PROTEIN VENDOR COMPARISON
+   PFG = existing distributor  |  Shaver = ISP catalog  |  Big Daddy = bulk direct
+   perServing = oz portion listed in MENU_ROTATION
+   ============================================================ */
+const PROTEIN_VENDORS = [
+  {
+    name: "Breakfast Sausage Patty",
+    icon: "fa-circle",
+    usedIn: "Breakfast — Grits+Sausage · Eggs+Sausage",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 84.40, perLb: 2.11, perServing: 0.26, note: "Verify current contract price",    status: "current" },
+      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 82.54, perLb: 2.06, perServing: 0.26, note: "Sausage Bkfst Patty FC 1oz · ISP",  status: "available" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Bologna (Chicken)",
+    icon: "fa-circle",
+    usedIn: "Lunch — Mac & Cheese · Pasta & Veg",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "3/8 LB",   casePrice: 41.50, perLb: 1.73, perServing: 0.22, note: "Verify current contract price",    status: "available" },
+      shaver:   { label: "Shaver",    pack: "3/8 LB",   casePrice: 39.02, perLb: 1.63, perServing: 0.20, note: "Bologna Logs Chik · ISP",           status: "best" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Salami (Chicken)",
+    icon: "fa-circle",
+    usedIn: "Dinner — Salami Sandwich",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "2/10 LB",  casePrice: 34.20, perLb: 1.71, perServing: 0.21, note: "Verify current contract price",    status: "current" },
+      shaver:   { label: "Shaver",    pack: "2/10 LB",  casePrice: 31.82, perLb: 1.59, perServing: 0.20, note: "Salami Logs Chik · ISP",            status: "best" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Chicken Patty (3 oz)",
+    icon: "fa-circle",
+    usedIn: "Dinner — Chicken Patty Sandwich",
+    servingSize: "3 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 89.50, perLb: 2.24, perServing: 0.42, note: "Verify current contract price",    status: "current" },
+      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 86.29, perLb: 2.16, perServing: 0.41, note: "Chicken Patty BRD FC 3oz · ISP",   status: "best" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Turkey (Deli)",
+    icon: "fa-circle",
+    usedIn: "Dinner — Turkey Sandwich",
+    servingSize: "3 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "2/10 LB",  casePrice: 52.00, perLb: 2.60, perServing: 0.49, note: "Verify current contract price",    status: "current" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote","status": "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Peanut Butter",
+    icon: "fa-circle",
+    usedIn: "Dinner — PB&J + Boiled Egg",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "35 LB",    casePrice: 49.20, perLb: 1.41, perServing: 0.18, note: "Verify current contract price",    status: "available" },
+      shaver:   { label: "Shaver",    pack: "35 LB",    casePrice: 47.01, perLb: 1.34, perServing: 0.17, note: "Peanut Butter Creamy 35# · ISP",    status: "best" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Eggs (Whole)",
+    icon: "fa-circle",
+    usedIn: "Breakfast — Boiled · Scrambled",
+    servingSize: "2 eggs",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "15 doz",   casePrice: 28.50, perLb: null, perServing: 0.10, note: "Market price — verify weekly",      status: "current" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote", status: "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "30 doz",   casePrice: null,  perLb: null, perServing: null,  note: "Bulk flat — request quote",         status: "quote" }
+    }
+  },
+  {
+    name: "Sausage Crumble (Lunch)",
+    icon: "fa-circle",
+    usedIn: "Lunch — Beans & Rice · Pasta w/ Meat Sauce",
+    servingSize: "2 oz",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "6/5 LB",   casePrice: 63.50, perLb: 2.12, perServing: 0.27, note: "Verify current contract price",    status: "current" },
+      shaver:   { label: "Shaver",    pack: "6/5 LB",   casePrice: 61.08, perLb: 2.04, perServing: 0.26, note: "Sausage Hot Link / Polish FC · ISP","status": "best" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+    }
+  },
+  {
+    name: "Burger Patty",
+    icon: "fa-circle",
+    usedIn: "Dinner — Burger Patty Sandwich (2× / week)",
+    servingSize: "1 patty (2 oz)",
+    vendors: {
+      pfg:      { label: "PFG",       pack: "Per unit", casePrice: null,  perLb: null, perServing: 0.45, note: "$0.45 each — verify case qty & price", status: "current" },
+      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Request current quote",               status: "quote" },
+      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",                  status: "quote" }
+    }
+  }
+];
+
+/* ============================================================
+   MEAL ALTERNATIVES  —  shown as swap chips in the menu grid
+   Each cell displays these as quick-reference protein options.
+   ============================================================ */
+const MEAL_ALTS = {
+  breakfast: [
+    { main: "Grits + Sausage Patty",    protein: "Sausage",        cost: "$0.52" },
+    { main: "Oatmeal + Boiled Eggs",    protein: "Eggs",           cost: "$0.48" },
+    { main: "Eggs Scrambled + Sausage", protein: "Eggs & Sausage", cost: "$0.55" },
+    { main: "Grits + Boiled Eggs",      protein: "Eggs",           cost: "$0.45" }
+  ],
+  lunch: [
+    { main: "Pinto Beans & Rice + Sausage",      protein: "Sausage",  cost: "$0.65" },
+    { main: "Mac & Cheese + Bologna",            protein: "Bologna",  cost: "$0.65" },
+    { main: "Pasta w/ Meat Sauce",               protein: "Sausage",  cost: "$0.65" },
+    { main: "Northern Beans & Rice + Sausage",   protein: "Sausage",  cost: "$0.65" },
+    { main: "Mashed Potatoes & Gravy + Sausage", protein: "Sausage",  cost: "$0.68" },
+    { main: "Pasta & Veg + Bologna",             protein: "Bologna",  cost: "$0.62" }
+  ],
+  dinner: [
+    { main: "Turkey Sandwich",         protein: "Turkey",        cost: "$0.72" },
+    { main: "Salami Sandwich",         protein: "Salami",        cost: "$0.65" },
+    { main: "Chicken Patty Sandwich",  protein: "Chicken Patty", cost: "$0.78" },
+    { main: "Burger Patty Sandwich",   protein: "Burger Patty",  cost: "$0.62" },
+    { main: "PB&J + Boiled Egg",       protein: "PB & Egg",      cost: "$0.62" }
   ]
 };
