@@ -983,6 +983,7 @@ function showMenuWeek(weekIdx) {
       const sidesStr = meal.sides && meal.sides.length ? meal.sides.join(' · ') : '';
       html += `<div class="menu-cell ${cellCls}">
         <div class="menu-cell-main">${meal.main}</div>
+        ${meal.protein ? `<span class="menu-cell-protein"><i class="fa-solid fa-drumstick-bite"></i> ${meal.protein}</span>` : ''}
         ${sidesStr ? `<div class="menu-cell-sides">${sidesStr}</div>` : ''}
         <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px">
           <span class="menu-cell-cost">${meal.cost}</span>
@@ -992,18 +993,33 @@ function showMenuWeek(weekIdx) {
     });
   });
 
-  // Daily calorie totals row
-  html += '<div class="menu-row-label" style="color:var(--text-400);font-size:9px">Daily Cal</div>';
+  // Daily totals row
+  html += '<div class="menu-row-label" style="color:var(--text-400);font-size:9px;line-height:1.3">Daily<br>Total</div>';
   week.days.forEach(day => {
-    const total = (day.breakfast.cal || 0) + (day.lunch.cal || 0) + (day.dinner.cal || 0);
-    const color = total >= 2500 ? 'var(--success)' : 'var(--amber)';
-    html += `<div class="menu-cell" style="text-align:center;vertical-align:middle;border-bottom:none">
-      <span style="font-size:13px;font-weight:800;color:${color}">~${total.toLocaleString()}</span>
-      <div style="font-size:10px;color:var(--text-400)">cal/day</div>
+    const totalCal  = (day.breakfast.cal || 0) + (day.lunch.cal || 0) + (day.dinner.cal || 0);
+    const totalCost = (parseFloat(day.breakfast.cost.replace('$','')) +
+                       parseFloat(day.lunch.cost.replace('$','')) +
+                       parseFloat(day.dinner.cost.replace('$',''))).toFixed(2);
+    const calColor  = totalCal >= 2500 ? 'var(--success)' : 'var(--amber)';
+    html += `<div class="menu-cell" style="text-align:center;padding:10px 6px;border-bottom:none">
+      <div style="font-size:12px;font-weight:800;color:${calColor}">~${totalCal.toLocaleString()}</div>
+      <div style="font-size:10px;color:var(--text-400);margin-bottom:4px">cal</div>
+      <div style="font-size:12px;font-weight:800;color:var(--text-200)">$${totalCost}</div>
+      <div style="font-size:10px;color:var(--text-400)">/ day</div>
     </div>`;
   });
 
   html += '</div>';
+
+  // Weekly summary bar
+  const allMeals = week.days.flatMap(d => [d.breakfast, d.lunch, d.dinner]);
+  const weekAvgCost = (allMeals.reduce((s,m) => s + parseFloat(m.cost.replace('$','')), 0) / allMeals.length).toFixed(2);
+  const weekAvgCal  = Math.round(allMeals.reduce((s,m) => s + (m.cal||0), 0) / allMeals.length);
+  html += `<div class="menu-week-summary">
+    <span><i class="fa-solid fa-drumstick-bite" style="color:var(--success);margin-right:5px"></i>Protein in every meal</span>
+    <span><i class="fa-solid fa-dollar-sign" style="color:var(--accent);margin-right:4px"></i>Avg <strong>$${weekAvgCost}</strong> / meal</span>
+    <span><i class="fa-solid fa-fire" style="color:var(--amber);margin-right:4px"></i>Avg <strong>${weekAvgCal.toLocaleString()}</strong> cal / meal</span>
+  </div>`;
   grid.innerHTML = html;
 }
 
