@@ -1237,17 +1237,120 @@ function renderProteinVendors() {
   container.innerHTML = html;
 }
 
+/* ── Price Reference Modal ────────────────────────────────── */
+function showPriceRef(refKey) {
+  const data = window._pvtRefs && window._pvtRefs[refKey];
+  if (!data) return;
+
+  const modal   = document.getElementById('price-ref-modal');
+  const overlay = document.getElementById('price-ref-overlay');
+  const content = document.getElementById('price-ref-content');
+  if (!modal || !content) return;
+
+  const { protein, serving, vendorKey, vendorLabel, pack, casePrice, perLb, perServing, note, status, priceVerified, ref } = data;
+
+  const VENDOR_COLORS = { pfg: '#60a5fa', shaver: '#34d399', bigDaddy: '#f59e0b' };
+  const color = VENDOR_COLORS[vendorKey] || 'var(--accent)';
+
+  const fmtD = v => v != null ? '$' + v.toFixed(2) : '—';
+  const fmtT = v => v != null ? '$' + v.toFixed(3) : '—';
+
+  // Verification badge
+  const verifiedBadge = priceVerified
+    ? `<span class="prf-badge prf-verified"><i class="fa-solid fa-circle-check"></i> Verified from source document</span>`
+    : `<span class="prf-badge prf-unverified"><i class="fa-solid fa-triangle-exclamation"></i> Estimated — confirm before use</span>`;
+
+  // Source block
+  const sourceBlock = ref ? `
+    <div class="prf-source-block">
+      <div class="prf-source-label">Source Document</div>
+      <div class="prf-source-doc"><i class="fa-solid fa-file-invoice" style="margin-right:8px;opacity:.6"></i>${ref.sourceDoc}</div>
+      <div class="prf-source-date"><i class="fa-solid fa-calendar" style="margin-right:8px;opacity:.5"></i>${ref.sourceDate}</div>
+    </div>
+    <div class="prf-item-block">
+      <div class="prf-source-label">Item Description</div>
+      <div class="prf-item-desc">${ref.itemDesc}</div>
+    </div>
+    <div class="prf-calc-block">
+      <div class="prf-source-label">Price Calculation</div>
+      <div class="prf-calc-detail"><i class="fa-solid fa-calculator" style="margin-right:8px;opacity:.5"></i>${ref.calcDetail}</div>
+      ${ref.invoiceLineTotal ? `<div class="prf-line-total"><i class="fa-solid fa-receipt" style="margin-right:8px;opacity:.5"></i>Invoice line total: <strong>${ref.invoiceLineTotal}</strong></div>` : ''}
+    </div>
+    ${ref.caveat ? `<div class="prf-caveat"><i class="fa-solid fa-circle-exclamation" style="margin-right:7px;color:var(--amber)"></i>${ref.caveat}</div>` : ''}
+    ${ref.bdInvoiceSection ? `<div class="prf-bd-link"><i class="fa-solid fa-file-invoice-dollar" style="margin-right:7px;color:var(--amber)"></i>Full invoice detail available in the <strong>Big Daddy Invoice</strong> section of this report.</div>` : ''}
+  ` : `<div class="prf-no-ref"><i class="fa-solid fa-circle-info" style="margin-right:7px;color:var(--text-400)"></i>No source document on file. A quote has been requested.</div>`;
+
+  // Price tiles
+  const priceRows = [];
+  if (pack)       priceRows.push(`<div class="prf-kpi"><div class="prf-kpi-val">${pack}</div><div class="prf-kpi-lbl">Pack Size</div></div>`);
+  if (casePrice)  priceRows.push(`<div class="prf-kpi"><div class="prf-kpi-val">${fmtD(casePrice)}</div><div class="prf-kpi-lbl">Per Case</div></div>`);
+  if (perLb)      priceRows.push(`<div class="prf-kpi"><div class="prf-kpi-val">${fmtT(perLb)}</div><div class="prf-kpi-lbl">Per LB</div></div>`);
+  if (perServing) priceRows.push(`<div class="prf-kpi prf-kpi-serving"><div class="prf-kpi-val" style="color:${color}">${fmtD(perServing)}</div><div class="prf-kpi-lbl">Per Serving<br><small>(${serving})</small></div></div>`);
+
+  content.innerHTML = `
+    <div class="prf-header" style="border-left:4px solid ${color}">
+      <div class="prf-header-top">
+        <div>
+          <div class="prf-protein-name">${protein}</div>
+          <div class="prf-vendor-name" style="color:${color}">${vendorLabel}</div>
+        </div>
+        ${verifiedBadge}
+      </div>
+      ${priceRows.length ? `<div class="prf-kpi-row">${priceRows.join('')}</div>` : ''}
+    </div>
+    <div class="prf-body">
+      ${sourceBlock}
+    </div>`;
+
+  overlay.classList.add('open');
+  modal.classList.add('open');
+  // Trap focus
+  setTimeout(() => modal.querySelector('.prf-close').focus(), 50);
+}
+
+function closePriceRef() {
+  document.getElementById('price-ref-modal').classList.remove('open');
+  document.getElementById('price-ref-overlay').classList.remove('open');
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePriceRef(); });
+
 function renderProteinComparison() {
   const container = document.getElementById('pfgSummaryContainer');
   if (!container || typeof PROTEIN_VENDORS === 'undefined') return;
 
-  const VENDOR_KEYS = ['pfg', 'shaver', 'bigDaddy'];
+  const VENDOR_KEYS   = ['pfg', 'shaver', 'bigDaddy'];
   const VENDOR_LABELS = { pfg: 'PFG', shaver: 'Shaver', bigDaddy: 'Big Daddy' };
+
+  // Build a lookup table so onclick can find the right data
+  window._pvtRefs = {};
+  PROTEIN_VENDORS.forEach(item => {
+    VENDOR_KEYS.forEach(key => {
+      const v = item.vendors[key];
+      const refKey = `${item.name}||${key}`;
+      window._pvtRefs[refKey] = {
+        protein:       item.name,
+        serving:       item.servingSize,
+        usedIn:        item.usedIn,
+        vendorKey:     key,
+        vendorLabel:   v.label,
+        pack:          v.pack,
+        casePrice:     v.casePrice,
+        perLb:         v.perLb,
+        perServing:    v.perServing,
+        note:          v.note,
+        status:        v.status,
+        priceVerified: v.priceVerified || false,
+        ref:           v.ref || null
+      };
+    });
+  });
 
   let html = `<div class="pvt-wrap">
     <div class="pvt-header">
       <div class="pvt-title"><i class="fa-solid fa-table" style="margin-right:8px;opacity:.6"></i>Full Vendor Comparison — All Proteins at a Glance</div>
-      <div class="pvt-subtitle">Every protein in the current rotation · per-serving cost · best price highlighted green</div>
+      <div class="pvt-subtitle">Every protein in the current rotation &nbsp;&middot;&nbsp; per-serving cost &nbsp;&middot;&nbsp; <strong>click any price</strong> to see source document &amp; calculation</div>
     </div>
     <div class="pvt-scroll">
     <table class="pvt-table">
@@ -1255,9 +1358,9 @@ function renderProteinComparison() {
         <tr>
           <th class="pvt-th pvt-th-name">Protein</th>
           <th class="pvt-th pvt-th-srv">Serving</th>
-          <th class="pvt-th pvt-th-pfg">PFG</th>
-          <th class="pvt-th pvt-th-shaver">Shaver ISP</th>
-          <th class="pvt-th pvt-th-bd">Big Daddy</th>
+          <th class="pvt-th pvt-th-pfg">PFG <span class="pvt-th-hint">click $</span></th>
+          <th class="pvt-th pvt-th-shaver">Shaver ISP <span class="pvt-th-hint">click $</span></th>
+          <th class="pvt-th pvt-th-bd">Big Daddy <span class="pvt-th-hint">click $</span></th>
           <th class="pvt-th pvt-th-best">Best Price</th>
           <th class="pvt-th pvt-th-use">Menu Use</th>
         </tr>
@@ -1265,21 +1368,31 @@ function renderProteinComparison() {
       <tbody>`;
 
   PROTEIN_VENDORS.forEach(item => {
-    const prices = VENDOR_KEYS.map(k => item.vendors[k].perServing);
+    const prices    = VENDOR_KEYS.map(k => item.vendors[k].perServing);
     const validPrices = prices.filter(p => p != null);
-    const minPrice = validPrices.length ? Math.min(...validPrices) : null;
-    const bestKey  = minPrice != null ? VENDOR_KEYS.find(k => item.vendors[k].perServing === minPrice) : null;
+    const minPrice  = validPrices.length ? Math.min(...validPrices) : null;
+    const bestKey   = minPrice != null ? VENDOR_KEYS.find(k => item.vendors[k].perServing === minPrice) : null;
 
     const fmtCell = (key) => {
       const v = item.vendors[key];
-      if (v.perServing == null) return `<td class="pvt-td pvt-tbd">—<div class="pvt-quote">Get Quote</div></td>`;
-      const isBest = v.perServing === minPrice;
-      return `<td class="pvt-td${isBest ? ' pvt-best-cell' : ''}">$${v.perServing.toFixed(2)}${isBest ? '<span class="pvt-best-star">★</span>' : ''}</td>`;
+      const refKey = `${item.name}||${key}`.replace(/'/g, "\\'");
+      if (v.perServing == null) {
+        return `<td class="pvt-td pvt-tbd" onclick="showPriceRef('${refKey}')" title="Click for details">
+          <span class="pvt-nd">—</span>
+          <div class="pvt-quote-btn">View Details</div>
+        </td>`;
+      }
+      const isBest    = v.perServing === minPrice;
+      const isVerified = v.priceVerified;
+      return `<td class="pvt-td pvt-price-cell${isBest ? ' pvt-best-cell' : ''}" onclick="showPriceRef('${refKey}')" title="Click to view source &amp; calculation">
+        <span class="pvt-price-val">$${v.perServing.toFixed(2)}</span>${isBest ? '<span class="pvt-best-star">★</span>' : ''}
+        ${isVerified ? '<span class="pvt-verified-dot" title="Verified from source document"></span>' : '<span class="pvt-unverified-dot" title="Estimated — click to see notes"></span>'}
+        <div class="pvt-click-hint">See source</div>
+      </td>`;
     };
 
     const savingVsPfg = (item.vendors.pfg.perServing != null && item.vendors.bigDaddy.perServing != null)
-      ? (item.vendors.pfg.perServing - item.vendors.bigDaddy.perServing)
-      : null;
+      ? (item.vendors.pfg.perServing - item.vendors.bigDaddy.perServing) : null;
     const savingTag = savingVsPfg != null && savingVsPfg > 0.005
       ? `<span class="pvt-save-tag">-$${savingVsPfg.toFixed(2)} vs PFG</span>` : '';
 
@@ -1297,7 +1410,14 @@ function renderProteinComparison() {
     </tr>`;
   });
 
-  html += `</tbody></table></div></div>`;
+  html += `</tbody></table></div>
+    <div class="pvt-legend">
+      <span class="pvt-leg-item"><span class="pvt-verified-dot"></span> Verified from invoice/price list</span>
+      <span class="pvt-leg-item"><span class="pvt-unverified-dot"></span> Estimated — confirm before use</span>
+      <span class="pvt-leg-item"><span class="pvt-best-star" style="font-size:12px">★</span> Lowest price in row</span>
+      <span class="pvt-leg-item pvt-leg-click"><i class="fa-solid fa-hand-pointer" style="margin-right:4px"></i>Click any price to see source document &amp; calculation</span>
+    </div>
+  </div>`;
   container.innerHTML = html;
 }
 

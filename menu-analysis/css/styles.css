@@ -2828,6 +2828,298 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
 }
 
 /* ============================================================
+   PROTEIN TABLE — CLICKABLE PRICE CELLS  (additions to .pvt-*)
+   ============================================================ */
+
+/* Clickable price cells */
+.pvt-price-cell {
+  cursor: pointer;
+  position: relative;
+  transition: background .12s, transform .08s;
+}
+.pvt-price-cell:hover {
+  background: rgba(255,255,255,0.06) !important;
+  transform: scale(1.04);
+  z-index: 1;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.pvt-best-cell.pvt-price-cell:hover {
+  background: rgba(16,185,129,0.18) !important;
+}
+.pvt-tbd {
+  cursor: pointer;
+  transition: background .12s;
+}
+.pvt-tbd:hover { background: rgba(255,255,255,0.04) !important; }
+
+.pvt-price-val  { font-size: 13px; font-weight: 800; }
+.pvt-click-hint {
+  display: none;
+  font-size: 9px;
+  color: var(--text-400);
+  margin-top: 2px;
+  font-weight: 400;
+  letter-spacing: .03em;
+}
+.pvt-price-cell:hover .pvt-click-hint,
+.pvt-tbd:hover .pvt-click-hint { display: block; }
+
+/* Quotes in non-price cells */
+.pvt-nd { font-size: 13px; font-weight: 600; color: var(--text-400); }
+.pvt-quote-btn {
+  display: none;
+  font-size: 9px;
+  color: var(--accent);
+  margin-top: 2px;
+  font-weight: 600;
+}
+.pvt-tbd:hover .pvt-quote-btn { display: block; }
+
+/* Verification dots */
+.pvt-verified-dot, .pvt-unverified-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.pvt-verified-dot   { background: var(--green); }
+.pvt-unverified-dot { background: var(--amber); }
+
+/* Column header hint */
+.pvt-th-hint {
+  display: block;
+  font-size: 8px;
+  font-weight: 400;
+  color: var(--text-400);
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 1px;
+}
+
+/* Legend bar */
+.pvt-legend {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+  font-size: 11px;
+  color: var(--text-400);
+}
+.pvt-leg-item { display: flex; align-items: center; gap: 5px; }
+.pvt-leg-click { margin-left: auto; color: var(--accent); font-weight: 600; }
+
+/* ============================================================
+   PRICE REFERENCE MODAL  (.prf-*)
+   ============================================================ */
+
+#price-ref-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 900;
+  backdrop-filter: blur(2px);
+}
+#price-ref-overlay.open { display: block; }
+
+#price-ref-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%) scale(0.96);
+  width: min(560px, 94vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  z-index: 901;
+  transition: transform .18s ease, opacity .18s ease;
+  opacity: 0;
+}
+#price-ref-modal.open {
+  display: block;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.prf-close {
+  position: absolute;
+  top: 12px; right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-400);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color .1s, background .1s;
+}
+.prf-close:hover { color: var(--text-100); background: var(--bg-card-hover); }
+
+/* Header */
+.prf-header {
+  padding: 20px 20px 16px 20px;
+  border-bottom: 1px solid var(--border);
+  padding-left: 20px;
+  margin-left: 0;
+  border-radius: 14px 14px 0 0;
+  background: var(--bg-surface);
+}
+.prf-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.prf-protein-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-100);
+  line-height: 1.2;
+}
+.prf-vendor-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 3px;
+  letter-spacing: .02em;
+}
+
+/* Verification badges */
+.prf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.prf-verified   { background: rgba(16,185,129,.12); color: var(--green); border: 1px solid rgba(16,185,129,.3); }
+.prf-unverified { background: rgba(245,158,11,.12); color: var(--amber); border: 1px solid rgba(245,158,11,.3); }
+
+/* KPI tiles in header */
+.prf-kpi-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.prf-kpi {
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  min-width: 80px;
+}
+.prf-kpi-serving {
+  border-color: var(--border-accent);
+  background: var(--accent-dim);
+}
+.prf-kpi-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-100);
+  line-height: 1.2;
+}
+.prf-kpi-lbl {
+  font-size: 9px;
+  color: var(--text-400);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 2px;
+}
+.prf-kpi-lbl small { font-size: 9px; display: block; }
+
+/* Body sections */
+.prf-body { padding: 18px 20px 20px; }
+
+.prf-source-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-400);
+  margin-bottom: 5px;
+}
+.prf-source-block,
+.prf-item-block,
+.prf-calc-block {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.prf-source-doc {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-100);
+  margin-bottom: 4px;
+}
+.prf-source-date {
+  font-size: 12px;
+  color: var(--text-300);
+}
+.prf-item-desc {
+  font-size: 13px;
+  color: var(--text-200);
+  line-height: 1.5;
+}
+.prf-calc-detail {
+  font-size: 13px;
+  font-family: 'Space Grotesk', monospace;
+  color: var(--text-200);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.prf-line-total {
+  font-size: 12px;
+  color: var(--text-300);
+  margin-top: 6px;
+}
+.prf-caveat {
+  font-size: 12px;
+  color: var(--amber);
+  background: rgba(245,158,11,.08);
+  border: 1px solid rgba(245,158,11,.2);
+  border-radius: 7px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.prf-bd-link {
+  font-size: 12px;
+  color: var(--text-300);
+  background: rgba(245,158,11,.06);
+  border: 1px solid rgba(245,158,11,.15);
+  border-radius: 7px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.prf-no-ref {
+  font-size: 13px;
+  color: var(--text-400);
+  padding: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* ============================================================
    PRINT LAYOUT — 4-Week Menu Rotation
    ============================================================ */
 

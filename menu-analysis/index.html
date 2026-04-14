@@ -1599,6 +1599,15 @@
 
 <div id="toast"></div>
 
+<!-- ══════════ PRICE REFERENCE MODAL ══════════
+     Populated by showPriceRef() in app.js when a price cell is clicked.
+     ══════════════════════════════════════════ -->
+<div id="price-ref-overlay" onclick="closePriceRef()"></div>
+<div id="price-ref-modal" role="dialog" aria-modal="true">
+  <button class="prf-close" onclick="closePriceRef()" title="Close">&times;</button>
+  <div id="price-ref-content"></div>
+</div>
+
 <!-- ══════════ PRINT-ONLY MENU ══════════
      Hidden on screen. Shown ONLY when printing.
      Populated by printMenu() / renderPrintMenu() in app.js.

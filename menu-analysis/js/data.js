@@ -901,9 +901,21 @@ const MEAL_IDEAS = {
 
 
 /* ============================================================
+   VENDOR SOURCE DOCUMENTS
+   Used by the price-reference modal to cite where each price comes from.
+   ============================================================ */
+const VENDOR_SOURCES = {
+  pfg:      { key: "pfg",      name: "PFG",        fullName: "Performance Food Group",    doc: "Invoice #6776963",         date: "April 7, 2026"    },
+  shaver:   { key: "shaver",   name: "Shaver ISP", fullName: "Shaver Foods ISP Price List", doc: "ISP Price List",         date: "March 1–31, 2026" },
+  bigDaddy: { key: "bigDaddy", name: "Big Daddy",  fullName: "Big Daddy Foods, Inc.",     doc: "Sales Order BA24865",      date: "April 9, 2026"    }
+};
+
+/* ============================================================
    PROTEIN VENDOR COMPARISON
    PFG = existing distributor  |  Shaver = ISP catalog  |  Big Daddy = bulk direct
    perServing = oz portion listed in MENU_ROTATION
+   ref = source citation for price-reference modal
+   priceVerified = true if pulled directly from an invoice/price list on file
    ============================================================ */
 const PROTEIN_VENDORS = [
   {
@@ -912,9 +924,26 @@ const PROTEIN_VENDORS = [
     usedIn: "Breakfast — Grits+Sausage · Eggs+Sausage",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 84.40, perLb: 2.11, perServing: 0.26, note: "Verify current contract price",    status: "current" },
-      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 82.54, perLb: 2.06, perServing: 0.26, note: "Sausage Bkfst Patty FC 1oz · ISP",  status: "available" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "40 LB", casePrice: 84.40, perLb: 2.11, perServing: 0.26,
+        note: "Verify current contract price", status: "current", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Breakfast Sausage Patty FC — est. from PFG contract",
+               calcDetail: "$84.40 case ÷ 40 LB = $2.11/lb · 2 oz serving = $0.26",
+               caveat: "Price estimate — confirm current contract rate before ordering." }
+      },
+      shaver: {
+        label: "Shaver", pack: "40 LB", casePrice: 82.54, perLb: 2.06, perServing: 0.26,
+        note: "Sausage Bkfst Patty FC 1oz · ISP", status: "available", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Sausage Bkfst Patty FC 1oz  |  40 LB case",
+               calcDetail: "$82.54 case ÷ 40 LB = $2.06/lb · 2 oz serving = $0.26" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -923,9 +952,26 @@ const PROTEIN_VENDORS = [
     usedIn: "Lunch — Mac & Cheese · Pasta & Veg",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "3/8 LB",   casePrice: 41.50, perLb: 1.73, perServing: 0.22, note: "Verify current contract price",    status: "available" },
-      shaver:   { label: "Shaver",    pack: "3/8 LB",   casePrice: 39.02, perLb: 1.63, perServing: 0.20, note: "Bologna Logs Chik · ISP",           status: "best" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "3/8 LB", casePrice: 41.50, perLb: 1.73, perServing: 0.22,
+        note: "Verify current contract price", status: "available", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Bologna Chicken Logs 3/8 LB — est. from PFG contract",
+               calcDetail: "$41.50 case ÷ 24 LB = $1.73/lb · 2 oz serving = $0.22",
+               caveat: "Price estimate — confirm current contract rate." }
+      },
+      shaver: {
+        label: "Shaver", pack: "3/8 LB", casePrice: 39.02, perLb: 1.63, perServing: 0.20,
+        note: "Bologna Logs Chik · ISP", status: "best", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Bologna Logs Chik  |  3/8 LB case (24 LB)",
+               calcDetail: "$39.02 case ÷ 24 LB = $1.63/lb · 2 oz serving = $0.20" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -934,9 +980,26 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — Salami Sandwich",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "2/10 LB",  casePrice: 34.20, perLb: 1.71, perServing: 0.21, note: "Verify current contract price",    status: "current" },
-      shaver:   { label: "Shaver",    pack: "2/10 LB",  casePrice: 31.82, perLb: 1.59, perServing: 0.20, note: "Salami Logs Chik · ISP",            status: "best" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "2/10 LB", casePrice: 34.20, perLb: 1.71, perServing: 0.21,
+        note: "Verify current contract price", status: "current", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Salami Chicken Logs 2/10 LB — est. from PFG contract",
+               calcDetail: "$34.20 case ÷ 20 LB = $1.71/lb · 2 oz serving = $0.21",
+               caveat: "Price estimate — confirm current contract rate." }
+      },
+      shaver: {
+        label: "Shaver", pack: "2/10 LB", casePrice: 31.82, perLb: 1.59, perServing: 0.20,
+        note: "Salami Logs Chik · ISP", status: "best", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Salami Logs Chik  |  2/10 LB case (20 LB)",
+               calcDetail: "$31.82 case ÷ 20 LB = $1.59/lb · 2 oz serving = $0.20" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -945,9 +1008,30 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — Chicken Patty Sandwich",
     servingSize: "3 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "40 LB",    casePrice: 89.50, perLb: 2.24, perServing: 0.42, note: "Verify current contract price",                    status: "available" },
-      shaver:   { label: "Shaver",    pack: "40 LB",    casePrice: 86.29, perLb: 2.16, perServing: 0.41, note: "Chicken Patty BRD FC 3oz · ISP",                   status: "available" },
-      bigDaddy: { label: "Big Daddy", pack: "6/6 LB",   casePrice: 53.46, perLb: 1.49, perServing: 0.28, note: "PP90377 Seasoned Breast Nuggets · 3oz · S.O. BA24865", status: "best" }
+      pfg: {
+        label: "PFG", pack: "40 LB", casePrice: 89.50, perLb: 2.24, perServing: 0.42,
+        note: "Verify current contract price", status: "available", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Chicken Patty BRD FC 3oz — est. from PFG contract",
+               calcDetail: "$89.50 case ÷ 40 LB = $2.24/lb · 3 oz serving = $0.42",
+               caveat: "Price estimate — verify current contract price before using in a bid." }
+      },
+      shaver: {
+        label: "Shaver", pack: "40 LB", casePrice: 86.29, perLb: 2.16, perServing: 0.41,
+        note: "Chicken Patty BRD FC 3oz · ISP", status: "available", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Chicken Patty BRD FC 3oz  |  40 LB case",
+               calcDetail: "$86.29 case ÷ 40 LB = $2.16/lb · 3 oz serving = $0.405 → $0.41" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "6/6 LB", casePrice: 53.46, perLb: 1.49, perServing: 0.28,
+        note: "PP90377 Seasoned Breast Nuggets · 3oz · S.O. BA24865", status: "best", priceVerified: true,
+        ref: { sourceDoc: "Big Daddy Foods S.O. BA24865", sourceDate: "April 9, 2026",
+               itemDesc: "PP90377 — Seasoned Breast Nuggets  |  6/6 LB pack · 36 LB/case · 40 cases ordered",
+               calcDetail: "$53.46 case ÷ 36 LB = $1.485/lb · 3 oz serving = $0.278 → $0.28",
+               invoiceLineTotal: "$2,138.40 (40 cases × $53.46)",
+               bdInvoiceSection: true }
+      }
     }
   },
   {
@@ -956,9 +1040,24 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — Turkey Sandwich",
     servingSize: "3 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "2/10 LB",  casePrice: 52.00, perLb: 2.60, perServing: 0.49, note: "Verify current contract price",    status: "current" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote","status": "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "2/10 LB", casePrice: 52.00, perLb: 2.60, perServing: 0.49,
+        note: "Verify current contract price", status: "current", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Turkey Deli Meat 2/10 LB — est. from PFG contract",
+               calcDetail: "$52.00 case ÷ 20 LB = $2.60/lb · 3 oz serving = $0.49",
+               caveat: "Price estimate — confirm current contract rate." }
+      },
+      shaver: {
+        label: "Shaver", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current ISP — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -967,9 +1066,26 @@ const PROTEIN_VENDORS = [
     usedIn: "Dinner — PB&J + Boiled Egg",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "35 LB",    casePrice: 49.20, perLb: 1.41, perServing: 0.18, note: "Verify current contract price",    status: "available" },
-      shaver:   { label: "Shaver",    pack: "35 LB",    casePrice: 47.01, perLb: 1.34, perServing: 0.17, note: "Peanut Butter Creamy 35# · ISP",    status: "best" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "35 LB", casePrice: 49.20, perLb: 1.41, perServing: 0.18,
+        note: "Verify current contract price", status: "available", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Peanut Butter Creamy 35 LB — est. from PFG contract",
+               calcDetail: "$49.20 case ÷ 35 LB = $1.41/lb · 2 oz serving = $0.18",
+               caveat: "Price estimate — confirm current contract rate." }
+      },
+      shaver: {
+        label: "Shaver", pack: "35 LB", casePrice: 47.01, perLb: 1.34, perServing: 0.17,
+        note: "Peanut Butter Creamy 35# · ISP", status: "best", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Peanut Butter Creamy  |  35 LB case",
+               calcDetail: "$47.01 case ÷ 35 LB = $1.34/lb · 2 oz serving = $0.17" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -978,9 +1094,24 @@ const PROTEIN_VENDORS = [
     usedIn: "Breakfast — Boiled · Scrambled",
     servingSize: "2 eggs",
     vendors: {
-      pfg:      { label: "PFG",       pack: "15 doz",   casePrice: 28.50, perLb: null, perServing: 0.10, note: "Market price — verify weekly",      status: "current" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote", status: "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "30 doz",   casePrice: null,  perLb: null, perServing: null,  note: "Bulk flat — request quote",         status: "quote" }
+      pfg: {
+        label: "PFG", pack: "15 doz", casePrice: 28.50, perLb: null, perServing: 0.10,
+        note: "Market price — verify weekly", status: "current", priceVerified: false,
+        ref: { sourceDoc: "PFG Market Price", sourceDate: "Weekly — verify current rate",
+               itemDesc: "Shell Eggs Grade A  |  15 dozen case",
+               calcDetail: "$28.50 case ÷ 180 eggs = $0.158/egg · 2 eggs/serving ≈ $0.10 est.",
+               caveat: "Egg prices fluctuate weekly. Verify before ordering or using in cost projections." }
+      },
+      shaver: {
+        label: "Shaver", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current ISP — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "30 doz", casePrice: null, perLb: null, perServing: null,
+        note: "Bulk flat — request quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
@@ -989,20 +1120,56 @@ const PROTEIN_VENDORS = [
     usedIn: "Lunch — Beans & Rice · Pasta w/ Meat Sauce",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "6/5 LB",   casePrice: 63.50, perLb: 2.12, perServing: 0.27, note: "Verify current contract price",    status: "current" },
-      shaver:   { label: "Shaver",    pack: "6/5 LB",   casePrice: 61.08, perLb: 2.04, perServing: 0.26, note: "Sausage Hot Link / Polish FC · ISP","status": "best" },
-      bigDaddy: { label: "Big Daddy", pack: "Bulk",     casePrice: null,  perLb: null, perServing: null,  note: "Request bulk quote",               status: "quote" }
+      pfg: {
+        label: "PFG", pack: "6/5 LB", casePrice: 63.50, perLb: 2.12, perServing: 0.27,
+        note: "Verify current contract price", status: "current", priceVerified: false,
+        ref: { sourceDoc: "PFG Invoice #6776963", sourceDate: "April 7, 2026",
+               itemDesc: "Sausage Link/Crumble 6/5 LB — est. from PFG contract",
+               calcDetail: "$63.50 case ÷ 30 LB = $2.12/lb · 2 oz serving = $0.27",
+               caveat: "Price estimate — confirm current contract rate." }
+      },
+      shaver: {
+        label: "Shaver", pack: "6/5 LB", casePrice: 61.08, perLb: 2.04, perServing: 0.26,
+        note: "Sausage Hot Link / Polish FC · ISP", status: "best", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Sausage Hot Link or Polish FC  |  6/5 LB case (30 LB)",
+               calcDetail: "$61.08 case ÷ 30 LB = $2.04/lb · 2 oz serving = $0.26" }
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "Bulk", casePrice: null, perLb: null, perServing: null,
+        note: "Request bulk quote", status: "quote", priceVerified: false,
+        ref: null
+      }
     }
   },
   {
     name: "Burger Patty",
     icon: "fa-circle",
     usedIn: "Dinner — Burger Patty Sandwich (2× / week)",
-    servingSize: "1 patty (2 oz)",
+    servingSize: "1 patty (3.2 oz)",
     vendors: {
-      pfg:      { label: "PFG",       pack: "Per unit", casePrice: null,  perLb: null,  perServing: 0.45, note: "$0.45 each — verify case qty & price",                    status: "available" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null,  perServing: null,  note: "Request current quote",                                   status: "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "20 LB",    casePrice: 45.00, perLb: 2.25,  perServing: 0.45, note: "FG-BC/TVP-20-3.2 · 3.2oz patty · 100/case · S.O. BA24865", status: "current" }
+      pfg: {
+        label: "PFG", pack: "Per unit", casePrice: null, perLb: null, perServing: 0.45,
+        note: "$0.45 each — verify case qty & price", status: "available", priceVerified: false,
+        ref: { sourceDoc: "PFG (unconfirmed quote)", sourceDate: "Pending verification",
+               itemDesc: "Burger Patty — unit price only, no case invoice on file",
+               calcDetail: "Unit price: $0.45/patty — case quantity and total not confirmed",
+               caveat: "No PFG invoice on file for this item. Verify case size, case price, and current availability before comparing." }
+      },
+      shaver: {
+        label: "Shaver", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Request current quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "20 LB / 100 ct", casePrice: 45.00, perLb: 2.25, perServing: 0.45,
+        note: "FG-BC/TVP-20-3.2 · 3.2oz patty · 100/case · S.O. BA24865", status: "current", priceVerified: true,
+        ref: { sourceDoc: "Big Daddy Foods S.O. BA24865", sourceDate: "April 9, 2026",
+               itemDesc: "FG-BC/TVP-20-3.2 — Ground Beef / Chicken / Soy Patty  |  20 LB / 100 patties per case · 10 cases ordered",
+               calcDetail: "$45.00 case ÷ 100 patties = $0.45/patty · 3.2 oz each",
+               invoiceLineTotal: "$450.00 (10 cases × $45.00)",
+               bdInvoiceSection: true }
+      }
     }
   },
   {
@@ -1011,9 +1178,25 @@ const PROTEIN_VENDORS = [
     usedIn: "Lunch — Beans & Rice · Mac & Cheese · Pasta",
     servingSize: "2 oz",
     vendors: {
-      pfg:      { label: "PFG",       pack: "Contact",  casePrice: null,   perLb: null, perServing: null,  note: "Not in current PFG order — request quote",           status: "quote" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,   perLb: null, perServing: null,  note: "Not in current ISP — request quote",                 status: "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "4/10 LB",  casePrice: 107.60, perLb: 2.69, perServing: 0.34,  note: "SEP-4/10 · Ground Beef w/ TVP · 40 LB · S.O. BA24865", status: "current" }
+      pfg: {
+        label: "PFG", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current PFG order — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      shaver: {
+        label: "Shaver", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current ISP — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "4/10 LB", casePrice: 107.60, perLb: 2.69, perServing: 0.34,
+        note: "SEP-4/10 · Ground Beef w/ TVP · 40 LB · S.O. BA24865", status: "current", priceVerified: true,
+        ref: { sourceDoc: "Big Daddy Foods S.O. BA24865", sourceDate: "April 9, 2026",
+               itemDesc: "SEP-4/10 — Ground Beef with TVP  |  4/10 LB case (40 LB) · 50 cases ordered",
+               calcDetail: "$107.60 case ÷ 40 LB = $2.69/lb · 2 oz serving = $0.336 → $0.34",
+               invoiceLineTotal: "$5,380.00 (50 cases × $107.60)",
+               bdInvoiceSection: true }
+      }
     }
   },
   {
@@ -1022,9 +1205,25 @@ const PROTEIN_VENDORS = [
     usedIn: "Breakfast — Golden Brown Pancakes (2/serving)",
     servingSize: "2 pancakes (2.5 oz)",
     vendors: {
-      pfg:      { label: "PFG",       pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current PFG order — request quote", status: "quote" },
-      shaver:   { label: "Shaver",    pack: "Contact",  casePrice: null,  perLb: null, perServing: null,  note: "Not in current ISP — request quote",        status: "quote" },
-      bigDaddy: { label: "Big Daddy", pack: "144 ct",   casePrice: 38.00, perLb: 3.38, perServing: 0.53,  note: "GSS MF 7000 · IQF Golden Brown · S.O. BA24865", status: "current" }
+      pfg: {
+        label: "PFG", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current PFG order — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      shaver: {
+        label: "Shaver", pack: "Contact", casePrice: null, perLb: null, perServing: null,
+        note: "Not in current ISP — request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      bigDaddy: {
+        label: "Big Daddy", pack: "144 ct / 11.25 LB", casePrice: 38.00, perLb: 3.38, perServing: 0.53,
+        note: "GSS MF 7000 · IQF Golden Brown · S.O. BA24865", status: "current", priceVerified: true,
+        ref: { sourceDoc: "Big Daddy Foods S.O. BA24865", sourceDate: "April 9, 2026",
+               itemDesc: "GSS MF 7000 — IQF Golden Brown Pancakes 1.25 oz each  |  144 ct / 11.25 LB · 20 cases ordered",
+               calcDetail: "$38.00 case ÷ 144 units = $0.264/pancake · 2 pancakes/serving = $0.528 → $0.53",
+               invoiceLineTotal: "$760.00 (20 cases × $38.00)",
+               bdInvoiceSection: true }
+      }
     }
   }
 ];
