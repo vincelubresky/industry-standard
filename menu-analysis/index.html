@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=20260414">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
@@ -98,10 +98,10 @@
 
   <!-- ══════════ TAB BAR ══════════ -->
   <div class="tab-bar" id="tabBar">
-    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
+    <button class="tab-btn active" data-tab="bids" onclick="switchTab('bids')">
       <i class="fa-solid fa-gavel"></i>Bid Tracker
     </button>
-    <button class="tab-btn active" data-tab="analysis" onclick="switchTab('analysis')">
+    <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-chart-line"></i>Vendor Analysis
     </button>
     <button class="tab-btn" data-tab="calculator" onclick="switchTab('calculator')">
@@ -1320,7 +1320,7 @@
        BID TRACKER
   ══════════════════════════════════════ -->
 
-  <div id="bid-tracker-wrap" style="display:none">
+  <div id="bid-tracker-wrap">
 
     <!-- Header -->
     <div class="section bid-section" style="padding-bottom:0">
@@ -1504,7 +1504,7 @@
 </div><!-- /app -->
 
 <div id="toast"></div>
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/data.js?v=20260414"></script>
+<script src="js/app.js?v=20260414"></script>
 </body>
 </html>

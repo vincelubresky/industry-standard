@@ -676,18 +676,18 @@ function switchTab(tab, persist = true) {
 
   // Show/hide sections
   document.querySelectorAll('.analysis-section').forEach(s => {
-    s.style.display = (tab === 'analysis') ? '' : 'none';
+    s.style.display = (tab === 'analysis') ? 'block' : 'none';
   });
   const calcSection = document.getElementById('cost-calculator');
-  if (calcSection) calcSection.style.display = (tab === 'calculator') ? '' : 'none';
+  if (calcSection) calcSection.style.display = (tab === 'calculator') ? 'block' : 'none';
 
   document.querySelectorAll('.report-section').forEach(s => {
-    s.style.display = (tab === 'report') ? '' : 'none';
+    s.style.display = (tab === 'report') ? 'block' : 'none';
   });
 
   // Show/hide bid tracker
   const bidWrap = document.getElementById('bid-tracker-wrap');
-  if (bidWrap) bidWrap.style.display = (tab === 'bids') ? '' : 'none';
+  if (bidWrap) bidWrap.style.display = (tab === 'bids') ? 'block' : 'none';
 
   // Show/hide tab-specific nav labels and items
   document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
@@ -720,7 +720,13 @@ function switchTab(tab, persist = true) {
 }
 
 function initTabs() {
-  const saved = localStorage.getItem(TAB_KEY) || 'analysis';
+  // v2: clear any stale tab preference so bid tracker is visible on first load
+  const VER_KEY = 'is_tab_ver';
+  if (localStorage.getItem(VER_KEY) !== '2') {
+    localStorage.removeItem(TAB_KEY);
+    localStorage.setItem(VER_KEY, '2');
+  }
+  const saved = localStorage.getItem(TAB_KEY) || 'bids';
   switchTab(saved, false);
 
   // Tab-switching nav links (calculator + all report links)
