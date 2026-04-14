@@ -685,10 +685,9 @@ function switchTab(tab, persist = true) {
     s.style.display = (tab === 'report') ? '' : 'none';
   });
 
-  // Show/hide bid sections
-  document.querySelectorAll('.bid-section').forEach(s => {
-    s.style.display = (tab === 'bids') ? '' : 'none';
-  });
+  // Show/hide bid tracker
+  const bidWrap = document.getElementById('bid-tracker-wrap');
+  if (bidWrap) bidWrap.style.display = (tab === 'bids') ? '' : 'none';
 
   // Show/hide tab-specific nav labels and items
   document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
@@ -930,6 +929,38 @@ function resetPlanner() {
   showToast('Planner reset to defaults');
 }
 
+/* ── Bid Tracker ──────────────────────────────────────────── */
+function initBidTracker() {
+  // Countdown: days until Montgomery Municipal Jail expected RFP (Aug 1, 2026)
+  const rfpTarget = new Date('2026-08-01T00:00:00');
+  const el = document.getElementById('montgomery-days');
+  if (el) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const diff = Math.ceil((rfpTarget - today) / 86400000);
+    el.textContent = diff > 0 ? diff + ' days' : diff === 0 ? 'Today' : 'Overdue';
+  }
+  // Set initial last-checked timestamp
+  bidRefresh(false);
+}
+
+function bidRefresh(announce = true) {
+  const el = document.getElementById('bid-last-checked');
+  if (el) {
+    const now = new Date();
+    el.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) +
+      ' at ' + now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  }
+  if (announce) {
+    const btn = document.querySelector('#bid-tracker-wrap button[onclick="bidRefresh()"]');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Updated';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }
+  }
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -941,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => applySidebarState(false));
   setTimeout(renderChart, 150);
   initTabs();
+  initBidTracker();
   initScrollSpy();
   initDropdowns();
   initCatalog();

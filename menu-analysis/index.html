@@ -98,6 +98,9 @@
 
   <!-- ══════════ TAB BAR ══════════ -->
   <div class="tab-bar" id="tabBar">
+    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
+      <i class="fa-solid fa-gavel"></i>Bid Tracker
+    </button>
     <button class="tab-btn active" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-chart-line"></i>Vendor Analysis
     </button>
@@ -106,9 +109,6 @@
     </button>
     <button class="tab-btn" data-tab="report" onclick="switchTab('report')">
       <i class="fa-solid fa-file-invoice-dollar"></i>Weekly Report
-    </button>
-    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
-      <i class="fa-solid fa-gavel"></i>Bid Tracker
     </button>
   </div>
 
@@ -1317,171 +1317,187 @@
   </section>
 
   <!-- ══════════════════════════════════════
-       BID TRACKER — VERIFY NOW
+       BID TRACKER
   ══════════════════════════════════════ -->
-  <section class="section bid-section" id="bids-open">
-    <div class="section-header">
-      <div class="section-title-group">
-        <div class="section-icon amber"><i class="fa-solid fa-circle-exclamation"></i></div>
-        <div>
-          <div class="section-title">Verify Now</div>
-          <div class="section-subtitle">Status unconfirmed — call today to determine if still open</div>
-        </div>
-      </div>
-    </div>
-    <div class="bid-card bid-verify">
-      <div class="bid-card-top">
-        <div class="bid-meta">
-          <span class="bid-status-pill verify">VERIFY STATUS</span>
-          <span class="bid-location"><i class="fa-solid fa-location-dot"></i>Montgomery, AL</span>
-        </div>
-        <div class="bid-id">IFB 52200-25B-009</div>
-      </div>
-      <div class="bid-agency">Montgomery County</div>
-      <div class="bid-facility">Mac Sim Butler Detention Facility</div>
-      <div class="bid-scope">Inmate food service operations</div>
-      <div class="bid-note"><i class="fa-solid fa-triangle-exclamation"></i> Issued FY2025 — award status unconfirmed. Call today to determine if still open for proposals.</div>
-      <div class="bid-contact-row">
-        <div class="bid-contact"><i class="fa-solid fa-user"></i><strong>Myrtle Singleton</strong> — Administrative Services Manager</div>
-        <div class="bid-contact"><i class="fa-solid fa-phone"></i><a href="tel:3348327705">334-832-7705</a></div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ══════════════════════════════════════
-       BID TRACKER — UPCOMING
-  ══════════════════════════════════════ -->
-  <section class="section bid-section" id="bids-upcoming">
-    <div class="section-header">
-      <div class="section-title-group">
-        <div class="section-icon blue"><i class="fa-solid fa-calendar-days"></i></div>
-        <div>
-          <div class="section-title">Upcoming in 2026</div>
-          <div class="section-subtitle">Contracts expiring soon — start positioning now</div>
+  <div id="bid-tracker-wrap" style="display:none">
+
+    <!-- Header -->
+    <div class="section bid-section" style="padding-bottom:0">
+      <div class="section-header" style="margin-bottom:0">
+        <div class="section-title-group">
+          <div class="section-icon amber"><i class="fa-solid fa-gavel"></i></div>
+          <div>
+            <div class="section-title">Alabama Bid Tracker</div>
+            <div class="section-subtitle" id="bid-last-checked">Food service opportunities — correctional &amp; county facilities</div>
+          </div>
         </div>
+        <button class="calc-reset-btn" onclick="bidRefresh()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
       </div>
     </div>
 
-    <div class="bid-card bid-upcoming">
-      <div class="bid-card-top">
-        <div class="bid-meta">
-          <span class="bid-status-pill upcoming">COMING UP</span>
-          <span class="bid-location"><i class="fa-solid fa-location-dot"></i>Montgomery, AL</span>
-        </div>
-        <div class="bid-timeline">
-          <div class="bid-timeline-item"><span class="bid-timeline-label">Contract Expires</span><span class="bid-timeline-date">Nov 21, 2026</span></div>
-          <div class="bid-timeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-          <div class="bid-timeline-item highlight"><span class="bid-timeline-label">Expected RFP</span><span class="bid-timeline-date">Aug–Oct 2026</span></div>
-        </div>
+    <!-- VERIFY NOW -->
+    <div class="section bid-section" id="bids-open">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.3);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px">VERIFY STATUS</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text-200)">Call Today</span>
       </div>
-      <div class="bid-agency">City of Montgomery</div>
-      <div class="bid-facility">Municipal Jail</div>
-      <div class="bid-scope">Full inmate food service operations</div>
-      <div class="bid-note"><i class="fa-solid fa-lightbulb"></i> RFP expected 60–90 days before expiration. Incumbent unknown — contact Ken Barwick now to get on their radar before solicitation opens.</div>
-      <div class="bid-contact-row">
-        <div class="bid-contact"><i class="fa-solid fa-user"></i><strong>Ken Barwick</strong> — Purchasing</div>
-        <div class="bid-contact"><i class="fa-solid fa-phone"></i><a href="tel:3346252610">334-625-2610</a></div>
-        <div class="bid-contact"><i class="fa-solid fa-envelope"></i><a href="mailto:kbarwick@montgomeryal.gov">kbarwick@montgomeryal.gov</a></div>
-      </div>
-    </div>
-
-    <div class="bid-card bid-upcoming" style="margin-top:16px">
-      <div class="bid-card-top">
-        <div class="bid-meta">
-          <span class="bid-status-pill upcoming">COMING UP</span>
-          <span class="bid-location"><i class="fa-solid fa-location-dot"></i>Birmingham, AL</span>
+      <div class="card" style="border-top:3px solid var(--amber)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--text-100)">Montgomery County</div>
+            <div style="font-size:13px;color:var(--text-400);margin-top:2px">Mac Sim Butler Detention Facility &nbsp;·&nbsp; Montgomery, AL</div>
+          </div>
+          <div style="font-family:monospace;font-size:11px;background:var(--bg-2);padding:3px 10px;border-radius:4px;color:var(--text-400)">IFB 52200-25B-009</div>
         </div>
-        <div class="bid-timeline">
-          <div class="bid-timeline-item"><span class="bid-timeline-label">Bids Expire</span><span class="bid-timeline-date">Rolling 2026</span></div>
-          <div class="bid-timeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-          <div class="bid-timeline-item highlight"><span class="bid-timeline-label">Monitor</span><span class="bid-timeline-date">Quarterly</span></div>
+        <div style="font-size:13px;color:var(--text-200);margin-bottom:10px"><strong>Scope:</strong> Inmate food service operations</div>
+        <div style="background:var(--bg-2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-300);margin-bottom:14px;line-height:1.6">
+          <i class="fa-solid fa-triangle-exclamation" style="color:var(--amber);margin-right:6px"></i>Issued FY2025 — award status unconfirmed. Call today to determine if still accepting proposals.
         </div>
-      </div>
-      <div class="bid-agency">Jefferson County / PACA</div>
-      <div class="bid-facility">County Facilities incl. Youth Detention</div>
-      <div class="bid-scope">Food supply — frozen, chilled &amp; dry goods (commodity supply, not full service)</div>
-      <div class="bid-note"><i class="fa-solid fa-lightbulb"></i> Multiple annual supply bids with rolling renewal cycles. Piggyback contracts available to member agencies. Monitor portal quarterly.</div>
-      <div class="bid-contact-row">
-        <div class="bid-contact"><i class="fa-solid fa-globe"></i><a href="https://paca.jccal.org" target="_blank">paca.jccal.org</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════
-       BID TRACKER — ON RADAR
-  ══════════════════════════════════════ -->
-  <section class="section bid-section" id="bids-radar">
-    <div class="section-header">
-      <div class="section-title-group">
-        <div class="section-icon purple"><i class="fa-solid fa-satellite-dish"></i></div>
-        <div>
-          <div class="section-title">On Radar</div>
-          <div class="section-subtitle">Contracts active now — watch for re-procurement cycles</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 24px;font-size:12px;color:var(--text-300)">
+          <span><i class="fa-solid fa-user" style="color:var(--accent);margin-right:5px"></i><strong>Myrtle Singleton</strong> — Administrative Services Manager</span>
+          <span><i class="fa-solid fa-phone" style="color:var(--accent);margin-right:5px"></i><a href="tel:3348327705" style="color:var(--accent)">334-832-7705</a></span>
         </div>
       </div>
     </div>
-    <div class="bid-radar-grid">
 
-      <div class="bid-card bid-radar-card">
-        <div class="bid-radar-top">
-          <span class="bid-status-pill radar">ON RADAR</span>
-          <span class="bid-expected-year">~2028</span>
-        </div>
-        <div class="bid-agency">Alabama Dept. of Corrections</div>
-        <div class="bid-facility">All 27 ADOC Prisons — Statewide</div>
-        <div class="bid-scope">Full food service management</div>
-        <div class="bid-note-sm">Awarded to Aramark Nov 2025. Largest food service contract in AL corrections history. Monitor for performance issues or early re-bid.</div>
-        <div class="bid-contact-sm"><i class="fa-solid fa-globe"></i><a href="http://www.doc.state.al.us/RequestForProposals" target="_blank">doc.alabama.gov</a></div>
+    <!-- UPCOMING -->
+    <div class="section bid-section" id="bids-upcoming">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px">COMING UP</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text-200)">Start Positioning Now</span>
       </div>
 
-      <div class="bid-card bid-radar-card">
-        <div class="bid-radar-top">
-          <span class="bid-status-pill radar">ON RADAR</span>
-          <span class="bid-expected-year">~2028</span>
+      <!-- City of Montgomery -->
+      <div class="card" style="border-top:3px solid #3b82f6;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--text-100)">City of Montgomery</div>
+            <div style="font-size:13px;color:var(--text-400);margin-top:2px">Municipal Jail &nbsp;·&nbsp; Montgomery, AL</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;background:var(--bg-2);border-radius:8px;padding:8px 14px">
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Contract Expires</div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-200)">Nov 21, 2026</div>
+            </div>
+            <i class="fa-solid fa-arrow-right" style="color:var(--text-400);font-size:11px"></i>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Expected RFP</div>
+              <div style="font-size:13px;font-weight:600;color:#60a5fa">Aug–Oct 2026</div>
+            </div>
+            <i class="fa-solid fa-arrow-right" style="color:var(--text-400);font-size:11px"></i>
+            <div style="text-align:center">
+              <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Days Away</div>
+              <div style="font-size:15px;font-weight:800;color:var(--amber)" id="montgomery-days">—</div>
+            </div>
+          </div>
         </div>
-        <div class="bid-agency">Alabama Dept. of Corrections</div>
-        <div class="bid-facility">17 ADOC Facilities — Canteen / Commissary</div>
-        <div class="bid-scope">Inmate canteen &amp; commissary operations — est. $500K–$2M/yr</div>
-        <div class="bid-note-sm">Closed Oct 2025, recently awarded. Recurring every ~5 years. Next cycle approx. 2028–2030.</div>
-        <div class="bid-contact-sm"><i class="fa-solid fa-user"></i>Niketta Jeans &nbsp;<i class="fa-solid fa-phone"></i><a href="tel:3343535515">334-353-5515</a></div>
+        <div style="font-size:13px;color:var(--text-200);margin-bottom:10px"><strong>Scope:</strong> Full inmate food service operations</div>
+        <div style="background:var(--bg-2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-300);margin-bottom:14px;line-height:1.6">
+          <i class="fa-solid fa-lightbulb" style="color:#60a5fa;margin-right:6px"></i>RFP expected 60–90 days before contract expiration. Contact Ken Barwick now — get on their radar before the solicitation opens.
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 24px;font-size:12px;color:var(--text-300)">
+          <span><i class="fa-solid fa-user" style="color:var(--accent);margin-right:5px"></i><strong>Ken Barwick</strong> — Purchasing</span>
+          <span><i class="fa-solid fa-phone" style="color:var(--accent);margin-right:5px"></i><a href="tel:3346252610" style="color:var(--accent)">334-625-2610</a></span>
+          <span><i class="fa-solid fa-envelope" style="color:var(--accent);margin-right:5px"></i><a href="mailto:kbarwick@montgomeryal.gov" style="color:var(--accent)">kbarwick@montgomeryal.gov</a></span>
+        </div>
       </div>
 
-      <div class="bid-card bid-radar-card">
-        <div class="bid-radar-top">
-          <span class="bid-status-pill radar">ON RADAR</span>
-          <span class="bid-expected-year">Unknown</span>
+      <!-- PACA -->
+      <div class="card" style="border-top:3px solid #3b82f6">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:12px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--text-100)">Jefferson County / PACA</div>
+            <div style="font-size:13px;color:var(--text-400);margin-top:2px">County Facilities incl. Youth Detention &nbsp;·&nbsp; Birmingham, AL</div>
+          </div>
+          <div style="background:var(--bg-2);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--text-400)">
+            <i class="fa-solid fa-rotate" style="margin-right:6px;color:#60a5fa"></i>Rolling annual renewals
+          </div>
         </div>
-        <div class="bid-agency">Jefferson County Sheriff</div>
-        <div class="bid-facility">Jefferson County Jail (Birmingham + Bessemer)</div>
-        <div class="bid-scope">Inmate food service — ~1,100–1,200 daily population</div>
-        <div class="bid-note-sm">No public RFP found. Alabama sheriff's food fund law allows direct contracting. Contact Corrections Division to identify current vendor and contract term.</div>
-        <div class="bid-contact-sm"><i class="fa-solid fa-globe"></i><a href="https://jeffcosheriffal.com/corrections" target="_blank">jeffcosheriffal.com/corrections</a></div>
+        <div style="font-size:13px;color:var(--text-200);margin-bottom:10px"><strong>Scope:</strong> Food supply — frozen, chilled &amp; dry goods (commodity supply, not full service)</div>
+        <div style="background:var(--bg-2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-300);margin-bottom:14px;line-height:1.6">
+          <i class="fa-solid fa-lightbulb" style="color:#60a5fa;margin-right:6px"></i>Multiple annual supply bids with rolling renewal cycles. Piggyback contracts available to member agencies.
+        </div>
+        <div style="font-size:12px;color:var(--text-300)">
+          <i class="fa-solid fa-globe" style="color:var(--accent);margin-right:5px"></i><a href="https://paca.jccal.org" target="_blank" style="color:var(--accent)">paca.jccal.org</a>
+        </div>
       </div>
-
     </div>
-  </section>
 
-  <!-- ══════════════════════════════════════
-       BID TRACKER — PORTALS
-  ══════════════════════════════════════ -->
-  <section class="section bid-section" id="bids-portals">
-    <div class="section-header">
-      <div class="section-title-group">
-        <div class="section-icon cyan"><i class="fa-solid fa-link"></i></div>
-        <div>
-          <div class="section-title">Procurement Portals</div>
-          <div class="section-subtitle">Monitor these sources for new Alabama food service solicitations</div>
+    <!-- ON RADAR -->
+    <div class="section bid-section" id="bids-radar">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <span style="background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.25);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px">ON RADAR</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text-200)">Active contracts — monitor for re-bid</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px" id="radar-grid">
+
+        <div class="card" style="border-top:3px solid rgba(139,92,246,0.5)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:11px;background:rgba(139,92,246,0.1);color:#a78bfa;padding:2px 10px;border-radius:20px;font-weight:700">~2028</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:var(--text-100);margin-bottom:2px">ADOC — All 27 Prisons</div>
+          <div style="font-size:12px;color:var(--text-400);margin-bottom:8px">Statewide, AL</div>
+          <div style="font-size:12px;color:var(--text-300);line-height:1.5;margin-bottom:8px">Full food service management. Awarded to Aramark Nov 2025. Largest food service contract in AL corrections history.</div>
+          <a href="http://www.doc.state.al.us/RequestForProposals" target="_blank" style="font-size:12px;color:var(--accent)"><i class="fa-solid fa-globe" style="margin-right:4px"></i>doc.alabama.gov</a>
         </div>
+
+        <div class="card" style="border-top:3px solid rgba(139,92,246,0.5)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:11px;background:rgba(139,92,246,0.1);color:#a78bfa;padding:2px 10px;border-radius:20px;font-weight:700">~2028</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:var(--text-100);margin-bottom:2px">ADOC — Canteen Services</div>
+          <div style="font-size:12px;color:var(--text-400);margin-bottom:8px">17 Facilities · Est. $500K–$2M/yr</div>
+          <div style="font-size:12px;color:var(--text-300);line-height:1.5;margin-bottom:8px">Closed Oct 2025, recently awarded. Recurring every ~5 years.</div>
+          <span style="font-size:12px;color:var(--text-300)"><i class="fa-solid fa-user" style="color:var(--accent);margin-right:4px"></i>Niketta Jeans &nbsp;<a href="tel:3343535515" style="color:var(--accent)">334-353-5515</a></span>
+        </div>
+
+        <div class="card" style="border-top:3px solid rgba(139,92,246,0.5)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:11px;background:rgba(139,92,246,0.1);color:#a78bfa;padding:2px 10px;border-radius:20px;font-weight:700">Unknown</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:var(--text-100);margin-bottom:2px">Jefferson County Jail</div>
+          <div style="font-size:12px;color:var(--text-400);margin-bottom:8px">Birmingham + Bessemer · ~1,100–1,200/day</div>
+          <div style="font-size:12px;color:var(--text-300);line-height:1.5;margin-bottom:8px">No public RFP found. Sheriff may contract directly under AL food fund law. Call Corrections Division.</div>
+          <a href="https://jeffcosheriffal.com/corrections" target="_blank" style="font-size:12px;color:var(--accent)"><i class="fa-solid fa-globe" style="margin-right:4px"></i>jeffcosheriffal.com</a>
+        </div>
+
       </div>
     </div>
-    <div class="bid-portals-grid">
-      <a href="http://www.doc.state.al.us/RequestForProposals" target="_blank" class="portal-card"><i class="fa-solid fa-gavel"></i><div class="portal-name">ADOC RFP Page</div><div class="portal-sub">doc.state.al.us</div></a>
-      <a href="https://procurement.staars.alabama.gov" target="_blank" class="portal-card"><i class="fa-solid fa-building-columns"></i><div class="portal-name">Alabama STAARS</div><div class="portal-sub">AlabamaBuys portal</div></a>
-      <a href="https://www.bidnetdirect.com/alabama" target="_blank" class="portal-card"><i class="fa-solid fa-magnifying-glass-dollar"></i><div class="portal-name">BidNet Direct — AL</div><div class="portal-sub">bidnetdirect.com</div></a>
-      <a href="https://paca.jccal.org" target="_blank" class="portal-card"><i class="fa-solid fa-boxes-stacked"></i><div class="portal-name">Jefferson Co. PACA</div><div class="portal-sub">paca.jccal.org</div></a>
-      <a href="https://www.alabamabids.com" target="_blank" class="portal-card"><i class="fa-solid fa-file-contract"></i><div class="portal-name">Alabama Bid Network</div><div class="portal-sub">alabamabids.com</div></a>
+
+    <!-- PORTALS -->
+    <div class="section bid-section" id="bids-portals">
+      <div style="font-size:13px;font-weight:600;color:var(--text-300);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em"><i class="fa-solid fa-link" style="margin-right:8px;color:var(--accent)"></i>Procurement Portals — Check These Regularly</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+        <a href="http://www.doc.state.al.us/RequestForProposals" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .15s">
+          <i class="fa-solid fa-gavel" style="font-size:20px;color:var(--accent)"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">ADOC RFP Page</div>
+          <div style="font-size:10px;color:var(--text-400)">doc.state.al.us</div>
+        </a>
+        <a href="https://procurement.staars.alabama.gov" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .15s">
+          <i class="fa-solid fa-building-columns" style="font-size:20px;color:var(--accent)"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">Alabama STAARS</div>
+          <div style="font-size:10px;color:var(--text-400)">AlabamaBuys portal</div>
+        </a>
+        <a href="https://www.bidnetdirect.com/alabama" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .15s">
+          <i class="fa-solid fa-magnifying-glass-dollar" style="font-size:20px;color:var(--accent)"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">BidNet Direct — AL</div>
+          <div style="font-size:10px;color:var(--text-400)">bidnetdirect.com</div>
+        </a>
+        <a href="https://paca.jccal.org" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .15s">
+          <i class="fa-solid fa-boxes-stacked" style="font-size:20px;color:var(--accent)"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">Jefferson Co. PACA</div>
+          <div style="font-size:10px;color:var(--text-400)">paca.jccal.org</div>
+        </a>
+        <a href="https://www.alabamabids.com" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 10px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;transition:border-color .15s">
+          <i class="fa-solid fa-file-contract" style="font-size:20px;color:var(--accent)"></i>
+          <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">Alabama Bid Network</div>
+          <div style="font-size:10px;color:var(--text-400)">alabamabids.com</div>
+        </a>
+      </div>
     </div>
-  </section>
+
+  </div><!-- /bid-tracker-wrap -->
 
   </div><!-- /content -->
 </div><!-- /main -->
