@@ -1030,6 +1030,112 @@ const PROTEIN_VENDORS = [
 ];
 
 /* ============================================================
+   BIG DADDY FOODS — INVOICE S.O. BA24865  (4/9/2026)
+   Every monetary value computed: $/case · $/lb · $/2oz · $/3oz · $/4oz
+   Annual savings vs PFG/Shaver calculated at 300-inmate baseline.
+   ============================================================ */
+const BIG_DADDY_INVOICE = {
+  vendor:      "Big Daddy Foods, Inc.",
+  soNumber:    "BA24865",
+  invoiceDate: "4/9/2026",
+  shipDate:    "4/15/2026",
+  dueDate:     "4/29/2026",
+  terms:       "14 days",
+  total:       8728.40,
+  items: [
+    {
+      code:          "PP90377",
+      description:   "Seasoned Breast Nuggets",
+      pack:          "6/6 LB",
+      lbsPerCase:    36,
+      casesOrdered:  40,
+      casePrice:     53.46,
+      lineTotal:     2138.40,
+      totalLbs:      1440,
+      perLb:         1.485,
+      per2oz:        0.186,
+      per3oz:        0.278,
+      per4oz:        0.371,
+      servPerCase:   { "2oz": 288, "3oz": 192, "4oz": 144 },
+      totalServings: { "2oz": 11520, "3oz": 7680, "4oz": 5760 },
+      menuUse:       "Dinner — Chicken protein (Chicken Nugget Plate)",
+      menuNote:      "Best chicken price — $0.13 cheaper/serving than Shaver",
+      vs: [
+        { label: "Shaver Chicken Patty", perServing: 0.41, savings: 0.132, pct: 32,
+          annual300: Math.round(0.132 * 300 * 2 * 52) },
+        { label: "PFG Chicken Patty",    perServing: 0.42, savings: 0.142, pct: 34,
+          annual300: Math.round(0.142 * 300 * 2 * 52) }
+      ]
+    },
+    {
+      code:          "SEP-4/10",
+      description:   "Ground Beef w/ TVP",
+      pack:          "4/10 LB",
+      lbsPerCase:    40,
+      casesOrdered:  50,
+      casePrice:     107.60,
+      lineTotal:     5380.00,
+      totalLbs:      2000,
+      perLb:         2.690,
+      per2oz:        0.336,
+      per3oz:        0.504,
+      per4oz:        0.673,
+      servPerCase:   { "2oz": 320, "3oz": 213, "4oz": 160 },
+      totalServings: { "2oz": 16000, "3oz": 10650, "4oz": 8000 },
+      menuUse:       "Lunch — Ground Beef protein (Beans & Rice · Mac · Pasta)",
+      menuNote:      "Only current source — adds beef variety to lunch rotation",
+      vs:            []
+    },
+    {
+      code:          "GSS MF 7000",
+      description:   "IQF Golden Brown Pancakes (1.25 oz each)",
+      pack:          "144 ct / 11.25 LB",
+      lbsPerCase:    11.25,
+      countPerCase:  144,
+      casesOrdered:  20,
+      casePrice:     38.00,
+      lineTotal:     760.00,
+      totalLbs:      225,
+      totalUnits:    2880,
+      perLb:         3.378,
+      perUnit:       0.264,
+      per2pc:        0.528,
+      per3pc:        0.792,
+      servPerCase:   { "2pc": 72, "3pc": 48 },
+      totalServings: { "2pc": 1440, "3pc": 960 },
+      menuUse:       "Breakfast — Pancake base (pair with sausage patty)",
+      menuNote:      "Ready-to-heat IQF — zero prep, adds variety to breakfast",
+      vs:            []
+    },
+    {
+      code:          "FG-BC/TVP-20-3.2",
+      description:   "Ground Beef / Chicken / Soy Patty (3.2 oz)",
+      pack:          "20 LB / 100 patties",
+      lbsPerCase:    20,
+      countPerCase:  100,
+      casesOrdered:  10,
+      casePrice:     45.00,
+      lineTotal:     450.00,
+      totalLbs:      200,
+      totalUnits:    1000,
+      perLb:         2.250,
+      perUnit:       0.450,
+      per2oz:        0.281,
+      per3oz:        0.422,
+      per4oz:        0.563,
+      servPerCase:   { "1 patty": 100 },
+      totalServings: { "1 patty": 1000 },
+      menuUse:       "Dinner — Burger Patty Sandwich (2× per week in rotation)",
+      menuNote:      "Confirmed $0.45/patty · matches PFG unconfirmed price",
+      vs: [
+        { label: "PFG (unconfirmed)", perServing: 0.45, savings: 0.00, pct: 0,
+          annual300: 0 }
+      ]
+    }
+  ]
+};
+
+/* ============================================================
    MEAL ALTERNATIVES  —  shown as swap chips in the menu grid
    Each cell displays these as quick-reference protein options.
    ============================================================ */

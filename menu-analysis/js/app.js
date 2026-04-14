@@ -949,6 +949,142 @@ function renderMenuRotation() {
   showMenuWeek(0);
   renderMealIdeas();
   renderProteinVendors();
+  renderBigDaddyInvoice();
+}
+
+function renderBigDaddyInvoice() {
+  const container = document.getElementById('bdInvoiceContainer');
+  if (!container || typeof BIG_DADDY_INVOICE === 'undefined') return;
+  const inv = BIG_DADDY_INVOICE;
+  const f  = v  => v  != null ? '$' + v.toFixed(2) : '—';
+  const fc = v  => v  != null ? '$' + v.toFixed(3) : '—';
+  const fn = v  => v  != null ? v.toLocaleString() : '—';
+
+  // ── Invoice header ──────────────────────────────────────────
+  let html = `<div class="bd-inv-header">
+    <div class="bd-inv-brand">
+      <div class="bd-inv-name">Big Daddy Foods, Inc.</div>
+      <div class="bd-inv-pills">
+        <span class="bd-pill"><strong>S.O.#</strong> ${inv.soNumber}</span>
+        <span class="bd-pill"><strong>Invoice Date</strong> ${inv.invoiceDate}</span>
+        <span class="bd-pill"><strong>Ship Date</strong> ${inv.shipDate}</span>
+        <span class="bd-pill"><strong>Due</strong> ${inv.dueDate}</span>
+        <span class="bd-pill"><strong>Terms</strong> ${inv.terms}</span>
+      </div>
+    </div>
+    <div class="bd-inv-total-box">
+      <div class="bd-inv-total-lbl">Invoice Total</div>
+      <div class="bd-inv-total-val">${f(inv.total)}</div>
+      <div class="bd-inv-total-sub">${inv.items.length} line items</div>
+    </div>
+  </div>`;
+
+  // ── Line-items table ────────────────────────────────────────
+  html += `<div class="bd-table-scroll"><table class="bd-table">
+    <thead><tr>
+      <th>Item Code</th><th>Description</th><th>Pack</th>
+      <th class="r">Cases</th><th class="r">$/Case</th><th class="r">Line Total</th>
+      <th class="r">Total LB</th><th class="r">$/LB</th>
+      <th class="r">$/2 oz</th><th class="r">$/3 oz</th><th class="r">$/4 oz</th>
+      <th>Menu Use</th>
+    </tr></thead>
+    <tbody>`;
+
+  inv.items.forEach(item => {
+    const isPatty = item.perUnit != null && !item.per2oz;
+    html += `<tr>
+      <td class="bd-code">${item.code}</td>
+      <td class="bd-desc">${item.description}</td>
+      <td class="bd-pack">${item.pack}</td>
+      <td class="r">${item.casesOrdered}</td>
+      <td class="r">${f(item.casePrice)}</td>
+      <td class="r bd-linetotal">${f(item.lineTotal)}</td>
+      <td class="r">${fn(item.totalLbs)}</td>
+      <td class="r">${fc(item.perLb)}</td>
+      <td class="r">${item.per2oz != null ? f(item.per2oz) : (item.perUnit != null ? f(item.perUnit)+'/ea' : '—')}</td>
+      <td class="r">${item.per3oz != null ? f(item.per3oz) : (item.per2pc != null ? f(item.per2pc)+'/2pc' : '—')}</td>
+      <td class="r">${item.per4oz != null ? f(item.per4oz) : (item.per3pc != null ? f(item.per3pc)+'/3pc' : '—')}</td>
+      <td class="bd-use">${item.menuUse}</td>
+    </tr>`;
+  });
+
+  html += `</tbody><tfoot><tr class="bd-grand">
+    <td colspan="5" class="r" style="font-weight:800">Grand Total</td>
+    <td class="r bd-linetotal" style="font-size:15px;font-weight:900">${f(inv.total)}</td>
+    <td colspan="6"></td>
+  </tr></tfoot></table></div>`;
+
+  // ── Per-item detail cards ────────────────────────────────────
+  html += `<div class="bd-detail-grid">`;
+  inv.items.forEach(item => {
+    const hasPortions = item.per2oz != null || item.per2pc != null || item.perUnit != null;
+
+    // Portion rows
+    let portionRows = '';
+    if (item.per2oz  != null) portionRows += `<tr><td>2 oz serving</td><td class="r bd-price-em">${f(item.per2oz)}</td><td class="r">${fn(item.servPerCase['2oz'])}/case · ${fn(item.totalServings['2oz'])} total</td></tr>`;
+    if (item.per3oz  != null) portionRows += `<tr><td>3 oz serving</td><td class="r bd-price-em">${f(item.per3oz)}</td><td class="r">${fn(item.servPerCase['3oz'])}/case · ${fn(item.totalServings['3oz'])} total</td></tr>`;
+    if (item.per4oz  != null) portionRows += `<tr><td>4 oz serving</td><td class="r bd-price-em">${f(item.per4oz)}</td><td class="r">${fn(item.servPerCase['4oz'])}/case · ${fn(item.totalServings['4oz'])} total</td></tr>`;
+    if (item.per2pc  != null) portionRows += `<tr><td>2 pancakes</td><td class="r bd-price-em">${f(item.per2pc)}</td><td class="r">${fn(item.servPerCase['2pc'])}/case · ${fn(item.totalServings['2pc'])} total</td></tr>`;
+    if (item.per3pc  != null) portionRows += `<tr><td>3 pancakes</td><td class="r bd-price-em">${f(item.per3pc)}</td><td class="r">${fn(item.servPerCase['3pc'])}/case · ${fn(item.totalServings['3pc'])} total</td></tr>`;
+    if (item.perUnit != null) portionRows += `<tr><td>1 patty (3.2 oz)</td><td class="r bd-price-em">${f(item.perUnit)}</td><td class="r">${fn(item.servPerCase['1 patty'])}/case · ${fn(item.totalServings['1 patty'])} total</td></tr>`;
+
+    // Savings rows
+    let savingsHtml = '';
+    if (item.vs && item.vs.length) {
+      item.vs.filter(v => v.savings > 0).forEach(v => {
+        savingsHtml += `<div class="bd-savings-row">
+          <div class="bd-savings-label">vs ${v.label}</div>
+          <div class="bd-savings-nums">
+            <span class="bd-save-chip">-${f(v.savings)}/serving</span>
+            <span class="bd-save-chip">${v.pct}% cheaper</span>
+            ${v.annual300 > 0 ? `<span class="bd-save-chip bd-save-annual">~$${v.annual300.toLocaleString()}/yr at 300 inmates</span>` : ''}
+          </div>
+        </div>`;
+      });
+    }
+
+    html += `<div class="bd-detail-card">
+      <div class="bd-detail-header">
+        <div class="bd-detail-code">${item.code}</div>
+        <div class="bd-detail-desc">${item.description}</div>
+        <div class="bd-detail-meta">${item.pack} · ${item.casesOrdered} cases · ${f(item.lineTotal)} total</div>
+      </div>
+      <div class="bd-detail-body">
+        <div class="bd-portion-wrap">
+          <table class="bd-portion-table">
+            <thead><tr><th>Portion</th><th class="r">$/Serving</th><th class="r">Servings</th></tr></thead>
+            <tbody>${portionRows}</tbody>
+          </table>
+        </div>
+        <div class="bd-detail-right">
+          <div class="bd-kpi-row">
+            <div class="bd-kpi"><div class="bd-kpi-val">${f(item.casePrice)}</div><div class="bd-kpi-lbl">Per Case</div></div>
+            <div class="bd-kpi"><div class="bd-kpi-val">${fc(item.perLb)}</div><div class="bd-kpi-lbl">Per LB</div></div>
+            <div class="bd-kpi"><div class="bd-kpi-val">${fn(item.totalLbs)}</div><div class="bd-kpi-lbl">Total LB</div></div>
+          </div>
+          <div class="bd-use-note"><i class="fa-solid fa-utensils" style="opacity:.5;margin-right:5px"></i>${item.menuNote}</div>
+          ${savingsHtml}
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `</div>`;
+
+  // ── Savings summary banner ───────────────────────────────────
+  const allSavings = inv.items.flatMap(i => (i.vs || []).filter(v => v.annual300 > 0));
+  if (allSavings.length) {
+    const totalAnnual300 = allSavings.reduce((s, v) => s + v.annual300, 0);
+    html += `<div class="bd-savings-banner">
+      <div class="bd-savings-banner-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+      <div>
+        <div class="bd-savings-banner-title">Estimated Annual Savings at 300 Inmates</div>
+        <div class="bd-savings-banner-detail">Switching chicken protein to Big Daddy (PP90377) vs current vendors</div>
+      </div>
+      <div class="bd-savings-banner-val">~$${totalAnnual300.toLocaleString()}/yr</div>
+    </div>`;
+  }
+
+  container.innerHTML = html;
 }
 
 function renderProteinVendors() {
@@ -980,7 +1116,8 @@ function renderProteinVendors() {
       else               badge = '<span class="vendor-badge avail">Available</span>';
 
       const priceHtml = v.perServing != null
-        ? `<div class="vendor-tile-price">$${v.perServing.toFixed(2)}<span class="vendor-tile-unit">/serving</span></div>`
+        ? `<div class="vendor-tile-price">$${v.perServing.toFixed(2)}<span class="vendor-tile-unit">/serving</span></div>
+           <div class="vendor-tile-meal">~$${(v.perServing + 0.25).toFixed(2)}<span class="vendor-tile-unit"> est/meal</span></div>`
         : `<div class="vendor-tile-price tbd">—</div>`;
 
       const packHtml = v.pack
