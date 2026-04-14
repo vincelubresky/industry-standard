@@ -2683,3 +2683,170 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   .bd-detail-body { flex-direction: column; }
   .bd-portion-wrap { border-right: none; }
 }
+
+/* ============================================================
+   PRINT LAYOUT — 4-Week Menu Rotation
+   ============================================================ */
+
+/* Hide print container on screen */
+#print-menu-wrap { display: none; }
+
+@media print {
+  /* Force color output in print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Page setup */
+  @page { size: landscape; margin: 0.4in; }
+
+  /* Hide the entire screen UI */
+  .app, .sidebar, .topbar, #app { display: none !important; }
+
+  /* Show print content */
+  #print-menu-wrap {
+    display: block !important;
+    font-family: 'Inter', Arial, sans-serif;
+    color: #111;
+    background: #fff;
+  }
+
+  /* One page per week */
+  .pm-page {
+    width: 100%;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+  .pm-break { page-break-after: always; }
+
+  /* ---- Header ---- */
+  .pm-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    border-bottom: 2.5px solid #1e3a5f;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+  }
+  .pm-facility {
+    font-size: 13pt;
+    font-weight: 800;
+    color: #1e3a5f;
+    letter-spacing: 0.02em;
+  }
+  .pm-doc-title {
+    font-size: 9pt;
+    color: #444;
+    margin-top: 2px;
+  }
+  .pm-doc-title strong { color: #1e3a5f; }
+  .pm-prepared {
+    font-size: 7.5pt;
+    color: #888;
+    margin-top: 2px;
+  }
+  .pm-week-badge {
+    background: #1e3a5f;
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ---- Table ---- */
+  .pm-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 7.5pt;
+  }
+
+  /* Header row */
+  .pm-th {
+    background: #1e3a5f;
+    color: #fff;
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-align: center;
+    padding: 5px 3px;
+    border: 1px solid #1e3a5f;
+    letter-spacing: 0.02em;
+  }
+  .pm-th-meal {
+    width: 68px;
+    text-align: left;
+    padding-left: 6px;
+  }
+
+  /* Row label column */
+  .pm-row-label {
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px 2px;
+    border: 1px solid #ccc;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .pm-row-label.pm-breakfast { background: #fffbeb; color: #92400e; border-right: 3px solid #f59e0b; }
+  .pm-row-label.pm-lunch    { background: #eff6ff; color: #1e40af; border-right: 3px solid #3b82f6; }
+  .pm-row-label.pm-dinner   { background: #f0fdf4; color: #166534; border-right: 3px solid #10b981; }
+  .pm-totals-lbl {
+    background: #f3f4f6;
+    color: #374151;
+    font-weight: 800;
+    border-right: 3px solid #6b7280;
+  }
+
+  /* Meal cells */
+  .pm-cell {
+    vertical-align: top;
+    padding: 4px 4px 3px;
+    border: 1px solid #ddd;
+    line-height: 1.3;
+  }
+  .pm-cell.pm-breakfast { background: #fffbeb; }
+  .pm-cell.pm-lunch     { background: #eff6ff; }
+  .pm-cell.pm-dinner    { background: #f0fdf4; }
+
+  .pm-main    { font-size: 7.5pt; font-weight: 700; color: #111; }
+  .pm-protein { font-size: 6.5pt; color: #555; margin-top: 1px; }
+  .pm-sides   { font-size: 6pt;   color: #777; margin-top: 1px; font-style: italic; }
+  .pm-nums    { font-size: 6pt;   color: #333; margin-top: 2px; font-weight: 600; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 2px; }
+
+  /* Totals row */
+  .pm-totals-row { background: #f3f4f6; }
+  .pm-total-cell {
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px 2px;
+    border: 1px solid #ccc;
+  }
+  .pm-total-cal   { display: block; font-size: 7pt; font-weight: 700; }
+  .pm-total-cost  { display: block; font-size: 6.5pt; color: #444; margin-top: 1px; }
+  .pm-ok  { color: #166534; }
+  .pm-low { color: #b91c1c; }
+
+  /* ---- Summary footer ---- */
+  .pm-summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 6px;
+    padding-top: 5px;
+    border-top: 1.5px solid #1e3a5f;
+    font-size: 7pt;
+    color: #444;
+  }
+  .pm-sum-item { color: #333; }
+  .pm-sum-item strong { color: #1e3a5f; }
+  .pm-sum-right {
+    margin-left: auto;
+    font-size: 6.5pt;
+    color: #aaa;
+    font-style: italic;
+  }
+}

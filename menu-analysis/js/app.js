@@ -942,6 +942,96 @@ function resetPlanner() {
   showToast('Planner reset to defaults');
 }
 
+/* ── Print Menu ───────────────────────────────────────────── */
+function printMenu() {
+  renderPrintMenu();
+  window.print();
+}
+
+function renderPrintMenu() {
+  const wrap = document.getElementById('print-menu-wrap');
+  if (!wrap || typeof MENU_ROTATION === 'undefined') return;
+
+  const DAYS_FULL = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const prepared  = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  let html = '';
+
+  MENU_ROTATION.forEach((week, wi) => {
+    const allMeals  = week.days.flatMap(d => [d.breakfast, d.lunch, d.dinner]);
+    const avgCost   = (allMeals.reduce((s,m) => s + parseFloat(m.cost.replace('$','')), 0) / allMeals.length).toFixed(2);
+    const avgCal    = Math.round(allMeals.reduce((s,m) => s + (m.cal||0), 0) / allMeals.length);
+    const isLast    = wi === MENU_ROTATION.length - 1;
+
+    html += `<div class="pm-page${isLast ? '' : ' pm-break'}">
+
+      <!-- Page header -->
+      <div class="pm-header">
+        <div class="pm-header-left">
+          <div class="pm-facility">Jefferson County Jail</div>
+          <div class="pm-doc-title">4-Week Menu Rotation &mdash; <strong>${week.label}</strong></div>
+          <div class="pm-prepared">Prepared by Industry Standard &bull; ${prepared}</div>
+        </div>
+        <div class="pm-header-right">
+          <div class="pm-week-badge">Week ${week.week} of 4</div>
+        </div>
+      </div>
+
+      <!-- Menu table -->
+      <table class="pm-table">
+        <thead>
+          <tr>
+            <th class="pm-th pm-th-meal">Meal</th>
+            ${DAYS_FULL.map(d => `<th class="pm-th">${d}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${['breakfast','lunch','dinner'].map(key => {
+            const label = key.charAt(0).toUpperCase() + key.slice(1);
+            return `<tr>
+              <td class="pm-row-label pm-${key}">${label}</td>
+              ${week.days.map(day => {
+                const meal    = day[key];
+                const sides   = (meal.sides || []).join(', ');
+                return `<td class="pm-cell pm-${key}">
+                  <div class="pm-main">${meal.main}</div>
+                  <div class="pm-protein">${meal.protein}</div>
+                  <div class="pm-sides">${sides}</div>
+                  <div class="pm-nums">${meal.cost}<span class="pm-cal-sep">&nbsp;&middot;&nbsp;</span>${meal.cal}&thinsp;cal</div>
+                </td>`;
+              }).join('')}
+            </tr>`;
+          }).join('')}
+          <tr class="pm-totals-row">
+            <td class="pm-row-label pm-totals-lbl">Daily<br>Total</td>
+            ${week.days.map(day => {
+              const cal  = (day.breakfast.cal||0) + (day.lunch.cal||0) + (day.dinner.cal||0);
+              const cost = (parseFloat(day.breakfast.cost.replace('$','')) +
+                            parseFloat(day.lunch.cost.replace('$',''))    +
+                            parseFloat(day.dinner.cost.replace('$',''))).toFixed(2);
+              return `<td class="pm-total-cell">
+                <span class="pm-total-cal ${cal >= 2500 ? 'pm-ok' : 'pm-low'}">${cal.toLocaleString()}&thinsp;cal</span>
+                <span class="pm-total-cost">$${cost}</span>
+              </td>`;
+            }).join('')}
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Summary bar -->
+      <div class="pm-summary">
+        <span class="pm-sum-item">&#10003; Protein in every meal</span>
+        <span class="pm-sum-item">Avg cost: <strong>$${avgCost}</strong> / meal</span>
+        <span class="pm-sum-item">Avg calories: <strong>${avgCal.toLocaleString()}</strong> / meal</span>
+        <span class="pm-sum-right">Industry Standard &bull; Jefferson County Jail</span>
+      </div>
+
+    </div>`;
+  });
+
+  wrap.innerHTML = html;
+}
+
 /* ── Menu Rotation ────────────────────────────────────────── */
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
