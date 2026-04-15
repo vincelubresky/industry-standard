@@ -2199,7 +2199,7 @@ function renderCafeStats() {
     <div class="cafe-alert-banner">
       <i class="fa-solid fa-triangle-exclamation"></i>
       <div>
-        <strong>Birmingham is averaging ${(birmAvg*100).toFixed(1)}% food cost</strong> — more than 2.5× the 30% target. At $${weeklyOverspend.toLocaleString(undefined,{maximumFractionDigits:0})}/week over target, the cafe is not profitable on food alone before labor. The top 3 opportunities (produce contract, chicken tenders swap, salad bar restriction) alone could recover $59,000–$83,000 annually.
+        <strong>Bessemer averaging ${(besAvg*100).toFixed(1)}% · Birmingham averaging ${(birmAvg*100).toFixed(1)}%</strong> — both above the 30% target. At $${weeklyOverspend.toLocaleString(undefined,{maximumFractionDigits:0})}/week over target combined, Bessemer is the primary concern: 59.1% on flat revenue with extreme week-to-week variance driven by ordering discipline. The top 3 opportunities (ordering cap, produce contract, Shaver switches) could recover $12,000–$18,000 at Bessemer alone.
       </div>
     </div>`;
 }
@@ -2398,10 +2398,99 @@ function renderCafeRotation() {
     </div>`;
 }
 
+function renderBessemerPlan() {
+  const el = document.getElementById('cafe-bessemer-plan-container');
+  if (!el) return;
+  const plan = CAFE_DATA.bessemerPlan;
+  const s = plan.summary;
+  const priColor = { critical: '#dc2626', high: '#ea580c', med: '#ca8a04' };
+  const priLabel = { critical: 'Critical', high: 'High Priority', med: 'Medium' };
+
+  const stepCards = plan.steps.map(step => `
+    <div class="bpl-card">
+      <div class="bpl-card-header">
+        <div class="bpl-step-num">Step ${step.step}</div>
+        <div class="bpl-card-icon" style="background:${priColor[step.priority]}20;color:${priColor[step.priority]}"><i class="fa-solid ${step.icon}"></i></div>
+        <div class="bpl-card-titles">
+          <div class="bpl-card-title">${step.title}</div>
+          <span class="bpl-pri-badge" style="background:${priColor[step.priority]}15;color:${priColor[step.priority]};border:1px solid ${priColor[step.priority]}30">${priLabel[step.priority]}</span>
+        </div>
+        <div class="bpl-impact-col">
+          <div class="bpl-impact-val" style="color:${priColor[step.priority]}">$${step.weeklyImpact}/wk</div>
+          ${step.annualImpact ? `<div class="bpl-impact-ann">$${step.annualImpact.toLocaleString()}/yr</div>` : '<div class="bpl-impact-ann">varies</div>'}
+        </div>
+      </div>
+      <div class="bpl-card-body">
+        <p class="bpl-detail">${step.detail}</p>
+        <div class="bpl-how">
+          <div class="bpl-how-lbl"><i class="fa-solid fa-circle-play"></i> How to Execute</div>
+          <div class="bpl-how-text">${step.how}</div>
+        </div>
+        <div class="bpl-effort"><i class="fa-solid fa-clock"></i> ${step.effort}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const benchRows = plan.benchmarkWeeks.map(w => `
+    <tr>
+      <td>${w.week}</td>
+      <td>$${w.besCogs.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+      <td><span class="cafe-pct-badge" style="background:#16a34a20;color:#16a34a;border-color:#16a34a40">${(w.besPct*100).toFixed(1)}%</span></td>
+      <td class="bpl-bench-note">${w.note}</td>
+    </tr>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="bpl-insight-banner">
+      <i class="fa-solid fa-lightbulb"></i>
+      <div>${plan.insight}</div>
+    </div>
+
+    <div class="bpl-gap-grid">
+      <div class="bpl-gap-card">
+        <div class="bpl-gap-label">Current Avg COGS</div>
+        <div class="bpl-gap-val" style="color:#dc2626">${(s.currentPct*100).toFixed(1)}%</div>
+        <div class="bpl-gap-sub">$${s.currentCogsAvg.toLocaleString()}/week avg</div>
+      </div>
+      <div class="bpl-gap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+      <div class="bpl-gap-card bpl-gap-target">
+        <div class="bpl-gap-label">Target COGS</div>
+        <div class="bpl-gap-val" style="color:#16a34a">${(s.targetPct*100).toFixed(1)}%</div>
+        <div class="bpl-gap-sub">$${s.maxCogsTarget.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}/week max</div>
+      </div>
+      <div class="bpl-gap-arrow"><i class="fa-solid fa-equals"></i></div>
+      <div class="bpl-gap-card bpl-gap-opp">
+        <div class="bpl-gap-label">Gap to Close</div>
+        <div class="bpl-gap-val" style="color:#1d4ed8">$${Math.round(s.gapWeekly)}/wk</div>
+        <div class="bpl-gap-sub">$${s.gapAnnual.toLocaleString()}/year</div>
+      </div>
+    </div>
+
+    <div class="bpl-steps-list">
+      ${stepCards}
+    </div>
+
+    <div class="bpl-bench-wrap">
+      <div class="bpl-bench-hdr">
+        <i class="fa-solid fa-check-circle" style="color:#16a34a"></i>
+        Proof of Concept — Bessemer Already Hitting Target in These Weeks
+      </div>
+      <div class="cafe-table-wrap">
+        <table class="cafe-fin-table">
+          <thead><tr><th>Week</th><th>Bessemer COGS</th><th>Food Cost %</th><th>Notes</th></tr></thead>
+          <tbody>${benchRows}</tbody>
+        </table>
+      </div>
+      <p class="bpl-bench-caption">These weeks prove the kitchen and menu are capable of hitting the 55% target. The issue is ordering consistency — not menu cost.</p>
+    </div>
+  `;
+}
+
 function renderCafeAnalysis() {
   renderCafeStats();
   renderCafeFinancials();
   renderCafeOpportunities();
+  renderBessemerPlan();
   renderCafeIngredients();
   renderCafeRotation();
 }

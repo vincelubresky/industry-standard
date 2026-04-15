@@ -1628,6 +1628,101 @@ const CAFE_DATA = {
     }
   ],
 
+  // ── Bessemer Action Plan ────────────────────────────────────
+  // Target: reduce avg COGS from 59.1% → 55% on $3,181.50/week revenue
+  // Gap: $131/week · $6,800/year · current max COGS target = $1,750/week
+  bessemerPlan: {
+    summary: {
+      currentPct: 0.591,
+      targetPct:  0.550,
+      revWeekly:  3181.50,
+      maxCogsTarget:  1749.83,   // 55% of $3,181.50
+      currentCogsAvg: 1879.00,   // 59.1% of $3,181.50
+      gapWeekly:  129.17,
+      gapAnnual:  6717
+    },
+    // Key insight: revenue is perfectly flat every week ($3,181.50).
+    // COGS variance is 35.3% (low: $1,122) to 89.9% (high: $2,859) — a 54-point swing.
+    // This means the kitchen CAN hit 55% target already (see Jan 12 at 39.3%, Jan 26 at 35.3%).
+    // The problem is ordering discipline, not menu cost.
+    insight: "Bessemer's revenue is perfectly flat at $3,181.50 every week. COGS swings from $1,122 (35.3%) to $2,859 (89.9%) — a 54-point variance on fixed revenue. Three weeks are already at or below 55%. The menu can hit the target; ordering consistency cannot.",
+    steps: [
+      {
+        step: 1,
+        priority: "critical",
+        title: "Set a Weekly COGS Cap of $1,750",
+        icon: "fa-hand-holding-dollar",
+        detail: "55% of $3,181.50 weekly revenue = $1,749.83 max COGS. Make this the weekly purchase authority limit for Bessemer. No order can be placed that would push the running week's COGS above $1,750. The manager signs off on each order against the week's remaining budget.",
+        weeklyImpact: 129,
+        annualImpact: 6717,
+        effort: "Immediate — policy only, no cost",
+        how: "Post the $1,750 weekly cap on the ordering station. Track running total each order day. If a week is already at $1,400 and Thursday needs supplies, that's $350 left to spend — not a new $700 order."
+      },
+      {
+        step: 2,
+        priority: "critical",
+        title: "Eliminate Bulk/Double Orders",
+        icon: "fa-boxes-stacked",
+        detail: "The Jan 19 week at 89.9% COGS ($2,859) and several 69–70% weeks indicate ordering for multiple weeks in a single billing period. A $2,859 week on $3,181.50 revenue means nearly every dollar in revenue went to food. This is a double-order pattern, not a double-cost menu.",
+        weeklyImpact: 200,
+        annualImpact: null,
+        effort: "Immediate — discipline only",
+        how: "Order weekly. If supplies run low mid-week, that's a signal to refine par levels — not a green light to over-order the next week. Implement a sign-off requirement for any single order over $500."
+      },
+      {
+        step: 3,
+        priority: "high",
+        title: "Build Par Levels for Top 10 Items",
+        icon: "fa-clipboard-list",
+        detail: "Without written par levels, ordering is based on gut feel. The high-variance weeks suggest the kitchen is guessing quantities. Par levels establish a floor (reorder point) and ceiling (max stock) for each item so the fridge and dry storage dictate the order, not memory.",
+        weeklyImpact: 80,
+        annualImpact: 4160,
+        effort: "1–2 days to establish, permanent benefit",
+        how: "Walk the Bessemer kitchen and document: (1) items used every day, (2) approximate daily usage, (3) how many days of supply currently on hand. Set par = 5-day supply on daily items, 7-day supply on weekly proteins. Reorder only when below par, only to par ceiling."
+      },
+      {
+        step: 4,
+        priority: "high",
+        title: "Switch to Shaver for 5 Key Items",
+        icon: "fa-arrows-rotate",
+        detail: "Bessemer sources the same grits, oatmeal, jelly, cake mixes, and cheese sauce as Birmingham — all available cheaper at Shaver. Adding Bessemer to the existing Shaver ISP order requires zero new vendor setup.",
+        weeklyImpact: 35,
+        annualImpact: 1820,
+        effort: "Add Bessemer to existing Shaver order — 1 phone call",
+        how: "Grits: $0.014/serving savings × 150 people × 7 days = $14.70/week. Oatmeal: $0.023/serving × 150 × 7 = $24.15/week. Jelly packets: $0.028 × ~75 × 5 = $10.50/week. Total: ~$35+/week on existing menu with no changes."
+      },
+      {
+        step: 5,
+        priority: "med",
+        title: "Standardize French Fry Portion to 4 oz",
+        icon: "fa-bowl-food",
+        detail: "Fries appear at nearly every Bessemer lunch. Without a written portion standard, a 5–6 oz plate vs a 4 oz plate is a 25–50% cost overrun on the second highest frequency item. A #8 scoop costs nothing to implement.",
+        weeklyImpact: 25,
+        annualImpact: 1300,
+        effort: "Zero cost — portion scoop and a posted standard",
+        how: "Purchase one #8 scoop ($3). Post '4 oz — 1 level scoop' at the fry station. Track fry case usage for 2 weeks before vs 2 weeks after to confirm savings."
+      },
+      {
+        step: 6,
+        priority: "med",
+        title: "Verify Produce Costs — Get Contracted Pricing",
+        icon: "fa-apple-whole",
+        detail: "Fresh fruit costs at Bessemer are unknown but estimated at $0.45–0.55/person/day × 150 people = $47–58/day, $329–406/week. A standing produce order with a contract price (whole oranges, 40 lb banana case) can cut this 30–40%.",
+        weeklyImpact: 100,
+        annualImpact: 5200,
+        effort: "1 week to get produce quote and set standing order",
+        how: "Get a per-case price on: (1) navel oranges, 3/4 bushel case, (2) bananas, 40 lb case. Calculate per-serving cost. Compare to current uncontracted spend. A standing weekly order typically commands 10–20% below spot price."
+      }
+    ],
+    // Best weeks as proof-of-concept
+    benchmarkWeeks: [
+      { week: "Jan 12–18",    besPct: 0.393, besCogs: 1250.00, note: "39.3% — already well below 55% target" },
+      { week: "Jan 26–Feb 1", besPct: 0.353, besCogs: 1121.81, note: "35.3% — lowest week, shows what's possible" },
+      { week: "Feb 16–22",    besPct: 0.489, besCogs: 1555.88, note: "48.9% — strong week, target range" },
+      { week: "Mar 9–15",     besPct: 0.490, besCogs: 1559.41, note: "49.0% — on target" }
+    ]
+  },
+
   // 4-week rotation (condensed — key proteins + items per meal)
   rotation: [
     {
