@@ -1505,25 +1505,27 @@ const MENU_ORDER_LIST = {
 const CAFE_DATA = {
   headcount: { birmingham: 240, bessemer: 150 },
   ratePerMeal: 3.03,
-  revWeekly:   { birmingham: 5090.40, bessemer: 3181.50 },
+  // Birmingham revenue = Café ($5,090.40) + Academy ($2,545.20) + JBS ($2,019.00) = $9,654.60
+  revWeekly:   { birmingham: 9654.60, bessemer: 3181.50 },
   targetFoodCostPct: 0.30,
 
   // 14 weeks of actual COGS from Weekly - 2026.xlsx
+  // Birmingham % = birmCogs / $9,654.60 (Café + Academy + JBS combined revenue)
   weeklyFinancials: [
-    { week: "Jan 5–11",      birmCogs: 3823.76, birmPct: 0.751, besCogs: 1602.15, besPct: 0.504 },
-    { week: "Jan 12–18",     birmCogs: 4123.69, birmPct: 0.810, besCogs: 1250.00, besPct: 0.393 },
-    { week: "Jan 19–25",     birmCogs: 4080.81, birmPct: 0.802, besCogs: 2858.77, besPct: 0.899 },
-    { week: "Jan 26–Feb 1",  birmCogs: 3407.27, birmPct: 0.669, besCogs: 1121.81, besPct: 0.353 },
-    { week: "Feb 2–8",       birmCogs: 3693.02, birmPct: 0.725, besCogs: 1930.28, besPct: 0.607 },
-    { week: "Feb 9–15",      birmCogs: 4388.84, birmPct: 0.862, besCogs: 1871.05, besPct: 0.588 },
-    { week: "Feb 16–22",     birmCogs: 3925.87, birmPct: 0.771, besCogs: 1555.88, besPct: 0.489 },
-    { week: "Feb 23–Mar 1",  birmCogs: 3959.31, birmPct: 0.778, besCogs: 2041.99, besPct: 0.642 },
-    { week: "Mar 2–8",       birmCogs: 4756.79, birmPct: 0.934, besCogs: 2206.71, besPct: 0.694 },
-    { week: "Mar 9–15",      birmCogs: 4055.17, birmPct: 0.797, besCogs: 1559.41, besPct: 0.490 },
-    { week: "Mar 16–22",     birmCogs: 4682.47, birmPct: 0.920, besCogs: 1924.02, besPct: 0.605 },
-    { week: "Mar 23–29",     birmCogs: 4470.41, birmPct: 0.878, besCogs: 1965.66, besPct: 0.618 },
-    { week: "Mar 30–Apr 5",  birmCogs: 3940.89, birmPct: 0.774, besCogs: 2229.27, besPct: 0.701 },
-    { week: "Apr 6–12",      birmCogs: 4298.01, birmPct: 0.844, besCogs: 2219.01, besPct: 0.697 }
+    { week: "Jan 5–11",      birmCogs: 3823.76, birmPct: 0.396, besCogs: 1602.15, besPct: 0.504 },
+    { week: "Jan 12–18",     birmCogs: 4123.69, birmPct: 0.427, besCogs: 1250.00, besPct: 0.393 },
+    { week: "Jan 19–25",     birmCogs: 4080.81, birmPct: 0.423, besCogs: 2858.77, besPct: 0.899 },
+    { week: "Jan 26–Feb 1",  birmCogs: 3407.27, birmPct: 0.353, besCogs: 1121.81, besPct: 0.353 },
+    { week: "Feb 2–8",       birmCogs: 3693.02, birmPct: 0.383, besCogs: 1930.28, besPct: 0.607 },
+    { week: "Feb 9–15",      birmCogs: 4388.84, birmPct: 0.455, besCogs: 1871.05, besPct: 0.588 },
+    { week: "Feb 16–22",     birmCogs: 3925.87, birmPct: 0.407, besCogs: 1555.88, besPct: 0.489 },
+    { week: "Feb 23–Mar 1",  birmCogs: 3959.31, birmPct: 0.410, besCogs: 2041.99, besPct: 0.642 },
+    { week: "Mar 2–8",       birmCogs: 4756.79, birmPct: 0.493, besCogs: 2206.71, besPct: 0.694 },
+    { week: "Mar 9–15",      birmCogs: 4055.17, birmPct: 0.420, besCogs: 1559.41, besPct: 0.490 },
+    { week: "Mar 16–22",     birmCogs: 4682.47, birmPct: 0.485, besCogs: 1924.02, besPct: 0.605 },
+    { week: "Mar 23–29",     birmCogs: 4470.41, birmPct: 0.463, besCogs: 1965.66, besPct: 0.618 },
+    { week: "Mar 30–Apr 5",  birmCogs: 3940.89, birmPct: 0.408, besCogs: 2229.27, besPct: 0.701 },
+    { week: "Apr 6–12",      birmCogs: 4298.01, birmPct: 0.445, besCogs: 2219.01, besPct: 0.697 }
   ],
 
   // Per-serving ingredient cost analysis
@@ -1715,13 +1717,13 @@ const CEO_DATA = {
       icon:        "fa-mug-hot",
       weeklyRev:   8272,
       pctOfTotal:  0.095,
-      cogsPct:     0.726,
+      cogsPct:     0.467,
       target:      0.300,
-      status:      "critical",
-      statusLabel: "Critical",
-      note:        "Birmingham 80.8% COGS · Bessemer 59.1% COGS — not profitable before labor.",
+      status:      "watch",
+      statusLabel: "Watch",
+      note:        "Birmingham 42.6% COGS · Bessemer 59.1% COGS — both above 30% target. Bessemer is the primary concern.",
       annualSavings: 83000,
-      detail:      "The café is losing money on food alone at current COGS rates. Primary drivers: daily fresh fruit (~$78K/yr), chicken tenders ($1.25/serving), and an unportioned daily salad bar. Requires immediate menu and vendor action."
+      detail:      "Birmingham COGS is calculated against combined Café + Academy + JBS revenue ($9,654.60/week). At 42.6%, Birmingham is above the 30% target but not critical. Bessemer at 59.1% on flat $3,181.50/week revenue is the bigger concern. Primary cost reduction levers remain: produce contract for fresh fruit (~$35–47K/yr), replacing chicken tenders with Shaver chicken patty (~$13–16K/yr), and salad bar portioning discipline."
     },
     {
       name:        "Soft Trays",

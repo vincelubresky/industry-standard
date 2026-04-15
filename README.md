@@ -39,7 +39,7 @@ Both URLs serve the same product. Render auto-deploys on every push to `main`. G
 
 - **$247,000+** in identified annual savings across all lines
 - **23 items** confirmed cheaper at Shaver vs PFG — $13,752+/yr on population alone
-- **Birmingham Café** averaging **80.8% food COGS** — primary cost reduction target
+- **Birmingham Café** averaging **42.6% food COGS** (vs Café + Academy + JBS revenue) · Bessemer at 59.1% — both above 30% target
 - **Weekly net average**: $23,131 (26.0% margin) across 14 weeks
 - **Milk**: 65% apparent COGS — backend stipend exists, true margin TBD
 
