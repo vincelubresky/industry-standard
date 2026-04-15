@@ -83,10 +83,10 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 #print-root{display:none}
 
 /* ══════════════════════════════════════
-   PRINT — landscape, one full week per page, bold grid
+   PRINT — landscape, one full week per page, large readable font
 ══════════════════════════════════════ */
 @media print{
-  @page{size:letter landscape;margin:.25in}
+  @page{size:letter landscape;margin:.15in}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 
   .print-bar,.week-tabs,.legend,.price-note,.doc-header,#menu-root{display:none!important}
@@ -98,61 +98,58 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   .pweek:last-child{page-break-after:auto}
 
   /* ── Week header bar ── */
-  .pw-hdr{background:var(--navy)!important;color:#fff;padding:6pt 10pt;
+  .pw-hdr{background:var(--navy)!important;color:#fff;padding:5pt 10pt;
           display:table;width:100%;border-radius:3pt 3pt 0 0}
   .pw-hdr-l{display:table-cell;vertical-align:middle}
-  .pw-hdr-title{font-size:14pt;font-weight:900;letter-spacing:-.01em}
+  .pw-hdr-title{font-size:13pt;font-weight:900;letter-spacing:-.01em}
   .pw-hdr-sub{font-size:7pt;color:#94a3b8;margin-top:1pt}
   .pw-hdr-r{display:table-cell;text-align:right;vertical-align:middle;
-            font-size:8pt;color:#94a3b8;font-weight:700}
+            font-size:8pt;color:#cbd5e1;font-weight:700}
 
   /* ── Main grid table ── */
   .pw-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
-  .pw-tbl td,.pw-tbl th{border:1pt solid #cbd5e1}
+  .pw-tbl td,.pw-tbl th{border:1.5pt solid #94a3b8}
 
   /* Day header row */
-  .pw-day-hdr{background:var(--navy2)!important;color:#fff;font-size:9.5pt;font-weight:900;
-              padding:4pt 5pt;text-align:center;letter-spacing:.03em}
-  .pw-lbl-hdr{background:var(--navy2)!important;width:38pt}
+  .pw-day-hdr{background:var(--navy2)!important;color:#fff;font-size:11pt;font-weight:900;
+              padding:5pt 4pt;text-align:center;letter-spacing:.02em}
+  .pw-lbl-hdr{background:var(--navy2)!important;width:44pt}
 
   /* Meal label cells */
-  .pw-lbl{text-align:center;vertical-align:middle;padding:3pt 2pt;
-          font-size:7.5pt;font-weight:900;text-transform:uppercase;letter-spacing:.06em;width:38pt;
-          line-height:1.5}
-  .pw-lbl.bk{background:var(--bk-bg)!important;color:var(--bk);border-right:2pt solid var(--bk-bd)}
-  .pw-lbl.lu{background:var(--lu-bg)!important;color:var(--lu);border-right:2pt solid var(--lu-bd)}
-  .pw-lbl.di{background:var(--di-bg)!important;color:var(--di);border-right:2pt solid var(--di-bd)}
+  .pw-lbl{text-align:center;vertical-align:middle;padding:4pt 2pt;
+          font-size:8pt;font-weight:900;text-transform:uppercase;letter-spacing:.05em;width:44pt;
+          line-height:1.6}
+  .pw-lbl.bk{background:var(--bk-bg)!important;color:var(--bk);border-right:2.5pt solid var(--bk-bd)}
+  .pw-lbl.lu{background:var(--lu-bg)!important;color:var(--lu);border-right:2.5pt solid var(--lu-bd)}
+  .pw-lbl.di{background:var(--di-bg)!important;color:var(--di);border-right:2.5pt solid var(--di-bd)}
 
   /* Meal data cells */
-  .pw-cell{padding:4pt 5pt;vertical-align:top}
+  .pw-cell{padding:5pt 6pt;vertical-align:top}
   .pw-cell.bk{background:#fffdf5!important}
   .pw-cell.lu{background:#f0f8ff!important}
   .pw-cell.di{background:#f0fdf4!important}
 
-  /* Protein line — large bold */
-  .pw-prot{font-size:9.5pt;font-weight:900;color:var(--prot);line-height:1.35;margin-bottom:2.5pt}
+  /* Protein line — large bold, easy to read */
+  .pw-prot{font-size:12pt;font-weight:900;color:var(--prot);line-height:1.3;margin-bottom:3pt}
 
-  /* Side items */
-  .pw-side{font-size:7.5pt;font-weight:600;color:#1e293b;line-height:1.45}
+  /* Side items — clearly legible */
+  .pw-side{font-size:10pt;font-weight:700;color:#1e293b;line-height:1.5}
 
-  /* Meal cost */
-  .pw-cost{font-size:8pt;font-weight:900;color:#15803d;margin-top:3pt;
-           padding-top:2.5pt;border-top:.5pt solid #e2e8f0}
+  /* Cost hidden in CEO print view */
+  .pw-cost{display:none}
 
   /* Warn cell */
-  .pw-warn{background:#fff7ed!important;padding:4pt 5pt;font-size:7.5pt;
+  .pw-warn{background:#fff7ed!important;padding:5pt 4pt;font-size:9pt;
            font-weight:800;color:#92400e;vertical-align:middle;text-align:center}
 
-  /* Legend footer */
-  .pw-legend{display:table;width:100%;background:#f8fafc!important;
-             border:1pt solid #cbd5e1;border-top:none;border-radius:0 0 3pt 3pt;
-             padding:3.5pt 10pt;font-size:7pt;color:var(--muted)}
+  /* Footer */
+  .pw-legend{display:table;width:100%;background:#f1f5f9!important;
+             border:1pt solid #94a3b8;border-top:none;
+             padding:3pt 10pt}
   .pw-legend-inner{display:table-row}
-  .pw-legend-l{display:table-cell;vertical-align:middle}
+  .pw-legend-l{display:table-cell;vertical-align:middle;font-size:7.5pt;font-weight:700;color:#475569}
   .pw-legend-r{display:table-cell;text-align:right;vertical-align:middle;
-               font-style:italic;color:#94a3b8;font-size:6.5pt}
-  .pw-legend .vbadge{font-size:6pt;padding:1px 4px}
-  .pw-legend-key{font-weight:900;color:var(--navy);margin-right:4pt}
+               font-style:italic;color:#94a3b8;font-size:7pt}
 }
 </style>
 </head>
@@ -441,7 +438,6 @@ function renderPrint(){
             return `<td class="pw-cell bk">
               <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
               ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
-              <div class="pw-cost">${f$(tot(items).cost)}</div>
             </td>`;
           }).join('')}
         </tr>
@@ -451,13 +447,12 @@ function renderPrint(){
           <td class="pw-lbl lu">🥪<br>LUNCH<br>(SAND)</td>
           ${DAYS.map((_,di)=>{
             const items=wk.lunch[di];
-            if(!items) return `<td class="pw-warn">⚠ REVIEW<br><span style="font-size:6.5pt;font-weight:600">No protein — confirm with kitchen</span></td>`;
+            if(!items) return `<td class="pw-warn">⚠ REVIEW</td>`;
             const prot=items.find(it=>it[5]);
             const sides=items.filter(it=>!it[5]);
             return `<td class="pw-cell lu">
               <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
               ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
-              <div class="pw-cost">${f$(tot(items).cost)}</div>
             </td>`;
           }).join('')}
         </tr>
@@ -472,7 +467,6 @@ function renderPrint(){
             return `<td class="pw-cell di">
               <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
               ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
-              <div class="pw-cost">${f$(tot(items).cost)}</div>
             </td>`;
           }).join('')}
         </tr>
