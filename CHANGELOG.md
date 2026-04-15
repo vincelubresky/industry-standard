@@ -5,6 +5,26 @@ This file is updated alongside every commit so nothing is lost between sessions.
 
 ---
 
+## [2026-04-15b] — Printable Menu Fix & Menu Item Catalog
+
+**Population Menu (`population-menu.html`) — Lunch/Dinner Corrected**
+- Fixed meal assignment: Lunch = HOT entrées, Dinner = COLD sandwiches (per Jefferson County sheet structure)
+- Added calories, vendor badge, and per-item pricing to each day's listing
+- Week 3 Wednesday Lunch renders ⚠ REVIEW badge — no protein found in JC source data for that slot
+- Daily cost totals row at bottom of each week; landscape print layout
+
+**New: `menu-analysis/menu-items.html` — Item Catalog**
+- Standalone printable catalog of all menu items (~40 items across 7 categories)
+- Categories: Complete Meals, Proteins, Breakfast Items, Breads, Vegetables, Beverages, Desserts
+- Each item shows: portion size, calories, vendor badge, cost/serving, case spec, notes
+- Filter buttons by category; calorie bar visualization; summary stats (total items, SHV/IH split, avg cost/cal)
+- Print layout: portrait Letter, fits cleanly without truncation
+
+**Dashboard Nav**
+- Added "Menu Item Catalog" link to Reference section of sidebar (opens in new tab)
+
+---
+
 ## [2026-04-15] — COGS Findings & Milk Stipend Fix
 
 **Executive Dashboard — Findings Section**

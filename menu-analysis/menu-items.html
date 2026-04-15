@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jefferson County — Complete Menu Item Catalog</title>
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--border:#e2e8f0;--bg:#f8fafc;--text:#0f172a;--muted:#64748b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:12px}
+.print-bar{background:var(--navy);color:#fff;padding:9px 20px;display:flex;align-items:center;justify-content:space-between}
+.print-bar a{color:#94a3b8;text-decoration:none;font-size:12px}.print-bar a:hover{color:#fff}
+.btn-print{background:#0369a1;color:#fff;border:none;border-radius:5px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer}
+.doc-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1e3a5f 100%);color:#fff;padding:22px 28px 18px}
+.doc-header h1{font-size:19px;font-weight:800}
+.doc-header p{color:#94a3b8;font-size:12px;margin-top:3px}
+.meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.meta-pill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 12px;font-size:11px;color:#e2e8f0}
+.vbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.v-SHV{background:#dbeafe;color:#1d4ed8}.v-PFG{background:#ffedd5;color:#c2410c}
+.v-BD{background:#ede9fe;color:#6d28d9}.v-IH{background:#dcfce7;color:#15803d}.v-COM{background:#f1f5f9;color:#475569}
+/* Filter tabs */
+.filter-bar{display:flex;gap:0;flex-wrap:wrap;padding:10px 20px;background:#fff;border-bottom:1px solid var(--border);gap:6px}
+.filter-btn{background:#f1f5f9;border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:600;cursor:pointer;color:#475569}
+.filter-btn.active{background:#0369a1;color:#fff;border-color:#0369a1}
+/* Body */
+.doc-body{padding:16px 20px 40px}
+/* Category section */
+.cat-block{margin-bottom:28px}
+.cat-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.cat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cat-title{font-size:15px;font-weight:800;color:var(--navy)}
+.cat-count{font-size:11px;color:var(--muted);font-weight:500}
+/* Item table */
+.item-tbl{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.item-tbl thead th{padding:8px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:2px solid var(--border);border-right:1px solid var(--border);white-space:nowrap}
+.item-tbl thead th:last-child{border-right:none}
+.item-tbl tbody td{padding:7px 12px;border-bottom:1px solid #f1f5f9;border-right:1px solid #f1f5f9;vertical-align:middle;font-size:12px}
+.item-tbl tbody td:last-child{border-right:none}
+.item-tbl tbody tr:last-child td{border-bottom:none}
+.item-tbl tbody tr:hover td{background:#f8fafc}
+.item-tbl tbody tr:nth-child(even) td{background:#fafbfc}
+.item-name{font-weight:700;color:#0f172a}
+.item-portion{color:#64748b;font-size:11px}
+.item-cal{font-weight:600;color:#1e293b}
+.item-cost{font-weight:700;color:#15803d}
+.item-case{font-size:11px;color:#475569}
+.item-note{font-size:10px;color:#94a3b8;font-style:italic}
+/* Calorie bar */
+.cal-bar-wrap{display:flex;align-items:center;gap:6px;min-width:80px}
+.cal-bar{height:6px;border-radius:3px;background:#e2e8f0;flex:1;overflow:hidden}
+.cal-fill{height:100%;border-radius:3px;background:#0369a1}
+/* Summary stats */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.stat-val{font-size:22px;font-weight:800;color:#0f172a}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+@media print{
+  .print-bar,.filter-bar{display:none!important}
+  body{background:#fff;font-size:9px}
+  .doc-header{padding:10px 14px}.doc-header h1{font-size:13px}
+  .doc-body{padding:8px 14px}
+  .cat-block{page-break-inside:avoid;margin-bottom:18px}
+  .item-tbl thead th,.item-tbl tbody td{font-size:8px;padding:4px 7px}
+  .cal-bar-wrap{min-width:50px}
+  @page{size:letter portrait;margin:.45in}
+  print-color-adjust:exact;-webkit-print-color-adjust:exact
+}
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <a href="index.html">&#8592; Dashboard</a>
+  <div style="display:flex;gap:10px;align-items:center">
+    <a href="population-menu.html" style="color:#94a3b8;font-size:11px">&#128197; Menu Schedule</a>
+    <button class="btn-print" onclick="window.print()">&#128438; Print / Save PDF</button>
+  </div>
+</div>
+
+<div class="doc-header">
+  <h1>Jefferson County — Complete Menu Item Catalog</h1>
+  <p>Industry Standard Food Service &nbsp;·&nbsp; All items: complete meals · proteins · sides · breads · beverages · desserts</p>
+  <div class="meta-row">
+    <span class="meta-pill">&#128204; Every item with calories, vendor, case spec, and per-serving cost</span>
+    <span class="meta-pill">&#9998; Use as reference for ordering, costing, and menu changes</span>
+  </div>
+</div>
+
+<div class="filter-bar" id="filter-bar">
+  <button class="filter-btn active" onclick="filterCat('all',this)">All Items</button>
+  <button class="filter-btn" onclick="filterCat('entree',this)">Hot Entrées</button>
+  <button class="filter-btn" onclick="filterCat('protein',this)">Cold Proteins</button>
+  <button class="filter-btn" onclick="filterCat('breakfast',this)">Breakfast</button>
+  <button class="filter-btn" onclick="filterCat('bread',this)">Breads &amp; Starches</button>
+  <button class="filter-btn" onclick="filterCat('veg',this)">Vegetables &amp; Sides</button>
+  <button class="filter-btn" onclick="filterCat('bev',this)">Beverages &amp; Dairy</button>
+  <button class="filter-btn" onclick="filterCat('dessert',this)">Desserts &amp; Snacks</button>
+</div>
+
+<div class="doc-body">
+<div class="stats-row" id="stats-row"></div>
+<div id="catalog-root"></div>
+</div>
+
+<script>
+const VD={
+  SHV:{l:'SHV',c:'v-SHV',n:'Shaver / ISP'},
+  PFG:{l:'PFG',c:'v-PFG',n:'Performance Food Group'},
+  BD: {l:'BD', c:'v-BD', n:'Big Daddy'},
+  IH: {l:'IH', c:'v-IH', n:'In-House Prepared'},
+  COM:{l:'COM',c:'v-COM',n:'Commodity / Generic'}
+};
+function vb(k){const v=VD[k];return `<span class="vbadge ${v.c}" title="${v.n}">${v.l}</span>`;}
+
+// Catalog — each item:
+// [name, portion, calories, vendor, costPerServing, caseSpec, notes, category]
+const CATALOG = [
+  // ── HOT ENTRÉES (Lunch) ──────────────────────────────────
+  ['Spaghetti w/ Meat Sauce',      '8 oz', 290,'IH', 0.68,'Bulk ingredients','Ground beef, pasta, tomato sauce','entree'],
+  ['Lasagna',                      '8 oz', 310,'IH', 0.78,'Bulk ingredients','Ground beef, noodles, cheese sauce','entree'],
+  ['Chicken Tacos',                '8 oz', 275,'IH', 0.70,'Bulk ingredients','Shredded chicken, taco seasoning','entree'],
+  ['Chicken Tezz',                 '8 oz', 280,'PFG',0.85,'CS bulk','Pre-seasoned chicken blend','entree'],
+  ['Red Beans & Rice w/ Chicken',  '8 oz', 260,'IH', 0.65,'Bulk ingredients','Slow-cooked; rice included in portion','entree'],
+  ['White Bean Chili',             '8 oz', 240,'IH', 0.55,'Bulk ingredients','Ground chicken or turkey base','entree'],
+  ['Beef Mac w/ Elbow',            '8 oz', 340,'IH', 0.75,'Bulk ingredients','Ground beef, elbow pasta, taco seasoning','entree'],
+  ['Beef Stroganoff',              '8 oz', 310,'IH', 0.72,'Bulk ingredients','Beef strips, cream of mushroom, egg noodles','entree'],
+  ['Cheesy Chicken Mac',           '8 oz', 320,'IH', 0.72,'Bulk ingredients','Normal portion — shredded chicken, cheese sauce','entree'],
+  ['Chicken & Rice Casserole',     '8 oz', 270,'IH', 0.65,'Bulk ingredients','Normal portion — cream of chicken, rice','entree'],
+
+  // ── COLD PROTEINS (Dinner sandwiches) ────────────────────
+  ['Salami — Turkey/Chicken Logs', '2 oz', 100,'SHV',0.20,'2/10 LB · $31.82/cs','160 servings/cs · $0.20/serving','protein'],
+  ['Turkey (sliced lunch meat)',   '2 oz',  65,'SHV',0.22,'CS bulk','Verify current Shaver case pricing','protein'],
+  ['Chicken Patty BRD FC',         '3 oz', 170,'SHV',0.41,'40 LB cs · $86.29/cs','213 servings/cs · $0.405/serving','protein'],
+  ['Peanut Butter',               '.75 oz',130,'COM',0.08,'Bulk institutional jar','IPC portion cups available','protein'],
+  ['Bologna — Chicken Logs',       '2 oz',  80,'SHV',0.20,'3/8 LB · $39.02/cs','192 servings/cs · $0.203/serving — alternative to salami','protein'],
+
+  // ── BREAKFAST ITEMS ──────────────────────────────────────
+  ['Turkey Sausage Hot Link FC',   '2 oz', 140,'SHV',0.26,'6/5 LB · $61.08/cs','30 LB/cs · 240 servings · $0.254/serving','breakfast'],
+  ['Boiled Egg (whole)',           '1 lg',  70,'PFG',0.05,'Flat of 30','Transitioning to whole egg at ~$0.05/ea','breakfast'],
+  ['Butter Grits',                 '1 cup',170,'COM',0.08,'Bulk bag 25 LB','Prepared with butter and water','breakfast'],
+  ['Oatmeal',                      '1 cup',155,'COM',0.10,'Bulk bag 20 LB','Plain; served with jelly or sugar packet','breakfast'],
+  ['Biscuit',                      '1 ea', 210,'IH', 0.15,'Scratch or frozen pull-apart','Served Mon/Wed/Fri with sausage days','breakfast'],
+  ['Jelly (pouch)',                '.5 oz',  35,'COM',0.05,'CS of 200 pouches','Grape or strawberry','breakfast'],
+  ['Milk (½ pint carton)',         '½ pt', 100,'PFG',0.25,'48/cs','Contract rate; Tue/Thu breakfast; 65% COGS line','breakfast'],
+
+  // ── BREADS & STARCHES ────────────────────────────────────
+  ['Wheat Bread (sandwich)',       '2 sl', 160,'COM',0.08,'Loaf · bulk case','Used at dinner for all sandwiches','bread'],
+  ['Cornbread',                    '1 pc', 180,'IH', 0.12,'Scratch mix · bulk bag','Standard side at lunch and dinner','bread'],
+  ['Tortillas (flour)',            '2 ea', 180,'COM',0.10,'CS 12/24','Used on Chicken Taco days (Week 1 Tue)','bread'],
+  ['White Parboiled Rice',         '4 oz', 130,'COM',0.07,'25 LB bag','Fluffy texture; used as side and in entrées','bread'],
+  ['White Parboiled Rice',         '8 oz', 260,'COM',0.14,'25 LB bag','Full portion when served as primary starch','bread'],
+  ['Pasta (elbow)',                '4 oz', 210,'COM',0.09,'20 LB bag','Used in Beef Mac, Cheeseburger Mac, etc.','bread'],
+  ['Spaghetti Noodles',           '4 oz', 210,'COM',0.09,'20 LB bag','Used in Spaghetti w/ Meat Sauce, Beef Stroganoff','bread'],
+
+  // ── VEGETABLES & SIDES ───────────────────────────────────
+  ['Carrots (frozen/canned)',      '4 oz',  45,'SHV',0.10,'CS bulk','Check ISP vs PFG price — SHV likely cheaper','veg'],
+  ['Peas & Carrots (mixed)',       '4 oz',  55,'SHV',0.10,'CS bulk','Standard mixed frozen bag','veg'],
+  ['Green Beans (canned)',         '4 oz',  35,'COM',0.09,'6/#10 cans/cs','Low cost; verify SHV availability','veg'],
+  ['Northern Beans (canned)',      '4 oz', 120,'COM',0.11,'6/#10 cans/cs','High protein side — good filler','veg'],
+  ['Pinto Beans (canned)',         '4 oz', 120,'COM',0.11,'6/#10 cans/cs','Standard side; used across all 4 weeks','veg'],
+  ['Mashed Potatoes (instant)',    '4 oz', 105,'COM',0.12,'Bulk bag 25 LB','Instant prep; used Mon–Fri','veg'],
+  ['Mixed Vegetables (frozen)',    '4 oz',  45,'SHV',0.10,'CS bulk frozen','Corn/peas/carrots/green bean blend','veg'],
+  ['Pasta Salad',                  '4 oz', 155,'IH', 0.18,'Bulk prep','Made in-house; elbow + mayo + seasonings','veg'],
+  ['Corn (canned/frozen)',         '4 oz',  80,'COM',0.09,'6/#10 cans/cs','Plain yellow sweet corn','veg'],
+  ['Butter Corn',                  '4 oz',  90,'COM',0.11,'6/#10 cans/cs','Corn prepared with butter','veg'],
+
+  // ── BEVERAGES & DAIRY ────────────────────────────────────
+  ['Fortified Beverage',           '8 oz',  60,'COM',0.10,'CS bulk powder','Vitamin-fortified; served at every meal','bev'],
+  ['Milk (½ pint carton)',         '½ pt', 100,'PFG',0.25,'48/cs','See Breakfast listing — backend stipend applies','bev'],
+
+  // ── DESSERTS & SNACKS ────────────────────────────────────
+  ['Yellow Cake (Regular)',        '1 pc', 280,'IH', 0.15,'Bulk mix · sheet pan','Standard lunch/dinner dessert Mon–Fri','dessert'],
+  ['Yellow Cake (Large)',          '1 pc', 350,'IH', 0.22,'Bulk mix · sheet pan','Weekend serving; slightly larger portion','dessert'],
+  ['Oatmeal Cookie',               '1 ea', 115,'COM',0.08,'CS 200ct','Standard rotation cookie','dessert'],
+  ['Chocolate Chip Cookie',        '1 ea', 130,'COM',0.08,'CS 200ct','Used Tue/Sat rotation','dessert'],
+  ['Sugar Cookie',                 '1 ea', 115,'COM',0.08,'CS 200ct','Used Sun rotation','dessert'],
+];
+
+const CATS=[
+  {id:'entree',   label:'Hot Entrées (Lunch)',          icon:'🍲', color:'#0369a1', bg:'#e0f2fe'},
+  {id:'protein',  label:'Cold Proteins (Dinner)',        icon:'🥩', color:'#b45309', bg:'#fef3c7'},
+  {id:'breakfast',label:'Breakfast Items',               icon:'🌅', color:'#7c3aed', bg:'#ede9fe'},
+  {id:'bread',    label:'Breads, Starches & Grains',    icon:'🍞', color:'#15803d', bg:'#dcfce7'},
+  {id:'veg',      label:'Vegetables & Sides',            icon:'🥦', color:'#0f766e', bg:'#ccfbf1'},
+  {id:'bev',      label:'Beverages & Dairy',             icon:'🥛', color:'#1d4ed8', bg:'#dbeafe'},
+  {id:'dessert',  label:'Desserts & Snacks',             icon:'🍰', color:'#9333ea', bg:'#f3e8ff'},
+];
+
+const CAT_LABELS={entree:'Hot Entrées',protein:'Cold Proteins',breakfast:'Breakfast',bread:'Breads & Starches',veg:'Vegetables & Sides',bev:'Beverages & Dairy',dessert:'Desserts & Snacks'};
+
+const MAX_CAL=Math.max(...CATALOG.map(i=>i[2]));
+
+function renderCatalog(filter){
+  const cats = filter==='all' ? CATS : CATS.filter(c=>c.id===filter);
+  return cats.map(cat=>{
+    const items=CATALOG.filter(i=>i[7]===cat.id);
+    if(!items.length) return '';
+    const rows=items.map(it=>{
+      const [name,portion,cal,vk,cost,caseSpec,notes]=it;
+      const barW=Math.round((cal/MAX_CAL)*100);
+      return `<tr>
+        <td><div class="item-name">${name}</div>${notes?`<div class="item-note">${notes}</div>`:''}</td>
+        <td class="item-portion">${portion}</td>
+        <td><div class="cal-bar-wrap">
+          <span class="item-cal">${cal}</span>
+          <div class="cal-bar"><div class="cal-fill" style="width:${barW}%;background:${cat.color}"></div></div>
+        </div></td>
+        <td>${vb(vk)}</td>
+        <td class="item-cost">${'$'+cost.toFixed(2)}</td>
+        <td class="item-case">${caseSpec}</td>
+      </tr>`;
+    }).join('');
+    return `<div class="cat-block" data-cat="${cat.id}">
+      <div class="cat-header">
+        <div class="cat-icon" style="background:${cat.bg};font-size:18px">${cat.icon}</div>
+        <div>
+          <div class="cat-title">${cat.label}</div>
+          <div class="cat-count">${items.length} item${items.length!==1?'s':''}</div>
+        </div>
+      </div>
+      <table class="item-tbl">
+        <thead>
+          <tr style="background:${cat.bg}">
+            <th style="color:${cat.color}">Item</th>
+            <th style="color:${cat.color}">Portion</th>
+            <th style="color:${cat.color}">Calories</th>
+            <th style="color:${cat.color}">Vendor</th>
+            <th style="color:${cat.color}">$/Serving</th>
+            <th style="color:${cat.color}">Case Spec</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+}
+
+function renderStats(){
+  const total=CATALOG.length;
+  const byVendor={SHV:0,PFG:0,IH:0,COM:0,BD:0};
+  CATALOG.forEach(i=>byVendor[i[3]]=(byVendor[i[3]]||0)+1);
+  const avgCost=(CATALOG.reduce((s,i)=>s+i[4],0)/total).toFixed(2);
+  const avgCal=Math.round(CATALOG.reduce((s,i)=>s+i[2],0)/total);
+  return `
+    <div class="stat-card"><div class="stat-val">${total}</div><div class="stat-lbl">Total items cataloged</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#1d4ed8">${byVendor.SHV}</div><div class="stat-lbl">Shaver / ISP items</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#c2410c">${byVendor.IH}</div><div class="stat-lbl">In-house prepared</div></div>
+    <div class="stat-card"><div class="stat-val" style="color:#15803d">$${avgCost}</div><div class="stat-lbl">Avg cost per serving</div></div>
+    <div class="stat-card"><div class="stat-val">${avgCal}</div><div class="stat-lbl">Avg calories per item</div></div>
+  `;
+}
+
+document.getElementById('stats-row').innerHTML=renderStats();
+document.getElementById('catalog-root').innerHTML=renderCatalog('all');
+
+function filterCat(id,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('catalog-root').innerHTML=renderCatalog(id);
+}
+</script>
+</body>
+</html>
