@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jefferson County — 4-Week Population Menu</title>
+<title>Jefferson County — 2-Week Population Menu</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 /* ══ Reset & Root ══ */
@@ -167,11 +167,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 
 <!-- ══ SCREEN: Header ══ -->
 <div class="doc-header">
-  <h1>Jefferson County — 4-Week Population Menu</h1>
+  <h1>Jefferson County — 2-Week Population Menu</h1>
   <p>Industry Standard Food Service &nbsp;·&nbsp; Calories · Vendor Source · Per-Serving Cost · All 3 Meals</p>
   <div class="meta-row">
-    <span class="meta-pill"><i class="fa-solid fa-calendar-week" style="margin-right:5px"></i>4-Week Rotation</span>
-    <span class="meta-pill"><i class="fa-solid fa-utensils" style="margin-right:5px"></i>Breakfast · Lunch (Hot) · Dinner (Cold)</span>
+    <span class="meta-pill"><i class="fa-solid fa-calendar-week" style="margin-right:5px"></i>2-Week Rotation</span>
+    <span class="meta-pill"><i class="fa-solid fa-utensils" style="margin-right:5px"></i>Breakfast · Lunch (Sandwich) · Dinner (Hot)</span>
     <span class="meta-pill"><i class="fa-solid fa-file-excel" style="margin-right:5px"></i>Source: Jefferson County Menus Excel · ISP Pricing</span>
   </div>
 </div>
@@ -190,8 +190,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <div class="week-tabs">
   <button class="week-tab active" onclick="showWeek(0,this)">Week 1</button>
   <button class="week-tab" onclick="showWeek(1,this)">Week 2</button>
-  <button class="week-tab" onclick="showWeek(2,this)">Week 3</button>
-  <button class="week-tab" onclick="showWeek(3,this)">Week 4</button>
 </div>
 
 <!-- ══ SCREEN: Content ══ -->
@@ -236,11 +234,14 @@ const I={
   beefStroga:  ['Beef Stroganoff',       '8 oz',   310,'IH', 0.30,P],
   cheesyChkMac:['Cheesy Chicken Mac',   '8 oz',   320,'IH', 0.28,P],
   chkRiceCass: ['Chicken & Rice Casserole','8 oz', 270,'IH', 0.24,P],
-  /* Dinner cold proteins */
+  /* Lunch sandwich proteins */
   salami:      ['Salami (Turkey/Chik)',  '2 oz',   100,'SHV',0.18,P],
   turkey:      ['Turkey (sliced)',       '2 oz',    65,'SHV',0.20,P],
   chkPatty:    ['Chicken Patty BRD',    '3 oz',   170,'SHV',0.38,P],
   pbutter:     ['Peanut Butter',        '.75 oz',  130,'COM',0.08,P],
+  /* Mexican-style dinner plates */
+  blackBnsRiceChk: ['Black Beans & Rice w/ Chicken','8 oz',280,'IH',0.28,P],
+  blackBnsRiceBeef:['Black Beans & Rice w/ Beef',   '8 oz',295,'IH',0.28,P],
   /* Breads & Starches */
   cornbread:   ['Cornbread',            '1 pc',   180,'IH', 0.08],
   tortillas:   ['Tortillas',            '2 ea',   180,'COM',0.08],
@@ -261,6 +262,7 @@ const I={
   grnBeans:    ['Green Beans',        '4 oz',     35,'COM',0.07],
   northBns:    ['Northern Beans',     '4 oz',    120,'COM',0.08],
   pintoBns:    ['Pinto Beans',        '4 oz',    120,'COM',0.08],
+  blackBns:    ['Black Beans',        '4 oz',    120,'COM',0.08],
   mashedPot:   ['Mashed Potatoes',    '4 oz',    105,'COM',0.09],
   mixedVeg:    ['Mixed Veggies',      '4 oz',     45,'SHV',0.08],
   pastaSal:    ['Pasta Salad',        '4 oz',    155,'IH', 0.14],
@@ -283,92 +285,52 @@ const BK=[
   [I.sausage,I.egg,I.grits,I.fortBev,I.cakeLg],                          // Sun
 ];
 
-/* ── 4-Week Menu — Source: Jefferson County Menus.xlsx ── */
-/* LUNCH = HOT MEALS · DINNER = COLD SANDWICHES */
+/* ── 2-Week Menu ── */
+/* LUNCH = SANDWICHES (1 starch side) · DINNER = HOT MEALS */
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const WEEKS=[
   /* ══ WEEK 1 ══ */
   {title:'Week 1',
    lunch:[
-     [I.spagMeat,   I.cornbread,I.northBns,              I.fortBev,I.cakeReg],  // Mon
-     [I.chkTacos,   I.tortillas,I.pintoBns,              I.fortBev,I.cakeReg],  // Tue
-     [I.chkTezz,    I.cornbread,I.carrots,  I.rice4,     I.fortBev,I.cakeReg],  // Wed
-     [I.rbRiceChk,  I.cornbread,I.pastaSal,              I.fortBev,I.cakeReg],  // Thu
-     [I.lasagna,    I.cornbread,I.northBns, I.carrots,   I.fortBev,I.cakeReg],  // Fri
-     [I.beefMac,    I.cornbread,I.mixedVeg, I.pintoBns,  I.fortBev,I.cakeReg],  // Sat
-     [I.whiteBChili,I.cornbread,I.carrots,  I.rice4,     I.fortBev,I.cakeReg],  // Sun
+     // Sandwich + 1 starch + bev + dessert
+     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieOat],  // Mon
+     [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cakeReg],    // Tue
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.pastaSal, I.fortBev,I.cookieCC],   // Wed
+     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeReg],    // Thu
+     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieSug],  // Fri
+     [I.chkPatty, I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cakeLg],     // Sat
+     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sun
    ],
    dinner:[
-     [I.salami,   I.wheatBr2,I.mustard,I.peasCar,  I.cornbread,I.fortBev,I.cakeReg],  // Mon
-     [I.turkey,   I.wheatBr2,I.mustard,I.carrots,  I.cornbread,I.fortBev,I.cakeReg],  // Tue
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.northBns, I.cornbread,I.fortBev,I.cakeReg],  // Wed
-     [I.salami,   I.wheatBr2,I.mustard,I.grnBeans, I.cornbread,I.fortBev,I.cakeReg],  // Thu
-     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.cornbread,I.fortBev,I.cakeReg],  // Fri
-     [I.chkPatty, I.wheatBr2,I.mustard,I.pintoBns, I.cornbread,I.fortBev,I.cakeLg],   // Sat
-     [I.turkey,   I.wheatBr2,I.mustard,I.pintoBns, I.cornbread,I.fortBev,I.cakeLg],   // Sun
+     // Hot entrée + sides (pasta salad 2–3 nights · rice 1–2 · beans 1–2) + bev + dessert
+     [I.spagMeat,       I.grnBeans, I.pastaSal,  I.fortBev,I.cakeReg],  // Mon  — pasta salad ①
+     [I.blackBnsRiceChk,I.carrots,               I.fortBev,I.cakeReg],  // Tue  — black beans+rice in dish
+     [I.lasagna,        I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ①
+     [I.chkTezz,        I.rice4,    I.mixedVeg,  I.fortBev,I.cakeReg],  // Thu  — rice ①
+     [I.rbRiceChk,      I.carrots,               I.fortBev,I.cakeReg],  // Fri  — red beans+rice in dish
+     [I.beefMac,        I.northBns,              I.fortBev,I.cakeLg],   // Sat  — beans ②
+     [I.chkRiceCass,    I.pastaSal,              I.fortBev,I.cakeLg],   // Sun  — pasta salad ③ · rice in dish
    ]
   },
   /* ══ WEEK 2 ══ */
   {title:'Week 2',
    lunch:[
-     [I.lasagna,    I.cornbread,I.carrots,              I.fortBev,I.cakeReg],  // Mon
-     [I.rbRiceChk,  I.cornbread,I.peasCar,              I.fortBev,I.cakeReg],  // Tue
-     [I.whiteBChili,I.cornbread,I.grnBeans, I.rice4,    I.fortBev,I.cakeReg],  // Wed
-     [I.cheesyChkMac,I.cornbread,I.pintoBns,I.rice4,   I.fortBev,I.cakeReg],  // Thu
-     [I.beefStroga, I.cornbread,I.carrots,              I.fortBev,I.cakeReg],  // Fri
-     [I.spagMeat,   I.cornbread,I.northBns,             I.fortBev,I.cakeReg],  // Sat
-     [I.chkTezz,    I.cornbread,I.mixedVeg, I.rice4,    I.fortBev,I.cakeReg],  // Sun
+     [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieSug],  // Mon
+     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeReg],    // Tue
+     [I.chkPatty, I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cookieOat],  // Wed
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.pastaSal, I.fortBev,I.cakeReg],    // Thu
+     [I.turkey,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieCC],   // Fri
+     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sat
+     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeLg],     // Sun
    ],
    dinner:[
-     [I.turkey,   I.wheatBr2,I.mustard,I.carrots,  I.cornbread,I.fortBev,I.cakeReg],  // Mon
-     [I.salami,   I.wheatBr2,I.mustard,I.peasCar,  I.cornbread,I.fortBev,I.cakeReg],  // Tue
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.grnBeans, I.cornbread,I.fortBev,I.cakeReg],  // Wed
-     [I.turkey,   I.wheatBr2,I.mustard,I.northBns, I.cornbread,I.fortBev,I.cakeReg],  // Thu
-     [I.salami,   I.wheatBr2,I.mustard,I.mashedPot,I.cornbread,I.fortBev,I.cakeReg],  // Fri
-     [I.chkPatty, I.wheatBr2,I.mustard,I.pintoBns, I.cornbread,I.fortBev,I.cakeLg],   // Sat
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.mixedVeg, I.cornbread,I.fortBev,I.cakeLg],   // Sun
-   ]
-  },
-  /* ══ WEEK 3 ══ */
-  {title:'Week 3',
-   lunch:[
-     [I.lasagna,    I.cornbread,I.pintoBns,              I.fortBev,I.cakeReg],  // Mon
-     [I.spagMeat,   I.cornbread,I.carrots,               I.fortBev,I.cakeReg],  // Tue
-     null,                                                                        // Wed ⚠ — JC sheet: no protein
-     [I.chkRiceCass,I.cornbread,I.pastaSal,              I.fortBev,I.cakeReg],  // Thu
-     [I.rbRiceChk,  I.cornbread,I.grnBeans,              I.fortBev,I.cakeReg],  // Fri
-     [I.beefMac,    I.cornbread,I.peasCar,               I.fortBev,I.cakeReg],  // Sat
-     [I.chkTezz,    I.cornbread,I.carrots,  I.rice4,     I.fortBev,I.cakeReg],  // Sun
-   ],
-   dinner:[
-     [I.salami,   I.wheatBr2,I.mustard,I.grnBeans, I.cornbread,I.fortBev,I.cakeReg],  // Mon
-     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.cornbread,I.fortBev,I.cakeReg],  // Tue
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.carrots,  I.cornbread,I.fortBev,I.cakeReg],  // Wed
-     [I.salami,   I.wheatBr2,I.mustard,I.northBns, I.cornbread,I.fortBev,I.cakeReg],  // Thu
-     [I.turkey,   I.wheatBr2,I.mustard,I.peasCar,  I.cornbread,I.fortBev,I.cakeReg],  // Fri
-     [I.chkPatty, I.wheatBr2,I.mustard,I.grnBeans, I.cornbread,I.fortBev,I.cakeLg],   // Sat
-     [I.turkey,   I.wheatBr2,I.mustard,I.mixedVeg, I.cornbread,I.fortBev,I.cakeLg],   // Sun
-   ]
-  },
-  /* ══ WEEK 4 ══ */
-  {title:'Week 4',
-   lunch:[
-     [I.rbRiceChk,  I.cornbread,I.peasCar,               I.fortBev,I.cakeReg],  // Mon
-     [I.lasagna,    I.cornbread,I.carrots,                I.fortBev,I.cakeReg],  // Tue
-     [I.whiteBChili,I.cornbread,I.carrots,  I.rice4,     I.fortBev,I.cakeReg],  // Wed
-     [I.chkRiceCass,I.cornbread,I.pastaSal, I.pintoBns,  I.fortBev,I.cakeReg],  // Thu
-     [I.chkTezz,    I.cornbread,I.northBns, I.mashedPot, I.fortBev,I.cakeReg],  // Fri
-     [I.beefStroga, I.cornbread,I.mixedVeg,              I.fortBev,I.cakeReg],  // Sat
-     [I.spagMeat,   I.cornbread,I.pintoBns,              I.fortBev,I.cakeReg],  // Sun
-   ],
-   dinner:[
-     [I.turkey,   I.wheatBr2,I.mustard,I.northBns, I.cornbread,I.fortBev,I.cakeReg],  // Mon
-     [I.salami,   I.wheatBr2,I.mustard,I.carrots,  I.cornbread,I.fortBev,I.cakeReg],  // Tue
-     [I.chkPatty, I.wheatBr2,I.mustard,I.pintoBns, I.cornbread,I.fortBev,I.cakeReg],  // Wed
-     [I.turkey,   I.wheatBr2,I.mustard,I.grnBeans, I.cornbread,I.fortBev,I.cakeReg],  // Thu
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.mashedPot,I.cornbread,I.fortBev,I.cakeReg],  // Fri
-     [I.salami,   I.wheatBr2,I.mustard,I.peasCar,  I.cornbread,I.fortBev,I.cakeLg],   // Sat
-     [I.turkey,   I.wheatBr2,I.mustard,I.northBns, I.cornbread,I.fortBev,I.cakeLg],   // Sun
+     [I.cheesyChkMac,    I.pastaSal, I.carrots,   I.fortBev,I.cakeReg],  // Mon  — pasta salad ①
+     [I.blackBnsRiceBeef,I.grnBeans,              I.fortBev,I.cakeReg],  // Tue  — black beans+rice in dish
+     [I.beefStroga,      I.northBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ①
+     [I.whiteBChili,     I.rice4,    I.mixedVeg,  I.fortBev,I.cakeReg],  // Thu  — rice ① · white beans in chili
+     [I.spagMeat,        I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Fri  — pasta salad ③ · beans ②
+     [I.chkTezz,         I.carrots,               I.fortBev,I.cakeLg],   // Sat
+     [I.rbRiceChk,       I.mixedVeg,              I.fortBev,I.cakeLg],   // Sun  — red beans+rice in dish
    ]
   }
 ];
@@ -409,13 +371,13 @@ function screenCard(wkTitle,dayName,bk,lu,di){
     </div>
 
     <div class="meal-block">
-      <div class="meal-block-hdr lu">🔥 Lunch (Hot)</div>
+      <div class="meal-block-hdr lu">🥪 Lunch (Sandwich)</div>
       ${itemsHtml(lu,'lu')}
       <div class="meal-sub lu">${tl.cal?tl.cal+' cal &nbsp;·&nbsp; '+f$(tl.cost):'⚠ see flag above'}</div>
     </div>
 
     <div class="meal-block">
-      <div class="meal-block-hdr di">🥪 Dinner (Cold)</div>
+      <div class="meal-block-hdr di">🔥 Dinner (Hot)</div>
       ${itemsHtml(di,'di')}
       <div class="meal-sub di">${td.cal} cal &nbsp;·&nbsp; ${f$(td.cost)}</div>
     </div>
@@ -431,7 +393,7 @@ function renderScreen(){
   let html='';
   WEEKS.forEach((wk,wi)=>{
     html+=`<div class="week-block${wi===0?' active':''}" id="week-${wi}">
-      <div class="week-title">${wk.title} &nbsp;<span style="color:var(--muted);font-size:13px;font-weight:500">Monday – Sunday · 4-week repeating cycle</span></div>
+      <div class="week-title">${wk.title} &nbsp;<span style="color:var(--muted);font-size:13px;font-weight:500">Monday – Sunday · 2-week repeating cycle</span></div>
       <div class="days-scroll">`;
     DAYS.forEach((day,di)=>{
       html+=screenCard(wk.title,day,BK[di],wk.lunch[di],wk.dinner[di]);
@@ -452,8 +414,8 @@ function renderPrint(){
       <!-- Week header -->
       <div class="pw-hdr">
         <div class="pw-hdr-l">
-          <div class="pw-hdr-title">Jefferson County Population Menu &nbsp;·&nbsp; ${wk.title} of 4</div>
-          <div class="pw-hdr-sub">Industry Standard Food Service &nbsp;·&nbsp; 4-Week Repeating Rotation &nbsp;·&nbsp; Internal Reference &nbsp;·&nbsp; Verify pricing vs. current order guide before service</div>
+          <div class="pw-hdr-title">Jefferson County Population Menu &nbsp;·&nbsp; ${wk.title} of 2</div>
+          <div class="pw-hdr-sub">Industry Standard Food Service &nbsp;·&nbsp; 2-Week Repeating Rotation &nbsp;·&nbsp; Internal Reference &nbsp;·&nbsp; Verify pricing vs. current order guide before service</div>
         </div>
         <div class="pw-hdr-r">★ = Primary Protein</div>
       </div>
@@ -486,7 +448,7 @@ function renderPrint(){
 
         <!-- LUNCH -->
         <tr>
-          <td class="pw-lbl lu">🔥<br>LUNCH<br>(HOT)</td>
+          <td class="pw-lbl lu">🥪<br>LUNCH<br>(SAND)</td>
           ${DAYS.map((_,di)=>{
             const items=wk.lunch[di];
             if(!items) return `<td class="pw-warn">⚠ REVIEW<br><span style="font-size:6.5pt;font-weight:600">No protein — confirm with kitchen</span></td>`;
@@ -502,7 +464,7 @@ function renderPrint(){
 
         <!-- DINNER -->
         <tr>
-          <td class="pw-lbl di">🥪<br>DINNER<br>(COLD)</td>
+          <td class="pw-lbl di">🔥<br>DINNER<br>(HOT)</td>
           ${DAYS.map((_,di)=>{
             const items=wk.dinner[di];
             const prot=items.find(it=>it[5]);
