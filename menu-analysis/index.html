@@ -57,6 +57,11 @@
     <a href="#report-cogs"      class="nav-item" data-tab="report"><i class="fa-solid fa-boxes-stacked"></i>COGS</a>
     <a href="#report-net"       class="nav-item" data-tab="report"><i class="fa-solid fa-chart-line"></i>Net Margins</a>
     <a href="#report-payroll"   class="nav-item" data-tab="report"><i class="fa-solid fa-users"></i>Payroll &amp; Net</a>
+    <div class="nav-section-label" data-tab="ceo">Executive View</div>
+    <a href="#ceo-summary"    class="nav-item" data-tab="ceo"><i class="fa-solid fa-gauge-high"></i>Summary</a>
+    <a href="#ceo-scorecard"  class="nav-item" data-tab="ceo"><i class="fa-solid fa-table-cells-large"></i>Profitability Scorecard</a>
+    <a href="#ceo-actions"    class="nav-item" data-tab="ceo"><i class="fa-solid fa-list-check"></i>Action Plan<span class="nav-badge red">6</span></a>
+    <a href="#ceo-trend"      class="nav-item" data-tab="ceo"><i class="fa-solid fa-chart-line"></i>Net Margin Trend</a>
     <div class="nav-section-label" data-tab="cafe">Café Analysis</div>
     <a href="#cafe-overview" class="nav-item" data-tab="cafe"><i class="fa-solid fa-chart-pie"></i>Overview<span class="nav-badge red">80%</span></a>
     <a href="#cafe-financials" class="nav-item" data-tab="cafe"><i class="fa-solid fa-chart-line"></i>Food Cost Trend</a>
@@ -127,6 +132,9 @@
     </button>
     <button class="tab-btn" data-tab="cafe" onclick="switchTab('cafe')">
       <i class="fa-solid fa-mug-hot"></i>Café Analysis
+    </button>
+    <button class="tab-btn" data-tab="ceo" onclick="switchTab('ceo')">
+      <i class="fa-solid fa-briefcase"></i>Executive
     </button>
   </div>
 
@@ -1618,6 +1626,53 @@
     </div>
 
   </div><!-- /bid-tracker-wrap -->
+
+  <!-- ══════════════════════════════════════
+       EXECUTIVE DASHBOARD
+  ══════════════════════════════════════ -->
+
+  <section class="section ceo-section" style="display:none" id="ceo-summary">
+    <div id="ceo-summary-container"></div>
+  </section>
+
+  <section class="section ceo-section" style="display:none" id="ceo-scorecard">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#1e3a8a,#2563eb)"><i class="fa-solid fa-table-cells-large"></i></div>
+        <div>
+          <div class="section-title">Profitability Scorecard</div>
+          <div class="section-subtitle">Revenue line performance vs target COGS% · 14-week avg Jan–Apr 2026</div>
+        </div>
+      </div>
+    </div>
+    <div id="ceo-scorecard-container"></div>
+  </section>
+
+  <section class="section ceo-section" style="display:none" id="ceo-actions">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+          <div class="section-title">Strategic Action Plan</div>
+          <div class="section-subtitle">Ranked by priority · owner-assigned · estimated financial impact</div>
+        </div>
+      </div>
+    </div>
+    <div id="ceo-actions-container"></div>
+  </section>
+
+  <section class="section ceo-section" style="display:none" id="ceo-trend">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#065f46,#059669)"><i class="fa-solid fa-chart-line"></i></div>
+        <div>
+          <div class="section-title">Net Margin Trend</div>
+          <div class="section-subtitle">14 weeks · weekly net after materials + labor · Jan 5 – Apr 12, 2026</div>
+        </div>
+      </div>
+    </div>
+    <div id="ceo-trend-container"></div>
+  </section>
 
   <!-- ══════════════════════════════════════
        CAFÉ ANALYSIS

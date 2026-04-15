@@ -688,6 +688,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.cafe-section').forEach(s => {
     s.style.display = (tab === 'cafe') ? 'block' : 'none';
   });
+  document.querySelectorAll('.ceo-section').forEach(s => {
+    s.style.display = (tab === 'ceo') ? 'block' : 'none';
+  });
 
   // Show/hide bid tracker
   const bidWrap = document.getElementById('bid-tracker-wrap');
@@ -710,6 +713,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.nav-section-label[data-tab="cafe"], .nav-item[data-tab="cafe"]').forEach(el => {
     el.style.display = (tab === 'cafe') ? '' : 'none';
   });
+  document.querySelectorAll('.nav-section-label[data-tab="ceo"], .nav-item[data-tab="ceo"]').forEach(el => {
+    el.style.display = (tab === 'ceo') ? '' : 'none';
+  });
 
   // Sync active nav item
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -727,6 +733,10 @@ function switchTab(tab, persist = true) {
   }
   if (tab === 'cafe') {
     const el = document.querySelector('.nav-item[href="#cafe-overview"]');
+    if (el) el.classList.add('active');
+  }
+  if (tab === 'ceo') {
+    const el = document.querySelector('.nav-item[href="#ceo-summary"]');
     if (el) el.classList.add('active');
   }
 
@@ -761,6 +771,17 @@ function initTabs() {
     el.addEventListener('click', e => {
       e.preventDefault();
       switchTab('report');
+      const target = document.getElementById(el.getAttribute('href').slice(1));
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
+    });
+  });
+
+  // CEO nav links
+  document.querySelectorAll('.nav-item[href^="#ceo-"]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('ceo');
       const target = document.getElementById(el.getAttribute('href').slice(1));
       if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
       if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
@@ -1822,6 +1843,265 @@ function bidRefresh(announce = true) {
   }
 }
 
+/* ── CEO Executive Dashboard ──────────────────────────────── */
+
+function renderCeoSummary() {
+  const el = document.getElementById('ceo-summary-container');
+  if (!el) return;
+  const d = CEO_DATA;
+  const fmt  = n => '$' + Math.round(n).toLocaleString();
+  const fmtM = n => '$' + (n / 1e6).toFixed(2) + 'M';
+
+  const bestWeek  = d.weeklyTrend.reduce((a, b) => b.pct > a.pct ? b : a);
+  const worstWeek = d.weeklyTrend.reduce((a, b) => b.pct < a.pct ? b : a);
+
+  el.innerHTML = `
+    <div class="ceo-hero">
+      <div class="ceo-hero-header">
+        <div class="ceo-hero-title">
+          <i class="fa-solid fa-briefcase"></i>
+          Executive Dashboard
+        </div>
+        <div class="ceo-hero-meta">Industry Standard · Jefferson County &amp; Bessemer · ${d.asOf}</div>
+      </div>
+      <div class="ceo-hero-sub">Based on ${d.period}</div>
+
+      <div class="ceo-kpi-grid">
+        <div class="ceo-kpi-card">
+          <div class="ceo-kpi-label">Annualized Revenue</div>
+          <div class="ceo-kpi-value">${fmtM(d.kpis.annualRevenue)}</div>
+          <div class="ceo-kpi-note">${fmt(d.kpis.weeklyRevAvg)} / week avg</div>
+        </div>
+        <div class="ceo-kpi-card">
+          <div class="ceo-kpi-label">Annualized Net</div>
+          <div class="ceo-kpi-value" style="color:#16a34a">${fmtM(d.kpis.annualNet)}</div>
+          <div class="ceo-kpi-note">${(d.kpis.avgNetPct * 100).toFixed(1)}% avg net margin</div>
+        </div>
+        <div class="ceo-kpi-card ceo-kpi-alert">
+          <div class="ceo-kpi-label">Café Food Cost</div>
+          <div class="ceo-kpi-value" style="color:#dc2626">72.6%</div>
+          <div class="ceo-kpi-note">Avg COGS · target 30% · critical</div>
+        </div>
+        <div class="ceo-kpi-card">
+          <div class="ceo-kpi-label">Identified Savings</div>
+          <div class="ceo-kpi-value" style="color:#0369a1">${fmt(d.kpis.totalSavingsOpp)}+</div>
+          <div class="ceo-kpi-note">Annual · all opportunities combined</div>
+        </div>
+      </div>
+
+      <div class="ceo-hero-context">
+        <div class="ceo-context-item">
+          <i class="fa-solid fa-arrow-trend-up" style="color:#16a34a"></i>
+          <span>Best week: ${bestWeek.week} — ${fmt(bestWeek.net)} net (${(bestWeek.pct*100).toFixed(1)}%)</span>
+        </div>
+        <div class="ceo-context-item">
+          <i class="fa-solid fa-arrow-trend-down" style="color:#dc2626"></i>
+          <span>Worst week: ${worstWeek.week} — ${fmt(worstWeek.net)} net (${(worstWeek.pct*100).toFixed(1)}%)</span>
+        </div>
+        <div class="ceo-context-item">
+          <i class="fa-solid fa-building" style="color:#6366f1"></i>
+          <span>2 locations: Birmingham (primary) + Bessemer · 5 revenue lines</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderCeoScorecard() {
+  const el = document.getElementById('ceo-scorecard-container');
+  if (!el) return;
+  const fmt = n => '$' + Math.round(n).toLocaleString();
+
+  const statusConfig = {
+    ok:       { label: 'Healthy',  color: '#16a34a', bg: '#dcfce7', bar: '#16a34a' },
+    watch:    { label: 'Watch',    color: '#ca8a04', bg: '#fef9c3', bar: '#ca8a04' },
+    poor:     { label: 'Poor',     color: '#ea580c', bg: '#ffedd5', bar: '#ea580c' },
+    critical: { label: 'Critical', color: '#dc2626', bg: '#fee2e2', bar: '#dc2626' }
+  };
+
+  const totalAnnualSavings = CEO_DATA.lines.reduce((s, l) => s + l.annualSavings, 0);
+
+  el.innerHTML = `
+    <div class="ceo-scorecard-grid">
+      ${CEO_DATA.lines.map(line => {
+        const cfg = statusConfig[line.status];
+        const cogsGap = line.cogsPct - line.target;
+        const barWidth = Math.min(100, line.cogsPct * 100);
+        const targetPos = Math.min(100, line.target * 100);
+        return `
+          <div class="ceo-sc-card" style="border-top:3px solid ${cfg.color}">
+            <div class="ceo-sc-header">
+              <div class="ceo-sc-icon" style="background:${cfg.color}18;color:${cfg.color}"><i class="fa-solid ${line.icon}"></i></div>
+              <div class="ceo-sc-title-wrap">
+                <div class="ceo-sc-name">${line.name}</div>
+                <div class="ceo-sc-rev">${(line.pctOfTotal*100).toFixed(0)}% of revenue &nbsp;·&nbsp; ${fmt(line.weeklyRev * 52)}/yr</div>
+              </div>
+              <span class="ceo-sc-badge" style="background:${cfg.bg};color:${cfg.color}">${cfg.label}</span>
+            </div>
+
+            <div class="ceo-sc-cogs-row">
+              <div class="ceo-sc-cogs-nums">
+                <span class="ceo-sc-cogs-actual" style="color:${cfg.color}">${(line.cogsPct*100).toFixed(1)}%</span>
+                <span class="ceo-sc-cogs-label">actual COGS</span>
+                <span class="ceo-sc-cogs-sep">vs</span>
+                <span class="ceo-sc-cogs-target">${(line.target*100).toFixed(0)}%</span>
+                <span class="ceo-sc-cogs-label">target</span>
+                ${cogsGap > 0 ? `<span class="ceo-sc-cogs-gap" style="color:${cfg.color}">+${(cogsGap*100).toFixed(1)}pp over</span>` : '<span class="ceo-sc-cogs-gap ok">On target</span>'}
+              </div>
+              <div class="ceo-sc-bar-wrap">
+                <div class="ceo-sc-bar-bg">
+                  <div class="ceo-sc-bar-fill" style="width:${barWidth}%;background:${cfg.color}"></div>
+                  <div class="ceo-sc-bar-target" style="left:${targetPos}%"></div>
+                </div>
+                <div class="ceo-sc-bar-labels"><span>0%</span><span style="left:${targetPos}%" class="ceo-sc-bar-tgt-label">target</span><span>100%</span></div>
+              </div>
+            </div>
+
+            <p class="ceo-sc-detail">${line.detail}</p>
+
+            <div class="ceo-sc-footer">
+              <span class="ceo-sc-note">${line.note}</span>
+              ${line.annualSavings > 0 ? `<span class="ceo-sc-savings"><i class="fa-solid fa-piggy-bank"></i> ${fmt(line.annualSavings)}+ / yr opportunity</span>` : ''}
+            </div>
+          </div>`;
+      }).join('')}
+    </div>
+    <div class="ceo-sc-total-bar">
+      <i class="fa-solid fa-circle-dollar-to-slot"></i>
+      Total identified annual savings across all lines: <strong>${fmt(totalAnnualSavings)}+</strong>
+    </div>`;
+}
+
+function renderCeoActions() {
+  const el = document.getElementById('ceo-actions-container');
+  if (!el) return;
+
+  const priCfg = {
+    critical: { label: 'Critical', color: '#dc2626', bg: '#fee2e2' },
+    high:     { label: 'High',     color: '#ea580c', bg: '#ffedd5' },
+    med:      { label: 'Medium',   color: '#ca8a04', bg: '#fef9c3' }
+  };
+  const statusCfg = {
+    urgent:   { label: 'Act Now',    color: '#dc2626' },
+    ready:    { label: 'Ready',      color: '#16a34a' },
+    planning: { label: 'In Planning',color: '#2563eb' },
+    review:   { label: 'Under Review',color:'#7c3aed' },
+    monitor:  { label: 'Monitor',    color: '#6b7280' }
+  };
+
+  el.innerHTML = `
+    <div class="ceo-actions-list">
+      ${CEO_DATA.actions.map(a => {
+        const pc = priCfg[a.priority];
+        const sc = statusCfg[a.status];
+        return `
+          <div class="ceo-action-card">
+            <div class="ceo-ac-left">
+              <div class="ceo-ac-num" style="background:${pc.bg};color:${pc.color}">${a.id}</div>
+            </div>
+            <div class="ceo-ac-body">
+              <div class="ceo-ac-top">
+                <div class="ceo-ac-category">${a.category}</div>
+                <div class="ceo-ac-badges">
+                  <span class="ceo-ac-badge" style="background:${pc.bg};color:${pc.color}">${pc.label}</span>
+                  <span class="ceo-ac-badge" style="background:${sc.color}18;color:${sc.color}">${sc.label}</span>
+                </div>
+              </div>
+              <div class="ceo-ac-title"><i class="fa-solid ${a.icon}" style="color:${pc.color};margin-right:7px;font-size:14px"></i>${a.title}</div>
+              <p class="ceo-ac-detail">${a.detail}</p>
+              <div class="ceo-ac-meta">
+                <div class="ceo-ac-meta-item"><i class="fa-solid fa-circle-dollar-to-slot"></i> <strong>${a.impact}</strong></div>
+                <div class="ceo-ac-meta-item"><i class="fa-solid fa-clock"></i> ${a.timeline}</div>
+                <div class="ceo-ac-meta-item"><i class="fa-solid fa-user-tie"></i> ${a.owner}</div>
+              </div>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderCeoTrend() {
+  const el = document.getElementById('ceo-trend-container');
+  if (!el) return;
+  const weeks = CEO_DATA.weeklyTrend;
+  const maxNet = Math.max(...weeks.map(w => w.net));
+  const minNet = Math.min(...weeks.map(w => w.net));
+  const avgNet = weeks.reduce((s, w) => s + w.net, 0) / weeks.length;
+  const avgPct = weeks.reduce((s, w) => s + w.pct, 0) / weeks.length;
+  const fmt = n => '$' + Math.round(n).toLocaleString();
+
+  // SVG sparkline
+  const W = 800, H = 140, PAD = 30;
+  const xStep = (W - PAD * 2) / (weeks.length - 1);
+  const yRange = maxNet - minNet || 1;
+  const toY = v => PAD + (1 - (v - minNet) / yRange) * (H - PAD * 2);
+  const toX = i => PAD + i * xStep;
+
+  const linePath = weeks.map((w, i) => `${i === 0 ? 'M' : 'L'}${toX(i).toFixed(1)},${toY(w.net).toFixed(1)}`).join(' ');
+  const areaPath = linePath + ` L${toX(weeks.length-1).toFixed(1)},${H-PAD} L${toX(0).toFixed(1)},${H-PAD} Z`;
+  const avgY = toY(avgNet).toFixed(1);
+
+  const dots = weeks.map((w, i) => {
+    const isLow  = w.net === minNet;
+    const isHigh = w.net === maxNet;
+    const col = isLow ? '#dc2626' : isHigh ? '#16a34a' : '#3b82f6';
+    const r   = isLow || isHigh ? 5 : 3.5;
+    return `<circle cx="${toX(i).toFixed(1)}" cy="${toY(w.net).toFixed(1)}" r="${r}" fill="${col}" stroke="white" stroke-width="1.5"/>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="ceo-trend-stats">
+      <div class="ceo-trend-stat"><div class="ceo-trend-stat-v">${fmt(avgNet)}</div><div class="ceo-trend-stat-l">Avg Weekly Net</div></div>
+      <div class="ceo-trend-stat"><div class="ceo-trend-stat-v" style="color:#16a34a">${fmt(maxNet)}</div><div class="ceo-trend-stat-l">Best Week (${weeks.find(w=>w.net===maxNet).week})</div></div>
+      <div class="ceo-trend-stat"><div class="ceo-trend-stat-v" style="color:#dc2626">${fmt(minNet)}</div><div class="ceo-trend-stat-l">Worst Week (${weeks.find(w=>w.net===minNet).week})</div></div>
+      <div class="ceo-trend-stat"><div class="ceo-trend-stat-v">${(avgPct*100).toFixed(1)}%</div><div class="ceo-trend-stat-l">Avg Net Margin</div></div>
+    </div>
+
+    <div class="ceo-trend-chart-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="ceo-trend-svg" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="netGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <path d="${areaPath}" fill="url(#netGrad)"/>
+        <line x1="${PAD}" y1="${avgY}" x2="${W-PAD}" y2="${avgY}" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="${W-PAD+4}" y="${parseFloat(avgY)+4}" font-size="9" fill="#94a3b8">avg</text>
+        <path d="${linePath}" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${dots}
+      </svg>
+      <div class="ceo-trend-x-labels">
+        ${weeks.map(w => `<span>${w.week}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="ceo-trend-table-wrap">
+      <table class="ceo-trend-table">
+        <thead><tr><th>Week</th><th>Net</th><th>Net %</th><th>vs Avg</th></tr></thead>
+        <tbody>
+          ${weeks.map(w => {
+            const diff = w.net - avgNet;
+            const isLow = w.net === minNet, isHigh = w.net === maxNet;
+            const cls = isLow ? 'ceo-tr-low' : isHigh ? 'ceo-tr-high' : '';
+            return `<tr class="${cls}">
+              <td>${w.week}</td>
+              <td><strong>${fmt(w.net)}</strong>${isHigh ? ' <span class="ceo-tr-flag high">Best</span>' : isLow ? ' <span class="ceo-tr-flag low">Worst</span>' : ''}</td>
+              <td>${(w.pct*100).toFixed(1)}%</td>
+              <td style="color:${diff>=0?'#16a34a':'#dc2626'}">${diff>=0?'+':''}${fmt(diff)}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderCeoDashboard() {
+  renderCeoSummary();
+  renderCeoScorecard();
+  renderCeoActions();
+  renderCeoTrend();
+}
+
 /* ── Café Analysis ─────────────────────────────────────────── */
 
 function cafeCogsColor(pct) {
@@ -2100,6 +2380,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMenuRotation();
   renderMenuOrderList();
   renderCafeAnalysis();
+  renderCeoDashboard();
   initScrollSpy();
   initDropdowns();
   initCatalog();

@@ -1678,3 +1678,183 @@ const CAFE_DATA = {
     }
   ]
 };
+
+// ============================================================
+//  CEO EXECUTIVE DASHBOARD DATA
+// ============================================================
+const CEO_DATA = {
+  asOf:   "April 12, 2026",
+  period: "14-week avg · Jan 5 – Apr 12, 2026",
+
+  kpis: {
+    weeklyRevAvg:    87500,
+    annualRevenue:   4550000,
+    weeklyNetAvg:    23131,
+    annualNet:       1203000,
+    avgNetPct:       0.260,
+    totalSavingsOpp: 247000   // combined all identified opportunities
+  },
+
+  // Revenue line scorecard
+  lines: [
+    {
+      name:        "Population",
+      icon:        "fa-building",
+      weeklyRev:   64000,
+      pctOfTotal:  0.731,
+      cogsPct:     0.385,
+      target:      0.350,
+      status:      "watch",
+      statusLabel: "Watch",
+      note:        "Actual $0.76/meal vs $0.54 target. 23 items identified for Shaver switch.",
+      annualSavings: 48000,
+      detail:      "Population is the business anchor — 73% of revenue. Food cost is controllable through vendor switching. Full Shaver transition is the highest-certainty lever available."
+    },
+    {
+      name:        "Café",
+      icon:        "fa-mug-hot",
+      weeklyRev:   8272,
+      pctOfTotal:  0.095,
+      cogsPct:     0.726,
+      target:      0.300,
+      status:      "critical",
+      statusLabel: "Critical",
+      note:        "Birmingham 80.8% COGS · Bessemer 59.1% COGS — not profitable before labor.",
+      annualSavings: 83000,
+      detail:      "The café is losing money on food alone at current COGS rates. Primary drivers: daily fresh fruit (~$78K/yr), chicken tenders ($1.25/serving), and an unportioned daily salad bar. Requires immediate menu and vendor action."
+    },
+    {
+      name:        "Soft Trays",
+      icon:        "fa-boxes-stacked",
+      weeklyRev:   7200,
+      pctOfTotal:  0.082,
+      cogsPct:     0.423,
+      target:      0.420,
+      status:      "ok",
+      statusLabel: "Healthy",
+      note:        "Consistent 42.3% COGS across Birmingham and Bessemer. Low variance.",
+      annualSavings: 0,
+      detail:      "Soft Trays is a well-controlled line. COGS is stable and predictable at both locations. No immediate action needed — maintain current ordering discipline."
+    },
+    {
+      name:        "Milk",
+      icon:        "fa-bottle-droplet",
+      weeklyRev:   2730,
+      pctOfTotal:  0.031,
+      cogsPct:     0.650,
+      target:      0.500,
+      status:      "poor",
+      statusLabel: "Poor",
+      note:        "65% COGS consistently — lowest-margin line. Likely contract-locked.",
+      annualSavings: 7800,
+      detail:      "Milk runs at 65% COGS every single week with no variation — this is a fixed contract rate. Flag for renegotiation at next contract cycle. Consider alternative sourcing or bundling milk into a population package rate."
+    },
+    {
+      name:        "Academy / JBS",
+      icon:        "fa-graduation-cap",
+      weeklyRev:   5300,
+      pctOfTotal:  0.061,
+      cogsPct:     0.340,
+      target:      0.350,
+      status:      "ok",
+      statusLabel: "Healthy",
+      note:        "Variable enrollment but good margin. JBS is consistent.",
+      annualSavings: 0,
+      detail:      "Academy enrollment varies week to week but COGS stays lean. JBS is a reliable, margin-positive line. Prioritize contract renewals and enrollment stability."
+    }
+  ],
+
+  // 14-week net margin trend
+  weeklyTrend: [
+    { week: "Jan 5",  net: 20537,  pct: 0.231 },
+    { week: "Jan 12", net: 21803,  pct: 0.244 },
+    { week: "Jan 19", net: 10882,  pct: 0.125 },
+    { week: "Jan 26", net: 26948,  pct: 0.310 },
+    { week: "Feb 2",  net: 29103,  pct: 0.335 },
+    { week: "Feb 9",  net: 27676,  pct: 0.325 },
+    { week: "Feb 16", net: 30113,  pct: 0.348 },
+    { week: "Feb 23", net: 25899,  pct: 0.295 },
+    { week: "Mar 2",  net: 20935,  pct: 0.236 },
+    { week: "Mar 9",  net: 22885,  pct: 0.262 },
+    { week: "Mar 16", net: 21037,  pct: 0.244 },
+    { week: "Mar 23", net: 21426,  pct: 0.238 },
+    { week: "Mar 30", net: 18703,  pct: 0.213 },
+    { week: "Apr 6",  net: 25889,  pct: 0.294 }
+  ],
+
+  // Strategic action items — prioritized for CEO review
+  actions: [
+    {
+      id: 1,
+      category:  "Vendor Strategy",
+      priority:  "critical",
+      title:     "Execute PFG → Shaver Transition",
+      detail:    "23 line items confirmed cheaper at Shaver. Population switch alone saves $1,146+/month with zero menu changes. Bid documentation and ISP pricing already in hand.",
+      impact:    "$13,752+ / year",
+      timeline:  "30 days",
+      owner:     "Purchasing",
+      status:    "ready",
+      icon:      "fa-arrows-rotate"
+    },
+    {
+      id: 2,
+      category:  "Café Profitability",
+      priority:  "critical",
+      title:     "Produce Contract — Daily Fruit",
+      detail:    "Fresh fruit (orange + banana) is served to 390 café diners every single breakfast. Estimated $78K/year at current retail sourcing. A standing produce contract cuts this by 50–60%.",
+      impact:    "$35,000 – $47,000 / year",
+      timeline:  "2 weeks",
+      owner:     "Procurement",
+      status:    "urgent",
+      icon:      "fa-apple-whole"
+    },
+    {
+      id: 3,
+      category:  "Café Profitability",
+      priority:  "high",
+      title:     "Protein Swap + Salad Bar Restriction",
+      detail:    "Replace Monday chicken tenders ($1.25/serving) with Shaver breaded patty ($0.36). Limit salad bar to lunch service only — currently running 3x/day. Combined saves $24K–$36K/year.",
+      impact:    "$24,000 – $36,000 / year",
+      timeline:  "Next menu cycle",
+      owner:     "Operations",
+      status:    "planning",
+      icon:      "fa-drumstick-bite"
+    },
+    {
+      id: 4,
+      category:  "Café Profitability",
+      priority:  "high",
+      title:     "Review Café Meal Rate ($3.03 / meal)",
+      detail:    "At $3.03/meal with 72.6% average food costs, the café generates $0.83 gross before labor. A rate renegotiation or structural menu change (or both) is required for this line to be sustainable.",
+      impact:    "Structural — rate × 2,730 meals/week",
+      timeline:  "60 days",
+      owner:     "CEO",
+      status:    "review",
+      icon:      "fa-dollar-sign"
+    },
+    {
+      id: 5,
+      category:  "Operations",
+      priority:  "high",
+      title:     "Standardize Bessemer Café Ordering",
+      detail:    "Bessemer COGS swings from 35% to 90% week to week — a 55-point range that signals inconsistent ordering, portioning, or timing. Standardize par levels and weekly order quantities.",
+      impact:    "$8,000 – $15,000 / year",
+      timeline:  "45 days",
+      owner:     "Operations",
+      status:    "planning",
+      icon:      "fa-sliders"
+    },
+    {
+      id: 6,
+      category:  "Contract",
+      priority:  "med",
+      title:     "Renegotiate Milk Contract",
+      detail:    "Milk runs at exactly 65% COGS every week — a fixed contract rate. This is the worst food-cost line in the portfolio. Flag for renegotiation at next contract renewal. Consider bundling into population rate.",
+      impact:    "$7,800 – $12,000 / year",
+      timeline:  "At renewal",
+      owner:     "CEO / Contracts",
+      status:    "monitor",
+      icon:      "fa-file-contract"
+    }
+  ]
+};
