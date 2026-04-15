@@ -2398,6 +2398,141 @@ function renderCafeRotation() {
     </div>`;
 }
 
+function renderCafeProfitabilityRoadmap() {
+  const el = document.getElementById('cafe-profitability-roadmap-container');
+  if (!el) return;
+  const rm = CAFE_DATA.profitabilityRoadmap;
+  const ft = rm.financialTargets;
+  const locColor = { bessemer: '#b45309', birmingham: '#1d4ed8', both: '#6b21a8' };
+  const locLabel = { bessemer: 'Bessemer', birmingham: 'Birmingham', both: 'Both Locations' };
+  const locIcon  = { bessemer: 'fa-store', birmingham: 'fa-building', both: 'fa-store-alt' };
+
+  function fmtWk(n) { return '$' + n.toLocaleString() + '/wk'; }
+  function fmtYr(n) { return '$' + n.toLocaleString() + '/yr'; }
+
+  // ── Financial projection waterfall ──
+  const bes = ft.bessemer;
+  const bir = ft.birmingham;
+
+  const waterfallHtml = `
+    <div class="rpm-waterfall">
+      <div class="rpm-wf-hdr">Projected COGS % by Phase</div>
+      <div class="rpm-wf-grid">
+        <div class="rpm-wf-col rpm-wf-bes">
+          <div class="rpm-wf-loc">Bessemer</div>
+          <div class="rpm-wf-track">
+            ${[[bes.currentPct,'Now','#dc2626'],[bes.phase1Pct,'Phase 1','#ea580c'],[bes.phase2Pct,'Phase 2','#ca8a04'],[bes.phase3Pct,'Phase 3','#16a34a']].map(([pct,lbl,col]) => `
+              <div class="rpm-wf-bar-wrap">
+                <div class="rpm-wf-bar" style="width:${(pct*100/0.70*100).toFixed(0)}%;background:${col}">
+                  <span class="rpm-wf-bar-pct">${(pct*100).toFixed(1)}%</span>
+                </div>
+                <span class="rpm-wf-lbl">${lbl}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="rpm-wf-col rpm-wf-bir">
+          <div class="rpm-wf-loc">Birmingham</div>
+          <div class="rpm-wf-track">
+            ${[[bir.currentPct,'Now','#dc2626'],[bir.phase1Pct,'Phase 1','#ea580c'],[bir.phase2Pct,'Phase 2','#ca8a04'],[bir.phase3Pct,'Phase 3','#16a34a']].map(([pct,lbl,col]) => `
+              <div class="rpm-wf-bar-wrap">
+                <div class="rpm-wf-bar" style="width:${(pct*100/0.55*100).toFixed(0)}%;background:${col}">
+                  <span class="rpm-wf-bar-pct">${(pct*100).toFixed(1)}%</span>
+                </div>
+                <span class="rpm-wf-lbl">${lbl}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="rpm-wf-col rpm-wf-total">
+          <div class="rpm-wf-loc">Combined Annual Savings</div>
+          <div class="rpm-wf-savings-track">
+            ${[
+              ['After Phase 1', bes.savingsPhase1Yr + bir.savingsPhase1Yr, '#ea580c'],
+              ['After Phase 2', bes.savingsPhase1Yr + bir.savingsPhase1Yr + bes.savingsPhase2Yr + bir.savingsPhase2Yr, '#ca8a04'],
+              ['After Phase 3', bes.totalAnnual + bir.totalAnnual, '#16a34a']
+            ].map(([lbl,amt,col]) => `
+              <div class="rpm-wf-savings-row">
+                <div class="rpm-wf-savings-lbl">${lbl}</div>
+                <div class="rpm-wf-savings-val" style="color:${col}">$${amt.toLocaleString()}/yr</div>
+              </div>`).join('')}
+            <div class="rpm-wf-savings-row rpm-wf-grand">
+              <div class="rpm-wf-savings-lbl">+ Produce Contract*</div>
+              <div class="rpm-wf-savings-val" style="color:#16a34a">$35–47K/yr</div>
+            </div>
+          </div>
+          <div class="rpm-wf-note">* Produce contract savings are additive on top of the $${(bes.totalAnnual + bir.totalAnnual).toLocaleString()} operational savings above</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ── Phase cards ──
+  const phaseCards = rm.phases.map(ph => {
+    const combinedWk = ph.savingsWeekly.bessemer + ph.savingsWeekly.birmingham;
+    const combinedYr = ph.savingsAnnual.bessemer + ph.savingsAnnual.birmingham;
+
+    const actionRows = ph.actions.map(a => `
+      <div class="rpm-action-row">
+        <div class="rpm-action-loc" style="background:${locColor[a.location]}15;color:${locColor[a.location]};border:1px solid ${locColor[a.location]}30">
+          <i class="fa-solid ${locIcon[a.location]}"></i> ${locLabel[a.location]}
+        </div>
+        <div class="rpm-action-body">
+          <div class="rpm-action-title">${a.title}</div>
+          <div class="rpm-action-detail">${a.detail}</div>
+          <div class="rpm-action-impact"><i class="fa-solid fa-arrow-trend-down"></i> ${a.impact}</div>
+        </div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="rpm-phase-card">
+        <div class="rpm-phase-header" style="border-left:4px solid ${ph.color}">
+          <div class="rpm-phase-icon" style="background:${ph.color}20;color:${ph.color}"><i class="fa-solid ${ph.icon}"></i></div>
+          <div class="rpm-phase-titles">
+            <div class="rpm-phase-label" style="color:${ph.color}">Phase ${ph.phase} · ${ph.timeline}</div>
+            <div class="rpm-phase-title">${ph.title}</div>
+            <div class="rpm-phase-sub">${ph.timelineDetail}</div>
+          </div>
+          <div class="rpm-phase-impact">
+            <div class="rpm-phase-impact-val" style="color:${ph.color}">${fmtWk(combinedWk)}</div>
+            <div class="rpm-phase-impact-ann">${fmtYr(combinedYr)} combined</div>
+            <div class="rpm-phase-impact-split">
+              <span>BES: ${fmtWk(ph.savingsWeekly.bessemer)}</span>
+              <span>BHM: ${fmtWk(ph.savingsWeekly.birmingham)}</span>
+            </div>
+          </div>
+        </div>
+        <div class="rpm-phase-intro">${ph.intro}</div>
+        <div class="rpm-actions-list">${actionRows}</div>
+      </div>
+    `;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="rpm-headline-banner">
+      <div class="rpm-hl-item">
+        <div class="rpm-hl-val">$${(bes.totalAnnual + bir.totalAnnual).toLocaleString()}</div>
+        <div class="rpm-hl-lbl">Annual savings — operational changes only</div>
+      </div>
+      <div class="rpm-hl-divider"></div>
+      <div class="rpm-hl-item">
+        <div class="rpm-hl-val" style="color:#16a34a">$35–47K</div>
+        <div class="rpm-hl-lbl">Additional — produce contract (Phase 3)</div>
+      </div>
+      <div class="rpm-hl-divider"></div>
+      <div class="rpm-hl-item">
+        <div class="rpm-hl-val" style="color:#1d4ed8">$${(bes.totalAnnual + bir.totalAnnual + 41000).toLocaleString()}+</div>
+        <div class="rpm-hl-lbl">Total combined opportunity</div>
+      </div>
+    </div>
+    ${waterfallHtml}
+    <div class="rpm-phases-list">${phaseCards}</div>
+    <div class="rpm-footnote">
+      <i class="fa-solid fa-circle-info"></i>
+      Weekly savings estimates are conservative and based on 14-week actuals. Bessemer best weeks already at 35–49% demonstrate the kitchen can hit Phase 3 targets without menu changes. Produce contract savings are excluded from the $${(bes.totalAnnual + bir.totalAnnual).toLocaleString()} figure and would add another $35–47K on top.
+    </div>
+  `;
+}
+
 function renderBessemerPlan() {
   const el = document.getElementById('cafe-bessemer-plan-container');
   if (!el) return;
@@ -2490,6 +2625,7 @@ function renderCafeAnalysis() {
   renderCafeStats();
   renderCafeFinancials();
   renderCafeOpportunities();
+  renderCafeProfitabilityRoadmap();
   renderBessemerPlan();
   renderCafeIngredients();
   renderCafeRotation();
