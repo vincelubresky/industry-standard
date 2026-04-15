@@ -2398,235 +2398,139 @@ function renderCafeRotation() {
     </div>`;
 }
 
-function renderCafeProfitabilityRoadmap() {
-  const el = document.getElementById('cafe-profitability-roadmap-container');
+function renderCafeProfitabilityRoadmap() { /* replaced by renderLocationPlan */ }
+
+function renderLocationPlan(loc) {
+  const containerId = loc === 'birmingham' ? 'cafe-birmingham-plan-container' : 'cafe-bessemer-plan-container';
+  const el = document.getElementById(containerId);
   if (!el) return;
-  const rm = CAFE_DATA.profitabilityRoadmap;
-  const ft = rm.financialTargets;
-  const locColor = { bessemer: '#b45309', birmingham: '#1d4ed8', both: '#6b21a8' };
-  const locLabel = { bessemer: 'Bessemer', birmingham: 'Birmingham', both: 'Both Locations' };
-  const locIcon  = { bessemer: 'fa-store', birmingham: 'fa-building', both: 'fa-store-alt' };
+  const plan = CAFE_DATA.locationPlans[loc];
+  const col = plan.color;
 
   function fmtWk(n) { return '$' + n.toLocaleString() + '/wk'; }
   function fmtYr(n) { return '$' + n.toLocaleString() + '/yr'; }
 
-  // ── Financial projection waterfall ──
-  const bes = ft.bessemer;
-  const bir = ft.birmingham;
+  // ── Financial snapshot ──
+  const phaseColors = ['#dc2626','#ea580c','#16a34a'];
+  const totalSavingsYr = plan.phases.reduce((s,p) => s + p.savingsYr, 0);
 
-  const waterfallHtml = `
-    <div class="rpm-waterfall">
-      <div class="rpm-wf-hdr">Projected COGS % by Phase</div>
-      <div class="rpm-wf-grid">
-        <div class="rpm-wf-col rpm-wf-bes">
-          <div class="rpm-wf-loc">Bessemer</div>
-          <div class="rpm-wf-track">
-            ${[[bes.currentPct,'Now','#dc2626'],[bes.phase1Pct,'Phase 1','#ea580c'],[bes.phase2Pct,'Phase 2','#ca8a04'],[bes.phase3Pct,'Phase 3','#16a34a']].map(([pct,lbl,col]) => `
-              <div class="rpm-wf-bar-wrap">
-                <div class="rpm-wf-bar" style="width:${(pct*100/0.70*100).toFixed(0)}%;background:${col}">
-                  <span class="rpm-wf-bar-pct">${(pct*100).toFixed(1)}%</span>
-                </div>
-                <span class="rpm-wf-lbl">${lbl}</span>
-              </div>`).join('')}
-          </div>
-        </div>
-        <div class="rpm-wf-col rpm-wf-bir">
-          <div class="rpm-wf-loc">Birmingham</div>
-          <div class="rpm-wf-track">
-            ${[[bir.currentPct,'Now','#dc2626'],[bir.phase1Pct,'Phase 1','#ea580c'],[bir.phase2Pct,'Phase 2','#ca8a04'],[bir.phase3Pct,'Phase 3','#16a34a']].map(([pct,lbl,col]) => `
-              <div class="rpm-wf-bar-wrap">
-                <div class="rpm-wf-bar" style="width:${(pct*100/0.55*100).toFixed(0)}%;background:${col}">
-                  <span class="rpm-wf-bar-pct">${(pct*100).toFixed(1)}%</span>
-                </div>
-                <span class="rpm-wf-lbl">${lbl}</span>
-              </div>`).join('')}
-          </div>
-        </div>
-        <div class="rpm-wf-col rpm-wf-total">
-          <div class="rpm-wf-loc">Combined Annual Savings</div>
-          <div class="rpm-wf-savings-track">
-            ${[
-              ['After Phase 1', bes.savingsPhase1Yr + bir.savingsPhase1Yr, '#ea580c'],
-              ['After Phase 2', bes.savingsPhase1Yr + bir.savingsPhase1Yr + bes.savingsPhase2Yr + bir.savingsPhase2Yr, '#ca8a04'],
-              ['After Phase 3', bes.totalAnnual + bir.totalAnnual, '#16a34a']
-            ].map(([lbl,amt,col]) => `
-              <div class="rpm-wf-savings-row">
-                <div class="rpm-wf-savings-lbl">${lbl}</div>
-                <div class="rpm-wf-savings-val" style="color:${col}">$${amt.toLocaleString()}/yr</div>
-              </div>`).join('')}
-            <div class="rpm-wf-savings-row rpm-wf-grand">
-              <div class="rpm-wf-savings-lbl">+ Produce Contract*</div>
-              <div class="rpm-wf-savings-val" style="color:#16a34a">$35–47K/yr</div>
-            </div>
-          </div>
-          <div class="rpm-wf-note">* Produce contract savings are additive on top of the $${(bes.totalAnnual + bir.totalAnnual).toLocaleString()} operational savings above</div>
-        </div>
+  const snapshotHtml = `
+    <div class="lp-snapshot">
+      <div class="lp-snap-card lp-snap-current">
+        <div class="lp-snap-label">Current Food Cost</div>
+        <div class="lp-snap-val" style="color:#dc2626">${(plan.currentPct*100).toFixed(1)}%</div>
+        <div class="lp-snap-sub">$${plan.currentCogsWk.toLocaleString()}/wk avg · 14-week actual</div>
       </div>
+      <div class="lp-snap-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
+      <div class="lp-snap-card lp-snap-target">
+        <div class="lp-snap-label">90-Day Target</div>
+        <div class="lp-snap-val" style="color:#16a34a">${(plan.targetPct*100).toFixed(1)}%</div>
+        <div class="lp-snap-sub">$${plan.targetCogsWk.toLocaleString()}/wk max · on $${plan.revWeekly.toLocaleString()} revenue</div>
+      </div>
+      <div class="lp-snap-arrow"><i class="fa-solid fa-equals"></i></div>
+      <div class="lp-snap-card lp-snap-gap">
+        <div class="lp-snap-label">Annual Opportunity</div>
+        <div class="lp-snap-val" style="color:${col}">$${totalSavingsYr.toLocaleString()}</div>
+        <div class="lp-snap-sub">$${plan.gapWeekly}/wk gap to close</div>
+      </div>
+    </div>
+    <div class="lp-rev-note"><i class="fa-solid fa-circle-info"></i> Revenue basis: ${plan.revNote}</div>
+  `;
+
+  // ── Insight banner ──
+  const insightHtml = `
+    <div class="lp-insight" style="border-left:4px solid ${col}">
+      <i class="fa-solid fa-lightbulb" style="color:${col}"></i>
+      <span>${plan.insight}</span>
     </div>
   `;
 
-  // ── Phase cards ──
-  const phaseCards = rm.phases.map(ph => {
-    const combinedWk = ph.savingsWeekly.bessemer + ph.savingsWeekly.birmingham;
-    const combinedYr = ph.savingsAnnual.bessemer + ph.savingsAnnual.birmingham;
+  // ── Benchmark weeks (Bessemer only) ──
+  const benchHtml = plan.benchmarkWeeks ? `
+    <div class="lp-bench">
+      <div class="lp-bench-hdr"><i class="fa-solid fa-circle-check" style="color:#16a34a"></i> Proof of Concept — These Weeks Already Hit the Target</div>
+      <div class="cafe-table-wrap">
+        <table class="cafe-fin-table">
+          <thead><tr><th>Week</th><th>COGS Spent</th><th>Food Cost %</th></tr></thead>
+          <tbody>
+            ${plan.benchmarkWeeks.map(w => `
+              <tr>
+                <td>${w.week}</td>
+                <td>$${w.cogs.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+                <td><span class="cafe-pct-badge" style="background:#16a34a20;color:#16a34a;border-color:#16a34a40">${(w.pct*100).toFixed(1)}%</span></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+      <p class="lp-bench-note">The kitchen and menu can already hit the 42% target. The only variable is ordering consistency.</p>
+    </div>
+  ` : '';
 
+  // ── Phase cards ──
+  const phaseHtml = plan.phases.map((ph, pi) => {
     const actionRows = ph.actions.map(a => `
-      <div class="rpm-action-row">
-        <div class="rpm-action-loc" style="background:${locColor[a.location]}15;color:${locColor[a.location]};border:1px solid ${locColor[a.location]}30">
-          <i class="fa-solid ${locIcon[a.location]}"></i> ${locLabel[a.location]}
-        </div>
-        <div class="rpm-action-body">
-          <div class="rpm-action-title">${a.title}</div>
-          <div class="rpm-action-detail">${a.detail}</div>
-          <div class="rpm-action-impact"><i class="fa-solid fa-arrow-trend-down"></i> ${a.impact}</div>
+      <div class="lp-action">
+        <div class="lp-action-num" style="background:${ph.color}15;color:${ph.color};border:1px solid ${ph.color}30">${a.num}</div>
+        <div class="lp-action-body">
+          <div class="lp-action-title">${a.title}</div>
+          <div class="lp-action-detail">${a.detail}</div>
+          <div class="lp-action-impact" style="color:#16a34a"><i class="fa-solid fa-arrow-trend-down"></i> ${a.impact}</div>
         </div>
       </div>
     `).join('');
 
     return `
-      <div class="rpm-phase-card">
-        <div class="rpm-phase-header" style="border-left:4px solid ${ph.color}">
-          <div class="rpm-phase-icon" style="background:${ph.color}20;color:${ph.color}"><i class="fa-solid ${ph.icon}"></i></div>
-          <div class="rpm-phase-titles">
-            <div class="rpm-phase-label" style="color:${ph.color}">Phase ${ph.phase} · ${ph.timeline}</div>
-            <div class="rpm-phase-title">${ph.title}</div>
-            <div class="rpm-phase-sub">${ph.timelineDetail}</div>
+      <div class="lp-phase">
+        <div class="lp-phase-header" style="background:${ph.color}08;border-left:4px solid ${ph.color}">
+          <div class="lp-phase-icon" style="background:${ph.color}20;color:${ph.color}"><i class="fa-solid ${ph.icon}"></i></div>
+          <div class="lp-phase-meta">
+            <div class="lp-phase-tag" style="color:${ph.color}">Phase ${ph.phase} · ${ph.timeline}</div>
+            <div class="lp-phase-title">${ph.title}</div>
+            <div class="lp-phase-note">${ph.timelineNote}</div>
           </div>
-          <div class="rpm-phase-impact">
-            <div class="rpm-phase-impact-val" style="color:${ph.color}">${fmtWk(combinedWk)}</div>
-            <div class="rpm-phase-impact-ann">${fmtYr(combinedYr)} combined</div>
-            <div class="rpm-phase-impact-split">
-              <span>BES: ${fmtWk(ph.savingsWeekly.bessemer)}</span>
-              <span>BHM: ${fmtWk(ph.savingsWeekly.birmingham)}</span>
-            </div>
+          <div class="lp-phase-savings">
+            <div class="lp-phase-sav-wk" style="color:${ph.color}">$${ph.savingsWk.toLocaleString()}/wk</div>
+            <div class="lp-phase-sav-yr">$${ph.savingsYr.toLocaleString()}/yr</div>
           </div>
         </div>
-        <div class="rpm-phase-intro">${ph.intro}</div>
-        <div class="rpm-actions-list">${actionRows}</div>
+        <div class="lp-actions-list">${actionRows}</div>
       </div>
     `;
   }).join('');
 
-  el.innerHTML = `
-    <div class="rpm-headline-banner">
-      <div class="rpm-hl-item">
-        <div class="rpm-hl-val">$${(bes.totalAnnual + bir.totalAnnual).toLocaleString()}</div>
-        <div class="rpm-hl-lbl">Annual savings — operational changes only</div>
+  // ── Progress bar ──
+  const progressHtml = `
+    <div class="lp-progress">
+      <div class="lp-progress-label">COGS Reduction Trajectory</div>
+      <div class="lp-progress-track">
+        ${[[plan.currentPct,'Now','#dc2626'],
+           [plan.phases[0] ? plan.currentPct - (plan.phases[0].savingsWk / plan.revWeekly) : plan.currentPct, 'Phase 1','#ea580c'],
+           [plan.phases[1] ? plan.currentPct - ((plan.phases[0].savingsWk + plan.phases[1].savingsWk) / plan.revWeekly) : plan.currentPct, 'Phase 2','#ca8a04'],
+           [plan.targetPct,'Phase 3','#16a34a']
+          ].map(([pct,lbl,c]) => `
+          <div class="lp-prog-step">
+            <div class="lp-prog-bar-wrap">
+              <div class="lp-prog-bar" style="width:${Math.min(100,(pct/plan.currentPct)*100).toFixed(0)}%;background:${c}">
+                <span class="lp-prog-pct">${(pct*100).toFixed(1)}%</span>
+              </div>
+            </div>
+            <div class="lp-prog-lbl">${lbl}</div>
+          </div>`).join('')}
       </div>
-      <div class="rpm-hl-divider"></div>
-      <div class="rpm-hl-item">
-        <div class="rpm-hl-val" style="color:#16a34a">$35–47K</div>
-        <div class="rpm-hl-lbl">Additional — produce contract (Phase 3)</div>
-      </div>
-      <div class="rpm-hl-divider"></div>
-      <div class="rpm-hl-item">
-        <div class="rpm-hl-val" style="color:#1d4ed8">$${(bes.totalAnnual + bir.totalAnnual + 41000).toLocaleString()}+</div>
-        <div class="rpm-hl-lbl">Total combined opportunity</div>
-      </div>
-    </div>
-    ${waterfallHtml}
-    <div class="rpm-phases-list">${phaseCards}</div>
-    <div class="rpm-footnote">
-      <i class="fa-solid fa-circle-info"></i>
-      Weekly savings estimates are conservative and based on 14-week actuals. Bessemer best weeks already at 35–49% demonstrate the kitchen can hit Phase 3 targets without menu changes. Produce contract savings are excluded from the $${(bes.totalAnnual + bir.totalAnnual).toLocaleString()} figure and would add another $35–47K on top.
     </div>
   `;
+
+  el.innerHTML = snapshotHtml + insightHtml + progressHtml + `<div class="lp-phases-list">${phaseHtml}</div>` + benchHtml;
 }
 
-function renderBessemerPlan() {
-  const el = document.getElementById('cafe-bessemer-plan-container');
-  if (!el) return;
-  const plan = CAFE_DATA.bessemerPlan;
-  const s = plan.summary;
-  const priColor = { critical: '#dc2626', high: '#ea580c', med: '#ca8a04' };
-  const priLabel = { critical: 'Critical', high: 'High Priority', med: 'Medium' };
-
-  const stepCards = plan.steps.map(step => `
-    <div class="bpl-card">
-      <div class="bpl-card-header">
-        <div class="bpl-step-num">Step ${step.step}</div>
-        <div class="bpl-card-icon" style="background:${priColor[step.priority]}20;color:${priColor[step.priority]}"><i class="fa-solid ${step.icon}"></i></div>
-        <div class="bpl-card-titles">
-          <div class="bpl-card-title">${step.title}</div>
-          <span class="bpl-pri-badge" style="background:${priColor[step.priority]}15;color:${priColor[step.priority]};border:1px solid ${priColor[step.priority]}30">${priLabel[step.priority]}</span>
-        </div>
-        <div class="bpl-impact-col">
-          <div class="bpl-impact-val" style="color:${priColor[step.priority]}">$${step.weeklyImpact}/wk</div>
-          ${step.annualImpact ? `<div class="bpl-impact-ann">$${step.annualImpact.toLocaleString()}/yr</div>` : '<div class="bpl-impact-ann">varies</div>'}
-        </div>
-      </div>
-      <div class="bpl-card-body">
-        <p class="bpl-detail">${step.detail}</p>
-        <div class="bpl-how">
-          <div class="bpl-how-lbl"><i class="fa-solid fa-circle-play"></i> How to Execute</div>
-          <div class="bpl-how-text">${step.how}</div>
-        </div>
-        <div class="bpl-effort"><i class="fa-solid fa-clock"></i> ${step.effort}</div>
-      </div>
-    </div>
-  `).join('');
-
-  const benchRows = plan.benchmarkWeeks.map(w => `
-    <tr>
-      <td>${w.week}</td>
-      <td>$${w.besCogs.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
-      <td><span class="cafe-pct-badge" style="background:#16a34a20;color:#16a34a;border-color:#16a34a40">${(w.besPct*100).toFixed(1)}%</span></td>
-      <td class="bpl-bench-note">${w.note}</td>
-    </tr>
-  `).join('');
-
-  el.innerHTML = `
-    <div class="bpl-insight-banner">
-      <i class="fa-solid fa-lightbulb"></i>
-      <div>${plan.insight}</div>
-    </div>
-
-    <div class="bpl-gap-grid">
-      <div class="bpl-gap-card">
-        <div class="bpl-gap-label">Current Avg COGS</div>
-        <div class="bpl-gap-val" style="color:#dc2626">${(s.currentPct*100).toFixed(1)}%</div>
-        <div class="bpl-gap-sub">$${s.currentCogsAvg.toLocaleString()}/week avg</div>
-      </div>
-      <div class="bpl-gap-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-      <div class="bpl-gap-card bpl-gap-target">
-        <div class="bpl-gap-label">Target COGS</div>
-        <div class="bpl-gap-val" style="color:#16a34a">${(s.targetPct*100).toFixed(1)}%</div>
-        <div class="bpl-gap-sub">$${s.maxCogsTarget.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}/week max</div>
-      </div>
-      <div class="bpl-gap-arrow"><i class="fa-solid fa-equals"></i></div>
-      <div class="bpl-gap-card bpl-gap-opp">
-        <div class="bpl-gap-label">Gap to Close</div>
-        <div class="bpl-gap-val" style="color:#1d4ed8">$${Math.round(s.gapWeekly)}/wk</div>
-        <div class="bpl-gap-sub">$${s.gapAnnual.toLocaleString()}/year</div>
-      </div>
-    </div>
-
-    <div class="bpl-steps-list">
-      ${stepCards}
-    </div>
-
-    <div class="bpl-bench-wrap">
-      <div class="bpl-bench-hdr">
-        <i class="fa-solid fa-check-circle" style="color:#16a34a"></i>
-        Proof of Concept — Bessemer Already Hitting Target in These Weeks
-      </div>
-      <div class="cafe-table-wrap">
-        <table class="cafe-fin-table">
-          <thead><tr><th>Week</th><th>Bessemer COGS</th><th>Food Cost %</th><th>Notes</th></tr></thead>
-          <tbody>${benchRows}</tbody>
-        </table>
-      </div>
-      <p class="bpl-bench-caption">These weeks prove the kitchen and menu are capable of hitting the 55% target. The issue is ordering consistency — not menu cost.</p>
-    </div>
-  `;
-}
+function renderBessemerPlan() { /* replaced by renderLocationPlan('bessemer') */ }
 
 function renderCafeAnalysis() {
   renderCafeStats();
   renderCafeFinancials();
   renderCafeOpportunities();
-  renderCafeProfitabilityRoadmap();
-  renderBessemerPlan();
+  renderLocationPlan('birmingham');
+  renderLocationPlan('bessemer');
   renderCafeIngredients();
   renderCafeRotation();
 }

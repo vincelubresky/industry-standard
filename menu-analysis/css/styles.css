@@ -3937,3 +3937,60 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   .rpm-phase-header { flex-wrap:wrap; }
   .rpm-phase-impact { text-align:left; }
 }
+
+/* ── Location Plan of Action (Birmingham / Bessemer) ─────── */
+.lp-snapshot { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+.lp-snap-card { flex:1; min-width:130px; background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:16px 18px; text-align:center; }
+.lp-snap-card.lp-snap-target { border-color:#16a34a30; }
+.lp-snap-card.lp-snap-gap    { border-color:#1d4ed830; }
+.lp-snap-label { font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:6px; }
+.lp-snap-val   { font-size:28px; font-weight:900; line-height:1.1; }
+.lp-snap-sub   { font-size:11px; color:var(--text-muted); margin-top:5px; }
+.lp-snap-arrow { font-size:22px; color:var(--text-muted); flex-shrink:0; }
+.lp-rev-note   { font-size:11px; color:var(--text-muted); margin-bottom:20px; font-style:italic; }
+.lp-rev-note i { margin-right:5px; }
+
+.lp-insight { display:flex; gap:12px; align-items:flex-start; background:var(--bg-alt); border-radius:10px; padding:14px 16px; margin-bottom:20px; font-size:13px; color:var(--text-secondary,var(--text-muted)); line-height:1.65; }
+.lp-insight i { font-size:16px; margin-top:2px; flex-shrink:0; }
+
+.lp-progress { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:24px; }
+.lp-progress-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:14px; }
+.lp-progress-track { display:flex; flex-direction:column; gap:10px; }
+.lp-prog-step { display:flex; align-items:center; gap:10px; }
+.lp-prog-bar-wrap { flex:1; background:var(--bg-alt); border-radius:4px; height:28px; overflow:hidden; }
+.lp-prog-bar { height:100%; border-radius:4px; display:flex; align-items:center; padding:0 10px; transition:width .4s ease; min-width:50px; }
+.lp-prog-pct { font-size:12px; font-weight:800; color:#fff; white-space:nowrap; }
+.lp-prog-lbl { font-size:11px; color:var(--text-muted); width:52px; flex-shrink:0; }
+
+.lp-phases-list { display:flex; flex-direction:column; gap:18px; margin-bottom:24px; }
+.lp-phase { background:var(--card-bg); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.lp-phase-header { display:flex; align-items:flex-start; gap:14px; padding:16px 20px; }
+.lp-phase-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; margin-top:2px; }
+.lp-phase-meta { flex:1; }
+.lp-phase-tag   { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:3px; }
+.lp-phase-title { font-size:16px; font-weight:800; color:var(--text); margin-bottom:3px; }
+.lp-phase-note  { font-size:12px; color:var(--text-muted); }
+.lp-phase-savings { text-align:right; flex-shrink:0; }
+.lp-phase-sav-wk { font-size:18px; font-weight:900; line-height:1.2; }
+.lp-phase-sav-yr { font-size:11px; color:var(--text-muted); margin-top:2px; }
+
+.lp-actions-list { border-top:1px solid var(--border); }
+.lp-action { display:flex; gap:14px; padding:14px 20px; border-bottom:1px solid var(--border-light,var(--border)); align-items:flex-start; }
+.lp-action:last-child { border-bottom:none; }
+.lp-action-num { font-size:12px; font-weight:800; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
+.lp-action-body { flex:1; }
+.lp-action-title  { font-size:13px; font-weight:700; color:var(--text); margin-bottom:5px; }
+.lp-action-detail { font-size:12px; color:var(--text-muted); line-height:1.65; margin-bottom:6px; }
+.lp-action-impact { font-size:11px; font-weight:700; }
+.lp-action-impact i { margin-right:4px; }
+
+.lp-bench { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
+.lp-bench-hdr { display:flex; align-items:center; gap:9px; font-size:13px; font-weight:700; color:var(--text); margin-bottom:14px; }
+.lp-bench-note { font-size:12px; color:var(--text-muted); margin-top:12px; margin-bottom:0; font-style:italic; line-height:1.6; }
+
+@media (max-width:640px) {
+  .lp-snapshot { flex-direction:column; }
+  .lp-snap-arrow { transform:rotate(90deg); }
+  .lp-phase-header { flex-wrap:wrap; }
+  .lp-phase-savings { text-align:left; }
+}

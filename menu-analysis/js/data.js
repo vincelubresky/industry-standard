@@ -1628,6 +1628,273 @@ const CAFE_DATA = {
     }
   ],
 
+  // ── Location-Specific Plans of Action ──────────────────────
+  locationPlans: {
+
+    birmingham: {
+      color: '#1d4ed8',
+      colorLight: '#eff6ff',
+      revWeekly: 9654.60,
+      revNote: 'Café ($5,090.40) + Academy ($2,545.20) + JBS ($2,019.00)',
+      headcount: 240,
+      currentPct: 0.426,
+      currentCogsWk: 4113,
+      targetPct: 0.340,
+      targetCogsWk: 3283,
+      gapWeekly: 830,
+      gapAnnual: 43160,
+      insight: 'Birmingham's biggest single lever is the chicken tenders swap — one menu substitution saves $260–300/week. Combined with a salad bar restriction and produce contract, three actions alone close 80% of the entire gap.',
+      phases: [
+        {
+          phase: 1,
+          title: 'Operational Controls',
+          timeline: 'Days 1–14',
+          timelineNote: 'Zero cost — implement immediately',
+          color: '#dc2626',
+          icon: 'fa-hand',
+          savingsWk: 251,
+          savingsYr: 13052,
+          actions: [
+            {
+              num: 1,
+              title: 'Post $3,860 weekly COGS spending cap',
+              detail: 'Every purchase is logged against the week\'s running total. Any order that would push the week past $3,860 requires written supervisor approval before it goes through. Post the cap at both the ordering station and the walk-in door.',
+              impact: 'Prevents overspend weeks from compounding'
+            },
+            {
+              num: 2,
+              title: 'Restrict salad bar to lunch only',
+              detail: 'The full salad bar — chef, garden, pasta, chicken, Jell-O — currently runs at all three meals every day. That is three times the produce turnover, three times the prep labor, and three times the spoilage window. Birmingham serves 240 people. At breakfast and dinner, replace with a single pre-portioned 4 oz garden cup.',
+              impact: '$200–400/wk · $10,400–$20,800/yr'
+            },
+            {
+              num: 3,
+              title: 'Standardize fry portions — 4 oz (#8 scoop)',
+              detail: 'Fries appear at nearly every Birmingham lunch. Without a standard, a 5–6 oz plate is a silent 25–50% over-pour on every tray. Purchase one #8 scoop and post a laminated "4 oz / 1 level scoop" card directly above the fry station.',
+              impact: '$55–100/wk · zero implementation cost'
+            },
+            {
+              num: 4,
+              title: 'Rotate one egg style per morning',
+              detail: 'Birmingham currently serves scrambled, fried, and boiled eggs simultaneously every morning — three prep pans, three cooking windows, compounded breakage and waste. Rotate: Mon/Wed/Fri scrambled · Tue/Thu fried · Sat/Sun boiled.',
+              impact: '$40–70/wk · reduces prep labor'
+            }
+          ]
+        },
+        {
+          phase: 2,
+          title: 'Vendor Optimization',
+          timeline: 'Days 15–45',
+          timelineNote: 'Same menu — just buying it smarter',
+          color: '#ea580c',
+          icon: 'fa-arrows-rotate',
+          savingsWk: 290,
+          savingsYr: 15080,
+          actions: [
+            {
+              num: 5,
+              title: 'Replace chicken tenders with Shaver BRD Chicken Patty 3oz',
+              detail: 'Chicken tenders cost ~$1.25/serving. Shaver "Chicken Patty BRD FC 3oz" (40 LB case, $86.29/cs) = $0.36/serving. Served Monday lunch in 3 of 4 weeks to 240 people — that is 720 servings per 4-week cycle. Plate on a dinner roll as a chicken sandwich. Same meal category, $0.89/person cheaper.',
+              impact: '$260–300/wk · largest single lever · $13,500/yr'
+            },
+            {
+              num: 6,
+              title: 'Add Birmingham to existing Shaver ISP order',
+              detail: 'Birmingham uses grits, oatmeal, jelly packets, cake mixes, and cheese sauce — all identical to population items already confirmed cheaper at Shaver. No new vendor account. Add a café line to the existing ISP order.',
+              impact: '$38–55/wk · grits alone saves $0.014/serving × 240 × 7 days'
+            },
+            {
+              num: 7,
+              title: 'Blend TVP beef 50/50 on taco, chili, and spaghetti nights',
+              detail: 'Shaver TVP Beef Chunks (25 LB, $60.46/cs) blended 50/50 with ground beef on three of the highest-frequency entrées: taco salad, chili, and spaghetti meat sauce. Reduces protein cost ~40% on those plates. No visible quality difference at institutional portion sizes.',
+              impact: '$80–120/wk · no menu change required'
+            },
+            {
+              num: 8,
+              title: 'Request produce quotes — oranges and bananas standing order',
+              detail: 'Fresh fruit is served every breakfast to 240 people. At ~$0.50/person/day the annual fruit cost exceeds $43,000. Contact Shaver produce and one local distributor for per-case pricing on navel oranges (3/4 bushel case) and bananas (40 lb case). A standing weekly order commands 10–20% below spot.',
+              impact: 'Sets up Phase 3 — locks in $25–35K/yr savings'
+            }
+          ]
+        },
+        {
+          phase: 3,
+          title: 'Lock In the Gains',
+          timeline: 'Days 45–90',
+          timelineNote: 'Convert quick wins into permanent structure',
+          color: '#16a34a',
+          icon: 'fa-lock',
+          savingsWk: 289,
+          savingsYr: 15028,
+          actions: [
+            {
+              num: 9,
+              title: 'Execute produce contract — weekly standing order',
+              detail: 'With quotes in hand, lock in a contracted per-case price for oranges and bananas. A standing weekly order eliminates spot-price volatility and ensures consistent delivery. Target: $0.25–0.30/person/day vs current ~$0.50. At 240 people × 7 days, every $0.10/day saved = $87/week.',
+              impact: '$350–500/wk · $18,000–$26,000/yr for Birmingham alone'
+            },
+            {
+              num: 10,
+              title: 'Build and post par levels for top 10 items',
+              detail: 'Walk the Birmingham kitchen and document a 5-day usage rate for: fries, eggs, grits, chicken, ground beef, bread, fruit, cake mix, jelly, cheese sauce. Set a reorder floor and a stock ceiling. Reorder only when below floor, only to ceiling. Post laminated par cards on each shelf section.',
+              impact: 'Prevents over-ordering that inflates COGS weeks'
+            },
+            {
+              num: 11,
+              title: 'Set a 13-week COGS review cadence',
+              detail: 'Every quarter, pull the weekly food cost % for Birmingham. If the 13-week average climbs above 40%, trigger a purchasing audit within two weeks. 30 minutes of review per quarter prevents a gradual drift back to 42%.',
+              impact: 'Holds the gains — keeps Phase 1 and 2 savings structural'
+            }
+          ]
+        }
+      ]
+    },
+
+    bessemer: {
+      color: '#ea580c',
+      colorLight: '#fff7ed',
+      revWeekly: 3181.50,
+      revNote: 'Fixed contract rate · never varies week to week',
+      headcount: 150,
+      currentPct: 0.591,
+      currentCogsWk: 1879,
+      targetPct: 0.420,
+      targetCogsWk: 1336,
+      gapWeekly: 543,
+      gapAnnual: 28236,
+      insight: 'Bessemer\'s revenue is perfectly flat at $3,181.50 every week. COGS swings from $1,122 (35.3%) to $2,859 (89.9%) — a 54-point variance on fixed income. Four weeks already hit the 42% target organically. This is an ordering problem, not a menu problem.',
+      benchmarkWeeks: [
+        { week: 'Jan 12–18',    pct: 0.393, cogs: 1250.00 },
+        { week: 'Jan 26–Feb 1', pct: 0.353, cogs: 1121.81 },
+        { week: 'Feb 16–22',    pct: 0.489, cogs: 1555.88 },
+        { week: 'Mar 9–15',     pct: 0.490, cogs: 1559.41 }
+      ],
+      phases: [
+        {
+          phase: 1,
+          title: 'Ordering Discipline',
+          timeline: 'Days 1–14',
+          timelineNote: 'Zero cost — the highest-return actions in this plan',
+          color: '#dc2626',
+          icon: 'fa-clipboard-check',
+          savingsWk: 225,
+          savingsYr: 11700,
+          actions: [
+            {
+              num: 1,
+              title: 'Set $1,650 weekly COGS hard cap — manager tracks in real time',
+              detail: 'Post the cap at the ordering station. Before every order is submitted, the manager adds it to the running week total. If the order would push the week past $1,650, it requires a written reason and a second approval. No exceptions without documentation.',
+              impact: '$225/wk savings vs current average'
+            },
+            {
+              num: 2,
+              title: 'End bulk and double ordering — order weekly, every week',
+              detail: 'The Jan 19 week hit $2,859 COGS (89.9%) — almost all of Bessemer\'s weekly revenue went to food. The Jan 26 week followed at $1,122 (35.3%) because the shelves were already stocked. This pattern means one week pays for two. Order weekly based on par levels, not stockpile instinct.',
+              impact: 'Eliminates the $500–$1,500 overspend spikes'
+            },
+            {
+              num: 3,
+              title: 'Require sign-off on any single order over $400',
+              detail: 'A single $400+ order at Bessemer represents 25%+ of the weekly COGS budget in one transaction. Requiring a second signature before submission catches bulk instincts before they hit the P&L.',
+              impact: 'Removes one-person ordering authority on large buys'
+            },
+            {
+              num: 4,
+              title: 'Restrict salad bar to lunch only',
+              detail: 'Running a full salad bar at all three meals means tripling the produce cost and waste for 150 people. Breakfast and dinner do not need a salad bar at this volume. Pre-portion a 4 oz garden cup for dinner.',
+              impact: '$75–150/wk at Bessemer volume'
+            },
+            {
+              num: 5,
+              title: 'Standardize fry portions — 4 oz (#8 scoop)',
+              detail: 'Same standard as Birmingham. One #8 scoop, one laminated card above the fryer. No guessing.',
+              impact: '$25–40/wk · zero cost to implement'
+            },
+            {
+              num: 6,
+              title: 'Rotate one egg style per morning',
+              detail: 'Mon/Wed/Fri scrambled · Tue/Thu fried · Sat/Sun boiled. One prep pan per morning instead of three.',
+              impact: '$20–35/wk · reduces prep waste and labor'
+            }
+          ]
+        },
+        {
+          phase: 2,
+          title: 'Cost Optimization',
+          timeline: 'Days 15–45',
+          timelineNote: 'Cheaper inputs, same menu',
+          color: '#ea580c',
+          icon: 'fa-arrows-rotate',
+          savingsWk: 159,
+          savingsYr: 8268,
+          actions: [
+            {
+              num: 7,
+              title: 'Add Bessemer to existing Shaver ISP order',
+              detail: 'Grits, oatmeal, jelly packets, yellow cake mix, and cheese sauce — all confirmed cheaper at Shaver. No new vendor account. Add a Bessemer line to the existing ISP order. Grits: $0.014/serving savings × 150 × 7 days = $14.70/wk. Oatmeal: $0.023 × 150 × 7 = $24.15/wk. Jelly: $0.028 × 75 × 5 = $10.50/wk.',
+              impact: '$35–50/wk with no menu or recipe changes'
+            },
+            {
+              num: 8,
+              title: 'Blend TVP beef 50/50 on taco, chili, and spaghetti nights',
+              detail: 'Shaver TVP Beef Chunks (25 LB, $60.46/cs) mixed with ground beef on the three highest-frequency ground beef entrées. Reduces protein cost ~40% on those plates at no visible quality difference for institutional portion sizes.',
+              impact: '$40–65/wk at Bessemer volume'
+            },
+            {
+              num: 9,
+              title: 'Build par levels for top 10 items',
+              detail: 'Document a 5-day usage rate for: fries, eggs, grits, ground beef, chicken, bread, fruit, cake mix, jelly, cheese sauce. Set a reorder floor (minimum on hand before ordering) and a stock ceiling (maximum to keep on hand). Post par cards on each shelf section. The goal is to eliminate the guesswork that creates the 54-point COGS variance.',
+              impact: 'Structural fix — holds Phase 1 discipline permanently'
+            },
+            {
+              num: 10,
+              title: 'Request produce quotes — oranges and bananas standing order',
+              detail: 'Fresh fruit for 150 people every morning at ~$0.50/person = $525/week, $27,300/year in fruit alone. Get per-case pricing from Shaver produce and one local distributor. Same standing order approach as Birmingham.',
+              impact: 'Sets up Phase 3 — $130–175/wk savings potential'
+            }
+          ]
+        },
+        {
+          phase: 3,
+          title: 'Lock In the Gains',
+          timeline: 'Days 45–90',
+          timelineNote: 'Structural — holds without constant management attention',
+          color: '#16a34a',
+          icon: 'fa-lock',
+          savingsWk: 159,
+          savingsYr: 8268,
+          actions: [
+            {
+              num: 11,
+              title: 'Execute produce contract — weekly standing order',
+              detail: 'With quotes in hand, lock in contracted pricing on oranges and bananas. Target $0.25–0.30/person/day vs current ~$0.50. At 150 people × 7 days, every $0.10/day saved = $105/week.',
+              impact: '$130–175/wk · $6,800–$9,100/yr Bessemer alone'
+            },
+            {
+              num: 12,
+              title: 'Add corn dogs and burritos to the weekly rotation',
+              detail: 'Shaver Corn Dog Chicken 72/2.5oz ($48.45/cs = $0.67/ea) and Bean & Beef Burrito 80/4oz ($44.36/cs = $0.55/ea). Both are ready-to-serve proteins under $0.70 that replace higher-cost proteins on 2–3 days per week. No cooking infrastructure needed — heat and serve.',
+              impact: '$60–90/wk at Bessemer volume'
+            },
+            {
+              num: 13,
+              title: 'Formalize par level system — post, laminate, review monthly',
+              detail: 'The par levels built in Phase 2 only work if they are followed. Print, laminate, and mount the par sheet inside the walk-in and at the ordering station. Review and update it on the first of every month as menu rotations change.',
+              impact: 'Makes the ordering discipline from Phase 1 self-sustaining'
+            },
+            {
+              num: 14,
+              title: 'Set a 13-week COGS review cadence',
+              detail: 'Every quarter, pull the 13-week Bessemer average. If it climbs above 50%, trigger an ordering audit within two weeks. The data exists in the weekly report already — this is 20 minutes of review per quarter.',
+              impact: 'Prevents drift back to the 59% baseline'
+            }
+          ]
+        }
+      ]
+    }
+
+  },
+
   // ── Bessemer Action Plan ────────────────────────────────────
   // Target: reduce avg COGS from 59.1% → 55% on $3,181.50/week revenue
   // Gap: $131/week · $6,800/year · current max COGS target = $1,750/week
