@@ -1743,11 +1743,11 @@ const CEO_DATA = {
       pctOfTotal:  0.031,
       cogsPct:     0.650,
       target:      0.500,
-      status:      "poor",
-      statusLabel: "Poor",
-      note:        "65% COGS consistently — lowest-margin line. Likely contract-locked.",
-      annualSavings: 7800,
-      detail:      "Milk runs at 65% COGS every single week with no variation — this is a fixed contract rate. Flag for renegotiation at next contract cycle. Consider alternative sourcing or bundling milk into a population package rate."
+      status:      "watch",
+      statusLabel: "Watch",
+      note:        "65% apparent COGS · backend stipend exists · true net margin not yet quantified.",
+      annualSavings: 0,
+      detail:      "Milk shows exactly 65% COGS in the weekly P&L every week — a fixed contract rate. However, a backend stipend is in place that reduces the true net cost below what the report shows. The stipend does not appear in the WEEKLY tab; verify it is captured in Cash Flow. Until the stipend amount is documented and factored in, the true margin on this line cannot be stated. Pending quantification — do not flag for renegotiation without the full picture."
     },
     {
       name:        "Academy / JBS",
@@ -1780,6 +1780,66 @@ const CEO_DATA = {
     { week: "Mar 23", net: 21426,  pct: 0.238 },
     { week: "Mar 30", net: 18703,  pct: 0.213 },
     { week: "Apr 6",  net: 25889,  pct: 0.294 }
+  ],
+
+  // COGS discrepancies and anomalies found in the weekly financial data
+  findings: [
+    {
+      id: 1,
+      severity: "critical",
+      icon: "fa-triangle-exclamation",
+      title: "Week of Jan 19 — Near-Loss Week",
+      location: "Bessemer + Birmingham",
+      detail: "Both locations underperformed severely during Jan 19–25. Total net dropped to $10,882 — less than half the 14-week average of $23,131. Bessemer ran a location-level net loss of –$2,903. Root causes: Bessemer café COGS hit 89.9% on unchanged $3,181.50 revenue; Bessemer population COGS was 72.4%. Investigate whether this was a delivery timing issue, double-order, holiday inventory build, or spoilage event.",
+      numbers: [
+        { label: "Weekly Net", value: "$10,882", flag: "bad" },
+        { label: "vs Avg", value: "–$12,249", flag: "bad" },
+        { label: "Bessemer Net", value: "–$2,903", flag: "bad" },
+        { label: "Bessemer Café COGS", value: "89.9%", flag: "bad" }
+      ]
+    },
+    {
+      id: 2,
+      severity: "high",
+      icon: "fa-circle-question",
+      title: "Unaccounted Credits in Population COGS",
+      location: "Birmingham",
+      detail: "Two weeks have an extra unlabeled value in the Population COGS row of the spreadsheet: Feb 16–22 shows $6,708.23 and Feb 23–Mar 1 shows $2,200.00. These appear to be credits or adjustments applied to the population food cost but are not labeled or explained anywhere in the report. Combined value: $8,908.23. Verify whether these are vendor rebates, contract credits, or data entry errors — and confirm whether they are properly reflected in the net figures.",
+      numbers: [
+        { label: "Feb 16 Credit", value: "$6,708", flag: "flag" },
+        { label: "Feb 23 Credit", value: "$2,200", flag: "flag" },
+        { label: "Combined", value: "$8,908", flag: "flag" },
+        { label: "Label in Report", value: "None", flag: "bad" }
+      ]
+    },
+    {
+      id: 3,
+      severity: "high",
+      icon: "fa-chart-line",
+      title: "Bessemer Café COGS — 54-Point Swing",
+      location: "Bessemer",
+      detail: "Bessemer café food cost has ranged from 35.3% to 89.9% across 14 weeks on perfectly flat weekly revenue of $3,181.50. This is a 54.6-point variance — impossible to explain by menu variation alone. Revenue is contract-fixed; cost should be predictable within a narrow band. Likely causes: bulk ordering in some weeks covering multiple weeks of usage, deliveries not aligned to the billing week, or no par-level ordering discipline. Standardize weekly order quantities immediately.",
+      numbers: [
+        { label: "Low COGS", value: "35.3%", flag: "ok" },
+        { label: "High COGS", value: "89.9%", flag: "bad" },
+        { label: "Variance Range", value: "54.6 pts", flag: "bad" },
+        { label: "Weekly Revenue", value: "$3,182 (fixed)", flag: "ok" }
+      ]
+    },
+    {
+      id: 4,
+      severity: "med",
+      icon: "fa-arrow-trend-down",
+      title: "Net Margin Declining Since February Peak",
+      location: "Both Locations",
+      detail: "Net margin peaked at 34.8% (Feb 16) and has trended down for most of the March–April period. The Mar 30 week hit $18,703 net — the second lowest on record. Five of the last six weeks have been below the 14-week average. Birmingham and Bessemer population COGS are both trending higher in Q1 close vs early February. If the trend continues, Q2 annualized net falls below $1M. Population vendor switch is the fastest available lever.",
+      numbers: [
+        { label: "Feb 16 Peak Net", value: "$30,113", flag: "ok" },
+        { label: "Mar 30 Net", value: "$18,703", flag: "bad" },
+        { label: "Weeks Below Avg", value: "5 of last 6", flag: "bad" },
+        { label: "Apr 6 Net", value: "$25,889", flag: "flag" }
+      ]
+    }
   ],
 
   // Strategic action items — prioritized for CEO review
@@ -1846,15 +1906,15 @@ const CEO_DATA = {
     },
     {
       id: 6,
-      category:  "Contract",
+      category:  "Finance",
       priority:  "med",
-      title:     "Renegotiate Milk Contract",
-      detail:    "Milk runs at exactly 65% COGS every week — a fixed contract rate. This is the worst food-cost line in the portfolio. Flag for renegotiation at next contract renewal. Consider bundling into population rate.",
-      impact:    "$7,800 – $12,000 / year",
-      timeline:  "At renewal",
-      owner:     "CEO / Contracts",
-      status:    "monitor",
-      icon:      "fa-file-contract"
+      title:     "Document Milk Backend Stipend",
+      detail:    "Milk shows 65% COGS in every weekly P&L report, but a backend stipend is in place that is not reflected in the WEEKLY tab. Until the stipend is quantified and applied, the true net margin on milk is unknown. Action: pull the stipend amount from Cash Flow, document it as a formal line credit, and recalculate the true COGS for milk. Do not flag for renegotiation without the full picture.",
+      impact:    "True margin TBD — likely better than reported",
+      timeline:  "2 weeks",
+      owner:     "Finance",
+      status:    "review",
+      icon:      "fa-magnifying-glass-dollar"
     }
   ]
 };

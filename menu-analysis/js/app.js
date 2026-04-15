@@ -2095,11 +2095,52 @@ function renderCeoTrend() {
     </div>`;
 }
 
+function renderCeoFindings() {
+  const el = document.getElementById('ceo-findings-container');
+  if (!el) return;
+  const findings = CEO_DATA.findings || [];
+  const sevColor = { critical: '#dc2626', high: '#ea580c', med: '#ca8a04' };
+  const sevLabel = { critical: 'Critical', high: 'High', med: 'Medium' };
+  const flagColor = { bad: '#dc2626', flag: '#ca8a04', ok: '#16a34a' };
+
+  el.innerHTML = `
+    <div class="ceo-findings-intro">
+      The following discrepancies were identified by analyzing 14 weeks of actual P&amp;L data.
+      Each item requires a management response — either explanation, correction, or documented follow-up.
+    </div>
+    <div class="ceo-findings-list">
+      ${findings.map(f => `
+        <div class="ceo-finding-card" style="border-left:4px solid ${sevColor[f.severity]}">
+          <div class="ceo-finding-header">
+            <div class="ceo-finding-icon" style="background:${sevColor[f.severity]}18;color:${sevColor[f.severity]}">
+              <i class="fa-solid ${f.icon}"></i>
+            </div>
+            <div class="ceo-finding-title-wrap">
+              <div class="ceo-finding-title">${f.title}</div>
+              <div class="ceo-finding-meta">
+                <span class="ceo-finding-badge" style="background:${sevColor[f.severity]}18;color:${sevColor[f.severity]}">${sevLabel[f.severity]}</span>
+                <span class="ceo-finding-loc"><i class="fa-solid fa-location-dot"></i> ${f.location}</span>
+              </div>
+            </div>
+          </div>
+          <div class="ceo-finding-detail">${f.detail}</div>
+          <div class="ceo-finding-numbers">
+            ${f.numbers.map(n => `
+              <div class="ceo-finding-num">
+                <div class="ceo-finding-num-val" style="color:${flagColor[n.flag]}">${n.value}</div>
+                <div class="ceo-finding-num-lbl">${n.label}</div>
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
 function renderCeoDashboard() {
   renderCeoSummary();
   renderCeoScorecard();
   renderCeoActions();
   renderCeoTrend();
+  renderCeoFindings();
 }
 
 /* ── Café Analysis ─────────────────────────────────────────── */
