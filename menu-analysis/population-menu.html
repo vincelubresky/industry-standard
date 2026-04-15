@@ -83,75 +83,76 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 #print-root{display:none}
 
 /* ══════════════════════════════════════
-   PRINT STYLES — table-based, one day per page
+   PRINT — landscape, one full week per page, bold grid
 ══════════════════════════════════════ */
 @media print{
-  @page{size:letter portrait;margin:.28in}
+  @page{size:letter landscape;margin:.25in}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 
   .print-bar,.week-tabs,.legend,.price-note,.doc-header,#menu-root{display:none!important}
   #print-root{display:block!important}
-  body{background:#fff;font-size:9pt;line-height:1.3}
+  body{background:#fff}
 
-  /* ── One page per day ── */
-  .pday{page-break-after:always;page-break-inside:avoid}
-  .pday:last-child{page-break-after:auto}
+  /* ── One page per week ── */
+  .pweek{page-break-after:always;page-break-inside:avoid}
+  .pweek:last-child{page-break-after:auto}
 
-  /* ── Day header ── */
-  .pday-hdr{background:var(--navy)!important;color:#fff;padding:7pt 10pt 6pt;border-radius:4pt 4pt 0 0}
-  .pday-label{font-size:6.5pt;font-weight:700;color:#94a3b8;letter-spacing:.1em;text-transform:uppercase}
-  .pday-title{font-size:16pt;font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-top:1pt}
-  .pday-meta{font-size:6.5pt;color:#94a3b8;margin-top:1pt}
+  /* ── Week header bar ── */
+  .pw-hdr{background:var(--navy)!important;color:#fff;padding:6pt 10pt;
+          display:table;width:100%;border-radius:3pt 3pt 0 0}
+  .pw-hdr-l{display:table-cell;vertical-align:middle}
+  .pw-hdr-title{font-size:14pt;font-weight:900;letter-spacing:-.01em}
+  .pw-hdr-sub{font-size:7pt;color:#94a3b8;margin-top:1pt}
+  .pw-hdr-r{display:table-cell;text-align:right;vertical-align:middle;
+            font-size:8pt;color:#94a3b8;font-weight:700}
 
-  /* ── Legend strip ── */
-  .plegend{display:flex;gap:8pt;flex-wrap:wrap;padding:4pt 10pt;background:#f8fafc!important;
-           border:1pt solid var(--border);border-top:none;align-items:center;font-size:7pt;color:var(--muted)}
-  .plegend .vbadge{font-size:6pt;padding:1px 4px}
-  .plegend-key{font-weight:800;color:var(--navy)}
+  /* ── Main grid table ── */
+  .pw-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+  .pw-tbl td,.pw-tbl th{border:1pt solid #cbd5e1}
 
-  /* ── Meal section ── */
-  .pmeal{border:1pt solid var(--border);border-top:none}
-  .pmeal:first-of-type{border-top:1pt solid var(--border)}
+  /* Day header row */
+  .pw-day-hdr{background:var(--navy2)!important;color:#fff;font-size:9.5pt;font-weight:900;
+              padding:4pt 5pt;text-align:center;letter-spacing:.03em}
+  .pw-lbl-hdr{background:var(--navy2)!important;width:38pt}
 
-  .pmeal-hdr{padding:5pt 10pt;font-size:9pt;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-  .pmeal-hdr.bk{background:var(--bk-bg)!important;color:var(--bk);border-bottom:1.5pt solid var(--bk-bd)}
-  .pmeal-hdr.lu{background:var(--lu-bg)!important;color:var(--lu);border-bottom:1.5pt solid var(--lu-bd)}
-  .pmeal-hdr.di{background:var(--di-bg)!important;color:var(--di);border-bottom:1.5pt solid var(--di-bd)}
+  /* Meal label cells */
+  .pw-lbl{text-align:center;vertical-align:middle;padding:3pt 2pt;
+          font-size:7.5pt;font-weight:900;text-transform:uppercase;letter-spacing:.06em;width:38pt;
+          line-height:1.5}
+  .pw-lbl.bk{background:var(--bk-bg)!important;color:var(--bk);border-right:2pt solid var(--bk-bd)}
+  .pw-lbl.lu{background:var(--lu-bg)!important;color:var(--lu);border-right:2pt solid var(--lu-bd)}
+  .pw-lbl.di{background:var(--di-bg)!important;color:var(--di);border-right:2pt solid var(--di-bd)}
 
-  /* ── Items table — tight rows, all info on one line ── */
-  .pitems-tbl{width:100%;border-collapse:collapse;background:#fff}
-  .pitems-tbl tr{border-bottom:.5pt solid #f1f5f9}
-  .pitems-tbl tr.is-prot{background:var(--prot-bg)!important}
-  .pitems-tbl td{padding:2.5pt 0;vertical-align:middle}
-  .pitems-tbl .pb{width:14pt;padding-left:8pt;font-size:9.5pt;font-weight:900;color:var(--prot)}
-  .pitems-tbl .pb.plain{color:#d1d5db}
-  .pitems-tbl .pn{font-size:9pt;font-weight:700;color:var(--text)}
-  .pitems-tbl .pn.prot{font-size:9.5pt;font-weight:900;color:var(--prot)}
-  .pitems-tbl .pp{font-size:7pt;color:var(--muted);padding-left:6pt;width:36pt;white-space:nowrap}
-  .pitems-tbl .pc{font-size:7pt;color:var(--muted);width:38pt;text-align:right;white-space:nowrap}
-  .pitems-tbl .pv{width:28pt;text-align:center;padding:0 3pt}
-  .pitems-tbl .pv .vbadge{font-size:6.5pt;padding:1px 4px}
-  .pitems-tbl .pcost{width:30pt;text-align:right;padding-right:8pt;font-size:8pt;font-weight:900;color:#15803d;white-space:nowrap}
+  /* Meal data cells */
+  .pw-cell{padding:4pt 5pt;vertical-align:top}
+  .pw-cell.bk{background:#fffdf5!important}
+  .pw-cell.lu{background:#f0f8ff!important}
+  .pw-cell.di{background:#f0fdf4!important}
 
-  /* ── Meal subtotal ── */
-  .pmeal-sub{padding:3.5pt 10pt;font-size:8pt;font-weight:900;text-align:right;border-top:1pt solid}
-  .pmeal-sub.bk{background:var(--bk-bg)!important;color:var(--bk);border-color:var(--bk-bd)}
-  .pmeal-sub.lu{background:var(--lu-bg)!important;color:var(--lu);border-color:var(--lu-bd)}
-  .pmeal-sub.di{background:var(--di-bg)!important;color:var(--di);border-color:var(--di-bd)}
+  /* Protein line — large bold */
+  .pw-prot{font-size:9.5pt;font-weight:900;color:var(--prot);line-height:1.35;margin-bottom:2.5pt}
 
-  /* ── Daily total bar ── */
-  .pday-total{background:var(--navy)!important;color:#fff;padding:6pt 10pt;
-              display:table;width:100%;border-radius:0 0 4pt 4pt}
-  .pday-total-l{display:table-cell;vertical-align:middle}
-  .pday-total-label{font-size:6.5pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em}
-  .pday-total-num{font-size:12pt;font-weight:900;line-height:1.2}
-  .pday-total-r{display:table-cell;text-align:right;vertical-align:middle;font-size:7pt;color:#64748b;font-weight:600}
+  /* Side items */
+  .pw-side{font-size:7.5pt;font-weight:600;color:#1e293b;line-height:1.45}
 
-  /* ── Warn slot ── */
-  .pwarn{padding:6pt 10pt;background:#fff7ed!important;border-bottom:.5pt solid var(--border)}
-  .pwarn-badge{display:inline-block;background:#fef3c7!important;color:#92400e;
-               border:1pt solid #fcd34d;border-radius:3pt;font-size:8pt;font-weight:900;padding:2pt 6pt}
-  .pwarn-note{font-size:7pt;color:#92400e;margin-top:2pt}
+  /* Meal cost */
+  .pw-cost{font-size:8pt;font-weight:900;color:#15803d;margin-top:3pt;
+           padding-top:2.5pt;border-top:.5pt solid #e2e8f0}
+
+  /* Warn cell */
+  .pw-warn{background:#fff7ed!important;padding:4pt 5pt;font-size:7.5pt;
+           font-weight:800;color:#92400e;vertical-align:middle;text-align:center}
+
+  /* Legend footer */
+  .pw-legend{display:table;width:100%;background:#f8fafc!important;
+             border:1pt solid #cbd5e1;border-top:none;border-radius:0 0 3pt 3pt;
+             padding:3.5pt 10pt;font-size:7pt;color:var(--muted)}
+  .pw-legend-inner{display:table-row}
+  .pw-legend-l{display:table-cell;vertical-align:middle}
+  .pw-legend-r{display:table-cell;text-align:right;vertical-align:middle;
+               font-style:italic;color:#94a3b8;font-size:6.5pt}
+  .pw-legend .vbadge{font-size:6pt;padding:1px 4px}
+  .pw-legend-key{font-weight:900;color:var(--navy);margin-right:4pt}
 }
 </style>
 </head>
@@ -440,72 +441,99 @@ function renderScreen(){
   root.innerHTML=html;
 }
 
-/* ══ PRINT RENDERING — table rows, guaranteed single-page per day ══ */
-function printRow(it,isProt){
-  const[n,p,c,vk,$]=it;
-  const V2=V[vk];
-  return `<tr${isProt?' class="is-prot"':''}>
-    <td class="pb${isProt?'':' plain'}">${isProt?'★':'·'}</td>
-    <td class="pn${isProt?' prot':''}">${n}</td>
-    <td class="pp">${p}</td>
-    <td class="pc">${c} cal</td>
-    <td class="pv"><span class="vbadge ${V2.c}">${V2.l}</span></td>
-    <td class="pcost">${f$($)}</td>
-  </tr>`;
-}
-
-function printMeal(label,cls,items){
-  if(!items) return `<div class="pmeal">
-    <div class="pmeal-hdr ${cls}">${label}</div>
-    <div class="pwarn">
-      <div class="pwarn-badge">⚠ REVIEW</div>
-      <div class="pwarn-note">JC source sheet shows no protein for this slot — confirm with kitchen before service.</div>
-    </div>
-    <div class="pmeal-sub ${cls}">—</div>
-  </div>`;
-  const t=tot(items);
-  return `<div class="pmeal">
-    <div class="pmeal-hdr ${cls}">${label}</div>
-    <table class="pitems-tbl">${items.map(it=>printRow(it,!!it[5])).join('')}</table>
-    <div class="pmeal-sub ${cls}">${t.cal} cal &nbsp;&nbsp;·&nbsp;&nbsp; ${f$(t.cost)}</div>
-  </div>`;
-}
-
+/* ══ PRINT — landscape grid, one full week per page ══ */
 function renderPrint(){
   const root=document.getElementById('print-root');
   let html='';
+
   WEEKS.forEach((wk,wi)=>{
-    DAYS.forEach((day,di)=>{
-      const bk=BK[di],lu=wk.lunch[di],dn=wk.dinner[di];
-      const tb=tot(bk),tl=tot(lu),td=tot(dn);
-      const totalCal=tb.cal+tl.cal+td.cal, totalCost=tb.cost+tl.cost+td.cost;
-      html+=`<div class="pday">
-        <div class="pday-hdr">
-          <div class="pday-label">Industry Standard Food Service &nbsp;·&nbsp; Jefferson County &nbsp;·&nbsp; ${wk.title} of 4</div>
-          <div class="pday-title">${day.toUpperCase()}</div>
-          <div class="pday-meta">Population Menu &nbsp;·&nbsp; Calories · Vendor · Per-Serving Cost &nbsp;·&nbsp; Internal Reference Only</div>
+    html+=`<div class="pweek">
+
+      <!-- Week header -->
+      <div class="pw-hdr">
+        <div class="pw-hdr-l">
+          <div class="pw-hdr-title">Jefferson County Population Menu &nbsp;·&nbsp; ${wk.title} of 4</div>
+          <div class="pw-hdr-sub">Industry Standard Food Service &nbsp;·&nbsp; 4-Week Repeating Rotation &nbsp;·&nbsp; Internal Reference &nbsp;·&nbsp; Verify pricing vs. current order guide before service</div>
         </div>
-        <div class="plegend">
-          <span class="plegend-key">Vendors:</span>
-          <span><span class="vbadge v-SHV">SHV</span>&nbsp;Shaver/ISP</span>
-          <span><span class="vbadge v-PFG">PFG</span>&nbsp;Performance Food Group</span>
-          <span><span class="vbadge v-IH">IH</span>&nbsp;In-House (ingredient cost)</span>
-          <span><span class="vbadge v-COM">COM</span>&nbsp;Commodity</span>
-          <span class="plegend-key" style="margin-left:6pt">★&nbsp;=&nbsp;Primary Protein</span>
-        </div>
-        ${printMeal('☀  Breakfast (Hot)','bk',bk)}
-        ${printMeal('🔥  Lunch — Hot Meal','lu',lu)}
-        ${printMeal('🥪  Dinner — Cold Sandwich','di',dn)}
-        <div class="pday-total">
-          <div class="pday-total-l">
-            <div class="pday-total-label">Daily Total — All 3 Meals Combined</div>
-            <div class="pday-total-num">${totalCal} cal &nbsp;·&nbsp; ${f$(totalCost)}&nbsp;/&nbsp;inmate</div>
+        <div class="pw-hdr-r">★ = Primary Protein</div>
+      </div>
+
+      <!-- Main grid -->
+      <table class="pw-tbl">
+        <colgroup>
+          <col style="width:38pt">
+          ${DAYS.map(()=>'<col>').join('')}
+        </colgroup>
+        <tr>
+          <th class="pw-lbl-hdr"></th>
+          ${DAYS.map(d=>`<th class="pw-day-hdr">${d.toUpperCase()}</th>`).join('')}
+        </tr>
+
+        <!-- BREAKFAST -->
+        <tr>
+          <td class="pw-lbl bk">☀<br>BREAK<br>FAST</td>
+          ${DAYS.map((_,di)=>{
+            const items=BK[di];
+            const prot=items.find(it=>it[5]);
+            const sides=items.filter(it=>!it[5]);
+            return `<td class="pw-cell bk">
+              <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
+              ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
+              <div class="pw-cost">${f$(tot(items).cost)}</div>
+            </td>`;
+          }).join('')}
+        </tr>
+
+        <!-- LUNCH -->
+        <tr>
+          <td class="pw-lbl lu">🔥<br>LUNCH<br>(HOT)</td>
+          ${DAYS.map((_,di)=>{
+            const items=wk.lunch[di];
+            if(!items) return `<td class="pw-warn">⚠ REVIEW<br><span style="font-size:6.5pt;font-weight:600">No protein — confirm with kitchen</span></td>`;
+            const prot=items.find(it=>it[5]);
+            const sides=items.filter(it=>!it[5]);
+            return `<td class="pw-cell lu">
+              <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
+              ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
+              <div class="pw-cost">${f$(tot(items).cost)}</div>
+            </td>`;
+          }).join('')}
+        </tr>
+
+        <!-- DINNER -->
+        <tr>
+          <td class="pw-lbl di">🥪<br>DINNER<br>(COLD)</td>
+          ${DAYS.map((_,di)=>{
+            const items=wk.dinner[di];
+            const prot=items.find(it=>it[5]);
+            const sides=items.filter(it=>!it[5]);
+            return `<td class="pw-cell di">
+              <div class="pw-prot">★ ${prot?prot[0]:'—'}</div>
+              ${sides.map(it=>`<div class="pw-side">${it[0]}</div>`).join('')}
+              <div class="pw-cost">${f$(tot(items).cost)}</div>
+            </td>`;
+          }).join('')}
+        </tr>
+      </table>
+
+      <!-- Legend footer -->
+      <div class="pw-legend">
+        <div class="pw-legend-inner">
+          <div class="pw-legend-l">
+            <span class="pw-legend-key">Vendors:</span>
+            <span>${vb('SHV')} Shaver/ISP &nbsp;</span>
+            <span>${vb('PFG')} Performance Food Group &nbsp;</span>
+            <span>${vb('IH')} In-House (ingredient cost) &nbsp;</span>
+            <span>${vb('COM')} Commodity &nbsp;</span>
+            <span class="pw-legend-key" style="margin-left:6pt">Cost = per inmate per meal</span>
           </div>
-          <div class="pday-total-r">${wk.title} &nbsp;·&nbsp; ${day}<br>Verify pricing vs. current order guide</div>
+          <div class="pw-legend-r">Industry Standard Food Service · Jefferson County · Internal Use Only</div>
         </div>
-      </div>`;
-    });
+      </div>
+
+    </div>`; // .pweek
   });
+
   root.innerHTML=html;
 }
 
