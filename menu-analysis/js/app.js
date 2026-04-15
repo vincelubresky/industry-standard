@@ -685,6 +685,10 @@ function switchTab(tab, persist = true) {
     s.style.display = (tab === 'report') ? 'block' : 'none';
   });
 
+  document.querySelectorAll('.cafe-section').forEach(s => {
+    s.style.display = (tab === 'cafe') ? 'block' : 'none';
+  });
+
   // Show/hide bid tracker
   const bidWrap = document.getElementById('bid-tracker-wrap');
   if (bidWrap) bidWrap.style.display = (tab === 'bids') ? 'block' : 'none';
@@ -703,6 +707,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.nav-section-label[data-tab="menus"], .nav-item[data-tab="menus"]').forEach(el => {
     el.style.display = (tab === 'menus') ? '' : 'none';
   });
+  document.querySelectorAll('.nav-section-label[data-tab="cafe"], .nav-item[data-tab="cafe"]').forEach(el => {
+    el.style.display = (tab === 'cafe') ? '' : 'none';
+  });
 
   // Sync active nav item
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -716,6 +723,10 @@ function switchTab(tab, persist = true) {
   }
   if (tab === 'bids') {
     const el = document.querySelector('.nav-item[href="#bids-open"]');
+    if (el) el.classList.add('active');
+  }
+  if (tab === 'cafe') {
+    const el = document.querySelector('.nav-item[href="#cafe-overview"]');
     if (el) el.classList.add('active');
   }
 
@@ -756,10 +767,26 @@ function initTabs() {
     });
   });
 
-  // Analysis links → ensure analysis tab is active first
-  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab])').forEach(el => {
-    el.addEventListener('click', () => {
-      if (localStorage.getItem(TAB_KEY) !== 'analysis') switchTab('analysis');
+  // Café nav links — switch to café tab then scroll to section
+  document.querySelectorAll('.nav-item[href^="#cafe-"]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('cafe');
+      const target = document.getElementById(el.getAttribute('href').slice(1));
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
+    });
+  });
+
+  // Analysis links → switch to analysis tab then scroll to section
+  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab]):not([href^="#report-"]):not([href^="#cafe-"])').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('analysis');
+      const id = el.getAttribute('href').slice(1);
+      const target = document.getElementById(id);
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 140);
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
     });
   });
 }
@@ -1045,7 +1072,7 @@ function renderMenuRotation() {
 
 function getBdInmateCount() {
   const el = document.getElementById('bdInmateInput');
-  return (el ? parseInt(el.value) : 0) || 300;
+  return (el ? parseInt(el.value) : 0) || 1400;
 }
 
 function renderBigDaddyInvoice() {
@@ -1669,6 +1696,115 @@ function initBidTracker() {
   bidRefresh(false);
 }
 
+/* ── Menu Order List ──────────────────────────────────────── */
+function renderMenuOrderList() {
+  const container = document.getElementById('mol-container');
+  if (!container || typeof MENU_ORDER_LIST === 'undefined') return;
+  const data = MENU_ORDER_LIST;
+
+  const vendorColor = { shaver: 'green', bigDaddy: 'amber', pfg: 'accent' };
+  const vendorIcon  = { shaver: 'fa-truck-fast', bigDaddy: 'fa-boxes-stacked', pfg: 'fa-handshake' };
+
+  let html = `
+    <div class="mol-basis-bar">
+      <span><i class="fa-solid fa-users"></i>&nbsp;${data.basis.inmates} inmates</span>
+      <span class="mol-sep">·</span>
+      <span><i class="fa-solid fa-calendar-week"></i>&nbsp;${data.basis.days}-day cycle</span>
+      <span class="mol-sep">·</span>
+      <span><i class="fa-solid fa-dollar-sign"></i>&nbsp;~$${data.basis.perInmatePerDay.toFixed(2)}/inmate/day</span>
+      <span class="mol-sep">·</span>
+      <span class="mol-grand-total"><i class="fa-solid fa-calculator"></i>&nbsp;<strong>$${data.basis.grandTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</strong>&nbsp;total</span>
+    </div>
+    <div class="mol-vendor-summary">
+      ${data.vendors.map(v => {
+        const itemCount = v.categories.reduce((s,c) => s + c.items.length, 0);
+        const col = vendorColor[v.key] || 'accent';
+        return `
+          <div class="mol-vs-card mol-vs-${v.key}">
+            <div class="mol-vs-name"><i class="fa-solid ${vendorIcon[v.key] || 'fa-truck'}"></i>&nbsp;${v.label}</div>
+            <div class="mol-vs-amount" style="color:var(--${col})">$${v.total.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+            <div class="mol-vs-meta">${itemCount} line items</div>
+          </div>`;
+      }).join('')}
+    </div>`;
+
+  data.vendors.forEach(v => {
+    const col = vendorColor[v.key] || 'accent';
+    const itemCount = v.categories.reduce((s,c) => s + c.items.length, 0);
+    html += `
+    <div class="card mol-vendor-block" style="margin-bottom:20px">
+      <div class="mol-vb-header" style="border-left:4px solid var(--${col})">
+        <div class="mol-vb-title">
+          <i class="fa-solid ${vendorIcon[v.key] || 'fa-truck'}" style="color:var(--${col})"></i>
+          &nbsp;${v.label}
+          <span class="mol-vb-doc">${v.subtitle}</span>
+        </div>
+        <div class="mol-vb-total" style="color:var(--${col})">$${v.total.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+      </div>`;
+    v.categories.forEach(cat => {
+      const catTotal = cat.items.reduce((s,i) => s + i.total, 0);
+      html += `
+      <div class="mol-cat-section">
+        <div class="mol-cat-label">
+          <i class="fa-solid ${cat.icon}" style="color:var(--${col});opacity:.7"></i>&nbsp;${cat.name}
+          <span class="mol-cat-subtotal">$${catTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</span>
+        </div>
+        <div class="table-wrap">
+          <table class="mol-table">
+            <thead><tr>
+              <th>Item</th><th>Pack</th>
+              <th class="right">Qty</th>
+              <th class="right">$/Unit</th>
+              <th class="right">Line Total</th>
+              <th class="mol-basis-col">Basis</th>
+            </tr></thead>
+            <tbody>
+              ${cat.items.map(item => `
+                <tr${item.caveat ? ' class="mol-row-est"' : ''}>
+                  <td class="item-name">${item.name}${item.caveat ? ` <span class="mol-est-badge" title="${item.caveat}">est.</span>` : ''}</td>
+                  <td class="small text-muted">${item.pack}</td>
+                  <td class="right"><strong>${item.qty}</strong> <span class="small text-muted">${item.unit}</span></td>
+                  <td class="right">$${item.casePrice.toFixed(2)}</td>
+                  <td class="right savings-val">$${item.total.toLocaleString('en-US',{minimumFractionDigits:2})}</td>
+                  <td class="mol-basis-col small text-muted">${item.basis}</td>
+                </tr>`).join('')}
+            </tbody>
+            <tfoot>
+              <tr class="pl-subtotal-row">
+                <td colspan="4"><strong>${cat.name} subtotal</strong></td>
+                <td class="right"><strong>$${catTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</strong></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>`;
+    });
+    html += `
+      <div class="mol-vb-footer">
+        <span>${v.label} &mdash; ${itemCount} items</span>
+        <span class="mol-vb-footer-total" style="color:var(--${col})">$${v.total.toLocaleString('en-US',{minimumFractionDigits:2})}</span>
+      </div>
+    </div>`;
+  });
+
+  html += `
+    <div class="weekly-net-banner" style="margin-top:4px">
+      <div class="wn-label">Grand Total — 4-Week Cycle</div>
+      <div class="wn-amount">$${data.basis.grandTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+      <div class="wn-pct">~$${data.basis.perInmatePerDay.toFixed(2)} / inmate / day</div>
+      <div class="wn-sub">Shaver $18,934 &nbsp;+&nbsp; Big Daddy $1,080 &nbsp;+&nbsp; PFG $3,208</div>
+    </div>
+    <p class="small text-muted" style="margin-top:10px;padding:0 4px">
+      <i class="fa-solid fa-circle-info" style="color:var(--accent)"></i>
+      &nbsp;Quantities from 4-week rotation at 300 inmates. PFG items marked
+      <span class="mol-est-badge">est.</span> use unconfirmed or market prices — verify before ordering.
+      Margarine, oil, and gravy quantities are estimates; adjust to your kitchen usage.
+    </p>`;
+
+  container.innerHTML = html;
+}
+
 function bidRefresh(announce = true) {
   const el = document.getElementById('bid-last-checked');
   if (el) {
@@ -1686,6 +1822,269 @@ function bidRefresh(announce = true) {
   }
 }
 
+/* ── Café Analysis ─────────────────────────────────────────── */
+
+function cafeCogsColor(pct) {
+  if (pct <= 0.35) return '#16a34a';
+  if (pct <= 0.50) return '#ca8a04';
+  if (pct <= 0.65) return '#ea580c';
+  return '#dc2626';
+}
+
+function cafeCogsLabel(pct) {
+  if (pct <= 0.35) return 'Good';
+  if (pct <= 0.50) return 'High';
+  if (pct <= 0.65) return 'Very High';
+  return 'Critical';
+}
+
+function renderCafeStats() {
+  const el = document.getElementById('cafe-stats-container');
+  if (!el) return;
+  const d = CAFE_DATA;
+  const weeks = d.weeklyFinancials;
+  const birmAvg = weeks.reduce((s,w) => s + w.birmPct, 0) / weeks.length;
+  const besAvg  = weeks.reduce((s,w) => s + w.besPct,  0) / weeks.length;
+
+  const combinedRevWeekly = d.revWeekly.birmingham + d.revWeekly.bessemer;
+  const targetCogsWeekly  = combinedRevWeekly * d.targetFoodCostPct;
+  const actualCogsWeekly  = (d.revWeekly.birmingham * birmAvg) + (d.revWeekly.bessemer * besAvg);
+  const weeklyOverspend   = Math.max(0, actualCogsWeekly - targetCogsWeekly);
+  const annualOpportunity = Math.round(weeklyOverspend * 52);
+
+  const totalMealsWeekly = (d.headcount.birmingham + d.headcount.bessemer) * 7;
+  const costPerMealActual = actualCogsWeekly / totalMealsWeekly;
+
+  const stats = [
+    { label: "Birmingham Avg Food Cost",  value: (birmAvg*100).toFixed(1)+'%', icon: "fa-chart-pie",        color: "#dc2626",   note: "14-week avg · target 30%",    badge: "Critical" },
+    { label: "Bessemer Avg Food Cost",    value: (besAvg*100).toFixed(1)+'%',  icon: "fa-chart-pie",        color: "#ea580c",   note: "14-week avg · target 30%",    badge: "High" },
+    { label: "Actual Cost Per Meal",      value: '$'+costPerMealActual.toFixed(2), icon: "fa-utensils",     color: "#1d4ed8",   note: 'at $'+d.ratePerMeal+'/meal rate · '+(costPerMealActual > d.ratePerMeal ? 'over rate' : 'thin margin') },
+    { label: "Annual Savings @ 30% Target", value: '$'+annualOpportunity.toLocaleString(), icon: "fa-piggy-bank", color: "#166534", note: "Combined Birmingham + Bessemer" }
+  ];
+
+  el.innerHTML = `
+    <div class="cafe-stats-grid">
+      ${stats.map(s => `
+        <div class="cafe-stat-card">
+          <div class="cafe-stat-icon" style="background:${s.color}20;color:${s.color}"><i class="fa-solid ${s.icon}"></i></div>
+          <div class="cafe-stat-body">
+            <div class="cafe-stat-value" style="color:${s.color}">${s.value}</div>
+            <div class="cafe-stat-label">${s.label}</div>
+            <div class="cafe-stat-note">${s.note}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="cafe-alert-banner">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div>
+        <strong>Birmingham is averaging ${(birmAvg*100).toFixed(1)}% food cost</strong> — more than 2.5× the 30% target. At $${weeklyOverspend.toLocaleString(undefined,{maximumFractionDigits:0})}/week over target, the cafe is not profitable on food alone before labor. The top 3 opportunities (produce contract, chicken tenders swap, salad bar restriction) alone could recover $59,000–$83,000 annually.
+      </div>
+    </div>`;
+}
+
+function renderCafeFinancials() {
+  const el = document.getElementById('cafe-financials-container');
+  if (!el) return;
+  const weeks = CAFE_DATA.weeklyFinancials;
+  const birmAvg = weeks.reduce((s,w) => s + w.birmPct, 0) / weeks.length;
+  const besAvg  = weeks.reduce((s,w) => s + w.besPct,  0) / weeks.length;
+
+  el.innerHTML = `
+    <div class="cafe-table-wrap">
+      <table class="cafe-fin-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Birmingham COGS</th>
+            <th>Birm %</th>
+            <th>Bessemer COGS</th>
+            <th>Bes %</th>
+            <th>Combined</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${weeks.map(w => {
+            const combinedCogs = w.birmCogs + w.besCogs;
+            const combinedRev  = CAFE_DATA.revWeekly.birmingham + CAFE_DATA.revWeekly.bessemer;
+            const combinedPct  = combinedCogs / combinedRev;
+            return `<tr>
+              <td class="cafe-week-cell">${w.week}</td>
+              <td>$${w.birmCogs.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+              <td><span class="cafe-pct-badge" style="background:${cafeCogsColor(w.birmPct)}20;color:${cafeCogsColor(w.birmPct)};border-color:${cafeCogsColor(w.birmPct)}40">${(w.birmPct*100).toFixed(1)}% <span class="cafe-pct-lbl">${cafeCogsLabel(w.birmPct)}</span></span></td>
+              <td>$${w.besCogs.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td>
+              <td><span class="cafe-pct-badge" style="background:${cafeCogsColor(w.besPct)}20;color:${cafeCogsColor(w.besPct)};border-color:${cafeCogsColor(w.besPct)}40">${(w.besPct*100).toFixed(1)}% <span class="cafe-pct-lbl">${cafeCogsLabel(w.besPct)}</span></span></td>
+              <td><span class="cafe-pct-badge" style="background:${cafeCogsColor(combinedPct)}20;color:${cafeCogsColor(combinedPct)};border-color:${cafeCogsColor(combinedPct)}40">${(combinedPct*100).toFixed(1)}%</span></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+        <tfoot>
+          <tr class="cafe-fin-avg">
+            <td><strong>14-Week Average</strong></td>
+            <td></td>
+            <td><span class="cafe-pct-badge" style="background:#dc262620;color:#dc2626;border-color:#dc262640"><strong>${(birmAvg*100).toFixed(1)}%</strong></span></td>
+            <td></td>
+            <td><span class="cafe-pct-badge" style="background:#ea580c20;color:#ea580c;border-color:#ea580c40"><strong>${(besAvg*100).toFixed(1)}%</strong></span></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="cafe-legend">
+      <span class="cafe-leg-item" style="color:#16a34a"><i class="fa-solid fa-circle" style="font-size:8px"></i> ≤35% Good</span>
+      <span class="cafe-leg-item" style="color:#ca8a04"><i class="fa-solid fa-circle" style="font-size:8px"></i> 36–50% High</span>
+      <span class="cafe-leg-item" style="color:#ea580c"><i class="fa-solid fa-circle" style="font-size:8px"></i> 51–65% Very High</span>
+      <span class="cafe-leg-item" style="color:#dc2626"><i class="fa-solid fa-circle" style="font-size:8px"></i> >65% Critical</span>
+    </div>`;
+}
+
+function renderCafeOpportunities() {
+  const el = document.getElementById('cafe-opportunities-container');
+  if (!el) return;
+
+  const priorityColor = { critical: '#dc2626', high: '#ea580c', med: '#ca8a04', low: '#4b5563' };
+  const priorityLabel = { critical: 'Critical', high: 'High Impact', med: 'Medium', low: 'Low' };
+
+  const totalAnnualLow  = CAFE_DATA.opportunities.reduce((s,o) => s + o.annualLow,  0);
+  const totalAnnualHigh = CAFE_DATA.opportunities.reduce((s,o) => s + o.annualHigh, 0);
+
+  el.innerHTML = `
+    <div class="cafe-opp-summary">
+      <div class="cafe-opp-summary-inner">
+        <span class="cafe-opp-summary-label">Total Annual Savings Opportunity</span>
+        <span class="cafe-opp-summary-range">$${totalAnnualLow.toLocaleString()} – $${totalAnnualHigh.toLocaleString()}</span>
+        <span class="cafe-opp-summary-note">across all 6 opportunities · Birmingham + Bessemer combined</span>
+      </div>
+    </div>
+    <div class="cafe-opp-list">
+      ${CAFE_DATA.opportunities.map(o => `
+        <div class="cafe-opp-card">
+          <div class="cafe-opp-rank" style="background:${priorityColor[o.priority]}15;color:${priorityColor[o.priority]};border-color:${priorityColor[o.priority]}30">
+            <i class="fa-solid ${o.icon}"></i>
+            <span class="cafe-opp-rank-num">#${o.rank}</span>
+          </div>
+          <div class="cafe-opp-body">
+            <div class="cafe-opp-header">
+              <span class="cafe-opp-title">${o.title}</span>
+              <span class="cafe-opp-priority" style="background:${priorityColor[o.priority]}15;color:${priorityColor[o.priority]}">${priorityLabel[o.priority]}</span>
+            </div>
+            <p class="cafe-opp-detail">${o.detail}</p>
+            <div class="cafe-opp-impact">
+              <div class="cafe-opp-impact-item">
+                <span class="cafe-opp-impact-label">Weekly</span>
+                <span class="cafe-opp-impact-value">$${o.weeklyLow.toLocaleString()}–$${o.weeklyHigh.toLocaleString()}</span>
+              </div>
+              <div class="cafe-opp-impact-sep"></div>
+              <div class="cafe-opp-impact-item">
+                <span class="cafe-opp-impact-label">Annual</span>
+                <span class="cafe-opp-impact-value" style="font-weight:700;color:#166534">$${o.annualLow.toLocaleString()}–$${o.annualHigh.toLocaleString()}</span>
+              </div>
+              <div class="cafe-opp-action"><i class="fa-solid fa-arrow-right"></i> ${o.action}</div>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function renderCafeIngredients() {
+  const el = document.getElementById('cafe-ingredients-container');
+  if (!el) return;
+
+  const cats = [...new Set(CAFE_DATA.ingredients.map(i => i.category))];
+  const knownCount    = CAFE_DATA.ingredients.filter(i => i.status === 'known').length;
+  const needsCount    = CAFE_DATA.ingredients.filter(i => i.status === 'needsPrice').length;
+  const shaverSwitch  = CAFE_DATA.ingredients.filter(i => i.shaverSavings > 0).length;
+
+  el.innerHTML = `
+    <div class="cafe-ing-summary-bar">
+      <span class="cafe-ing-bar-item green"><i class="fa-solid fa-circle-check"></i> ${knownCount} Items Priced</span>
+      <span class="cafe-ing-bar-item red"><i class="fa-solid fa-circle-question"></i> ${needsCount} Need Pricing</span>
+      <span class="cafe-ing-bar-item blue"><i class="fa-solid fa-arrows-rotate"></i> ${shaverSwitch} Shaver Switch Available</span>
+    </div>
+    ${cats.map(cat => {
+      const items = CAFE_DATA.ingredients.filter(i => i.category === cat);
+      return `
+        <div class="cafe-ing-category">
+          <div class="cafe-ing-cat-title">${cat}</div>
+          <table class="cafe-ing-table">
+            <thead><tr><th>Item</th><th>Frequency</th><th>PFG $/serving</th><th>Shaver $/serving</th><th>Status</th></tr></thead>
+            <tbody>
+              ${items.map(i => {
+                const pfgDisplay    = i.pfgCost    ? '$'+i.pfgCost.toFixed(3)   : i.estimated ? '~$'+i.estimated.toFixed(2)+' est.' : '—';
+                const shaverDisplay = i.shaverCost ? '$'+i.shaverCost.toFixed(3) : '—';
+                const savings = i.shaverSavings ? `<span class="cafe-shaver-save">Shaver saves $${i.shaverSavings.toFixed(3)}/serving</span>` : '';
+                const statusBadge = i.status === 'known'
+                  ? '<span class="cafe-status-badge known">Priced</span>'
+                  : '<span class="cafe-status-badge needs">Needs Quote</span>';
+                const rowClass = i.status === 'needsPrice' ? 'cafe-ing-row needs' : 'cafe-ing-row';
+                const flagNote = i.note ? `<div class="cafe-ing-note"><i class="fa-solid fa-circle-info"></i> ${i.note}</div>` : '';
+                return `<tr class="${rowClass}">
+                  <td>${i.item}${flagNote}</td>
+                  <td class="cafe-ing-freq">${i.frequency}</td>
+                  <td class="cafe-ing-cost">${pfgDisplay}</td>
+                  <td class="cafe-ing-cost">${shaverDisplay}${savings}</td>
+                  <td>${statusBadge}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }).join('')}
+    <div class="cafe-ing-footnote"><i class="fa-solid fa-info-circle"></i> Estimated costs based on typical institutional food service pricing. All items marked "Needs Quote" should be confirmed with PFG and Shaver before ordering.</div>`;
+}
+
+function renderCafeRotation() {
+  const el = document.getElementById('cafe-rotation-container');
+  if (!el) return;
+
+  // High-cost keywords to highlight
+  const flagItems = ['chicken tender','tenders','fish','wings','bacon','pork chop','salad bar','fresh fruit','fruit','cobbler','pudding'];
+
+  function flagMeal(text) {
+    const lower = text.toLowerCase();
+    const isFlagged = flagItems.some(f => lower.includes(f));
+    return isFlagged ? `<span class="cafe-rot-flagged">${text}</span>` : text;
+  }
+
+  el.innerHTML = CAFE_DATA.rotation.map(wk => `
+    <div class="cafe-rot-week">
+      <div class="cafe-rot-week-title">Week ${wk.week}</div>
+      <div class="cafe-rot-scroll">
+        <table class="cafe-rot-table">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th><i class="fa-solid fa-sun" style="color:#f59e0b"></i> Breakfast</th>
+              <th><i class="fa-solid fa-cloud-sun" style="color:#3b82f6"></i> Lunch</th>
+              <th><i class="fa-solid fa-moon" style="color:#6366f1"></i> Dinner</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${wk.days.map(d => `<tr>
+              <td class="cafe-rot-day">${d.day}</td>
+              <td class="cafe-rot-meal">${flagMeal(d.bfast)}</td>
+              <td class="cafe-rot-meal">${flagMeal(d.lunch)}</td>
+              <td class="cafe-rot-meal">${flagMeal(d.dinner)}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="cafe-rot-legend">
+      <span class="cafe-rot-leg-item"><span class="cafe-rot-flagged" style="display:inline">Example</span> = High-cost item (protein/produce/daily salad bar)</span>
+    </div>`;
+}
+
+function renderCafeAnalysis() {
+  renderCafeStats();
+  renderCafeFinancials();
+  renderCafeOpportunities();
+  renderCafeIngredients();
+  renderCafeRotation();
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -1699,6 +2098,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initBidTracker();
   renderMenuRotation();
+  renderMenuOrderList();
+  renderCafeAnalysis();
   initScrollSpy();
   initDropdowns();
   initCatalog();

@@ -33,7 +33,7 @@
     <div class="nav-section-label">Overview</div>
     <a href="#overview" class="nav-item active"><i class="fa-solid fa-chart-line"></i>Overview</a>
     <div class="nav-section-label">Vendor Comparison</div>
-    <a href="#switch-to-shaver" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i>Switch to Shaver<span class="nav-badge red">22</span></a>
+    <a href="#switch-to-shaver" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i>Switch to Shaver<span class="nav-badge red">23</span></a>
     <a href="#keep-with-pfg" class="nav-item"><i class="fa-solid fa-shield-check"></i>Keep with PFG<span class="nav-badge green">6</span></a>
     <a href="#monthly-savings" class="nav-item"><i class="fa-solid fa-piggy-bank"></i>Monthly Savings<span class="nav-badge amber">$1K+</span></a>
     <div class="nav-section-label">Menu Strategy</div>
@@ -42,6 +42,7 @@
     <a href="#menu-ideas" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas</a>
     <a href="#cost-calculator" class="nav-item" data-tab="calculator"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
     <a href="#shaver-order-list" class="nav-item"><i class="fa-solid fa-clipboard-check"></i>Shaver Order List<span class="nav-badge green">32</span></a>
+    <a href="#menu-order-list" class="nav-item"><i class="fa-solid fa-cart-shopping"></i>Menu Order List<span class="nav-badge blue">29</span></a>
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <div class="nav-section-label">Reference</div>
     <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
@@ -56,6 +57,12 @@
     <a href="#report-cogs"      class="nav-item" data-tab="report"><i class="fa-solid fa-boxes-stacked"></i>COGS</a>
     <a href="#report-net"       class="nav-item" data-tab="report"><i class="fa-solid fa-chart-line"></i>Net Margins</a>
     <a href="#report-payroll"   class="nav-item" data-tab="report"><i class="fa-solid fa-users"></i>Payroll &amp; Net</a>
+    <div class="nav-section-label" data-tab="cafe">Café Analysis</div>
+    <a href="#cafe-overview" class="nav-item" data-tab="cafe"><i class="fa-solid fa-chart-pie"></i>Overview<span class="nav-badge red">80%</span></a>
+    <a href="#cafe-financials" class="nav-item" data-tab="cafe"><i class="fa-solid fa-chart-line"></i>Food Cost Trend</a>
+    <a href="#cafe-opportunities" class="nav-item" data-tab="cafe"><i class="fa-solid fa-arrow-trend-down"></i>Cost Reduction<span class="nav-badge green">6</span></a>
+    <a href="#cafe-ingredients" class="nav-item" data-tab="cafe"><i class="fa-solid fa-list-check"></i>Ingredient Costs</a>
+    <a href="#cafe-rotation" class="nav-item" data-tab="cafe"><i class="fa-solid fa-calendar-week"></i>4-Week Menu</a>
     <div class="nav-section-label" data-tab="bids">Bid Tracker</div>
     <a href="#bids-open"     class="nav-item" data-tab="bids"><i class="fa-solid fa-exclamation-circle"></i>Verify Now<span class="nav-badge amber">1</span></a>
     <a href="#bids-upcoming" class="nav-item" data-tab="bids"><i class="fa-solid fa-calendar-days"></i>Upcoming<span class="nav-badge blue">2</span></a>
@@ -117,6 +124,9 @@
     </button>
     <button class="tab-btn" data-tab="report" onclick="switchTab('report')">
       <i class="fa-solid fa-file-invoice-dollar"></i>Weekly Report
+    </button>
+    <button class="tab-btn" data-tab="cafe" onclick="switchTab('cafe')">
+      <i class="fa-solid fa-mug-hot"></i>Café Analysis
     </button>
   </div>
 
@@ -648,6 +658,22 @@
         </table>
       </div>
     </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       MENU ORDER LIST
+  ══════════════════════════════════════ -->
+  <section class="section analysis-section" style="display:none" id="menu-order-list">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon blue"><i class="fa-solid fa-cart-shopping"></i></div>
+        <div>
+          <div class="section-title">Menu Order List</div>
+          <div class="section-subtitle">4-week cycle · 300 inmates · quantities + vendor assignments from rotation data</div>
+        </div>
+      </div>
+    </div>
+    <div id="mol-container"></div>
   </section>
 
   <!-- ══════════════════════════════════════
@@ -1405,7 +1431,7 @@
       <div class="bd-inmate-bar">
         <i class="fa-solid fa-users" style="color:var(--amber)"></i>
         <span>Annual savings calculated for</span>
-        <input type="number" id="bdInmateInput" value="300" min="1" max="9999" class="bd-inmate-input">
+        <input type="number" id="bdInmateInput" value="1400" min="1" max="9999" class="bd-inmate-input">
         <span>inmates</span>
         <span class="bd-inmate-hint">&nbsp;&mdash; adjust to match your facility population</span>
       </div>
@@ -1592,6 +1618,80 @@
     </div>
 
   </div><!-- /bid-tracker-wrap -->
+
+  <!-- ══════════════════════════════════════
+       CAFÉ ANALYSIS
+  ══════════════════════════════════════ -->
+
+  <!-- Café Overview -->
+  <section class="section cafe-section" style="display:none" id="cafe-overview">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#c2410c,#ea580c)"><i class="fa-solid fa-mug-hot"></i></div>
+        <div>
+          <div class="section-title">Café Analysis</div>
+          <div class="section-subtitle">Birmingham (240/day) · Bessemer (150/day) · $3.03/meal rate · Jan–Apr 2026</div>
+        </div>
+      </div>
+    </div>
+    <div id="cafe-stats-container"></div>
+  </section>
+
+  <!-- Café Food Cost Trend -->
+  <section class="section cafe-section" style="display:none" id="cafe-financials">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)"><i class="fa-solid fa-chart-line"></i></div>
+        <div>
+          <div class="section-title">Food Cost % Trend</div>
+          <div class="section-subtitle">14 weeks of actuals from Weekly Financial Report · Jan 5 – Apr 12, 2026</div>
+        </div>
+      </div>
+    </div>
+    <div id="cafe-financials-container"></div>
+  </section>
+
+  <!-- Café Cost Reduction Opportunities -->
+  <section class="section cafe-section" style="display:none" id="cafe-opportunities">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#166534,#16a34a)"><i class="fa-solid fa-arrow-trend-down"></i></div>
+        <div>
+          <div class="section-title">Cost Reduction Opportunities</div>
+          <div class="section-subtitle">Ranked by estimated annual impact — combined Birmingham + Bessemer</div>
+        </div>
+      </div>
+    </div>
+    <div id="cafe-opportunities-container"></div>
+  </section>
+
+  <!-- Café Ingredient Cost Analysis -->
+  <section class="section cafe-section" style="display:none" id="cafe-ingredients">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)"><i class="fa-solid fa-list-check"></i></div>
+        <div>
+          <div class="section-title">Ingredient Cost Analysis</div>
+          <div class="section-subtitle">Per-serving costs mapped to PFG &amp; Shaver pricing — items needing quotes flagged</div>
+        </div>
+      </div>
+    </div>
+    <div id="cafe-ingredients-container"></div>
+  </section>
+
+  <!-- Café 4-Week Rotation -->
+  <section class="section cafe-section" style="display:none" id="cafe-rotation">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#b45309,#d97706)"><i class="fa-solid fa-calendar-week"></i></div>
+        <div>
+          <div class="section-title">4-Week Café Menu Rotation</div>
+          <div class="section-subtitle">Birmingham &amp; Bessemer · high-cost items highlighted</div>
+        </div>
+      </div>
+    </div>
+    <div id="cafe-rotation-container"></div>
+  </section>
 
   </div><!-- /content -->
 </div><!-- /main -->

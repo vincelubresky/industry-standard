@@ -16,7 +16,7 @@ const DATA = {
 
   stats: [
     { label: "Est. Monthly Savings", value: "$1,146+", icon: "fa-piggy-bank", color: "success", note: "By switching key items to Shaver" },
-    { label: "Items: Switch to Shaver", value: "22", icon: "fa-arrows-rotate", color: "danger", note: "Shaver is cheaper" },
+    { label: "Items: Switch to Shaver", value: "23", icon: "fa-arrows-rotate", color: "danger", note: "Shaver is cheaper" },
     { label: "Items: Keep with PFG", value: "6", icon: "fa-shield-check", color: "accent", note: "PFG wins on price" },
     { label: "New Items Available", value: "18+", icon: "fa-circle-plus", color: "warning", note: "From Shaver catalog" }
   ],
@@ -43,7 +43,8 @@ const DATA = {
     { item: "Margarine Solid",                pfgPrice: 38.73,  pfgUnit: "30/1 LB",    shaverPrice: 38.46, shaverUnit: "30/1 LB",     savings: 0.27,  priority: "low"  },
     { item: "Peas & Carrots Frozen",          pfgPrice: 22.35,  pfgUnit: "20 LB",      shaverPrice: 29.77, shaverUnit: "30 LB",       savings: null,  priority: "med", note: "$0.13/lb cheaper at Shaver" },
     { item: "Fry Oil Clear",                  pfgPrice: 35.70,  pfgUnit: "35 LB",      shaverPrice: 35.07, shaverUnit: "35 LB",       savings: 0.63,  priority: "low"  },
-    { item: "Gravy Mix (Country)",            pfgPrice: 29.92,  pfgUnit: "6/16 OZ",    shaverPrice: 37.82, shaverUnit: "6/3 LB",      savings: null,  priority: "med", note: "$2.89/lb cheaper at Shaver" }
+    { item: "Gravy Mix (Country)",            pfgPrice: 29.92,  pfgUnit: "6/16 OZ",    shaverPrice: 37.82, shaverUnit: "6/3 LB",      savings: null,  priority: "med", note: "$2.89/lb cheaper at Shaver" },
+    { item: "Okra Cut Breaded Frozen",        pfgPrice: 41.41,  pfgUnit: "12/2 LB",    shaverPrice: 26.77, shaverUnit: "20 LB",       savings: null,  priority: "high", note: "Saves $0.39/lb — PFG 24 LB/cs ($1.725/lb) vs Shaver 20 LB/cs ($1.338/lb)" }
   ],
 
   keepWithPFG: [
@@ -1024,8 +1025,33 @@ const PROTEIN_VENDORS = [
                calcDetail: "$86.29 case ÷ 40 LB = $2.16/lb · 3 oz serving = $0.405 → $0.41" }
       },
       bigDaddy: {
+        label: "Big Daddy", pack: "—", casePrice: null, perLb: null, perServing: null,
+        note: "No patty equivalent — see Chicken Nuggets row", status: "quote", priceVerified: false,
+        ref: null
+      }
+    }
+  },
+  {
+    name: "Chicken Nuggets (3 oz)",
+    icon: "fa-circle",
+    usedIn: "Dinner — Chicken Nugget Plate",
+    servingSize: "3 oz",
+    vendors: {
+      pfg: {
+        label: "PFG", pack: "—", casePrice: null, perLb: null, perServing: null,
+        note: "Request quote", status: "quote", priceVerified: false,
+        ref: null
+      },
+      shaver: {
+        label: "Shaver", pack: "20 LB", casePrice: 39.15, perLb: 1.96, perServing: 0.37,
+        note: "Chicken Nugget BRD RTC .7oz · ISP", status: "available", priceVerified: true,
+        ref: { sourceDoc: "Shaver ISP Price List", sourceDate: "March 1–31, 2026",
+               itemDesc: "Chicken Nugget BRD RTC .7oz  |  20 LB case",
+               calcDetail: "$39.15 case ÷ 20 LB = $1.96/lb · 3 oz serving = $0.368 → $0.37" }
+      },
+      bigDaddy: {
         label: "Big Daddy", pack: "6/6 LB", casePrice: 53.46, perLb: 1.49, perServing: 0.28,
-        note: "PP90377 Seasoned Breast Nuggets · 3oz · S.O. BA24865", status: "best", priceVerified: true,
+        note: "PP90377 Seasoned Breast Nuggets · S.O. BA24865", status: "best", priceVerified: true,
         ref: { sourceDoc: "Big Daddy Foods S.O. BA24865", sourceDate: "April 9, 2026",
                itemDesc: "PP90377 — Seasoned Breast Nuggets  |  6/6 LB pack · 36 LB/case · 40 cases ordered",
                calcDetail: "$53.46 case ÷ 36 LB = $1.485/lb · 3 oz serving = $0.278 → $0.28",
@@ -1363,5 +1389,292 @@ const MEAL_ALTS = {
     { main: "Chicken Nugget Plate",     protein: "Chicken (BD)",   cost: "$0.55", vendor: "BD" },
     { main: "Burger Patty Sandwich",    protein: "Burger Patty",   cost: "$0.62", vendor: "BD" },
     { main: "PB&J + Boiled Egg",        protein: "PB & Egg",       cost: "$0.62", vendor: "" }
+  ]
+};
+
+/* ============================================================
+   MENU ORDER LIST — 4-WEEK CYCLE · 300 INMATES
+   Pre-calculated quantities per vendor based on the MENU_ROTATION.
+   Serving sizes: proteins 2–3 oz, veg 4 oz, starches 1.5–2.5 oz dry.
+   Vegetable appearances: P&C 21x · Green Beans 18x · Mixed Veg 17x
+   ============================================================ */
+const MENU_ORDER_LIST = {
+  basis: { inmates: 300, days: 28, perInmatePerDay: 2.76, grandTotal: 23222.35 },
+  vendors: [
+    {
+      key: "shaver",
+      label: "Shaver Foods",
+      subtitle: "ISP Price List · Mar 1–31, 2026",
+      total: 18934.17,
+      categories: [
+        {
+          name: "Proteins",
+          icon: "fa-drumstick-bite",
+          items: [
+            { name: "Sausage Bkfst Patty FC 1oz",  pack: "40 LB",    qty: 15,  unit: "cases", casePrice: 82.54,  total: 1237.10, basis: "16 bfast days · 4,800 servings" },
+            { name: "Sausage Hot Link FC",          pack: "6/5 LB",  qty: 24,  unit: "cases", casePrice: 61.08,  total: 1465.92, basis: "19 lunch days · 5,700 servings" },
+            { name: "Bologna Logs Chik",            pack: "3/8 LB",  qty: 15,  unit: "cases", casePrice: 39.02,  total: 585.30,  basis: "9 lunch days · 2,700 servings" },
+            { name: "Salami Logs Chik",             pack: "2/10 LB", qty: 8,   unit: "cases", casePrice: 31.82,  total: 254.56,  basis: "4 dinner days · 1,200 servings" },
+            { name: "Chicken Patty BRD FC 3oz",     pack: "40 LB",   qty: 12,  unit: "cases", casePrice: 86.29,  total: 1035.48, basis: "8 dinner days · 2,400 servings" }
+          ]
+        },
+        {
+          name: "Starches & Dry Goods",
+          icon: "fa-wheat-awn",
+          items: [
+            { name: "Grits Quick White",            pack: "50 LB",   qty: 7,   unit: "bags",  casePrice: 28.00,  total: 196.00,  basis: "12 bfast days · 338 lbs dry" },
+            { name: "Oats Quick",                   pack: "50 LB",   qty: 5,   unit: "bags",  casePrice: 28.33,  total: 141.65,  basis: "8 bfast days · 225 lbs dry" },
+            { name: "Bread White Slice",            pack: "12/28oz", qty: 128, unit: "cases", casePrice: 29.06,  total: 3719.68, basis: "Bfast 2 sl + dinner 2 sl · 33,600 slices" },
+            { name: "Cornbread Mix Southern",       pack: "50 LB",   qty: 32,  unit: "bags",  casePrice: 39.02,  total: 1248.64, basis: "Lunch ×2 + dinner ×1 every day · 25,200 pcs" },
+            { name: "Pasta Elbow Mac",              pack: "2/10 LB", qty: 12,  unit: "cases", casePrice: 13.10,  total: 157.20,  basis: "5 Mac & Cheese lunch days" },
+            { name: "Pasta Rotini",                 pack: "2/10 LB", qty: 19,  unit: "cases", casePrice: 13.73,  total: 260.87,  basis: "8 Pasta lunch days" },
+            { name: "Potato Dehy Flakes",           pack: "40 LB",   qty: 5,   unit: "bags",  casePrice: 51.62,  total: 258.10,  basis: "5 Mashed Potato days" },
+            { name: "Rice White",                   pack: "50 LB",   qty: 8,   unit: "bags",  casePrice: 25.06,  total: 200.48,  basis: "10 Beans & Rice days" },
+            { name: "Great Northern Beans Dry",     pack: "50 LB",   qty: 5,   unit: "bags",  casePrice: 39.00,  total: 195.00,  basis: "6 Northern Beans & Rice days" }
+          ]
+        },
+        {
+          name: "Vegetables (Frozen)",
+          icon: "fa-leaf",
+          items: [
+            { name: "Peas and Carrots Frozen",      pack: "30 LB",   qty: 53,  unit: "bags",  casePrice: 29.77,  total: 1577.81, basis: "21 meal-appearances · 1,575 lbs" },
+            { name: "Beans Green Cut Frozen",       pack: "30 LB",   qty: 45,  unit: "bags",  casePrice: 33.06,  total: 1487.70, basis: "18 meal-appearances · 1,350 lbs" },
+            { name: "Mixed Vegetables Blend",       pack: "30 LB",   qty: 43,  unit: "bags",  casePrice: 26.75,  total: 1150.25, basis: "17 meal-appearances · 1,275 lbs" }
+          ]
+        },
+        {
+          name: "Pantry & Condiments",
+          icon: "fa-jar",
+          items: [
+            { name: "Cake Mix Yellow",              pack: "50 LB",   qty: 42,  unit: "bags",  casePrice: 40.42,  total: 1697.64, basis: "Every lunch + dinner · 56 appearances" },
+            { name: "Cheese Sauce",                 pack: "6/#10",   qty: 8,   unit: "cases", casePrice: 48.12,  total: 384.96,  basis: "5 Mac & Cheese days" },
+            { name: "Tomato Sauce",                 pack: "6/#10",   qty: 6,   unit: "cases", casePrice: 28.89,  total: 173.34,  basis: "4 Pasta w/ Meat Sauce days" },
+            { name: "Jelly Assorted LC",            pack: "200 ea",  qty: 42,  unit: "cases", casePrice: 9.53,   total: 400.26,  basis: "Every breakfast · 8,400 packets" },
+            { name: "Drink Mix",                    pack: "1000/1gm",qty: 9,   unit: "cases", casePrice: 20.63,  total: 185.67,  basis: "Every breakfast · 8,400 packets" },
+            { name: "Margarine Solid",              pack: "30/1 LB", qty: 4,   unit: "cases", casePrice: 38.46,  total: 153.84,  basis: "Baking + service — est." },
+            { name: "Fry Oil Clear",                pack: "35 LB",   qty: 10,  unit: "cases", casePrice: 35.07,  total: 350.70,  basis: "4-week cooking supply — est." },
+            { name: "Gravy Mix Country",            pack: "6/3 LB",  qty: 11,  unit: "cases", casePrice: 37.82,  total: 416.02,  basis: "5 Mashed Potatoes & Gravy days" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "bigDaddy",
+      label: "Big Daddy Foods",
+      subtitle: "S.O. BA24865 · Apr 9, 2026",
+      total: 1080.00,
+      categories: [
+        {
+          name: "Proteins",
+          icon: "fa-drumstick-bite",
+          items: [
+            { name: "Burger Patty — FG-BC/TVP-20-3.2", pack: "20 LB / 100 ct", qty: 24, unit: "cases", casePrice: 45.00, total: 1080.00, basis: "8 dinner days · 2,400 patties" }
+          ]
+        }
+      ]
+    },
+    {
+      key: "pfg",
+      label: "PFG (Keep)",
+      subtitle: "Invoice #6776963 · Apr 7, 2026",
+      total: 3208.18,
+      categories: [
+        {
+          name: "Proteins",
+          icon: "fa-drumstick-bite",
+          items: [
+            { name: "Turkey Deli",       pack: "2/10 LB", qty: 23, unit: "cases", casePrice: 52.00, total: 1196.00, basis: "8 dinner days · 450 lbs", caveat: "Estimated price — verify current contract rate" },
+            { name: "Shell Eggs Grade A",pack: "15 doz",  qty: 67, unit: "cases", casePrice: 28.50, total: 1909.50, basis: "20 bfast days · 12,000 eggs",  caveat: "Market price — verify weekly before ordering" }
+          ]
+        },
+        {
+          name: "Dry Goods",
+          icon: "fa-bag-shopping",
+          items: [
+            { name: "Pinto Beans Dry",   pack: "50 LB",   qty: 4,  unit: "bags",  casePrice: 25.67, total: 102.68,  basis: "5 Pinto Beans days — PFG $3.48/bag cheaper than Shaver" }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// ============================================================
+//  CAFÉ ANALYSIS DATA
+// ============================================================
+const CAFE_DATA = {
+  headcount: { birmingham: 240, bessemer: 150 },
+  ratePerMeal: 3.03,
+  revWeekly:   { birmingham: 5090.40, bessemer: 3181.50 },
+  targetFoodCostPct: 0.30,
+
+  // 14 weeks of actual COGS from Weekly - 2026.xlsx
+  weeklyFinancials: [
+    { week: "Jan 5–11",      birmCogs: 3823.76, birmPct: 0.751, besCogs: 1602.15, besPct: 0.504 },
+    { week: "Jan 12–18",     birmCogs: 4123.69, birmPct: 0.810, besCogs: 1250.00, besPct: 0.393 },
+    { week: "Jan 19–25",     birmCogs: 4080.81, birmPct: 0.802, besCogs: 2858.77, besPct: 0.899 },
+    { week: "Jan 26–Feb 1",  birmCogs: 3407.27, birmPct: 0.669, besCogs: 1121.81, besPct: 0.353 },
+    { week: "Feb 2–8",       birmCogs: 3693.02, birmPct: 0.725, besCogs: 1930.28, besPct: 0.607 },
+    { week: "Feb 9–15",      birmCogs: 4388.84, birmPct: 0.862, besCogs: 1871.05, besPct: 0.588 },
+    { week: "Feb 16–22",     birmCogs: 3925.87, birmPct: 0.771, besCogs: 1555.88, besPct: 0.489 },
+    { week: "Feb 23–Mar 1",  birmCogs: 3959.31, birmPct: 0.778, besCogs: 2041.99, besPct: 0.642 },
+    { week: "Mar 2–8",       birmCogs: 4756.79, birmPct: 0.934, besCogs: 2206.71, besPct: 0.694 },
+    { week: "Mar 9–15",      birmCogs: 4055.17, birmPct: 0.797, besCogs: 1559.41, besPct: 0.490 },
+    { week: "Mar 16–22",     birmCogs: 4682.47, birmPct: 0.920, besCogs: 1924.02, besPct: 0.605 },
+    { week: "Mar 23–29",     birmCogs: 4470.41, birmPct: 0.878, besCogs: 1965.66, besPct: 0.618 },
+    { week: "Mar 30–Apr 5",  birmCogs: 3940.89, birmPct: 0.774, besCogs: 2229.27, besPct: 0.701 },
+    { week: "Apr 6–12",      birmCogs: 4298.01, birmPct: 0.844, besCogs: 2219.01, besPct: 0.697 }
+  ],
+
+  // Per-serving ingredient cost analysis
+  ingredients: [
+    { item: "Shell Eggs (3 eggs/serving)",    category: "Protein",   pfgCost: 0.22,  shaverCost: null,  frequency: "Daily — all 7 days",               status: "known",      note: "PFG $26.77/360 eggs" },
+    { item: "Bacon (2–3 strips)",             category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Mon / Wed / Fri breakfast",         status: "needsPrice", estimated: 0.40, note: "High-cost — needs contracted price ASAP" },
+    { item: "Sausage Patty",                  category: "Protein",   pfgCost: 0.22,  shaverCost: null,  frequency: "Tue / Thu / Sat / Sun breakfast",   status: "known" },
+    { item: "Pork Sausage Links",             category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Tue (Wk 2–3) breakfast",            status: "needsPrice", estimated: 0.28 },
+    { item: "Grits",                          category: "Starch",    pfgCost: 0.070, shaverCost: 0.056, frequency: "Daily breakfast",                   status: "known",      shaverSavings: 0.014 },
+    { item: "Oatmeal",                        category: "Starch",    pfgCost: 0.080, shaverCost: 0.057, frequency: "Daily breakfast",                   status: "known",      shaverSavings: 0.023 },
+    { item: "Biscuit",                        category: "Starch",    pfgCost: 0.23,  shaverCost: null,  frequency: "Mon / Sat / Sun + others",          status: "known" },
+    { item: "Pancakes (2) w/ Syrup",          category: "Starch",    pfgCost: 0.26,  shaverCost: null,  frequency: "Tue (Wk 1, 2, 3) breakfast",       status: "known" },
+    { item: "Waffles w/ Syrup",               category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Fri (Wk 1, 2, 3) breakfast",       status: "needsPrice", estimated: 0.26 },
+    { item: "French Toast w/ Syrup",          category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Tue (Wk 2–3) / Mon (Wk 1)",        status: "needsPrice", estimated: 0.25 },
+    { item: "Breakfast Potatoes",             category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Mon / Sat / Sun / Thu breakfast",   status: "needsPrice", estimated: 0.20, note: "Hashbrowns in PFG catalog $23.24/2×10# — verify per-serving" },
+    { item: "Cinnamon Rolls w/ Icing",        category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "Thu (Wk 4) breakfast",              status: "needsPrice", estimated: 0.30 },
+    { item: "Fresh Fruit (orange + banana)",  category: "Produce",   pfgCost: null,  shaverCost: null,  frequency: "Daily — every breakfast",           status: "needsPrice", estimated: 0.55, note: "LARGEST single cost driver. Get produce contract immediately." },
+    { item: "Loaf Bread",                     category: "Starch",    pfgCost: 0.07,  shaverCost: null,  frequency: "Daily breakfast",                   status: "known" },
+    { item: "Jelly Packet",                   category: "Condiment", pfgCost: 0.076, shaverCost: 0.048, frequency: "Breakfast (biscuit days)",           status: "known",      shaverSavings: 0.028 },
+    { item: "Chicken Tenders (4 oz)",         category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Mon lunch — Wk 1, 2, 3",           status: "needsPrice", estimated: 1.25, note: "Most expensive item on cafe menu." },
+    { item: "Fried / Baked Fish (4 oz)",      category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Every Friday",                      status: "needsPrice", estimated: 0.85 },
+    { item: "Burger Patty (3.2 oz)",          category: "Protein",   pfgCost: 0.45,  shaverCost: 0.45,  frequency: "~2 days/4-wk",                      status: "known",      note: "Big Daddy FG-BC/TVP-20-3.2 at $0.45/patty" },
+    { item: "Chicken Patty BRD 3oz",          category: "Protein",   pfgCost: 0.43,  shaverCost: 0.36,  frequency: "~2 days/4-wk dinner",               status: "known",      shaverSavings: 0.072 },
+    { item: "Hot Dog",                        category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "~3 days/4-wk",                      status: "needsPrice", estimated: 0.18 },
+    { item: "Pork Chop Sandwich",             category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Tue (Wk 2, 4) lunch",              status: "needsPrice", estimated: 0.70 },
+    { item: "Fried Chicken (pieces)",         category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Multiple days/4-wk",                status: "needsPrice", estimated: 0.65 },
+    { item: "French Fries (4 oz portion)",    category: "Side",      pfgCost: null,  shaverCost: null,  frequency: "Daily lunch — most days",           status: "needsPrice", estimated: 0.28, note: "High frequency. Needs price + portion standard urgently." },
+    { item: "Hushpuppies",                    category: "Side",      pfgCost: null,  shaverCost: null,  frequency: "Wed lunch (fish days)",             status: "needsPrice", estimated: 0.12 },
+    { item: "Dinner Roll",                    category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Multiple days/week",                status: "needsPrice", estimated: 0.10 },
+    { item: "Salad Bar — Full Daily",         category: "Produce",   pfgCost: null,  shaverCost: null,  frequency: "Every meal — 3x/day",              status: "needsPrice", estimated: 0.60, note: "Running 3x/day = triple the produce turnover. Lunch-only recommended." },
+    { item: "Cheese Sauce",                   category: "Condiment", pfgCost: 0.054, shaverCost: 0.045, frequency: "Multiple days",                     status: "known",      shaverSavings: 0.009 },
+    { item: "Mashed Potatoes",                category: "Side",      pfgCost: 0.163, shaverCost: null,  frequency: "~3 days/week",                      status: "known" },
+    { item: "Yellow Cake / Dessert",          category: "Bakery",    pfgCost: 0.08,  shaverCost: 0.065, frequency: "Daily dessert",                     status: "known",      shaverSavings: 0.015 },
+    { item: "Cobbler (Peach / Apple)",        category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "~2 days/wk dessert",               status: "needsPrice", estimated: 0.18 },
+    { item: "Banana Pudding",                 category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "~1 day/wk dessert",                status: "needsPrice", estimated: 0.15 },
+    { item: "Fresh Baked Cookies",            category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "~3 days/wk dessert",               status: "needsPrice", estimated: 0.12 }
+  ],
+
+  // Priority cost-reduction opportunities ranked by estimated annual impact
+  opportunities: [
+    {
+      rank: 1,
+      title: "Get a Produce Contract for Fresh Fruit",
+      detail: "Fresh fruit (orange + banana) is served EVERY breakfast to 390 people. At ~$0.55/person/day that's $78,000/year just in fruit. A produce vendor contract could cut this to $0.25–0.30/person/day.",
+      weeklyLow: 676, weeklyHigh: 910,
+      annualLow: 35000, annualHigh: 47000,
+      priority: "critical",
+      icon: "fa-apple-whole",
+      action: "Get quotes from Shaver produce section, Sysco, or local produce distributor. Standing weekly order on whole oranges (3/4 bushel) and bananas (40 lb case)."
+    },
+    {
+      rank: 2,
+      title: "Replace Chicken Tenders → Shaver Chicken Patty",
+      detail: "Tenders cost ~$1.25/serving vs Shaver BRD Chicken Patty at $0.36. Served Monday lunch in 3 of 4 weeks to 390 people = ~1,170 servings/cycle. Switching saves ~$1,040/month.",
+      weeklyLow: 260, weeklyHigh: 300,
+      annualLow: 13500, annualHigh: 15600,
+      priority: "high",
+      icon: "fa-drumstick-bite",
+      action: "Use Shaver 'Chicken Patty BRD FC 3oz' (40 LB, $86.29/cs) for Mon lunch. Serve on dinner roll as chicken sandwich to maintain appeal."
+    },
+    {
+      rank: 3,
+      title: "Limit Salad Bar to Lunch Only",
+      detail: "Full salad bar (chef, garden, pasta, chicken salad, Jell-O) runs at all 3 meals every day. That's 3× the produce turnover and waste. Restricting to lunch only saves ~$0.40/person/day at breakfast and dinner.",
+      weeklyLow: 200, weeklyHigh: 400,
+      annualLow: 10400, annualHigh: 20800,
+      priority: "high",
+      icon: "fa-leaf",
+      action: "Remove salad bar from breakfast and dinner. Offer a pre-portioned 4 oz garden salad cup at dinner instead."
+    },
+    {
+      rank: 4,
+      title: "Standardize French Fry Portions",
+      detail: "Fries appear at nearly every lunch. Without a portion standard, over-serving waste compounds daily. A #8 scoop (4 oz) standard can reduce over-serving by 20–25% with zero menu change.",
+      weeklyLow: 55, weeklyHigh: 100,
+      annualLow: 2860, annualHigh: 5200,
+      priority: "med",
+      icon: "fa-bowl-food",
+      action: "Establish 4 oz as the standard portion. Confirm fry case cost, divide by 4 oz servings per case = exact per-serving cost for budget tracking."
+    },
+    {
+      rank: 5,
+      title: "Switch Overlapping Items to Shaver",
+      detail: "Cafe uses the same grits, oatmeal, cake mixes, jelly, and cheese sauce as population — all available cheaper at Shaver. Apply the existing population switch list to cafe purchasing.",
+      weeklyLow: 70, weeklyHigh: 110,
+      annualLow: 3640, annualHigh: 5720,
+      priority: "med",
+      icon: "fa-arrows-rotate",
+      action: "Add cafe to the Shaver ISP order. Grits alone: $0.014/serving × 390 × 7 days = $38/week savings."
+    },
+    {
+      rank: 6,
+      title: "Reduce Breakfast Egg Variety (3 styles → 1/day)",
+      detail: "Scrambled, fried, AND boiled eggs are all served simultaneously every morning. This triples prep time and increases waste. Rotating one style per day reduces breakage and labor.",
+      weeklyLow: 40, weeklyHigh: 70,
+      annualLow: 2080, annualHigh: 3640,
+      priority: "low",
+      icon: "fa-egg",
+      action: "Mon/Wed/Fri: scrambled. Tue/Thu: fried. Sat/Sun: boiled. One prep pan per morning instead of three."
+    }
+  ],
+
+  // 4-week rotation (condensed — key proteins + items per meal)
+  rotation: [
+    {
+      week: 1,
+      days: [
+        { day:"Mon", bfast:"Eggs · Bacon · Biscuit w/ Jelly · Grits · Oatmeal · Fruit",           lunch:"Chicken Tenders · French Fries · Salad Bar · Strawberry Cake",        dinner:"Baked Potato Bar · Grilled Chicken · Broccoli · Salad Bar · Cake" },
+        { day:"Tue", bfast:"Eggs · Sausage Patty · French Toast · Grits · Oatmeal · Fruit",       lunch:"Grilled Burger · French Fries · Cheese Sauce · Salad Bar · Cookies",   dinner:"Fried Chicken · Mashed Potatoes · Green Beans · Gravy · Salad Bar · Cake" },
+        { day:"Wed", bfast:"Eggs · Bacon · Pancakes w/ Syrup · Grits · Oatmeal · Fruit",          lunch:"Fried Wings · French Fries · Hushpuppies · Salad Bar · Peach Cobbler", dinner:"Baked Spaghetti · Butter Corn · Garlic Bread · Salad Bar · Cake" },
+        { day:"Thu", bfast:"Eggs · Sausage Patty · Sausage Gravy · Grits · Oatmeal · Fruit",      lunch:"Baked Potato Bar · Broccoli · Cheese/Bacon · Salad Bar · Banana Pudding", dinner:"Taco Salad · Ground Beef · Lettuce/Tomato/Cheese · Salad Bar · Cookies" },
+        { day:"Fri", bfast:"Eggs · Bacon · Waffles w/ Syrup · Grits · Oatmeal · Fruit",           lunch:"Fried Fish · Fries w/ Parmesan · Hushpuppies · Salad Bar · Choc Cake",  dinner:"Baked Fish · Mashed Potatoes · Sweet Peas · Dinner Roll · Salad Bar · Cake" },
+        { day:"Sat", bfast:"Eggs · Sausage Patty · Biscuit w/ Jelly · Grits · Oatmeal · Fruit",   lunch:"Grilled Hotdogs · French Fries · Salad Bar · Yellow Cake",             dinner:"Fried Chicken Sandwich · French Fries · Salad Bar · Cookies" },
+        { day:"Sun", bfast:"Eggs · Sausage Patty · Biscuit w/ Jelly · Grits · Oatmeal · Fruit",   lunch:"Chicken Alfredo · Broccoli · Dinner Roll · Salad Bar · Choc Cake",     dinner:"Baked Chicken w/ Gravy · Rice · Green Beans · Salad Bar · Cookies" }
+      ]
+    },
+    {
+      week: 2,
+      days: [
+        { day:"Mon", bfast:"Eggs · Bacon · Biscuit w/ Jelly · Grits · Oatmeal · Fruit",           lunch:"Chicken Tenders · French Fries · Salad Bar · Peach Cobbler",          dinner:"Baked Spaghetti · Butter Corn · Garlic Bread · Salad Bar · Choc Cake" },
+        { day:"Tue", bfast:"Eggs · Pork Sausage · Pancakes w/ Syrup · Grits · Oatmeal · Fruit",   lunch:"Pork Chop Sandwich · French Fries · Bell Pepper/Onion · Salad Bar",    dinner:"Fried Chicken · Green Beans · Pinto Beans · Salad Bar · Yellow Cake" },
+        { day:"Wed", bfast:"Eggs · Bacon · Sausage Gravy · Boiled Eggs · Grits · Oatmeal",        lunch:"Grilled Hamburger · French Fries · Cheese/Onion · Salad Bar · Straw Cake", dinner:"Taco Salad · Cheese · Lettuce/Tomato · Sour Kraut · Salad Bar · Cake" },
+        { day:"Thu", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Oatmeal · Fruit",            lunch:"Fried Chicken · Fries · Mashed Potatoes · Salad Bar · Choc Cake",      dinner:"Chicken Alfredo · Broccoli · Pasta · Salad Bar · Straw Cake" },
+        { day:"Fri", bfast:"Eggs · Bacon · Waffles w/ Syrup · Grits · Oatmeal · Fruit",           lunch:"Fried Fish · French Fries · Salad Bar · Banana Pudding",               dinner:"Fried Fish · Green Beans · Fries w/ Parm · Chili · Salad Bar · Cookies" },
+        { day:"Sat", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Oatmeal · Fruit",            lunch:"Taco Salad · Ground Beef · Salad Bar · Cookies",                       dinner:"Grilled Hotdog · Chili · Mac & Cheese · Sour Kraut · Salad Bar · White Cake" },
+        { day:"Sun", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Oatmeal · Fruit",            lunch:"Fried Chicken · Green Beans · Salad Bar · Apple Cobbler",              dinner:"BBQ Chicken · Mac & Cheese · Baked Beans · Salad Bar · Choc Cake" }
+      ]
+    },
+    {
+      week: 3,
+      days: [
+        { day:"Mon", bfast:"Eggs · Bacon · Biscuit w/ Jelly · Grits · Oatmeal · Fruit",           lunch:"Chicken Tenders · French Fries · Salad Bar · Peach Cobbler",          dinner:"Baked Potato · Broccoli · Grilled Chicken · Salad Bar · Choc Cake" },
+        { day:"Tue", bfast:"Eggs · Pork Sausage · French Toast w/ Syrup · Grits · Oatmeal · Fruit", lunch:"Chicken Philly · Fries · Bell Pepper/Onion/Cheese · Salad Bar",     dinner:"Taco Salad · Cheese Sauce · Sour Kraut · Chicken/Beef · Salad Bar · Apple Cobbler" },
+        { day:"Wed", bfast:"Eggs · Bacon · Sausage Gravy · Boiled Eggs · Grits · Oatmeal",        lunch:"Fried Chicken Patty · French Fries · Salad Bar · Straw Cake",          dinner:"Spaghetti w/ Meat Sauce · Butter Corn · Garlic Bread · Salad Bar · White Cake" },
+        { day:"Thu", bfast:"Eggs · Sausage Patty · Boiled Eggs · Grits · Oatmeal · Fruit",        lunch:"Grilled Hotdogs · Fries · Chili/Sour Kraut · Salad Bar · Choc Cake",   dinner:"Fried Chicken · Mashed Potatoes · Green Beans · Dinner Roll · Salad Bar · Yellow Cake" },
+        { day:"Fri", bfast:"Eggs · Bacon · Waffles w/ Syrup · Grits · Oatmeal · Fruit",           lunch:"Fried Fish · French Fries · Salad Bar · Banana Pudding",               dinner:"Grilled Hamburger · Fries · Lettuce/Tomato/Cheese · Salad Bar · Cookies" },
+        { day:"Sat", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Oatmeal · Fruit",            lunch:"Taco Salad · Ground Beef · Salad Bar · Cookies",                       dinner:"Chicken Patty · Fries · Green Beans · Salad Bar · Straw Cake" },
+        { day:"Sun", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Oatmeal · Fruit",            lunch:"Spaghetti · Butter Corn · Dinner Roll · Salad Bar · Apple Cobbler",    dinner:"Baked Chicken · Mashed Potatoes · Green Beans · Salad Bar · Choc Cake" }
+      ]
+    },
+    {
+      week: 4,
+      days: [
+        { day:"Mon", bfast:"Eggs · Sausage · Bacon · Biscuit · Grits · Breakfast Potatoes",       lunch:"Baked Potato Bar · Broccoli · Cheese/Bacon Bits · Fries · Salad Bar",  dinner:"Chicken Philly · Bell Pepper/Onion · French Fries · Hoagie Bun · Choc Cake" },
+        { day:"Tue", bfast:"Eggs · Waffles · Bacon · Grits · Breakfast Potatoes",                  lunch:"Pork Chop Sandwich · Fries · Lemon Pepper/BBQ · Salad Bar · Apple Cobbler", dinner:"Fried Chicken · Mashed Potatoes w/ Gravy · Carrots · Dinner Roll · White Cake" },
+        { day:"Wed", bfast:"Eggs · Sausage Patty · Pancakes · Grits · Breakfast Potatoes",         lunch:"Fried Chicken · French Fries · Salad Bar · Peach Cobbler",             dinner:"Chicken Tezz · Broccoli · Grilled Chicken w/ Bell Pepper/Onion · Garlic Bread · Straw Cake" },
+        { day:"Thu", bfast:"Eggs · Bacon · Cinnamon Rolls w/ Icing · Grits · Breakfast Potatoes", lunch:"Grilled Hotdog · Chili · Cheese Sauce · Sour Kraut · Salad Bar · Cookies", dinner:"Chicken Patty Sandwich · Fries · Green Beans · Cheese Sauce · Cinnamon Rolls" },
+        { day:"Fri", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Breakfast Potatoes",         lunch:"Fried Fish · French Fries · Salad Bar · Cookies",                      dinner:"Baked Fish · Mashed Potatoes · Green Beans · Cheese Sauce · Choc Cake" },
+        { day:"Sat", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Breakfast Potatoes",         lunch:"Grilled Burger · Fries w/ Parmesan · Salad Bar · Cookies",              dinner:"Taco Salad · Chicken/Beef · Green Beans · Sour Cream/Butter · Salad Bar · Cookies" },
+        { day:"Sun", bfast:"Eggs · Sausage Patty · Biscuit · Grits · Breakfast Potatoes",         lunch:"Baked Chicken · Butter Corn · Mashed Potatoes · Salad Bar · Yellow Cake", dinner:"Fried Chicken · Rice w/ Gravy · Green Beans · Salad Bar · Peach Cobbler" }
+      ]
+    }
   ]
 };
