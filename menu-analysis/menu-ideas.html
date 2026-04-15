@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry Standard — New Menu Ideas</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --navy:#0f172a;--navy2:#1e293b;--border:#e2e8f0;--bg:#f8fafc;--text:#0f172a;--muted:#64748b;
+  --red:#dc2626;--red-bg:#fef2f2;--red-border:#fecaca;
+  --amber:#d97706;--amber-bg:#fffbeb;--amber-border:#fde68a;
+  --purple:#7c3aed;--purple-bg:#f5f3ff;--purple-border:#ddd6fe;
+  --cyan:#0891b2;--cyan-bg:#ecfeff;--cyan-border:#a5f3fc;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+
+/* ── Print bar (screen only) ── */
+.print-bar{background:var(--navy);color:#fff;padding:9px 20px;display:flex;align-items:center;justify-content:space-between}
+.print-bar a{color:#94a3b8;text-decoration:none;font-size:12px}.print-bar a:hover{color:#fff}
+.btn-print{background:#0369a1;color:#fff;border:none;border-radius:5px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-print:hover{background:#0284c7}
+
+/* ── Doc header ── */
+.doc-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1e3a5f 100%);color:#fff;padding:22px 28px 18px}
+.doc-header h1{font-size:20px;font-weight:800}
+.doc-header p{color:#94a3b8;font-size:12px;margin-top:4px}
+.meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.meta-pill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:3px 12px;font-size:11px;color:#e2e8f0}
+
+/* ── Body ── */
+.doc-body{padding:20px 24px 40px;max-width:1100px}
+
+/* ── Category section ── */
+.cat-section{margin-bottom:28px}
+.cat-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px 8px 0 0;border:1px solid var(--border);border-bottom:none}
+.cat-hdr.red{background:var(--red-bg);border-color:var(--red-border)}
+.cat-hdr.amber{background:var(--amber-bg);border-color:var(--amber-border)}
+.cat-hdr.purple{background:var(--purple-bg);border-color:var(--purple-border)}
+.cat-hdr.cyan{background:var(--cyan-bg);border-color:var(--cyan-border)}
+.cat-icon{font-size:16px}
+.cat-icon.red{color:var(--red)}.cat-icon.amber{color:var(--amber)}.cat-icon.purple{color:var(--purple)}.cat-icon.cyan{color:var(--cyan)}
+.cat-title{font-size:14px;font-weight:800}
+.cat-title.red{color:var(--red)}.cat-title.amber{color:var(--amber)}.cat-title.purple{color:var(--purple)}.cat-title.cyan{color:var(--cyan)}
+.cat-count{font-size:11px;color:var(--muted);margin-left:auto}
+
+/* ── Items table ── */
+.items-tbl{width:100%;border-collapse:collapse;border:1px solid var(--border);font-size:12px}
+.items-tbl th{padding:8px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left;background:#f1f5f9;color:var(--muted);border-bottom:2px solid var(--border);border-right:1px solid var(--border)}
+.items-tbl th:last-child{border-right:none}
+.items-tbl td{padding:8px 10px;border-bottom:1px solid #f1f5f9;border-right:1px solid #f1f5f9;vertical-align:top}
+.items-tbl td:last-child{border-right:none}
+.items-tbl tr:last-child td{border-bottom:none}
+.items-tbl tr:nth-child(even) td{background:#fafbfc}
+
+.item-name{font-weight:700;color:var(--navy);font-size:13px}
+.cost-badge{display:inline-block;background:#dcfce7;color:#15803d;border:1px solid #bbf7d0;border-radius:10px;padding:2px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.item-detail{font-size:11px;color:var(--muted);margin-top:3px}
+.item-note{font-size:11px;color:#475569;margin-top:4px;line-height:1.5}
+.vendor-pill{display:inline-block;padding:1px 7px;border-radius:8px;font-size:10px;font-weight:700;margin-left:6px;vertical-align:middle}
+.v-SHV{background:#dbeafe;color:#1d4ed8}.v-PFG{background:#ffedd5;color:#c2410c}.v-IH{background:#dcfce7;color:#15803d}
+
+/* ── Summary bar ── */
+.summary-bar{display:flex;gap:20px;flex-wrap:wrap;padding:12px 20px;background:#fff;border:1px solid var(--border);border-radius:8px;margin:16px 0 20px}
+.sum-item{display:flex;flex-direction:column;gap:2px}
+.sum-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.sum-value{font-size:15px;font-weight:800;color:var(--navy)}
+.sum-sub{font-size:10px;color:var(--muted)}
+
+/* ── Print ── */
+@media print{
+  @page{size:letter portrait;margin:.4in}
+  .print-bar{display:none!important}
+  body{background:#fff;font-size:10.5px}
+  .doc-header{background:#0f172a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:14px 20px 12px}
+  .doc-header h1{font-size:16px}
+  .doc-body{padding:12px 0 20px}
+  .cat-hdr{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cost-badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .vendor-pill{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .items-tbl th{background:#f1f5f9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .items-tbl tr:nth-child(even) td{background:#fafbfc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cat-section{page-break-inside:avoid}
+  .summary-bar{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="print-bar">
+  <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>← Dashboard</a>
+  <div style="font-size:13px;font-weight:700;color:#e2e8f0">New Menu Ideas</div>
+  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print / Save PDF</button>
+</div>
+
+<div class="doc-header">
+  <h1><i class="fa-solid fa-lightbulb" style="margin-right:8px;color:#fbbf24"></i>New Menu Ideas</h1>
+  <p>Industry Standard Food Service · Jefferson County Contract · All items available from current vendors — no new vendors required</p>
+  <div class="meta-row">
+    <span class="meta-pill"><i class="fa-solid fa-fire" style="margin-right:5px;color:#f87171"></i>9 Hot Lunch Ideas</span>
+    <span class="meta-pill"><i class="fa-solid fa-mug-hot" style="margin-right:5px;color:#fbbf24"></i>4 Breakfast Ideas</span>
+    <span class="meta-pill"><i class="fa-solid fa-moon" style="margin-right:5px;color:#c4b5fd"></i>5 Dinner / Sandwich Ideas</span>
+    <span class="meta-pill"><i class="fa-solid fa-ice-cream" style="margin-right:5px;color:#67e8f9"></i>6 Dessert & Side Ideas</span>
+  </div>
+</div>
+
+<div class="doc-body">
+
+  <div class="summary-bar">
+    <div class="sum-item">
+      <div class="sum-label">Total Ideas</div>
+      <div class="sum-value">24</div>
+      <div class="sum-sub">across 4 categories</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-label">Lowest Cost</div>
+      <div class="sum-value">$0.04/srv</div>
+      <div class="sum-sub">Gelatin (Jell-O)</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-label">Cheapest Hot Lunch</div>
+      <div class="sum-value">$0.15/srv</div>
+      <div class="sum-sub">Navy Bean Soup / Lentil Soup</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-label">Cheapest Sandwich</div>
+      <div class="sum-value">$0.18/srv</div>
+      <div class="sum-sub">PB&J</div>
+    </div>
+    <div class="sum-item">
+      <div class="sum-label">Vendors</div>
+      <div class="sum-value">SHV · PFG</div>
+      <div class="sum-sub">No new vendors needed</div>
+    </div>
+  </div>
+
+  <!-- ── HOT LUNCH ── -->
+  <div class="cat-section">
+    <div class="cat-hdr red">
+      <i class="fa-solid fa-fire cat-icon red"></i>
+      <span class="cat-title red">Hot Lunch Entrées</span>
+      <span class="cat-count">9 items · sorted by cost</span>
+    </div>
+    <table class="items-tbl">
+      <thead>
+        <tr>
+          <th style="width:22%">Item</th>
+          <th style="width:10%">Cost/Srv</th>
+          <th style="width:38%">Ingredients / Case Specs</th>
+          <th style="width:30%">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name">Navy Bean Soup</div></td>
+          <td><span class="cost-badge">~$0.15</span></td>
+          <td><div class="item-detail">Beans Dry Navy 50# — Shaver $36.49<br>Carrots Sliced Frozen 20# — Shaver $14.34<br>Chicken Base — Shaver $13.34 · Cornbread (existing)</div></td>
+          <td><div class="item-note">Lowest cost hot lunch — high protein, serve with cornbread</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Lentil Soup</div></td>
+          <td><span class="cost-badge">~$0.15</span></td>
+          <td><div class="item-detail">Beans Dry Lentil 50# — Shaver $49.26<br>Carrots Sliced Frozen 20# — Shaver $14.34<br>Chicken Base — Shaver $13.34</div></td>
+          <td><div class="item-note">Tied for cheapest — very high fiber and protein, serve with cornbread</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Pasta Marinara</div></td>
+          <td><span class="cost-badge">~$0.20</span></td>
+          <td><div class="item-detail">Rotini or Ziti 2/10 LB — Shaver $13.73<br>Tomato Sauce 6/#10 — Shaver $28.89<br>Diced Tomatoes 6/#10 — Shaver $30.36</div></td>
+          <td><div class="item-note">Under $0.20/serving — add TVP to boost protein when budget allows</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Red Beans &amp; Rice</div></td>
+          <td><span class="cost-badge">~$0.22</span></td>
+          <td><div class="item-detail">Pinto Beans Dry 50 LB — PFG $25.67<br>Parboiled Rice 50 LB — PFG $26.38<br>Sausage crumble (existing)</div></td>
+          <td><div class="item-note">High protein and fiber, dirt cheap per serving — classic Southern staple</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Southern Beans &amp; Rice Bowl</div></td>
+          <td><span class="cost-badge">~$0.22</span></td>
+          <td><div class="item-detail">Great Northern Beans Dry 50# — Shaver $39.00<br>Parboiled Rice 50 LB — PFG $26.38<br>Sausage crumble (existing)</div></td>
+          <td><div class="item-note">Flavorful, filling, dirt cheap per serving</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Mac &amp; Cheese</div></td>
+          <td><span class="cost-badge">~$0.28</span></td>
+          <td><div class="item-detail">Elbow Macaroni 2/10 LB — Shaver $13.10<br>Cheese Sauce 6/#10 — Shaver $48.12</div></td>
+          <td><div class="item-note">One of the cheapest hot lunches possible — universally popular, zero waste</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Chili Mac</div></td>
+          <td><span class="cost-badge">~$0.32</span></td>
+          <td><div class="item-detail">TVP Beef Chunks 25# — Shaver $60.46<br>Elbow Macaroni 2/10 LB — Shaver $13.10<br>Diced Tomatoes 6/#10 — Shaver $30.36<br>Tomato Sauce 6/#10 — Shaver $28.89</div></td>
+          <td><div class="item-note">TVP doubles as a beef extender — hearty, filling, under $0.35/serving</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Bean &amp; Cheese Burrito Plate</div></td>
+          <td><span class="cost-badge">$0.54</span></td>
+          <td><div class="item-detail">Bean &amp; Cheese Burritos 80/4oz — Shaver $43.40<br>Parboiled Rice 50 LB — PFG $26.38<br>Tomato Sauce (salsa) — Shaver $28.89</div></td>
+          <td><div class="item-note">Fully turnkey, zero prep — no cooking equipment needed</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Chicken Corn Dog Plate</div></td>
+          <td><span class="cost-badge">$0.67</span></td>
+          <td><div class="item-detail">Corn Dog Chicken 72/2.5oz — Shaver $48.45<br>Mixed Vegetables 30# — Shaver $26.75<br>Cornbread (existing)</div></td>
+          <td><div class="item-note">Simple, fast, universally popular — no prep required</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── BREAKFAST ── -->
+  <div class="cat-section">
+    <div class="cat-hdr amber">
+      <i class="fa-solid fa-mug-hot cat-icon amber"></i>
+      <span class="cat-title amber">New Breakfast Options</span>
+      <span class="cat-count">4 items</span>
+    </div>
+    <table class="items-tbl">
+      <thead>
+        <tr>
+          <th style="width:22%">Item</th>
+          <th style="width:10%">Cost/Srv</th>
+          <th style="width:38%">Ingredients / Case Specs</th>
+          <th style="width:30%">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name">Pancake Day</div></td>
+          <td><span class="cost-badge">$0.16</span></td>
+          <td><div class="item-detail">Shaver Pancake 144/1.2oz — $23.08/case<br>Syrup 4gal — Shaver $15.83 (+$0.02/serving)</div></td>
+          <td><div class="item-note">Replaces bread slice one morning/week — add syrup for under $0.18 total</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Waffle Day</div></td>
+          <td><span class="cost-badge">$0.16</span></td>
+          <td><div class="item-detail">Shaver Waffle 12/12/1.25oz — $22.97/case</div></td>
+          <td><div class="item-note">Same cost as pancakes, different texture — easy rotation variety</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">French Toast</div></td>
+          <td><span class="cost-badge">$0.28</span></td>
+          <td><div class="item-detail">Shaver French Toast 144/1.5oz — $40.09/case</div></td>
+          <td><div class="item-note">Slightly higher cost but a distinct, popular offering</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Oatmeal with Raisins</div></td>
+          <td><span class="cost-badge">+$0.04</span></td>
+          <td><div class="item-detail">Existing oatmeal + Shaver Raisins 30# ($61.59)</div></td>
+          <td><div class="item-note">Adds nutrition and variety to current oatmeal days with minimal added cost</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── COLD DINNER ── -->
+  <div class="cat-section">
+    <div class="cat-hdr purple">
+      <i class="fa-solid fa-moon cat-icon purple"></i>
+      <span class="cat-title purple">Cold / Sandwich Dinner Options</span>
+      <span class="cat-count">5 items · sorted by cost</span>
+    </div>
+    <table class="items-tbl">
+      <thead>
+        <tr>
+          <th style="width:22%">Item</th>
+          <th style="width:10%">Cost/Srv</th>
+          <th style="width:38%">Ingredients / Case Specs</th>
+          <th style="width:30%">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name">PB&amp;J</div></td>
+          <td><span class="cost-badge">~$0.18</span></td>
+          <td><div class="item-detail">Peanut Butter (existing) + Jelly 200ct — Shaver $9.53 + Bread (existing)</div></td>
+          <td><div class="item-note">Lowest cost dinner option — keep as a budget anchor night in rotation</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Bologna &amp; Mustard Sandwich</div></td>
+          <td><span class="cost-badge">~$0.25</span></td>
+          <td><div class="item-detail">Shaver Bologna Logs Chik 3/8# — $39.02/cs ($1.63/lb)<br>Bread Pullman (existing) + Mustard (existing)</div></td>
+          <td><div class="item-note">One of the cheapest protein sandwiches available — slices easily at scale</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Salami Sandwich</div></td>
+          <td><span class="cost-badge">~$0.40</span></td>
+          <td><div class="item-detail">Salami (existing rotation) + Bread Pullman (existing) + Mustard (existing)</div></td>
+          <td><div class="item-note">Already on current rotation — maintain as one of the weekly nights</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Turkey &amp; Mustard Sandwich</div></td>
+          <td><span class="cost-badge">~$0.45</span></td>
+          <td><div class="item-detail">Turkey deli meat (existing) + Bread Pullman (existing)<br>Mustard / Mayo (existing)</div></td>
+          <td><div class="item-note">Clean, familiar protein — switch bread to Shaver for per-oz savings</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Chicken Salad Sandwich</div></td>
+          <td><span class="cost-badge">~$0.50</span></td>
+          <td><div class="item-detail">Shaver canned/pouch chicken + Mayo (existing)<br>Bread Pullman (existing)</div></td>
+          <td><div class="item-note">Cold prep, no equipment needed — good rotation alongside bologna and turkey</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── DESSERTS & SIDES ── -->
+  <div class="cat-section">
+    <div class="cat-hdr cyan">
+      <i class="fa-solid fa-ice-cream cat-icon cyan"></i>
+      <span class="cat-title cyan">New Dessert &amp; Side Options</span>
+      <span class="cat-count">6 items · sorted by cost</span>
+    </div>
+    <table class="items-tbl">
+      <thead>
+        <tr>
+          <th style="width:22%">Item</th>
+          <th style="width:10%">Cost/Srv</th>
+          <th style="width:38%">Ingredients / Case Specs</th>
+          <th style="width:30%">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name">Gelatin (Jell-O)</div></td>
+          <td><span class="cost-badge">~$0.04</span></td>
+          <td><div class="item-detail">Shaver: Cherry, Lime, Orange, Raspberry — all $23.32/case (6/16oz)</div></td>
+          <td><div class="item-note">Nearly free dessert upgrade — rotate 4 flavors across the week</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Vanilla or Chocolate Pudding</div></td>
+          <td><span class="cost-badge">~$0.05</span></td>
+          <td><div class="item-detail">Vanilla 25# — Shaver $63.84<br>Chocolate 25# — Shaver $68.93</div></td>
+          <td><div class="item-note">Replaces cake 1–2×/week — adds variety without cost increase</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Broccoli or Cauliflower</div></td>
+          <td><span class="cost-badge">&lt;$0.20</span></td>
+          <td><div class="item-detail">Broccoli Cuts 30# — Shaver $27.47<br>Cauliflower 30# — Shaver $31.30</div></td>
+          <td><div class="item-note">Adds vegetable variety beyond current carrot/peas rotation</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Breaded Okra</div></td>
+          <td><span class="cost-badge">&lt;$0.20</span></td>
+          <td><div class="item-detail">Shaver Okra Cut Breaded 20# — $26.77/case</div></td>
+          <td><div class="item-note">Southern staple, pairs with any protein, adds texture variety</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Applesauce Cup</div></td>
+          <td><span class="cost-badge">$0.30</span></td>
+          <td><div class="item-detail">Shaver Applesauce Unsweet 96/4.5oz — $28.49/case</div></td>
+          <td><div class="item-note">Only vitamin C source in current catalog — priority add</div></td>
+        </tr>
+        <tr>
+          <td><div class="item-name">Corn on the Cob (Summer)</div></td>
+          <td><span class="cost-badge">$0.35</span></td>
+          <td><div class="item-detail">Shaver Corn Cob 3in 96ea — $33.74/case</div></td>
+          <td><div class="item-note">Seasonal crowd-pleaser, easy to serve, no prep required</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /doc-body -->
+</body>
+</html>
