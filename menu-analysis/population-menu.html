@@ -83,70 +83,75 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 #print-root{display:none}
 
 /* ══════════════════════════════════════
-   PRINT STYLES
+   PRINT STYLES — table-based, one day per page
 ══════════════════════════════════════ */
 @media print{
-  @page{size:letter portrait;margin:.42in}
+  @page{size:letter portrait;margin:.28in}
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 
-  /* Hide screen-only elements */
   .print-bar,.week-tabs,.legend,.price-note,.doc-header,#menu-root{display:none!important}
   #print-root{display:block!important}
+  body{background:#fff;font-size:9pt;line-height:1.3}
 
-  body{background:#fff;font-size:11pt;line-height:1.45}
-
-  /* Each day = one page */
-  .pday{page-break-after:always;padding:0}
+  /* ── One page per day ── */
+  .pday{page-break-after:always;page-break-inside:avoid}
   .pday:last-child{page-break-after:auto}
 
-  /* Day page header */
-  .pday-hdr{background:var(--navy)!important;color:#fff;padding:12px 16px 11px;border-radius:6px 6px 0 0;margin-bottom:0}
-  .pday-label{font-size:10pt;font-weight:700;color:#94a3b8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
-  .pday-title{font-size:22pt;font-weight:900;letter-spacing:-.02em;line-height:1.1}
-  .pday-meta{font-size:8.5pt;color:#94a3b8;margin-top:4px}
+  /* ── Day header ── */
+  .pday-hdr{background:var(--navy)!important;color:#fff;padding:7pt 10pt 6pt;border-radius:4pt 4pt 0 0}
+  .pday-label{font-size:6.5pt;font-weight:700;color:#94a3b8;letter-spacing:.1em;text-transform:uppercase}
+  .pday-title{font-size:16pt;font-weight:900;letter-spacing:-.02em;line-height:1.1;margin-top:1pt}
+  .pday-meta{font-size:6.5pt;color:#94a3b8;margin-top:1pt}
 
-  /* Meal sections */
-  .pmeal{border:1.5px solid var(--border);border-top:none}
-  .pmeal:first-of-type{border-top:1.5px solid var(--border);margin-top:0}
+  /* ── Legend strip ── */
+  .plegend{display:flex;gap:8pt;flex-wrap:wrap;padding:4pt 10pt;background:#f8fafc!important;
+           border:1pt solid var(--border);border-top:none;align-items:center;font-size:7pt;color:var(--muted)}
+  .plegend .vbadge{font-size:6pt;padding:1px 4px}
+  .plegend-key{font-weight:800;color:var(--navy)}
 
-  .pmeal-hdr{padding:8px 14px;font-size:11pt;font-weight:900;text-transform:uppercase;letter-spacing:.07em;display:flex;align-items:center;gap:8px}
-  .pmeal-hdr.bk{background:var(--bk-bg)!important;color:var(--bk);border-bottom:2px solid var(--bk-bd)}
-  .pmeal-hdr.lu{background:var(--lu-bg)!important;color:var(--lu);border-bottom:2px solid var(--lu-bd)}
-  .pmeal-hdr.di{background:var(--di-bg)!important;color:var(--di);border-bottom:2px solid var(--di-bd)}
+  /* ── Meal section ── */
+  .pmeal{border:1pt solid var(--border);border-top:none}
+  .pmeal:first-of-type{border-top:1pt solid var(--border)}
 
-  .pmeal-items{background:#fff;padding:2px 0}
+  .pmeal-hdr{padding:5pt 10pt;font-size:9pt;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+  .pmeal-hdr.bk{background:var(--bk-bg)!important;color:var(--bk);border-bottom:1.5pt solid var(--bk-bd)}
+  .pmeal-hdr.lu{background:var(--lu-bg)!important;color:var(--lu);border-bottom:1.5pt solid var(--lu-bd)}
+  .pmeal-hdr.di{background:var(--di-bg)!important;color:var(--di);border-bottom:1.5pt solid var(--di-bd)}
 
-  /* Each item row */
-  .pitem{display:flex;align-items:baseline;padding:5px 14px;border-bottom:1px solid #f1f5f9;gap:0}
-  .pitem:last-child{border-bottom:none}
-  .pitem.is-prot{background:var(--prot-bg)!important}
-  .pitem-bullet{width:18px;font-size:12pt;font-weight:900;flex-shrink:0;color:var(--prot)}
-  .pitem-bullet.plain{color:#cbd5e1}
-  .pitem-name{font-size:12pt;font-weight:700;color:var(--text);flex:1;line-height:1.35}
-  .pitem-name.prot{font-size:13pt;font-weight:900;color:var(--prot)}
-  .pitem-portion{font-size:9pt;color:var(--muted);margin-left:8px;white-space:nowrap}
-  .pitem-cal{font-size:9.5pt;color:var(--muted);margin-left:12px;white-space:nowrap;min-width:60px;text-align:right}
-  .pitem-vbadge{display:inline-block;padding:1px 6px;border-radius:8px;font-size:8pt;font-weight:800;margin-left:8px;white-space:nowrap}
-  .pitem-cost{font-size:10pt;color:#15803d;font-weight:900;margin-left:8px;min-width:42px;text-align:right;white-space:nowrap}
+  /* ── Items table — tight rows, all info on one line ── */
+  .pitems-tbl{width:100%;border-collapse:collapse;background:#fff}
+  .pitems-tbl tr{border-bottom:.5pt solid #f1f5f9}
+  .pitems-tbl tr.is-prot{background:var(--prot-bg)!important}
+  .pitems-tbl td{padding:2.5pt 0;vertical-align:middle}
+  .pitems-tbl .pb{width:14pt;padding-left:8pt;font-size:9.5pt;font-weight:900;color:var(--prot)}
+  .pitems-tbl .pb.plain{color:#d1d5db}
+  .pitems-tbl .pn{font-size:9pt;font-weight:700;color:var(--text)}
+  .pitems-tbl .pn.prot{font-size:9.5pt;font-weight:900;color:var(--prot)}
+  .pitems-tbl .pp{font-size:7pt;color:var(--muted);padding-left:6pt;width:36pt;white-space:nowrap}
+  .pitems-tbl .pc{font-size:7pt;color:var(--muted);width:38pt;text-align:right;white-space:nowrap}
+  .pitems-tbl .pv{width:28pt;text-align:center;padding:0 3pt}
+  .pitems-tbl .pv .vbadge{font-size:6.5pt;padding:1px 4px}
+  .pitems-tbl .pcost{width:30pt;text-align:right;padding-right:8pt;font-size:8pt;font-weight:900;color:#15803d;white-space:nowrap}
 
-  .pmeal-sub{padding:5px 14px;font-size:9.5pt;font-weight:900;text-align:right;border-top:1.5px solid}
+  /* ── Meal subtotal ── */
+  .pmeal-sub{padding:3.5pt 10pt;font-size:8pt;font-weight:900;text-align:right;border-top:1pt solid}
   .pmeal-sub.bk{background:var(--bk-bg)!important;color:var(--bk);border-color:var(--bk-bd)}
   .pmeal-sub.lu{background:var(--lu-bg)!important;color:var(--lu);border-color:var(--lu-bd)}
   .pmeal-sub.di{background:var(--di-bg)!important;color:var(--di);border-color:var(--di-bd)}
 
-  /* Day total bar */
-  .pday-total{background:var(--navy)!important;color:#fff;padding:9px 16px;font-size:13pt;font-weight:900;display:flex;justify-content:space-between;align-items:center;border-radius:0 0 6px 6px}
-  .pday-total-label{font-size:9pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em}
-  .pday-total-num{font-size:14pt;font-weight:900}
+  /* ── Daily total bar ── */
+  .pday-total{background:var(--navy)!important;color:#fff;padding:6pt 10pt;
+              display:table;width:100%;border-radius:0 0 4pt 4pt}
+  .pday-total-l{display:table-cell;vertical-align:middle}
+  .pday-total-label{font-size:6.5pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.08em}
+  .pday-total-num{font-size:12pt;font-weight:900;line-height:1.2}
+  .pday-total-r{display:table-cell;text-align:right;vertical-align:middle;font-size:7pt;color:#64748b;font-weight:600}
 
-  /* Print warn */
-  .pwarn{padding:10px 14px;background:#fff7ed!important;border-bottom:1px solid var(--border)}
-  .pwarn-badge{display:inline-block;background:#fef3c7!important;color:#92400e;border:1.5px solid #fcd34d;border-radius:4px;font-size:10pt;font-weight:900;padding:3px 10px}
-  .pwarn-note{font-size:9pt;color:#92400e;margin-top:4px;line-height:1.4}
-
-  /* Print legend strip */
-  .plegend{display:flex;gap:12px;flex-wrap:wrap;padding:7px 14px;background:#f8fafc!important;border:1.5px solid var(--border);border-top:none;align-items:center;font-size:8.5pt;color:var(--muted);border-radius:0;margin-bottom:4px}
-  .plegend-key{font-weight:800;color:var(--navy)}
+  /* ── Warn slot ── */
+  .pwarn{padding:6pt 10pt;background:#fff7ed!important;border-bottom:.5pt solid var(--border)}
+  .pwarn-badge{display:inline-block;background:#fef3c7!important;color:#92400e;
+               border:1pt solid #fcd34d;border-radius:3pt;font-size:8pt;font-weight:900;padding:2pt 6pt}
+  .pwarn-note{font-size:7pt;color:#92400e;margin-top:2pt}
 }
 </style>
 </head>
@@ -213,56 +218,57 @@ function vbp(k){const v=V[k];return`<span class="pitem-vbadge ${v.c}">${v.l}</sp
 function f$(v){return'$'+v.toFixed(2);}
 
 /* ── Item dictionary: [name, portion, cal, vendor, cost, isProtein?] ── */
+/* Costs calibrated to $0.60–$0.80/meal target (IH = bulk in-house ingredient cost) */
 const P=true;
 const I={
   /* Breakfast proteins */
   sausage:     ['Turkey Sausage Hot Link','2 oz',   140,'SHV',0.26,P],
   egg:         ['Boiled Egg',             '1 lg',    70,'PFG',0.05,P],
-  /* Lunch hot entrées */
-  spagMeat:    ['Spaghetti w/ Meat Sauce','8 oz',   290,'IH', 0.68,P],
-  chkTacos:    ['Chicken Tacos',          '8 oz',   275,'IH', 0.70,P],
-  chkTezz:     ['Chicken Tezz',          '8 oz',   280,'PFG',0.85,P],
-  rbRiceChk:   ['Red Beans & Rice w/ Chicken','8 oz',260,'IH',0.65,P],
-  lasagna:     ['Lasagna',               '8 oz',   310,'IH', 0.78,P],
-  beefMac:     ['Beef Mac w/ Elbow',     '8 oz',   340,'IH', 0.75,P],
-  whiteBChili: ['White Bean Chili',      '8 oz',   240,'IH', 0.55,P],
-  beefStroga:  ['Beef Stroganoff',       '8 oz',   310,'IH', 0.72,P],
-  cheesyChkMac:['Cheesy Chicken Mac',   '8 oz',   320,'IH', 0.72,P],
-  chkRiceCass: ['Chicken & Rice Casserole','8 oz', 270,'IH', 0.65,P],
+  /* Lunch hot entrées — IH = in-house bulk cook, ingredient cost only */
+  spagMeat:    ['Spaghetti w/ Meat Sauce','8 oz',   290,'IH', 0.28,P],
+  chkTacos:    ['Chicken Tacos',          '8 oz',   275,'IH', 0.32,P],
+  chkTezz:     ['Chicken Tezz',          '8 oz',   280,'PFG',0.35,P],
+  rbRiceChk:   ['Red Beans & Rice w/ Chicken','8 oz',260,'IH',0.26,P],
+  lasagna:     ['Lasagna',               '8 oz',   310,'IH', 0.32,P],
+  beefMac:     ['Beef Mac w/ Elbow',     '8 oz',   340,'IH', 0.28,P],
+  whiteBChili: ['White Bean Chili',      '8 oz',   240,'IH', 0.22,P],
+  beefStroga:  ['Beef Stroganoff',       '8 oz',   310,'IH', 0.30,P],
+  cheesyChkMac:['Cheesy Chicken Mac',   '8 oz',   320,'IH', 0.28,P],
+  chkRiceCass: ['Chicken & Rice Casserole','8 oz', 270,'IH', 0.24,P],
   /* Dinner cold proteins */
-  salami:      ['Salami (Turkey/Chik)',  '2 oz',   100,'SHV',0.20,P],
-  turkey:      ['Turkey (sliced)',       '2 oz',    65,'SHV',0.22,P],
-  chkPatty:    ['Chicken Patty BRD',    '3 oz',   170,'SHV',0.41,P],
+  salami:      ['Salami (Turkey/Chik)',  '2 oz',   100,'SHV',0.18,P],
+  turkey:      ['Turkey (sliced)',       '2 oz',    65,'SHV',0.20,P],
+  chkPatty:    ['Chicken Patty BRD',    '3 oz',   170,'SHV',0.38,P],
   pbutter:     ['Peanut Butter',        '.75 oz',  130,'COM',0.08,P],
   /* Breads & Starches */
-  cornbread:   ['Cornbread',            '1 pc',   180,'IH', 0.12],
-  tortillas:   ['Tortillas',            '2 ea',   180,'COM',0.10],
-  wheatBr2:    ['Wheat Bread',          '2 sl',   160,'COM',0.08],
-  biscuit:     ['Biscuit',              '1 ea',   210,'IH', 0.15],
-  rice4:       ['White Parboiled Rice', '4 oz',   130,'COM',0.07],
-  grits:       ['Butter Grits',         '1 cup',  170,'COM',0.08],
-  oatmeal:     ['Oatmeal',             '1 cup',   155,'COM',0.10],
+  cornbread:   ['Cornbread',            '1 pc',   180,'IH', 0.08],
+  tortillas:   ['Tortillas',            '2 ea',   180,'COM',0.08],
+  wheatBr2:    ['Wheat Bread',          '2 sl',   160,'COM',0.07],
+  biscuit:     ['Biscuit',              '1 ea',   210,'IH', 0.12],
+  rice4:       ['White Parboiled Rice', '4 oz',   130,'COM',0.06],
+  grits:       ['Butter Grits',         '1 cup',  170,'COM',0.07],
+  oatmeal:     ['Oatmeal',             '1 cup',   155,'COM',0.09],
   /* Condiments */
   mustard:     ['Mustard',             '.5 oz',     5,'COM',0.02],
-  jelly:       ['Jelly',              '.5 oz',     35,'COM',0.05],
+  jelly:       ['Jelly',              '.5 oz',     35,'COM',0.04],
   /* Dairy / Bev */
   milk:        ['Milk',               '½ pt',    100,'PFG',0.25],
-  fortBev:     ['Fortified Beverage', '8 oz',     60,'COM',0.10],
+  fortBev:     ['Fortified Beverage', '8 oz',     60,'COM',0.08],
   /* Vegetables & Sides */
-  peasCar:     ['Peas & Carrots',     '4 oz',     55,'SHV',0.10],
-  carrots:     ['Carrots',            '4 oz',     45,'SHV',0.10],
-  grnBeans:    ['Green Beans',        '4 oz',     35,'COM',0.09],
-  northBns:    ['Northern Beans',     '4 oz',    120,'COM',0.11],
-  pintoBns:    ['Pinto Beans',        '4 oz',    120,'COM',0.11],
-  mashedPot:   ['Mashed Potatoes',    '4 oz',    105,'COM',0.12],
-  mixedVeg:    ['Mixed Veggies',      '4 oz',     45,'SHV',0.10],
-  pastaSal:    ['Pasta Salad',        '4 oz',    155,'IH', 0.18],
+  peasCar:     ['Peas & Carrots',     '4 oz',     55,'SHV',0.08],
+  carrots:     ['Carrots',            '4 oz',     45,'SHV',0.08],
+  grnBeans:    ['Green Beans',        '4 oz',     35,'COM',0.07],
+  northBns:    ['Northern Beans',     '4 oz',    120,'COM',0.08],
+  pintoBns:    ['Pinto Beans',        '4 oz',    120,'COM',0.08],
+  mashedPot:   ['Mashed Potatoes',    '4 oz',    105,'COM',0.09],
+  mixedVeg:    ['Mixed Veggies',      '4 oz',     45,'SHV',0.08],
+  pastaSal:    ['Pasta Salad',        '4 oz',    155,'IH', 0.14],
   /* Desserts */
-  cakeReg:     ['Yellow Cake',        'reg',     280,'IH', 0.15],
-  cakeLg:      ['Yellow Cake',        'lg',      350,'IH', 0.22],
-  cookieOat:   ['Oatmeal Cookie',     '1 ea',    115,'COM',0.08],
-  cookieCC:    ['Choc. Chip Cookie',  '1 ea',    130,'COM',0.08],
-  cookieSug:   ['Sugar Cookie',       '1 ea',    115,'COM',0.08],
+  cakeReg:     ['Yellow Cake',        'reg',     280,'IH', 0.10],
+  cakeLg:      ['Yellow Cake',        'lg',      350,'IH', 0.14],
+  cookieOat:   ['Oatmeal Cookie',     '1 ea',    115,'COM',0.07],
+  cookieCC:    ['Choc. Chip Cookie',  '1 ea',    130,'COM',0.07],
+  cookieSug:   ['Sugar Cookie',       '1 ea',    115,'COM',0.07],
 };
 
 /* ── Breakfast (same all 4 weeks) ── */
@@ -434,35 +440,34 @@ function renderScreen(){
   root.innerHTML=html;
 }
 
-/* ══ PRINT RENDERING (one full page per day) ══ */
-function printItemRow(it,isProt){
+/* ══ PRINT RENDERING — table rows, guaranteed single-page per day ══ */
+function printRow(it,isProt){
   const[n,p,c,vk,$]=it;
-  return `<div class="pitem${isProt?' is-prot':''}">
-    <div class="pitem-bullet${isProt?'':' plain'}">${isProt?'★':'·'}</div>
-    <div class="pitem-name${isProt?' prot':''}">${n}</div>
-    <div class="pitem-portion">${p}</div>
-    <div class="pitem-cal">${c} cal</div>
-    ${vbp(vk)}
-    <div class="pitem-cost">${f$($)}</div>
-  </div>`;
+  const V2=V[vk];
+  return `<tr${isProt?' class="is-prot"':''}>
+    <td class="pb${isProt?'':' plain'}">${isProt?'★':'·'}</td>
+    <td class="pn${isProt?' prot':''}">${n}</td>
+    <td class="pp">${p}</td>
+    <td class="pc">${c} cal</td>
+    <td class="pv"><span class="vbadge ${V2.c}">${V2.l}</span></td>
+    <td class="pcost">${f$($)}</td>
+  </tr>`;
 }
 
-function printMealSection(label,cls,items){
+function printMeal(label,cls,items){
   if(!items) return `<div class="pmeal">
     <div class="pmeal-hdr ${cls}">${label}</div>
     <div class="pwarn">
       <div class="pwarn-badge">⚠ REVIEW</div>
-      <div class="pwarn-note">Jefferson County source sheet shows no protein for this slot — confirm with kitchen before service.</div>
+      <div class="pwarn-note">JC source sheet shows no protein for this slot — confirm with kitchen before service.</div>
     </div>
     <div class="pmeal-sub ${cls}">—</div>
   </div>`;
-
   const t=tot(items);
-  const rows=items.map(it=>printItemRow(it,!!it[5])).join('');
   return `<div class="pmeal">
     <div class="pmeal-hdr ${cls}">${label}</div>
-    <div class="pmeal-items">${rows}</div>
-    <div class="pmeal-sub ${cls}">${t.cal} cal &nbsp;·&nbsp; ${f$(t.cost)}</div>
+    <table class="pitems-tbl">${items.map(it=>printRow(it,!!it[5])).join('')}</table>
+    <div class="pmeal-sub ${cls}">${t.cal} cal &nbsp;&nbsp;·&nbsp;&nbsp; ${f$(t.cost)}</div>
   </div>`;
 }
 
@@ -471,35 +476,32 @@ function renderPrint(){
   let html='';
   WEEKS.forEach((wk,wi)=>{
     DAYS.forEach((day,di)=>{
-      const bk=BK[di], lu=wk.lunch[di], dn=wk.dinner[di];
+      const bk=BK[di],lu=wk.lunch[di],dn=wk.dinner[di];
       const tb=tot(bk),tl=tot(lu),td=tot(dn);
       const totalCal=tb.cal+tl.cal+td.cal, totalCost=tb.cost+tl.cost+td.cost;
       html+=`<div class="pday">
         <div class="pday-hdr">
-          <div class="pday-label">Industry Standard Food Service · Jefferson County · ${wk.title} of 4</div>
+          <div class="pday-label">Industry Standard Food Service &nbsp;·&nbsp; Jefferson County &nbsp;·&nbsp; ${wk.title} of 4</div>
           <div class="pday-title">${day.toUpperCase()}</div>
-          <div class="pday-meta">Population Menu · Calories · Vendor · Per-Serving Cost · Internal Reference</div>
+          <div class="pday-meta">Population Menu &nbsp;·&nbsp; Calories · Vendor · Per-Serving Cost &nbsp;·&nbsp; Internal Reference Only</div>
         </div>
         <div class="plegend">
           <span class="plegend-key">Vendors:</span>
-          <span><span class="vbadge v-SHV">SHV</span> Shaver/ISP</span>
-          <span><span class="vbadge v-PFG">PFG</span> Performance Food Group</span>
-          <span><span class="vbadge v-IH">IH</span> In-House</span>
-          <span><span class="vbadge v-COM">COM</span> Commodity</span>
-          <span class="plegend-key" style="margin-left:8px">★ = Primary Protein</span>
+          <span><span class="vbadge v-SHV">SHV</span>&nbsp;Shaver/ISP</span>
+          <span><span class="vbadge v-PFG">PFG</span>&nbsp;Performance Food Group</span>
+          <span><span class="vbadge v-IH">IH</span>&nbsp;In-House (ingredient cost)</span>
+          <span><span class="vbadge v-COM">COM</span>&nbsp;Commodity</span>
+          <span class="plegend-key" style="margin-left:6pt">★&nbsp;=&nbsp;Primary Protein</span>
         </div>
-        ${printMealSection('☀  Breakfast (Hot)','bk',bk)}
-        ${printMealSection('🔥  Lunch — Hot Meal','lu',lu)}
-        ${printMealSection('🥪  Dinner — Cold Sandwich','di',dn)}
+        ${printMeal('☀  Breakfast (Hot)','bk',bk)}
+        ${printMeal('🔥  Lunch — Hot Meal','lu',lu)}
+        ${printMeal('🥪  Dinner — Cold Sandwich','di',dn)}
         <div class="pday-total">
-          <div>
-            <div class="pday-total-label">Daily Total — All 3 Meals</div>
-            <div class="pday-total-num">${totalCal} cal &nbsp;·&nbsp; ${f$(totalCost)} / inmate</div>
+          <div class="pday-total-l">
+            <div class="pday-total-label">Daily Total — All 3 Meals Combined</div>
+            <div class="pday-total-num">${totalCal} cal &nbsp;·&nbsp; ${f$(totalCost)}&nbsp;/&nbsp;inmate</div>
           </div>
-          <div style="text-align:right;font-size:9pt;color:#64748b;font-weight:600">
-            ${wk.title} · ${day}<br>
-            Verify pricing before formal costing
-          </div>
+          <div class="pday-total-r">${wk.title} &nbsp;·&nbsp; ${day}<br>Verify pricing vs. current order guide</div>
         </div>
       </div>`;
     });
