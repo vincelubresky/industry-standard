@@ -1786,16 +1786,16 @@ const CEO_DATA = {
   findings: [
     {
       id: 1,
-      severity: "critical",
-      icon: "fa-triangle-exclamation",
-      title: "Week of Jan 19 — Near-Loss Week",
+      severity: "med",
+      icon: "fa-snowflake",
+      title: "Week of Jan 19 — Weather Prep Double-Order (Explained)",
       location: "Bessemer + Birmingham",
-      detail: "Both locations underperformed severely during Jan 19–25. Total net dropped to $10,882 — less than half the 14-week average of $23,131. Bessemer ran a location-level net loss of –$2,903. Root causes: Bessemer café COGS hit 89.9% on unchanged $3,181.50 revenue; Bessemer population COGS was 72.4%. Investigate whether this was a delivery timing issue, double-order, holiday inventory build, or spoilage event.",
+      detail: "Both locations show elevated COGS during Jan 19–25: net dropped to $10,882 and Bessemer ran a location-level loss of –$2,903. This is explained: management deliberately double-ordered food inventory in anticipation of potential bad-weather delivery disruptions. The inflated COGS reflects two weeks of product charged in one billing week — the cost was consumed over subsequent weeks. This is not a recurring operational failure. Financial data from this period should be weighted lightly in any trend analysis or cost benchmarking.",
       numbers: [
-        { label: "Weekly Net", value: "$10,882", flag: "bad" },
-        { label: "vs Avg", value: "–$12,249", flag: "bad" },
-        { label: "Bessemer Net", value: "–$2,903", flag: "bad" },
-        { label: "Bessemer Café COGS", value: "89.9%", flag: "bad" }
+        { label: "Weekly Net", value: "$10,882", flag: "flag" },
+        { label: "Root Cause", value: "Weather Prep", flag: "ok" },
+        { label: "Bessemer Net", value: "–$2,903", flag: "flag" },
+        { label: "Data Reliability", value: "Low — exclude", flag: "flag" }
       ]
     },
     {
