@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jefferson County — 4-Week Population Menu</title>
+<style>
+  :root {
+    --navy: #0f172a;
+    --navy2: #1e293b;
+    --blue: #0369a1;
+    --blue-light: #e0f2fe;
+    --green: #15803d;
+    --green-light: #dcfce7;
+    --amber: #b45309;
+    --amber-light: #fef3c7;
+    --border: #cbd5e1;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --bg: #f8fafc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  /* ── Print Bar ── */
+  .print-bar {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .print-bar a { color: #94a3b8; text-decoration: none; font-size: 13px; }
+  .print-bar a:hover { color: #fff; }
+  .print-bar-right { display: flex; gap: 10px; align-items: center; }
+  .btn-print {
+    background: #0369a1;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-print:hover { background: #0284c7; }
+
+  /* ── Header ── */
+  .doc-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, #1e3a5f 100%);
+    color: #fff;
+    padding: 28px 32px 24px;
+  }
+  .doc-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+  .doc-header p { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+  .doc-header-meta {
+    display: flex; gap: 24px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #e2e8f0;
+  }
+
+  /* ── Week Tabs ── */
+  .week-tabs {
+    display: flex; gap: 0;
+    background: var(--navy2);
+    padding: 0 32px;
+    border-bottom: 2px solid var(--border);
+  }
+  .week-tab {
+    background: none; border: none; color: #94a3b8;
+    padding: 12px 22px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; transition: color 0.15s, border-color 0.15s;
+  }
+  .week-tab:hover { color: #fff; }
+  .week-tab.active { color: #38bdf8; border-bottom-color: #38bdf8; }
+
+  /* ── Main ── */
+  .doc-body { padding: 24px 32px 40px; }
+
+  .week-block { display: none; }
+  .week-block.active { display: block; }
+
+  .week-title {
+    font-size: 16px; font-weight: 800; color: var(--navy);
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .week-title span { color: var(--text-muted); font-weight: 400; font-size: 13px; }
+
+  /* ── Meal Section ── */
+  .meal-section { margin-bottom: 24px; }
+  .meal-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; padding: 5px 12px; border-radius: 4px 4px 0 0;
+    display: inline-block; margin-bottom: 0;
+  }
+  .meal-label.breakfast { background: var(--amber); color: #fff; }
+  .meal-label.lunch     { background: var(--blue);  color: #fff; }
+  .meal-label.dinner    { background: var(--green); color: #fff; }
+
+  /* ── Menu Table ── */
+  .menu-table {
+    width: 100%; border-collapse: collapse;
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 8px 8px; overflow: hidden;
+  }
+  .menu-table thead tr th {
+    padding: 8px 10px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .menu-table thead tr th:last-child { border-right: none; }
+  .menu-table thead.breakfast th { background: var(--amber-light); color: var(--amber); }
+  .menu-table thead.lunch     th { background: var(--blue-light);  color: var(--blue); }
+  .menu-table thead.dinner    th { background: var(--green-light); color: var(--green); }
+
+  .menu-table tbody tr td {
+    padding: 6px 10px;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    vertical-align: top;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .menu-table tbody tr td:last-child { border-right: none; }
+  .menu-table tbody tr:last-child td { border-bottom: none; }
+  .menu-table tbody tr:nth-child(even) td { background: #f8fafc; }
+
+  .row-label {
+    text-align: left !important;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    width: 80px;
+    background: #f1f5f9 !important;
+  }
+  .item-main { font-weight: 600; color: var(--text); }
+  .item-side { color: #475569; font-size: 11px; }
+  .cake-sm { color: #94a3b8; font-size: 10px; font-style: italic; }
+
+  /* ── Edit Note ── */
+  .edit-note {
+    background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;
+    padding: 10px 16px; margin-bottom: 20px;
+    font-size: 12px; color: #92400e;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    text-align: center; color: var(--text-muted);
+    font-size: 11px; padding: 16px 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .print-bar, .week-tabs, .edit-note { display: none !important; }
+    body { background: #fff; font-size: 11px; }
+    .doc-header { padding: 16px 20px 14px; }
+    .doc-header h1 { font-size: 17px; }
+    .doc-body { padding: 10px 20px 20px; }
+    .week-block { display: block !important; page-break-after: always; }
+    .week-block:last-child { page-break-after: auto; }
+    .meal-section { margin-bottom: 14px; }
+    .menu-table thead tr th, .menu-table tbody tr td { font-size: 9px; padding: 4px 6px; }
+    .row-label { width: 60px; }
+    @page { size: letter landscape; margin: 0.5in; }
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+</style>
+</head>
+<body>
+
+<!-- Print Bar -->
+<div class="print-bar">
+  <a href="/index.html">&#8592; Dashboard</a>
+  <div class="print-bar-right">
+    <span style="color:#94a3b8;font-size:12px">Jefferson County — Population Menu</span>
+    <button class="btn-print" onclick="window.print()">&#128438; Print / Save PDF</button>
+  </div>
+</div>
+
+<!-- Header -->
+<div class="doc-header">
+  <h1>Jefferson County — 4-Week Population Menu Cycle</h1>
+  <p>Industry Standard Food Service &nbsp;·&nbsp; Authorized for internal use and food service director distribution</p>
+  <div class="doc-header-meta">
+    <span class="meta-pill">&#128197; 4-Week Rotation</span>
+    <span class="meta-pill">&#127860; Breakfast · Lunch · Dinner</span>
+    <span class="meta-pill">&#128101; Population Menu</span>
+    <span class="meta-pill">&#128204; Jefferson County Detention Facility</span>
+  </div>
+</div>
+
+<!-- Week Tabs -->
+<div class="week-tabs">
+  <button class="week-tab active" onclick="showWeek(1, this)">Week 1</button>
+  <button class="week-tab" onclick="showWeek(2, this)">Week 2</button>
+  <button class="week-tab" onclick="showWeek(3, this)">Week 3</button>
+  <button class="week-tab" onclick="showWeek(4, this)">Week 4</button>
+</div>
+
+<!-- Body -->
+<div class="doc-body">
+
+  <div class="edit-note">
+    &#9998;&nbsp; <strong>For edits:</strong> Contact your food service director or Industry Standard operations to submit menu change requests before the next cycle prints.
+  </div>
+
+  <!-- ═══════════════ WEEK 1 ═══════════════ -->
+  <div class="week-block active" id="week-1">
+    <div class="week-title">Week 1 <span>Monday – Sunday · Repeats every 4 weeks</span></div>
+
+    <!-- BREAKFAST W1 -->
+    <div class="meal-section">
+      <div class="meal-label breakfast">Breakfast</div>
+      <table class="menu-table">
+        <thead class="breakfast">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Protein</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg<br><span class="item-side">Sausage</span></td>
+            <td class="item-main">Sausage<br><span class="item-side">Egg · Egg</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Starch</td>
+            <td>Grits</td>
+            <td>Oatmeal</td>
+            <td>Grits</td>
+            <td>Grits</td>
+            <td>Oatmeal</td>
+            <td>Oatmeal</td>
+            <td>Grits</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dairy</td>
+            <td>—</td>
+            <td>Milk</td>
+            <td>—</td>
+            <td>Milk</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LUNCH W1 -->
+    <div class="meal-section">
+      <div class="meal-label lunch">Lunch — Hot Meals</div>
+      <table class="menu-table">
+        <thead class="lunch">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Entrée</td>
+            <td class="item-main">Spaghetti w/ Meat Sauce</td>
+            <td class="item-main">Chicken Tacos</td>
+            <td class="item-main">Chicken Tezz</td>
+            <td class="item-main">Red Beans &amp; Rice w/ Chicken</td>
+            <td class="item-main">Lasagna</td>
+            <td class="item-main">Beef Mac</td>
+            <td class="item-main">White Bean Chili</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td>Cornbread</td>
+            <td>Tortillas</td>
+            <td>Cornbread</td>
+            <td>Cornbread</td>
+            <td>Cornbread</td>
+            <td>Cornbread</td>
+            <td>Cornbread</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 1</td>
+            <td>Northern Beans</td>
+            <td>Pinto Beans</td>
+            <td>Carrots</td>
+            <td>Pasta Salad</td>
+            <td>Northern Beans</td>
+            <td>Mixed Veggies</td>
+            <td>Carrots</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 2</td>
+            <td>—</td>
+            <td>—</td>
+            <td>White Parboiled Rice</td>
+            <td>—</td>
+            <td>Carrots</td>
+            <td>Pinto Beans</td>
+            <td>White Parboiled Rice</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td colspan="7" style="text-align:center" class="cake-sm">Yellow Cake (Regular) — all days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DINNER W1 -->
+    <div class="meal-section">
+      <div class="meal-label dinner">Dinner — Sandwiches</div>
+      <table class="menu-table">
+        <thead class="dinner">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Sandwich</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">PB&amp;J</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">Chicken Patty</td>
+            <td class="item-main">Turkey</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Bread (2 slices) — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Condiment</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Jelly</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Carrots</td>
+            <td>Northern Beans</td>
+            <td>Green Beans</td>
+            <td>Mashed Potatoes</td>
+            <td>Pinto Beans</td>
+            <td>Pinto Beans</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- end week-1 -->
+
+  <!-- ═══════════════ WEEK 2 ═══════════════ -->
+  <div class="week-block" id="week-2">
+    <div class="week-title">Week 2 <span>Monday – Sunday · Repeats every 4 weeks</span></div>
+
+    <!-- BREAKFAST W2 (same structure all weeks) -->
+    <div class="meal-section">
+      <div class="meal-label breakfast">Breakfast</div>
+      <table class="menu-table">
+        <thead class="breakfast">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Protein</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg<br><span class="item-side">Sausage</span></td>
+            <td class="item-main">Sausage<br><span class="item-side">Egg · Egg</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Starch</td>
+            <td>Grits</td>
+            <td>Oatmeal</td>
+            <td>Grits</td>
+            <td>Grits</td>
+            <td>Oatmeal</td>
+            <td>Oatmeal</td>
+            <td>Grits</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>Bread (1 slice)</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dairy</td>
+            <td>—</td>
+            <td>Milk</td>
+            <td>—</td>
+            <td>Milk</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LUNCH W2 -->
+    <div class="meal-section">
+      <div class="meal-label lunch">Lunch — Hot Meals</div>
+      <table class="menu-table">
+        <thead class="lunch">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Entrée</td>
+            <td class="item-main">Lasagna</td>
+            <td class="item-main">Red Beans &amp; Rice w/ Chicken</td>
+            <td class="item-main">White Bean Chili</td>
+            <td class="item-main">Cheesy Chicken Mac</td>
+            <td class="item-main">Beef Stroganoff</td>
+            <td class="item-main">Spaghetti w/ Meat Sauce</td>
+            <td class="item-main">Chicken Tezz</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 1</td>
+            <td>Carrots</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Green Beans</td>
+            <td>Pinto Beans</td>
+            <td>Carrots</td>
+            <td>Northern Beans</td>
+            <td>Mixed Veggies</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 2</td>
+            <td>—</td>
+            <td>—</td>
+            <td>White Parboiled Rice</td>
+            <td>White Parboiled Rice</td>
+            <td>—</td>
+            <td>—</td>
+            <td>White Parboiled Rice</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td colspan="7" style="text-align:center" class="cake-sm">Yellow Cake (Regular) — all days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DINNER W2 -->
+    <div class="meal-section">
+      <div class="meal-label dinner">Dinner — Sandwiches</div>
+      <table class="menu-table">
+        <thead class="dinner">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Sandwich</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">PB&amp;J</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Chicken Patty</td>
+            <td class="item-main">PB&amp;J</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Bread (2 slices) — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Condiment</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Jelly</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Mustard</td>
+            <td>Jelly</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side</td>
+            <td>Carrots</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Green Beans</td>
+            <td>Northern Beans</td>
+            <td>Mashed Potatoes</td>
+            <td>Pinto Beans</td>
+            <td>Mixed Veggies</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- end week-2 -->
+
+  <!-- ═══════════════ WEEK 3 ═══════════════ -->
+  <div class="week-block" id="week-3">
+    <div class="week-title">Week 3 <span>Monday – Sunday · Repeats every 4 weeks</span></div>
+
+    <div class="meal-section">
+      <div class="meal-label breakfast">Breakfast</div>
+      <table class="menu-table">
+        <thead class="breakfast">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Protein</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg<br><span class="item-side">Sausage</span></td>
+            <td class="item-main">Sausage<br><span class="item-side">Egg · Egg</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Starch</td>
+            <td>Grits</td><td>Oatmeal</td><td>Grits</td><td>Grits</td><td>Oatmeal</td><td>Oatmeal</td><td>Grits</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td>Bread (1 slice)</td><td>—</td><td>Bread (1 slice)</td><td>—</td><td>Bread (1 slice)</td><td>—</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dairy</td>
+            <td>—</td><td>Milk</td><td>—</td><td>Milk</td><td>—</td><td>—</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="meal-section">
+      <div class="meal-label lunch">Lunch — Hot Meals</div>
+      <table class="menu-table">
+        <thead class="lunch">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Entrée</td>
+            <td class="item-main">Lasagna</td>
+            <td class="item-main">Spaghetti w/ Meat Sauce</td>
+            <td class="item-main">White Parboiled Rice</td>
+            <td class="item-main">Chicken &amp; Rice Casserole</td>
+            <td class="item-main">Red Beans &amp; Rice w/ Chicken</td>
+            <td class="item-main">Beef Mac</td>
+            <td class="item-main">Chicken Tezz</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 1</td>
+            <td>Pinto Beans</td>
+            <td>Carrots</td>
+            <td>White Parboiled Rice</td>
+            <td>Pasta Salad</td>
+            <td>Green Beans</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Carrots</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 2</td>
+            <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+            <td>White Parboiled Rice</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td colspan="7" style="text-align:center" class="cake-sm">Yellow Cake (Regular) — all days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="meal-section">
+      <div class="meal-label dinner">Dinner — Sandwiches</div>
+      <table class="menu-table">
+        <thead class="dinner">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Sandwich</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">PB&amp;J</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">Chicken Patty</td>
+            <td class="item-main">Turkey</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Bread (2 slices) — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Condiment</td>
+            <td>Mustard</td><td>Mustard</td><td>Jelly</td><td>Mustard</td><td>Mustard</td><td>Mustard</td><td>Mustard</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side</td>
+            <td>Green Beans</td>
+            <td>Mashed Potatoes</td>
+            <td>Carrots</td>
+            <td>Northern Beans</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Green Beans</td>
+            <td>Mixed Veggies</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- end week-3 -->
+
+  <!-- ═══════════════ WEEK 4 ═══════════════ -->
+  <div class="week-block" id="week-4">
+    <div class="week-title">Week 4 <span>Monday – Sunday · Repeats every 4 weeks</span></div>
+
+    <div class="meal-section">
+      <div class="meal-label breakfast">Breakfast</div>
+      <table class="menu-table">
+        <thead class="breakfast">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Protein</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg</td>
+            <td class="item-main">Sausage</td>
+            <td class="item-main">Egg<br><span class="item-side">Sausage</span></td>
+            <td class="item-main">Sausage<br><span class="item-side">Egg · Egg</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Starch</td>
+            <td>Grits</td><td>Oatmeal</td><td>Grits</td><td>Grits</td><td>Oatmeal</td><td>Oatmeal</td><td>Grits</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td>Bread (1 slice)</td><td>—</td><td>Bread (1 slice)</td><td>—</td><td>Bread (1 slice)</td><td>—</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dairy</td>
+            <td>—</td><td>Milk</td><td>—</td><td>Milk</td><td>—</td><td>—</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td>—</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="meal-section">
+      <div class="meal-label lunch">Lunch — Hot Meals</div>
+      <table class="menu-table">
+        <thead class="lunch">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Entrée</td>
+            <td class="item-main">Red Beans &amp; Rice w/ Chicken</td>
+            <td class="item-main">Lasagna</td>
+            <td class="item-main">White Bean Chili</td>
+            <td class="item-main">Chicken &amp; Rice Casserole</td>
+            <td class="item-main">Chicken Tezz</td>
+            <td class="item-main">Beef Stroganoff</td>
+            <td class="item-main">Spaghetti w/ Meat Sauce</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 1</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Carrots</td>
+            <td>Carrots</td>
+            <td>Pasta Salad</td>
+            <td>Northern Beans</td>
+            <td>Mixed Veggies</td>
+            <td>Pinto Beans</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side 2</td>
+            <td>—</td>
+            <td>—</td>
+            <td>White Parboiled Rice</td>
+            <td>Pinto Beans</td>
+            <td>Mashed Potatoes</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td colspan="7" style="text-align:center" class="cake-sm">Yellow Cake (Regular) — all days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="meal-section">
+      <div class="meal-label dinner">Dinner — Sandwiches</div>
+      <table class="menu-table">
+        <thead class="dinner">
+          <tr><th></th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th><th>Sunday</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Sandwich</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Chicken Patty</td>
+            <td class="item-main">Turkey</td>
+            <td class="item-main">PB&amp;J</td>
+            <td class="item-main">Salami</td>
+            <td class="item-main">Turkey</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Bread (2 slices) — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Condiment</td>
+            <td>Mustard</td><td>Mustard</td><td>Mustard</td><td>Mustard</td><td>Jelly</td><td>Mustard</td><td>Mustard</td>
+          </tr>
+          <tr>
+            <td class="row-label">Veg / Side</td>
+            <td>Northern Beans</td>
+            <td>Carrots</td>
+            <td>Pinto Beans</td>
+            <td>Green Beans</td>
+            <td>Mashed Potatoes</td>
+            <td>Peas &amp; Carrots</td>
+            <td>Northern Beans</td>
+          </tr>
+          <tr>
+            <td class="row-label">Bread</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Cornbread — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Beverage</td>
+            <td colspan="7" style="text-align:center;color:#64748b">Fortified Beverage — all days</td>
+          </tr>
+          <tr>
+            <td class="row-label">Dessert</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Reg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+            <td class="cake-sm">Yellow Cake (Lg)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><!-- end week-4 -->
+
+</div><!-- doc-body -->
+
+<div class="doc-footer">
+  Industry Standard Food Service &nbsp;·&nbsp; Jefferson County Population Menu &nbsp;·&nbsp; 4-Week Rotation &nbsp;·&nbsp; Printed from menu-analysis.onrender.com
+</div>
+
+<script>
+function showWeek(n, btn) {
+  document.querySelectorAll('.week-block').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('week-' + n).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
