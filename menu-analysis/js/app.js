@@ -766,13 +766,13 @@ function showCeoSection(id) {
 }
 
 function initTabs() {
-  // v2: clear any stale tab preference so bid tracker is visible on first load
+  // v3: clear stale tab preference — default is now menus
   const VER_KEY = 'is_tab_ver';
-  if (localStorage.getItem(VER_KEY) !== '2') {
+  if (localStorage.getItem(VER_KEY) !== '3') {
     localStorage.removeItem(TAB_KEY);
-    localStorage.setItem(VER_KEY, '2');
+    localStorage.setItem(VER_KEY, '3');
   }
-  const saved = localStorage.getItem(TAB_KEY) || 'bids';
+  const saved = localStorage.getItem(TAB_KEY) || 'menus';
   switchTab(saved, false);
 
   // Tab-switching nav links (calculator + all report links)

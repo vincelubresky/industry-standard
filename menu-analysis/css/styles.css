@@ -72,34 +72,72 @@ html { scroll-behavior: smooth; font-size: 16px; }
   --t-slow:         0.4s;
 }
 
-/* === LIGHT MODE OVERRIDES === */
+/* === LIGHT MODE — clean slate/white palette === */
 [data-theme="light"] {
-  --bg-body:        #eef2f7;
-  --bg-surface:     #e4e9f2;
+  --bg-body:        #f1f5f9;
+  --bg-surface:     #ffffff;
   --bg-card:        #ffffff;
-  --bg-card-hover:  #f6f8fc;
+  --bg-card-hover:  #f8fafc;
   --bg-input:       #ffffff;
-  --border:         rgba(0,0,0,0.07);
-  --border-strong:  rgba(0,0,0,0.13);
+  --border:         rgba(0,0,0,0.08);
+  --border-strong:  rgba(0,0,0,0.14);
   --border-accent:  rgba(37,99,235,0.2);
 
-  --text-100: #0a1526;
-  --text-200: #2c4060;
-  --text-300: #556880;
-  --text-400: #8fa0b0;
+  --text-100: #1e293b;
+  --text-200: #475569;
+  --text-300: #64748b;
+  --text-400: #94a3b8;
 
-  --accent-dim:     rgba(59,130,246,0.09);
+  --accent:         #2563eb;
+  --accent-hover:   #1d4ed8;
+  --accent-dim:     rgba(37,99,235,0.08);
+  --accent-glow:    0 0 16px rgba(37,99,235,0.18);
 
-  --green-dim:      rgba(16,185,129,0.08);
-  --red-dim:        rgba(244,63,94,0.08);
-  --amber-dim:      rgba(245,158,11,0.08);
-  --cyan-dim:       rgba(6,182,212,0.08);
-  --purple-dim:     rgba(167,139,250,0.08);
+  --green:          #16a34a;
+  --green-dim:      rgba(22,163,74,0.08);
+  --green-border:   rgba(22,163,74,0.25);
 
-  --shadow-s:       0 1px 4px rgba(0,0,0,0.08);
-  --shadow-m:       0 4px 20px rgba(0,0,0,0.1);
-  --shadow-l:       0 12px 48px rgba(0,0,0,0.14);
+  --red:            #dc2626;
+  --red-dim:        rgba(220,38,38,0.08);
+  --red-border:     rgba(220,38,38,0.25);
+
+  --amber:          #d97706;
+  --amber-dim:      rgba(217,119,6,0.08);
+  --amber-border:   rgba(217,119,6,0.25);
+
+  --cyan:           #0891b2;
+  --cyan-dim:       rgba(8,145,178,0.08);
+
+  --purple:         #7c3aed;
+  --purple-dim:     rgba(124,58,237,0.08);
+
+  --shadow-s:       0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-m:       0 4px 8px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-l:       0 12px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.06);
 }
+
+/* === SIDEBAR — always dark navy, both themes === */
+.sidebar {
+  background: #1e293b !important;
+  border-right-color: rgba(0,0,0,0.22) !important;
+}
+.sidebar .sidebar-header { border-bottom-color: rgba(255,255,255,0.07) !important; }
+.sidebar .sidebar-logo-name { color: #f1f5f9 !important; }
+.sidebar .sidebar-logo-sub  { color: #475569 !important; }
+.sidebar .sidebar-logo-mark { box-shadow: 0 0 12px rgba(59,130,246,0.3) !important; }
+.sidebar .nav-section-label { color: #475569 !important; }
+.sidebar .nav-item           { color: #94a3b8 !important; }
+.sidebar .nav-item:hover     { background: rgba(255,255,255,0.07) !important; color: #e2e8f0 !important; }
+.sidebar .nav-item.active    { background: rgba(37,99,235,0.22) !important; color: #93c5fd !important; }
+.sidebar .nav-item.active::before { background: #60a5fa !important; }
+.sidebar .nav-badge          { background: rgba(255,255,255,0.09) !important; color: #94a3b8 !important; }
+.sidebar .nav-badge.green    { background: rgba(22,163,74,0.18) !important; color: #4ade80 !important; }
+.sidebar .nav-badge.red      { background: rgba(220,38,38,0.18) !important; color: #f87171 !important; }
+.sidebar .nav-badge.amber    { background: rgba(217,119,6,0.18) !important; color: #fbbf24 !important; }
+.sidebar .nav-badge.blue     { background: rgba(37,99,235,0.18) !important; color: #93c5fd !important; }
+.sidebar .sidebar-footer     { border-top-color: rgba(255,255,255,0.07) !important; }
+.sidebar .sidebar-meta       { color: #475569 !important; }
+.sidebar .sidebar-meta strong{ color: #94a3b8 !important; }
 
 /* === BODY === */
 body {
@@ -548,7 +586,8 @@ body {
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 .tab-btn.active i { color: var(--accent); }
 
-[data-theme="light"] .tab-bar { background: #fff; }
+[data-theme="light"] .tab-bar { background: #fff; border-bottom-color: rgba(0,0,0,0.09); }
+[data-theme="light"] .topbar  { background: #fff; border-bottom-color: rgba(0,0,0,0.09); }
 [data-theme="light"] .tab-btn.active { color: var(--accent); }
 
 .content {

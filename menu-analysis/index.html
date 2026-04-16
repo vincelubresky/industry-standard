@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -30,29 +30,18 @@
     </div>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section-label">Overview</div>
+    <div class="nav-section-label">Vendor Analysis</div>
     <a href="#overview" class="nav-item active"><i class="fa-solid fa-chart-line"></i>Overview</a>
-    <div class="nav-section-label">Vendor Comparison</div>
     <a href="#switch-to-shaver" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i>Switch to Shaver<span class="nav-badge red">23</span></a>
     <a href="#keep-with-pfg" class="nav-item"><i class="fa-solid fa-shield-check"></i>Keep with PFG<span class="nav-badge green">6</span></a>
     <a href="#monthly-savings" class="nav-item"><i class="fa-solid fa-piggy-bank"></i>Monthly Savings<span class="nav-badge amber">$1K+</span></a>
-    <div class="nav-section-label">Menu Strategy</div>
-    <a href="#new-items" class="nav-item"><i class="fa-solid fa-circle-plus"></i>New Items to Add<span class="nav-badge">18</span></a>
-    <a href="#menu-assessment" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Menu Assessment</a>
-    <a href="#menu-ideas" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas</a>
-    <a href="#cost-calculator" class="nav-item" data-tab="calculator"><i class="fa-solid fa-calculator"></i>Cost Calculator</a>
-    <a href="#shaver-order-list" class="nav-item"><i class="fa-solid fa-clipboard-check"></i>Shaver Order List<span class="nav-badge green">32</span></a>
-    <a href="#menu-order-list" class="nav-item"><i class="fa-solid fa-cart-shopping"></i>Menu Order List<span class="nav-badge blue">29</span></a>
+    <a href="#new-items" class="nav-item"><i class="fa-solid fa-circle-plus"></i>New Items<span class="nav-badge">18</span></a>
     <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
-    <div class="nav-section-label">Reference</div>
-    <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Full Shaver Catalog</a>
-    <a href="population-menu.html" target="_blank" class="nav-item"><i class="fa-solid fa-print"></i>Printable Menu <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="lunch-proteins.html" target="_blank" class="nav-item"><i class="fa-solid fa-drumstick-bite"></i>Lunch Proteins <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="menu-items.html" target="_blank" class="nav-item"><i class="fa-solid fa-list-ul"></i>Menu Item Catalog <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="menu-ideas.html" target="_blank" class="nav-item"><i class="fa-solid fa-lightbulb"></i>New Menu Ideas <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="menu-recipes.html" target="_blank" class="nav-item"><i class="fa-solid fa-utensils"></i>Recipes <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="shaver-order-list.html" target="_blank" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Shaver Order List <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
-    <a href="vendor-order-guide.html" target="_blank" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i>Vendor Order Guide <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.6"></i></a>
+    <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Shaver Catalog</a>
+    <div class="nav-section-label">Documents</div>
+    <a href="population-menu.html" target="_blank" class="nav-item"><i class="fa-solid fa-utensils"></i>Printable Menu <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
+    <a href="vendor-order-guide.html" target="_blank" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i>Vendor Order Guide <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
+    <a href="shaver-order-list.html" target="_blank" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Shaver Order List <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <div class="nav-section-label" data-tab="menus">Menus</div>
     <a href="#menu-rotation" class="nav-item" data-tab="menus"><i class="fa-solid fa-calendar-week"></i>4-Week Rotation</a>
     <a href="#meal-ideas" class="nav-item" data-tab="menus"><i class="fa-solid fa-lightbulb"></i>Meal Ideas Library</a>
@@ -125,14 +114,14 @@
 
   <!-- ══════════ TAB BAR ══════════ -->
   <div class="tab-bar" id="tabBar">
-    <button class="tab-btn active" data-tab="bids" onclick="switchTab('bids')">
-      <i class="fa-solid fa-gavel"></i>Bid Tracker
-    </button>
-    <button class="tab-btn" data-tab="menus" onclick="switchTab('menus')">
+    <button class="tab-btn active" data-tab="menus" onclick="switchTab('menus')">
       <i class="fa-solid fa-utensils"></i>Menus
     </button>
     <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-chart-line"></i>Vendor Analysis
+    </button>
+    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
+      <i class="fa-solid fa-gavel"></i>Bid Tracker
     </button>
     <button class="tab-btn" data-tab="calculator" onclick="switchTab('calculator')">
       <i class="fa-solid fa-calculator"></i>Cost Calculator
