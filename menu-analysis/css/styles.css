@@ -70,6 +70,19 @@ html { scroll-behavior: smooth; font-size: 16px; }
   --t-fast:         0.15s;
   --t-med:          0.25s;
   --t-slow:         0.4s;
+
+  /* ── Legacy variable aliases — component CSS uses these names ── */
+  --card-bg:        var(--bg-card);
+  --bg-alt:         var(--bg-card-hover);
+  --bg-1:           var(--bg-surface);
+  --bg-2:           var(--bg-card);
+  --bg-3:           var(--bg-card-hover);
+  --text:           var(--text-100);
+  --text-muted:     var(--text-300);
+  --text-secondary: var(--text-300);
+  --text-500:       var(--text-200);
+  --success:        var(--green);
+  --radius:         var(--radius-m);
 }
 
 /* === LIGHT MODE — clean slate/white palette === */

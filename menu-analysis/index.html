@@ -67,6 +67,11 @@
     <a href="#cafe-bessemer-plan" class="nav-item" data-tab="cafe"><i class="fa-solid fa-store"></i>Bessemer Plan<span class="nav-badge red">3</span></a>
     <a href="#cafe-ingredients" class="nav-item" data-tab="cafe"><i class="fa-solid fa-list-check"></i>Ingredient Costs</a>
     <a href="#cafe-rotation" class="nav-item" data-tab="cafe"><i class="fa-solid fa-calendar-week"></i>4-Week Menu</a>
+    <div class="nav-section-label" data-tab="pop">Population</div>
+    <a href="#pop-overview" class="nav-item" data-tab="pop"><i class="fa-solid fa-chart-pie"></i>Overview<span class="nav-badge red">44.8%</span></a>
+    <a href="#pop-location-breakdown" class="nav-item" data-tab="pop"><i class="fa-solid fa-scale-balanced"></i>Location Breakdown</a>
+    <a href="#pop-vendor-switches" class="nav-item" data-tab="pop"><i class="fa-solid fa-arrows-rotate"></i>Vendor Switches<span class="nav-badge green">$48K</span></a>
+    <a href="#pop-menu" class="nav-item" data-tab="pop"><i class="fa-solid fa-calendar-week"></i>Menu Rotation</a>
     <div class="nav-section-label" data-tab="bids">Bid Tracker</div>
     <a href="#bids-open"     class="nav-item" data-tab="bids"><i class="fa-solid fa-exclamation-circle"></i>Verify Now<span class="nav-badge amber">1</span></a>
     <a href="#bids-upcoming" class="nav-item" data-tab="bids"><i class="fa-solid fa-calendar-days"></i>Upcoming<span class="nav-badge blue">2</span></a>
@@ -112,6 +117,9 @@
     </button>
     <button class="tab-btn" data-tab="cafe" onclick="switchTab('cafe')">
       <i class="fa-solid fa-mug-hot"></i>Café
+    </button>
+    <button class="tab-btn" data-tab="pop" onclick="switchTab('pop')">
+      <i class="fa-solid fa-building"></i>Population
     </button>
     <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
       <i class="fa-solid fa-gavel"></i>Bids
@@ -1091,7 +1099,7 @@
       <div class="card-header">
         <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--accent)"></i>Revenue by Category — Location Comparison</div>
       </div>
-      <div style="height:260px;padding:8px 0"><canvas id="revChart"></canvas></div>
+      <div style="height:260px;position:relative;padding:8px 16px"><canvas id="revChart"></canvas></div>
     </div>
   </section>
 
@@ -1227,7 +1235,7 @@
       <div class="card-header">
         <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--red)"></i>COGS % by Category — Birmingham vs Bessemer</div>
       </div>
-      <div style="height:240px;padding:8px 0"><canvas id="cogsChart"></canvas></div>
+      <div style="height:240px;position:relative;padding:8px 16px"><canvas id="cogsChart"></canvas></div>
     </div>
   </section>
 
@@ -1772,6 +1780,66 @@
       </div>
     </div>
     <div id="cafe-rotation-container"></div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       POPULATION TAB
+  ══════════════════════════════════════ -->
+
+  <!-- Population Overview -->
+  <section class="section pop-section" style="display:none" id="pop-overview">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)"><i class="fa-solid fa-building"></i></div>
+        <div>
+          <div class="section-title">Population Food Service Overview</div>
+          <div class="section-subtitle">Birmingham + Bessemer · week of April 6–12, 2026</div>
+        </div>
+      </div>
+    </div>
+    <div id="pop-overview-container"></div>
+  </section>
+
+  <!-- Population Location Breakdown -->
+  <section class="section pop-section" style="display:none" id="pop-location-breakdown">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div>
+          <div class="section-title">Location Breakdown</div>
+          <div class="section-subtitle">Birmingham vs Bessemer · food cost comparison</div>
+        </div>
+      </div>
+    </div>
+    <div id="pop-location-container"></div>
+  </section>
+
+  <!-- Population Vendor Switch Opportunities -->
+  <section class="section pop-section" style="display:none" id="pop-vendor-switches">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#ca8a04,#f59e0b)"><i class="fa-solid fa-arrows-rotate"></i></div>
+        <div>
+          <div class="section-title">Vendor Switch Opportunities</div>
+          <div class="section-subtitle">23 items cheaper at Shaver · $1,146+/month savings</div>
+        </div>
+      </div>
+    </div>
+    <div id="pop-vendor-container"></div>
+  </section>
+
+  <!-- Population Menu Rotation -->
+  <section class="section pop-section" style="display:none" id="pop-menu">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:linear-gradient(135deg,#059669,#10b981)"><i class="fa-solid fa-utensils"></i></div>
+        <div>
+          <div class="section-title">2-Week Menu Rotation</div>
+          <div class="section-subtitle">Inmate population · breakfast, lunch &amp; dinner</div>
+        </div>
+      </div>
+    </div>
+    <div id="pop-menu-container"></div>
   </section>
 
   </div><!-- /content -->

@@ -688,6 +688,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.cafe-section').forEach(s => {
     s.style.display = (tab === 'cafe') ? 'block' : 'none';
   });
+  document.querySelectorAll('.pop-section').forEach(s => {
+    s.style.display = (tab === 'pop') ? 'block' : 'none';
+  });
   // CEO tab: show only summary by default; sub-sections shown via showCeoSection()
   document.querySelectorAll('.ceo-section').forEach(s => s.style.display = 'none');
   if (tab === 'ceo') {
@@ -716,6 +719,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.nav-section-label[data-tab="cafe"], .nav-item[data-tab="cafe"]').forEach(el => {
     el.style.display = (tab === 'cafe') ? '' : 'none';
   });
+  document.querySelectorAll('.nav-section-label[data-tab="pop"], .nav-item[data-tab="pop"]').forEach(el => {
+    el.style.display = (tab === 'pop') ? '' : 'none';
+  });
   document.querySelectorAll('.nav-section-label[data-tab="ceo"], .nav-item[data-tab="ceo"]').forEach(el => {
     el.style.display = (tab === 'ceo') ? '' : 'none';
   });
@@ -736,6 +742,10 @@ function switchTab(tab, persist = true) {
   }
   if (tab === 'cafe') {
     const el = document.querySelector('.nav-item[href="#cafe-overview"]');
+    if (el) el.classList.add('active');
+  }
+  if (tab === 'pop') {
+    const el = document.querySelector('.nav-item[href="#pop-overview"]');
     if (el) el.classList.add('active');
   }
   if (tab === 'ceo') {
@@ -766,11 +776,11 @@ function showCeoSection(id) {
 }
 
 function initTabs() {
-  // v4: clear stale tab preference — default is now Summary (ceo)
+  // v5: Population tab added
   const VER_KEY = 'is_tab_ver';
-  if (localStorage.getItem(VER_KEY) !== '4') {
+  if (localStorage.getItem(VER_KEY) !== '5') {
     localStorage.removeItem(TAB_KEY);
-    localStorage.setItem(VER_KEY, '4');
+    localStorage.setItem(VER_KEY, '5');
   }
   const saved = localStorage.getItem(TAB_KEY) || 'ceo';
   switchTab(saved, false);
@@ -817,8 +827,19 @@ function initTabs() {
     });
   });
 
+  // Population nav links — switch to population tab then scroll to section
+  document.querySelectorAll('.nav-item[href^="#pop-"]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      switchTab('pop');
+      const target = document.getElementById(el.getAttribute('href').slice(1));
+      if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120);
+      if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
+    });
+  });
+
   // Analysis links → switch to analysis tab then scroll to section
-  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab]):not([href^="#report-"]):not([href^="#cafe-"])').forEach(el => {
+  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab]):not([href^="#report-"]):not([href^="#cafe-"]):not([href^="#pop-"])').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
       switchTab('analysis');
@@ -2603,6 +2624,255 @@ function renderCafeAnalysis() {
   renderCafeRotation();
 }
 
+/* ── Population Analysis ──────────────────────────────────── */
+function renderPopulationOverview() {
+  const el = document.getElementById('pop-overview-container');
+  if (!el) return;
+
+  const birm = REPORT.locations.birmingham;
+  const bes  = REPORT.locations.bessemer;
+  const birmPopCogs = birm.materialCOGS.items.find(i => i.cat === 'Population');
+  const besPopCogs  = bes.materialCOGS.items.find(i => i.cat === 'Population');
+  const birmRevPop  = birm.revenue.items.find(i => i.cat === 'Population');
+  const besRevPop   = bes.revenue.items.find(i => i.cat === 'Population');
+
+  const totalRev  = birmRevPop.amount + besRevPop.amount;
+  const totalCogs = birmPopCogs.amount + besPopCogs.amount;
+  const combinedPct = (totalCogs / totalRev) * 100;
+
+  // ~1,150 daily avg, 3 meals/day = 8,050 meals/week
+  const dailyPop = 1150;
+  const weeklyMeals = dailyPop * 7;
+  const costPerMeal = totalCogs / weeklyMeals;
+  const targetPerMeal = 0.54;
+
+  const cogsBirmColor = birmPopCogs.pct <= 35 ? '#16a34a' : birmPopCogs.pct <= 45 ? '#ca8a04' : '#dc2626';
+  const cogsBeColor   = besPopCogs.pct  <= 35 ? '#16a34a' : besPopCogs.pct  <= 45 ? '#ca8a04' : '#dc2626';
+
+  const stats = [
+    { label: "Birmingham Food Cost",  value: birmPopCogs.pct.toFixed(1)+'%',  icon: "fa-building",   color: cogsBirmColor, note: "week of Apr 6–12 · target ≤35%" },
+    { label: "Bessemer Food Cost",    value: besPopCogs.pct.toFixed(1)+'%',   icon: "fa-store",      color: cogsBeColor,  note: "week of Apr 6–12 · target ≤35%" },
+    { label: "Actual Cost Per Meal",  value: '$'+costPerMeal.toFixed(2),       icon: "fa-utensils",   color: "#dc2626",    note: 'vs $'+targetPerMeal.toFixed(2)+' target · '+dailyPop.toLocaleString()+' daily population' },
+    { label: "Annual Shaver Savings", value: '$'+CEO_DATA.lines[0].annualSavings.toLocaleString(), icon: "fa-piggy-bank", color: "#16a34a", note: "23 items confirmed cheaper · full vendor transition" }
+  ];
+
+  el.innerHTML = `
+    <div class="cafe-stats-grid">
+      ${stats.map(s => `
+        <div class="cafe-stat-card">
+          <div class="cafe-stat-icon" style="background:${s.color}20;color:${s.color}"><i class="fa-solid ${s.icon}"></i></div>
+          <div class="cafe-stat-body">
+            <div class="cafe-stat-value" style="color:${s.color}">${s.value}</div>
+            <div class="cafe-stat-label">${s.label}</div>
+            <div class="cafe-stat-note">${s.note}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="cafe-alert-banner">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div>
+        <strong>Population is the business anchor — 73% of total revenue · $${totalRev.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}/week combined.</strong>
+        Birmingham sits at a healthy ${birmPopCogs.pct.toFixed(1)}% COGS. Bessemer at ${besPopCogs.pct.toFixed(1)}% remains above the 35% target.
+        At $${costPerMeal.toFixed(2)}/meal actual vs $${targetPerMeal.toFixed(2)} target, the primary lever is completing the Shaver vendor transition —
+        23 confirmed items with $1,146+/month in savings.
+      </div>
+    </div>`;
+}
+
+function renderPopulationLocationBreakdown() {
+  const el = document.getElementById('pop-location-container');
+  if (!el) return;
+
+  const birm = REPORT.locations.birmingham;
+  const bes  = REPORT.locations.bessemer;
+  const birmPopCogs = birm.materialCOGS.items.find(i => i.cat === 'Population');
+  const besPopCogs  = bes.materialCOGS.items.find(i => i.cat === 'Population');
+  const birmRevPop  = birm.revenue.items.find(i => i.cat === 'Population');
+  const besRevPop   = bes.revenue.items.find(i => i.cat === 'Population');
+  const birmNet     = birm.detailedNet.find(i => i.cat === 'Population');
+  const besNet      = bes.detailedNet.find(i => i.cat === 'Population');
+
+  const totalRev  = birmRevPop.amount + besRevPop.amount;
+  const totalCogs = birmPopCogs.amount + besPopCogs.amount;
+  const totalNet  = birmNet.amount + besNet.amount;
+  const combinedCogsPct = (totalCogs / totalRev) * 100;
+  const combinedNetPct  = (totalNet  / totalRev) * 100;
+
+  const fmt = n => '$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  const pctBadge = (pct, threshold=35) => {
+    const color = pct <= threshold ? '#16a34a' : pct <= 45 ? '#ca8a04' : '#dc2626';
+    const label = pct <= threshold ? 'Healthy' : pct <= 45 ? 'Watch' : 'High';
+    return `<span class="cafe-pct-badge" style="background:${color}20;color:${color};border-color:${color}40">${pct.toFixed(1)}% <span class="cafe-pct-lbl">${label}</span></span>`;
+  };
+  const netBadge = pct => `<span class="cafe-pct-badge" style="background:#16a34a20;color:#16a34a;border-color:#16a34a40">${pct.toFixed(1)}%</span>`;
+
+  el.innerHTML = `
+    <div class="cafe-table-wrap">
+      <table class="cafe-fin-table">
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Weekly Revenue</th>
+            <th>Food Cost (COGS)</th>
+            <th>COGS %</th>
+            <th>Net Income</th>
+            <th>Net %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cafe-week-cell"><i class="fa-solid fa-building" style="color:#1d4ed8;margin-right:6px"></i><strong>Birmingham</strong></td>
+            <td>${fmt(birmRevPop.amount)}</td>
+            <td>${fmt(birmPopCogs.amount)}</td>
+            <td>${pctBadge(birmPopCogs.pct)}</td>
+            <td>${fmt(birmNet.amount)}</td>
+            <td>${netBadge(birmNet.pct)}</td>
+          </tr>
+          <tr>
+            <td class="cafe-week-cell"><i class="fa-solid fa-store" style="color:#ea580c;margin-right:6px"></i><strong>Bessemer</strong></td>
+            <td>${fmt(besRevPop.amount)}</td>
+            <td>${fmt(besPopCogs.amount)}</td>
+            <td>${pctBadge(besPopCogs.pct)}</td>
+            <td>${fmt(besNet.amount)}</td>
+            <td>${netBadge(besNet.pct)}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="cafe-fin-avg">
+            <td><strong>Combined</strong></td>
+            <td><strong>${fmt(totalRev)}</strong></td>
+            <td><strong>${fmt(totalCogs)}</strong></td>
+            <td>${pctBadge(combinedCogsPct)}</td>
+            <td><strong>${fmt(totalNet)}</strong></td>
+            <td>${netBadge(combinedNetPct)}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="cafe-legend" style="margin-top:16px">
+      <span class="cafe-leg-item" style="color:#16a34a"><i class="fa-solid fa-circle" style="font-size:8px"></i> ≤35% Healthy</span>
+      <span class="cafe-leg-item" style="color:#ca8a04"><i class="fa-solid fa-circle" style="font-size:8px"></i> 36–45% Watch</span>
+      <span class="cafe-leg-item" style="color:#dc2626"><i class="fa-solid fa-circle" style="font-size:8px"></i> >45% High</span>
+    </div>
+    <div class="cafe-alert-banner" style="margin-top:20px;background:#1d4ed815;border-color:#1d4ed830">
+      <i class="fa-solid fa-circle-info" style="color:#1d4ed8"></i>
+      <div>
+        <strong>Birmingham carries ${((birmRevPop.amount/totalRev)*100).toFixed(0)}% of population revenue</strong> and is the more cost-efficient operation at ${birmPopCogs.pct.toFixed(1)}% COGS.
+        Bessemer's higher COGS% (${besPopCogs.pct.toFixed(1)}%) on a smaller revenue base ($${(besRevPop.amount/1000).toFixed(0)}K/week) creates the most addressable savings opportunity.
+        The Shaver switch list targets both locations with no menu changes required.
+      </div>
+    </div>`;
+}
+
+function renderPopulationVendorSwitches() {
+  const el = document.getElementById('pop-vendor-container');
+  if (!el) return;
+
+  const highItems = DATA.switchToShaver.filter(i => i.priority === 'high');
+  const medItems  = DATA.switchToShaver.filter(i => i.priority === 'med');
+  const lowItems  = DATA.switchToShaver.filter(i => i.priority === 'low');
+  const totalMonthly = DATA.monthlySavings.find(i => i.isTotal);
+
+  const renderItem = i => {
+    const savings = i.savings
+      ? `<span style="color:#16a34a;font-weight:600">−$${i.savings.toFixed(2)}/cs</span>`
+      : (i.note ? `<span style="color:#16a34a;font-weight:600">${i.note.split('—')[0].trim()}</span>` : '—');
+    const noteHtml = i.note ? `<div class="cafe-ing-note"><i class="fa-solid fa-circle-info"></i> ${i.note}</div>` : '';
+    const priorityColor = { high: '#dc2626', med: '#ca8a04', low: '#4b5563' };
+    const rowStyle = i.priority === 'high' ? 'background:var(--bg-card-hover,#f8fafc)' : '';
+    return `<tr style="${rowStyle}">
+      <td>${i.item}${noteHtml}</td>
+      <td>$${i.pfgPrice.toFixed(2)} / ${i.pfgUnit}</td>
+      <td>$${i.shaverPrice.toFixed(2)} / ${i.shaverUnit}</td>
+      <td>${savings}</td>
+      <td><span style="background:${priorityColor[i.priority]}15;color:${priorityColor[i.priority]};border:1px solid ${priorityColor[i.priority]}30;border-radius:5px;padding:2px 7px;font-size:11px;font-weight:600;white-space:nowrap">${i.priority === 'high' ? 'High' : i.priority === 'med' ? 'Med' : 'Low'}</span></td>
+    </tr>`;
+  };
+
+  el.innerHTML = `
+    <div class="cafe-opp-summary">
+      <div class="cafe-opp-summary-inner">
+        <span class="cafe-opp-summary-label">Total Monthly Savings — Full Shaver Transition</span>
+        <span class="cafe-opp-summary-range">$${totalMonthly.monthlySavings.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}+/month</span>
+        <span class="cafe-opp-summary-note">23 items confirmed cheaper · $${CEO_DATA.lines[0].annualSavings.toLocaleString()}/year</span>
+      </div>
+    </div>
+    <div class="cafe-table-wrap" style="margin-top:20px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <span style="background:#dc262615;color:#dc2626;border:1px solid #dc262630;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600">High Impact (${highItems.length})</span>
+        <span style="background:#ca8a0415;color:#ca8a04;border:1px solid #ca8a0430;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600">Medium (${medItems.length})</span>
+        <span style="background:#4b556315;color:#4b5563;border:1px solid #4b556330;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600">Low (${lowItems.length})</span>
+      </div>
+      <table class="cafe-fin-table">
+        <thead>
+          <tr><th>Item</th><th>PFG Price</th><th>Shaver Price</th><th>Savings</th><th>Priority</th></tr>
+        </thead>
+        <tbody>
+          ${[...highItems, ...medItems, ...lowItems].map(renderItem).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="cafe-ing-footnote" style="margin-top:16px">
+      <i class="fa-solid fa-info-circle"></i> Prices from PFG Invoice #6776963 (04/07/26) and Shaver ISP (03/01–03/31/26). Verify current Shaver pricing before placing order.
+    </div>`;
+}
+
+function renderPopulationMenu() {
+  const el = document.getElementById('pop-menu-container');
+  if (!el) return;
+
+  el.innerHTML = `
+    <div style="margin-bottom:20px">
+      <a href="population-menu.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--accent,#2563eb);color:#fff;border-radius:8px;padding:10px 20px;font-size:14px;font-weight:600;text-decoration:none">
+        <i class="fa-solid fa-file-alt"></i> Full Printable Menu
+        <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;opacity:0.8"></i>
+      </a>
+    </div>
+    <div class="cafe-alert-banner" style="background:#1d4ed815;border-color:#1d4ed830;margin-bottom:24px">
+      <i class="fa-solid fa-circle-info" style="color:#1d4ed8"></i>
+      <div>
+        <strong>2-week rotating menu · 3 meals/day · ~1,150 daily population.</strong>
+        Breakfast: fortified beverage + hot protein + bread. Lunch: sandwich + vegetable + starch + dessert.
+        Dinner: hot entrée + vegetable side + dessert.
+      </div>
+    </div>
+    <div class="cafe-table-wrap">
+      <table class="cafe-fin-table">
+        <thead>
+          <tr><th>Meal</th><th>Components</th><th>Key Proteins / Entrées</th><th>Cost Control</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Breakfast</strong></td>
+            <td>Hot protein · Bread · Condiment · Fortified beverage</td>
+            <td>Eggs, Grits, Oatmeal, Toast</td>
+            <td><span class="cafe-status-badge known">Controlled</span></td>
+          </tr>
+          <tr>
+            <td><strong>Lunch</strong></td>
+            <td>Sandwich protein · Bread · Condiment · Vegetable · Starch · Beverage · Dessert</td>
+            <td>Turkey, PB&amp;J, Salami, Chicken Patty, Beef Patty</td>
+            <td><span class="cafe-status-badge known">Controlled</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dinner</strong></td>
+            <td>Hot entrée · Vegetable · Fortified beverage · Dessert</td>
+            <td>Spaghetti w/ Meat Sauce, Lasagna, Beef Mac, Chicken Rice Casserole, Mexican Beef Bowl</td>
+            <td><span class="cafe-pct-badge" style="background:#ca8a0415;color:#ca8a04;border-color:#ca8a0430">Protein Cost</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function renderPopulationAnalysis() {
+  renderPopulationOverview();
+  renderPopulationLocationBreakdown();
+  renderPopulationVendorSwitches();
+  renderPopulationMenu();
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -2618,6 +2888,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderMenuRotation();
   renderMenuOrderList();
   renderCafeAnalysis();
+  renderPopulationAnalysis();
   renderCeoDashboard();
   initScrollSpy();
   initDropdowns();
