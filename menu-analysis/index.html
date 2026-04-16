@@ -90,50 +90,34 @@
   <header class="topbar">
     <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
     <div class="topbar-breadcrumb">
-      <span class="topbar-crumb">Industry Standard</span>
-      <span class="topbar-sep"><i class="fa-solid fa-chevron-right" style="font-size:9px"></i></span>
-      <span class="topbar-crumb">Jefferson County</span>
-      <span class="topbar-sep"><i class="fa-solid fa-chevron-right" style="font-size:9px"></i></span>
-      <span class="topbar-crumb active">Menu Analysis</span>
+      <span class="topbar-crumb" style="font-weight:700;font-size:13.5px;color:var(--text-100)">Industry Standard</span>
+      <span class="topbar-sep" style="opacity:0.35"><i class="fa-solid fa-chevron-right" style="font-size:9px"></i></span>
+      <span class="topbar-crumb active">Jefferson County Jail</span>
     </div>
     <div class="topbar-actions">
       <button class="theme-btn" id="themeBtn" title="Toggle theme"><i class="fa-solid fa-sun"></i></button>
-      <div class="export-wrap" id="exportWrap">
-        <button class="export-btn">
-          <i class="fa-solid fa-file-export"></i><span>Export All</span>
-          <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:2px"></i>
-        </button>
-        <div class="export-dropdown">
-          <button class="export-option excel" onclick="exportExcel()"><i class="fa-solid fa-file-excel"></i>Excel Workbook (.xlsx)</button>
-          <button class="export-option csv"   onclick="exportCSV()"><i class="fa-solid fa-file-csv"></i>CSV File</button>
-          <button class="export-option pdf"   onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i>PDF Report</button>
-        </div>
-      </div>
     </div>
   </header>
 
   <!-- ══════════ TAB BAR ══════════ -->
   <div class="tab-bar" id="tabBar">
-    <button class="tab-btn active" data-tab="menus" onclick="switchTab('menus')">
-      <i class="fa-solid fa-utensils"></i>Menus
+    <button class="tab-btn active" data-tab="ceo" onclick="switchTab('ceo')">
+      <i class="fa-solid fa-gauge-high"></i>Summary
     </button>
-    <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
-      <i class="fa-solid fa-chart-line"></i>Vendor Analysis
-    </button>
-    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
-      <i class="fa-solid fa-gavel"></i>Bid Tracker
-    </button>
-    <button class="tab-btn" data-tab="calculator" onclick="switchTab('calculator')">
-      <i class="fa-solid fa-calculator"></i>Cost Calculator
+    <button class="tab-btn" data-tab="menus" onclick="switchTab('menus')">
+      <i class="fa-solid fa-utensils"></i>Menu
     </button>
     <button class="tab-btn" data-tab="report" onclick="switchTab('report')">
-      <i class="fa-solid fa-file-invoice-dollar"></i>Weekly Report
+      <i class="fa-solid fa-chart-line"></i>Financials
     </button>
     <button class="tab-btn" data-tab="cafe" onclick="switchTab('cafe')">
-      <i class="fa-solid fa-mug-hot"></i>Café Analysis
+      <i class="fa-solid fa-mug-hot"></i>Café
     </button>
-    <button class="tab-btn" data-tab="ceo" onclick="switchTab('ceo')">
-      <i class="fa-solid fa-briefcase"></i>Executive
+    <button class="tab-btn" data-tab="bids" onclick="switchTab('bids')">
+      <i class="fa-solid fa-gavel"></i>Bids
+    </button>
+    <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
+      <i class="fa-solid fa-arrows-rotate"></i>Vendors
     </button>
   </div>
 

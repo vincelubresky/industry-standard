@@ -4091,3 +4091,61 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   .lp-phase-header { flex-wrap:wrap; }
   .lp-phase-savings { text-align:left; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   EXECUTIVE CHEAT SHEET — LAYOUT & VISUAL CLEANUP
+   ═══════════════════════════════════════════════════════ */
+
+/* Remove sidebar — every pixel is content */
+.sidebar,.sidebar-overlay { display:none !important; }
+.main { margin-left:0 !important; transition:none !important; }
+.hamburger { display:none !important; }
+
+/* Topbar — clean, full-width */
+.topbar { padding:0 52px; }
+
+/* Tab bar — full-width, more presence */
+.tab-bar { padding:0 52px; height:50px; }
+.tab-btn { padding:0 26px; font-size:13.5px; font-weight:600; letter-spacing:.01em; gap:8px; }
+[data-theme="light"] .tab-bar { border-bottom:1.5px solid rgba(0,0,0,0.09); }
+
+/* Content — generous whitespace, centered */
+.content { padding:44px 60px; max-width:1200px; }
+
+/* Sections — more breathing room */
+.section { margin-bottom:72px; }
+.section-title { font-size:23px; }
+.section-header { margin-bottom:28px; }
+.section-icon { width:44px; height:44px; font-size:18px; }
+
+/* Stat cards — bigger, more impactful */
+.stats-grid { gap:22px; margin-bottom:44px; grid-template-columns:repeat(4,1fr); }
+.stat-card { padding:28px 26px; gap:20px; border-radius:14px; }
+.stat-value { font-size:34px; margin-bottom:6px; }
+.stat-label { font-size:11.5px; margin-bottom:5px; }
+.stat-note { font-size:12px; }
+.stat-icon { width:50px; height:50px; font-size:22px; }
+
+/* Cards — more padding */
+.card-header { padding:18px 24px; }
+.card-title { font-size:14.5px; }
+
+/* Tables — more readable */
+thead th { padding:13px 18px; font-size:11.5px; }
+tbody td { padding:13px 18px; font-size:13.5px; }
+
+/* Hide per-section export dropdowns — operational noise */
+.sec-export-btn { display:none !important; }
+
+/* Two-column layout more spacious */
+.two-col { gap:24px; }
+
+/* Overview hero — more presence */
+.overview-hero { padding:32px 36px; border-radius:16px; margin-bottom:40px; }
+.overview-title { font-size:26px; }
+.overview-subtitle { font-size:14px; }
+
+/* Assessment grid */
+.assessment-grid { gap:24px; }
+.assessment-item { padding:18px 24px; }
+

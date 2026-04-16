@@ -766,13 +766,13 @@ function showCeoSection(id) {
 }
 
 function initTabs() {
-  // v3: clear stale tab preference — default is now menus
+  // v4: clear stale tab preference — default is now Summary (ceo)
   const VER_KEY = 'is_tab_ver';
-  if (localStorage.getItem(VER_KEY) !== '3') {
+  if (localStorage.getItem(VER_KEY) !== '4') {
     localStorage.removeItem(TAB_KEY);
-    localStorage.setItem(VER_KEY, '3');
+    localStorage.setItem(VER_KEY, '4');
   }
-  const saved = localStorage.getItem(TAB_KEY) || 'menus';
+  const saved = localStorage.getItem(TAB_KEY) || 'ceo';
   switchTab(saved, false);
 
   // Tab-switching nav links (calculator + all report links)
