@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Order Guide — Shaver & PFG</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --navy:#0f172a;--navy2:#1e293b;--border:#e2e8f0;--bg:#f8fafc;--text:#0f172a;--muted:#64748b;
+  --shv:#1d4ed8;--shv-bg:#dbeafe;--shv-bd:#bfdbfe;
+  --pfg:#c2410c;--pfg-bg:#ffedd5;--pfg-bd:#fed7aa;
+  --green:#15803d;--green-bg:#dcfce7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.4}
+
+/* ── Top bar ── */
+.top-bar{background:var(--navy);color:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.top-bar a{color:#94a3b8;text-decoration:none;font-size:13px;font-weight:600}.top-bar a:hover{color:#fff}
+.btn-print{background:#0369a1;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:13px;font-weight:800;cursor:pointer}.btn-print:hover{background:#0284c7}
+
+/* ── Header ── */
+.doc-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1e3a5f 100%);color:#fff;padding:22px 28px 18px}
+.doc-header h1{font-size:20px;font-weight:900;letter-spacing:-.02em}
+.doc-header p{color:#94a3b8;font-size:13px;margin-top:4px}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.meta-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:3px 12px;font-size:11px;color:#e2e8f0}
+
+/* ── Controls ── */
+.controls{background:#fff;border-bottom:2px solid var(--border);padding:12px 24px;display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.ctrl-group{display:flex;align-items:center;gap:10px}
+.ctrl-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ctrl-input{border:1.5px solid var(--border);border-radius:7px;padding:6px 12px;font-size:14px;font-weight:700;width:90px;text-align:center;color:var(--text)}
+.ctrl-input:focus{outline:none;border-color:#2563eb}
+.ctrl-select{border:1.5px solid var(--border);border-radius:7px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--text);background:#fff;cursor:pointer}
+
+/* ── Summary row ── */
+.summary-row{display:flex;gap:0;border-bottom:2px solid var(--border)}
+.sum-box{flex:1;padding:12px 20px;border-right:1px solid var(--border)}
+.sum-box:last-child{border-right:none}
+.sum-val{font-size:18px;font-weight:900;color:var(--navy)}
+.sum-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.sum-box.shv .sum-val{color:var(--shv)}
+.sum-box.pfg .sum-val{color:var(--pfg)}
+.sum-box.total .sum-val{color:var(--green)}
+
+/* ── Content ── */
+.content{padding:20px 24px 60px}
+
+/* ── Vendor section header ── */
+.vendor-hdr{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:8px 8px 0 0;margin-top:30px;margin-bottom:0}
+.vendor-hdr.shv{background:var(--shv);color:#fff}
+.vendor-hdr.pfg{background:var(--pfg);color:#fff}
+.vendor-hdr.cmp{background:var(--navy2);color:#fff}
+.vendor-hdr h2{font-size:15px;font-weight:900;letter-spacing:.01em}
+.vendor-hdr .v-sub{font-size:11px;opacity:.75;margin-left:auto}
+.vendor-hdr:first-child{margin-top:0}
+
+/* ── Order table ── */
+.order-tbl{width:100%;border-collapse:collapse;border:1px solid var(--border);border-top:none}
+.order-tbl thead th{padding:7px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left;border-bottom:2px solid var(--border);background:#f1f5f9;color:var(--navy)}
+.order-tbl thead th.r{text-align:right}
+.order-tbl td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+.order-tbl td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.order-tbl td.green{color:var(--green);font-weight:800}
+.order-tbl td.shv-c{color:var(--shv);font-weight:700}
+.order-tbl td.pfg-c{color:var(--pfg);font-weight:700}
+.order-tbl tr:last-child td{border-bottom:none}
+.order-tbl tr:nth-child(even) td{background:#f8fafc}
+.order-tbl .cat-row td{background:#f1f5f9!important;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:5px 12px}
+.item-note{font-size:10px;color:var(--muted);margin-top:1px}
+
+/* ── Section total row ── */
+.tbl-total{background:var(--navy)!important}
+.tbl-total td{color:#fff!important;font-weight:900!important;font-size:13px!important}
+
+/* ── Comparison table badges ── */
+.badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:800}
+.badge-shv{background:var(--shv-bg);color:var(--shv)}
+.badge-pfg{background:var(--pfg-bg);color:var(--pfg)}
+.badge-save{background:var(--green-bg);color:var(--green)}
+
+/* ── Notes ── */
+.order-notes{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:12px 16px;margin-top:20px;font-size:12px;color:#92400e;line-height:1.7}
+.order-notes strong{color:#713f12}
+
+/* ══════════════════════════════
+   PRINT STYLES — clean 3-page PDF, portrait letter
+══════════════════════════════ */
+@media print{
+  @page{size:letter portrait;margin:.4in}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .top-bar,.controls{display:none!important}
+  body{background:#fff;font-size:10px}
+  .doc-header{padding:8pt 12pt 6pt;background:#0f172a!important}
+  .doc-header h1{font-size:13pt}
+  .doc-header p{font-size:8pt}
+  .meta-row{margin-top:5pt}
+  .summary-row{border-bottom:1.5pt solid #94a3b8}
+  .sum-box{padding:6pt 12pt}
+  .sum-val{font-size:12pt}
+  .sum-lbl{font-size:7pt}
+  .content{padding:6pt 0 0}
+  .vendor-hdr{padding:7pt 10pt;margin-top:14pt;border-radius:4pt 4pt 0 0}
+  .vendor-hdr h2{font-size:11pt}
+  .order-tbl thead th{font-size:8pt;padding:4pt 8pt}
+  .order-tbl td{font-size:8.5pt;padding:4pt 8pt}
+  .order-tbl .cat-row td{font-size:7.5pt;padding:3pt 8pt}
+  .item-note{font-size:7pt}
+  .order-notes{font-size:8pt;padding:6pt 10pt;margin-top:10pt}
+  /* Page breaks */
+  .pg-break{page-break-before:always}
+  /* Keep section together if it fits */
+  .vendor-section{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Dashboard</a>
+  <div style="font-size:13px;font-weight:800;color:#e2e8f0">Jefferson County · Vendor Order Guide</div>
+  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print / Save PDF</button>
+</div>
+
+<div class="doc-header">
+  <h1><i class="fa-solid fa-file-invoice-dollar" style="margin-right:10px;color:#60a5fa"></i>Monthly Vendor Order Guide — Shaver &amp; PFG</h1>
+  <p>Jefferson County Detention · Industry Standard Food Service · Based on 2-Week Population Menu Rotation</p>
+  <div class="meta-row">
+    <span class="meta-pill"><i class="fa-solid fa-calendar" style="margin-right:5px"></i>28-Day / 1-Month Estimate</span>
+    <span class="meta-pill"><i class="fa-solid fa-users" style="margin-right:5px"></i>Adjustable Inmate Count</span>
+    <span class="meta-pill"><i class="fa-solid fa-source" style="margin-right:5px"></i>Shaver ISP List 03/01/26 · PFG Invoice #6776963</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label"><i class="fa-solid fa-users" style="margin-right:4px"></i>Inmate Count</span>
+    <input class="ctrl-input" type="number" id="inmateCount" value="1000" min="100" max="5000" oninput="recalc()">
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label"><i class="fa-solid fa-calendar" style="margin-right:4px"></i>Order Period</span>
+    <select class="ctrl-select" id="orderPeriod" onchange="recalc()">
+      <option value="2">2 Weeks (1 cycle)</option>
+      <option value="4" selected>4 Weeks / 1 Month (2 cycles)</option>
+    </select>
+  </div>
+</div>
+
+<div class="summary-row">
+  <div class="sum-box"><div class="sum-val" id="sumPop">1,000</div><div class="sum-lbl">Inmates</div></div>
+  <div class="sum-box"><div class="sum-val" id="sumDays">28</div><div class="sum-lbl">Days</div></div>
+  <div class="sum-box shv"><div class="sum-val" id="sumShv">—</div><div class="sum-lbl">Est. Shaver Total</div></div>
+  <div class="sum-box pfg"><div class="sum-val" id="sumPfg">—</div><div class="sum-lbl">Est. PFG Total</div></div>
+  <div class="sum-box total"><div class="sum-val" id="sumAll">—</div><div class="sum-lbl">Combined Est. Total</div></div>
+  <div class="sum-box"><div class="sum-val" id="sumPID">—</div><div class="sum-lbl">Est. $/Inmate/Day (both)</div></div>
+</div>
+
+<div class="content" id="mainContent"></div>
+
+<script>
+/* ── Item format: [name, category, pack, $/case, servPerCase, cycleUses, note] ── */
+const SHV_ITEMS = [
+  // Proteins
+  {c:'Proteins',        item:'Chicken Patty BRD 3oz FC',  pack:'40 lb',     price:86.29, spc:213, cu:2,  note:'Lunch · W1 Sat, W2 Thu'},
+  {c:'Proteins',        item:'Salami Logs Chicken',        pack:'2/10 lb',   price:31.82, spc:160, cu:3,  note:'Lunch · W1 Wed, W2 Mon & Sun'},
+
+  // Bakery
+  {c:'Bakery & Mixes',  item:'Bread Wheat Sliced',         pack:'12/28 oz',  price:29.06, spc:120, cu:14, note:'Every lunch sandwich'},
+  {c:'Bakery & Mixes',  item:'Biscuit Mix',                pack:'50 lb',     price:34.90, spc:400, cu:14, note:'Every breakfast · 1 biscuit/person'},
+  {c:'Bakery & Mixes',  item:'Cake Mix Yellow',            pack:'50 lb',     price:40.42, spc:400, cu:14, note:'Every dinner dessert · large or regular portion'},
+  {c:'Bakery & Mixes',  item:'Cookie Mix Oatmeal',         pack:'24/18 ct',  price:20.91, spc:432, cu:2,  note:'Lunch dessert · W1 Mon, W2 Wed'},
+  {c:'Bakery & Mixes',  item:'Cookie Choc Chip',           pack:'24/18 ct',  price:20.91, spc:432, cu:2,  note:'Lunch dessert · W1 Wed, W2 Fri'},
+
+  // Cereals
+  {c:'Cereals',         item:'Grits Quick White',          pack:'50 lb',     price:28.00, spc:533, cu:7,  note:'Breakfast · 7 of 14 days (alternates with oatmeal)'},
+  {c:'Cereals',         item:'Oats Quick',                 pack:'50 lb',     price:28.33, spc:533, cu:7,  note:'Breakfast · 7 of 14 days (alternates with grits)'},
+
+  // Pasta
+  {c:'Pasta',           item:'Pasta Rotini',               pack:'2/10 lb',   price:13.73, spc:160, cu:12, note:'Pasta salad side — 12 meal days/cycle'},
+  {c:'Pasta',           item:'Pasta Spaghetti',            pack:'2/10 lb',   price:13.13, spc:160, cu:2,  note:'Spaghetti w/ Meat Sauce · W1 Mon, W2 Wed'},
+  {c:'Pasta',           item:'Pasta Lasagna Sheets',       pack:'10 lb',     price:13.85, spc:80,  cu:2,  note:'Lasagna entrée · W1 Wed, W2 Tue'},
+  {c:'Pasta',           item:'Pasta Elbow Mac',            pack:'2/10 lb',   price:13.10, spc:160, cu:4,  note:'Beef Mac (W1 Thu, W2 Mon) + Cheesy Chk Mac (W1 Sat, W2 Thu)'},
+  {c:'Pasta',           item:'Cheese Sauce',               pack:'6/#10',     price:48.12, spc:156, cu:4,  note:'Beef Mac + Cheesy Chk Mac — cheddar base sauce'},
+
+  // Rice & Potato
+  {c:'Rice & Potato',   item:'Rice Parboiled',             pack:'50 lb',     price:31.46, spc:400, cu:6,  note:'Side dish + casserole base · W1 Fri, W2 Mon lunch, Thu dinner, etc.'},
+  {c:'Rice & Potato',   item:'Potato Dehy Flakes',         pack:'40 lb',     price:51.62, spc:213, cu:4,  note:'Mashed potato side · W1 Thu lunch, W1 Thu dinner, W2 Sat lunch, W2 Mon dinner'},
+
+  // Canned Beans
+  {c:'Canned Beans',    item:'Beans Black',                pack:'6/#10',     price:31.60, spc:150, cu:2,  note:'Black Bean Beef Bowl · W1 Fri, W2 Fri'},
+  {c:'Canned Beans',    item:'Beans Kidney Red',           pack:'6/#10',     price:33.60, spc:150, cu:2,  note:'Red Beans & Rice w/ Chk · W1 Tue, W2 Sun'},
+  {c:'Canned Beans',    item:'Beans Navy / Northern',      pack:'6/#10',     price:32.71, spc:150, cu:1,  note:'Northern bean side · W2 Mon dinner'},
+  {c:'Canned Beans',    item:'Beans Pinto',                pack:'6/#10',     price:31.46, spc:150, cu:2,  note:'Dinner side · W1 Wed, W2 Wed'},
+
+  // Canned Vegetables
+  {c:'Canned Vegetables',item:'Green Beans Cut',          pack:'6/#10',     price:30.84, spc:150, cu:3,  note:'Dinner side · W1 Mon, W1 Sun, W2 Fri'},
+  {c:'Canned Vegetables',item:'Carrots Sliced',           pack:'6/#10',     price:28.96, spc:150, cu:3,  note:'Dinner side · W1 Tue, W1 Thu, W2 Tue'},
+  {c:'Canned Vegetables',item:'Mixed Vegetables',         pack:'6/#10',     price:33.19, spc:150, cu:3,  note:'Dinner side · W1 Sat, W2 Tue, W2 Sun'},
+  {c:'Canned Vegetables',item:'Tomato Crushed',           pack:'6/#10',     price:29.28, spc:75,  cu:4,  note:'Sauce base · Spaghetti + Beef Bowl (2 days each)'},
+  {c:'Canned Vegetables',item:'Tomato Sauce',             pack:'6/#10',     price:28.89, spc:75,  cu:6,  note:'Sauce base · Spaghetti + Lasagna + Beef Bowl (2 each)'},
+
+  // Condiments
+  {c:'Condiments',      item:'Peanut Butter Creamy',      pack:'35 lb',     price:47.01, spc:747, cu:4,  note:'PB&J lunch · 2 days/wk · .75 oz/person'},
+  {c:'Condiments',      item:'Jelly Assorted 200ct',      pack:'200 LC',    price:9.88,  spc:200, cu:18, note:'Breakfast biscuit (14×/cycle) + PB&J (4×/cycle)'},
+  {c:'Condiments',      item:'Mustard Yellow',            pack:'4/1 gal',   price:23.05, spc:1024,cu:10, note:'Lunch sandwich non-PB&J days · .5 oz/person'},
+  {c:'Condiments',      item:'Mayo',                      pack:'4/1 gal',   price:41.48, spc:512, cu:12, note:'Pasta salad dressing · 12 pasta salad days/cycle'},
+
+  // Beverages
+  {c:'Beverages',       item:'Drink Mix Fortified Dairy', pack:'25 lb',     price:47.37, spc:800, cu:42, note:'Fortified bev · 3 per day (BK + lunch + dinner) × 14 days'},
+];
+
+const PFG_ITEMS = [
+  {c:'Proteins',        item:'Sausage Patty 2oz',         pack:'160 ct',    price:41.60, spc:160, cu:9,  note:'Breakfast · 9 of 14 mornings · PFG Invoice #6776963'},
+  {c:'Proteins',        item:'Eggs Grade A Large',        pack:'30 dz',     price:18.00, spc:360, cu:9,  note:'Breakfast · 9 of 14 mornings (some days both egg + sausage)'},
+  {c:'Proteins',        item:'Turkey Breast Sliced',      pack:'6/2 lb',    price:19.20, spc:96,  cu:3,  note:'Lunch · W1 Mon & Fri, W2 Tue · 2 oz/person'},
+  {c:'Dairy',           item:'Milk ½ Pint',               pack:'50 ct',     price:12.50, spc:50,  cu:5,  note:'Breakfast · 5 of 14 mornings (Tue/Thu W1; Mon/Tue/Thu W2)'},
+  {c:'Bakery',          item:'Tortillas Flour 6"',        pack:'12/24 ct',  price:17.28, spc:144, cu:2,  note:'Black Bean Beef Bowl · W1 Fri, W2 Fri · 2 per person'},
+];
+
+/* ── Comparison table: items where both vendors carry the same product ── */
+const CMP_ITEMS = [
+  /* KEEP PFG — PFG is cheaper */
+  {item:'AP Flour',                pfgPack:'50 lb', pfgPrice:20.44, shvPack:'50 lb', shvPrice:23.61, saves:3.17,  winner:'PFG', note:'Baking base'},
+  {item:'Parboiled Rice',          pfgPack:'50 lb', pfgPrice:26.38, shvPack:'50 lb', shvPrice:31.46, saves:5.08,  winner:'PFG', note:'Currently on Shaver list — consider switching'},
+  {item:'Pinto Beans Dry',         pfgPack:'50 lb', pfgPrice:25.67, shvPack:'50 lb', shvPrice:29.15, saves:3.48,  winner:'PFG', note:'Dry beans option (vs. canned on Shaver list)'},
+  {item:'Cream of Mushroom Soup',  pfgPack:'12 ct', pfgPrice:54.94, shvPack:'12 ct', shvPrice:60.50, saves:5.56,  winner:'PFG', note:'Casserole base'},
+  {item:'Granulated Sugar',        pfgPack:'50 lb', pfgPrice:35.14, shvPack:'50 lb', shvPrice:36.52, saves:1.38,  winner:'PFG', note:'Baking'},
+  /* USE SHAVER — Shaver is cheaper */
+  {item:'Grape Drink Mix',         pfgPack:'1000/1gm',pfgPrice:49.95,shvPack:'1000/1gm',shvPrice:20.63,saves:29.32, winner:'SHV', note:'Exact same product — biggest single savings'},
+  {item:'Great Northern Beans Dry',pfgPack:'50 lb', pfgPrice:56.05, shvPack:'50 lb', shvPrice:39.00, saves:17.05, winner:'SHV', note:'Bean side / soup base'},
+  {item:'Jelly Assorted 200ct',    pfgPack:'200 ct',pfgPrice:19.20, shvPack:'200 LC', shvPrice:9.53,  saves:9.67,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Rotini Pasta',            pfgPack:'2/10 lb',pfgPrice:23.83,shvPack:'2/10 lb',shvPrice:13.73, saves:10.10, winner:'SHV', note:'Already on Shaver list'},
+  {item:'Carrots Sliced Frozen',   pfgPack:'20 lb', pfgPrice:22.43, shvPack:'20 lb', shvPrice:14.34, saves:8.09,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Potato Flakes Dehy',      pfgPack:'40 lb', pfgPrice:59.35, shvPack:'40 lb', shvPrice:51.62, saves:7.73,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Oats / Oatmeal',          pfgPack:'50 lb', pfgPrice:35.15, shvPack:'50 lb', shvPrice:28.33, saves:6.82,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Elbow Macaroni',          pfgPack:'2/10 lb',pfgPrice:19.81,shvPack:'2/10 lb',shvPrice:13.10, saves:6.71,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Cheese Sauce',            pfgPack:'6/#10', pfgPrice:55.09, shvPack:'6/#10', shvPrice:48.12, saves:6.97,  winner:'SHV', note:'Already on Shaver list'},
+  {item:'Yellow Cake Mix',         pfgPack:'50 lb', pfgPrice:42.77, shvPack:'50 lb', shvPrice:40.42, saves:2.35,  winner:'SHV', note:'Already on Shaver list'},
+];
+
+/* ── Helpers ── */
+function getN(){ return parseInt(document.getElementById('inmateCount').value)||1000; }
+function getWks(){ return parseInt(document.getElementById('orderPeriod').value)||4; }
+function getCycles(){ return getWks()/2; }
+function cases(item){ return Math.ceil((getN()*item.cu*getCycles())/item.spc); }
+function fmt$(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtN(v){ return v.toLocaleString(); }
+
+function buildTable(items, colorClass){
+  let html='';
+  let curCat='';
+  let catTotal=0;
+  let catRows='';
+
+  function flushCat(){
+    if(!curCat) return;
+    html+=`<tr class="cat-row"><td colspan="5">${curCat}</td></tr>`;
+    html+=catRows;
+    catRows=''; catTotal=0;
+  }
+
+  items.forEach(item=>{
+    if(item.c!==curCat){ flushCat(); curCat=item.c; }
+    const cs=cases(item);
+    const lt=cs*item.price;
+    catTotal+=lt;
+    catRows+=`<tr>
+      <td><div>${item.item}</div><div class="item-note">${item.note}</div></td>
+      <td class="r">${item.pack}</td>
+      <td class="r ${colorClass}">${fmt$(item.price)}</td>
+      <td class="r">${fmtN(cs)}</td>
+      <td class="r green">${fmt$(lt)}</td>
+    </tr>`;
+  });
+  flushCat();
+  return html;
+}
+
+function buildCmpTable(){
+  const pfgWins = CMP_ITEMS.filter(r=>r.winner==='PFG');
+  const shvWins = CMP_ITEMS.filter(r=>r.winner==='SHV');
+  function rows(arr){
+    return arr.map(r=>`<tr>
+      <td><div>${r.item}</div><div class="item-note">${r.note}</div></td>
+      <td class="r pfg-c">${fmt$(r.pfgPrice)}<div class="item-note">${r.pfgPack}</div></td>
+      <td class="r shv-c">${fmt$(r.shvPrice)}<div class="item-note">${r.shvPack}</div></td>
+      <td class="r"><span class="badge badge-save">Save ${fmt$(r.saves)}/case</span></td>
+      <td class="r"><span class="badge ${r.winner==='PFG'?'badge-pfg':'badge-shv'}">${r.winner==='PFG'?'PFG':'Shaver'}</span></td>
+    </tr>`).join('');
+  }
+  return `<tr class="cat-row"><td colspan="5">Items where PFG is cheaper — keep with PFG</td></tr>
+${rows(pfgWins)}
+<tr class="cat-row"><td colspan="5">Items where Shaver is cheaper — order from Shaver</td></tr>
+${rows(shvWins)}`;
+}
+
+function recalc(){
+  const n=getN(), wks=getWks(), days=wks*7;
+  document.getElementById('sumPop').textContent=fmtN(n);
+  document.getElementById('sumDays').textContent=days;
+
+  const shvTotal=SHV_ITEMS.reduce((s,i)=>s+cases(i)*i.price,0);
+  const pfgTotal=PFG_ITEMS.reduce((s,i)=>s+cases(i)*i.price,0);
+  const combined=shvTotal+pfgTotal;
+  const pid=combined/(n*days);
+
+  document.getElementById('sumShv').textContent=fmt$(shvTotal);
+  document.getElementById('sumPfg').textContent=fmt$(pfgTotal);
+  document.getElementById('sumAll').textContent=fmt$(combined);
+  document.getElementById('sumPID').textContent=fmt$(pid);
+
+  /* ── Shaver section ── */
+  const shvBody=buildTable(SHV_ITEMS,'shv-c');
+  /* ── PFG section ── */
+  const pfgBody=buildTable(PFG_ITEMS,'pfg-c');
+  /* ── Comparison section ── */
+  const cmpBody=buildCmpTable();
+
+  document.getElementById('mainContent').innerHTML=`
+
+    <!-- ════ SHAVER ════ -->
+    <div class="vendor-section">
+      <div class="vendor-hdr shv">
+        <i class="fa-solid fa-box-open"></i>
+        <h2>Shaver Foods / ISP — Monthly Order</h2>
+        <span class="v-sub">ISP Price List 03/01/26 · Cases rounded up · Adjust for stock on hand</span>
+      </div>
+      <table class="order-tbl">
+        <thead><tr>
+          <th style="width:38%">Item</th>
+          <th class="r">Pack</th>
+          <th class="r">$/Case</th>
+          <th class="r">Est. Cases</th>
+          <th class="r">Line Total</th>
+        </tr></thead>
+        <tbody>
+          ${shvBody}
+          <tr class="tbl-total">
+            <td colspan="4" style="font-weight:900">SHAVER ESTIMATED TOTAL — ${days} days · ${fmtN(n)} inmates</td>
+            <td class="r">${fmt$(shvTotal)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ════ PFG ════ -->
+    <div class="vendor-section pg-break">
+      <div class="vendor-hdr pfg">
+        <i class="fa-solid fa-truck"></i>
+        <h2>Performance Food Group (PFG) — Monthly Order</h2>
+        <span class="v-sub">PFG Invoice #6776963 · Verify all pricing vs. current order guide before submitting</span>
+      </div>
+      <table class="order-tbl">
+        <thead><tr>
+          <th style="width:38%">Item</th>
+          <th class="r">Pack</th>
+          <th class="r">$/Case</th>
+          <th class="r">Est. Cases</th>
+          <th class="r">Line Total</th>
+        </tr></thead>
+        <tbody>
+          ${pfgBody}
+          <tr class="tbl-total">
+            <td colspan="4" style="font-weight:900">PFG ESTIMATED TOTAL — ${days} days · ${fmtN(n)} inmates</td>
+            <td class="r">${fmt$(pfgTotal)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="order-notes" style="margin-bottom:24px">
+        <strong>PFG Note:</strong> Case prices above are derived from per-serving costs on PFG Invoice #6776963. Verify exact case pricing and available pack sizes against your current order guide before placing order. Quantities use the same formula as the Shaver list: <em>cases = ⌈(inmates × days served per cycle × cycles) ÷ servings per case⌉</em>.
+      </div>
+    </div>
+
+    <!-- ════ PRICE COMPARISON ════ -->
+    <div class="vendor-section pg-break">
+      <div class="vendor-hdr cmp">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <h2>Vendor Price Comparison — Items Available from Both Vendors</h2>
+        <span class="v-sub">Use this table to confirm which vendor to order from for each item</span>
+      </div>
+      <table class="order-tbl">
+        <thead><tr>
+          <th style="width:32%">Item</th>
+          <th class="r">PFG Price</th>
+          <th class="r">Shaver Price</th>
+          <th class="r">Savings/Case</th>
+          <th class="r">Best Price</th>
+        </tr></thead>
+        <tbody>${cmpBody}</tbody>
+      </table>
+      <div class="order-notes">
+        <strong>Summary:</strong> Items currently on the Shaver order list are already sourced from the lower-cost vendor.
+        The top opportunities still to act on: <strong>switch Drink Mix to Shaver ($29.32/case savings)</strong>,
+        confirm Rice is sourced from PFG ($5.08/case cheaper than Shaver), and keep AP Flour, Sugar, and Cream of Mushroom with PFG.<br><br>
+        <strong>Big Daddy Foods (BD) — order separately:</strong> Ground beef (SEP-4/10), Burger Patties (FG-BC/TVP-20-3.2 100ct/$45.00),
+        Chicken Nuggets (PP90377). BD supplies all ground-beef-based dinner entrees: Spaghetti, Lasagna, Beef Mac, Black Bean Beef Bowl,
+        and all Beef Patty BRD sandwich days. Reference Invoice BA24865.
+      </div>
+    </div>
+  `;
+}
+
+recalc();
+</script>
+</body>
+</html>
