@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vendor Order Guide — Shaver & PFG</title>
+<title>Monthly Order Guide — Shaver & Big Daddy</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
   --navy:#0f172a;--navy2:#1e293b;--border:#e2e8f0;--bg:#f8fafc;--text:#0f172a;--muted:#64748b;
   --shv:#1d4ed8;--shv-bg:#dbeafe;--shv-bd:#bfdbfe;
-  --pfg:#c2410c;--pfg-bg:#ffedd5;--pfg-bd:#fed7aa;
+  --bd:#6d28d9;--bd-bg:#ede9fe;--bd-bd:#ddd6fe;
   --green:#15803d;--green-bg:#dcfce7;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -42,7 +42,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .sum-val{font-size:18px;font-weight:900;color:var(--navy)}
 .sum-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
 .sum-box.shv .sum-val{color:var(--shv)}
-.sum-box.pfg .sum-val{color:var(--pfg)}
+.sum-box.bd  .sum-val{color:var(--bd)}
 .sum-box.total .sum-val{color:var(--green)}
 
 /* ── Content ── */
@@ -65,7 +65,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .order-tbl td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
 .order-tbl td.green{color:var(--green);font-weight:800}
 .order-tbl td.shv-c{color:var(--shv);font-weight:700}
-.order-tbl td.pfg-c{color:var(--pfg);font-weight:700}
+.order-tbl td.bd-c{color:var(--bd);font-weight:700}
 .order-tbl tr:last-child td{border-bottom:none}
 .order-tbl tr:nth-child(even) td{background:#f8fafc}
 .order-tbl .cat-row td{background:#f1f5f9!important;font-weight:900;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:5px 12px}
@@ -78,8 +78,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 /* ── Comparison table badges ── */
 .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:10px;font-weight:800}
 .badge-shv{background:var(--shv-bg);color:var(--shv)}
-.badge-pfg{background:var(--pfg-bg);color:var(--pfg)}
-.badge-save{background:var(--green-bg);color:var(--green)}
+.badge-bd{background:var(--bd-bg);color:var(--bd)}
 
 /* ── Notes ── */
 .order-notes{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:12px 16px;margin-top:20px;font-size:12px;color:#92400e;line-height:1.7}
@@ -120,12 +119,13 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 
 <div class="top-bar">
   <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Dashboard</a>
-  <div style="font-size:13px;font-weight:800;color:#e2e8f0">Jefferson County · Vendor Order Guide</div>
-  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print / Save PDF</button>
+  <div style="font-size:13px;font-weight:800;color:#e2e8f0">Jefferson County · Monthly Order Guide</div>
+  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print</button>
+  <button class="btn-print" onclick="downloadPDF()" style="background:#0f766e;margin-left:6px"><i class="fa-solid fa-file-arrow-down" style="margin-right:6px"></i>Download PDF</button>
 </div>
 
 <div class="doc-header">
-  <h1><i class="fa-solid fa-file-invoice-dollar" style="margin-right:10px;color:#60a5fa"></i>Monthly Vendor Order Guide — Shaver &amp; PFG</h1>
+  <h1><i class="fa-solid fa-file-invoice-dollar" style="margin-right:10px;color:#60a5fa"></i>Monthly Bulk Order Guide — Shaver &amp; Big Daddy Foods</h1>
   <p>Jefferson County Detention · Industry Standard Food Service · Based on 2-Week Population Menu Rotation</p>
   <div class="meta-row">
     <span class="meta-pill"><i class="fa-solid fa-calendar" style="margin-right:5px"></i>28-Day / 1-Month Estimate</span>
@@ -152,15 +152,16 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
   <div class="sum-box"><div class="sum-val" id="sumPop">1,000</div><div class="sum-lbl">Inmates</div></div>
   <div class="sum-box"><div class="sum-val" id="sumDays">28</div><div class="sum-lbl">Days</div></div>
   <div class="sum-box shv"><div class="sum-val" id="sumShv">—</div><div class="sum-lbl">Est. Shaver Total</div></div>
-  <div class="sum-box pfg"><div class="sum-val" id="sumPfg">—</div><div class="sum-lbl">Est. PFG Total</div></div>
+  <div class="sum-box bd"><div class="sum-val" id="sumBd">—</div><div class="sum-lbl">Est. Big Daddy Total</div></div>
   <div class="sum-box total"><div class="sum-val" id="sumAll">—</div><div class="sum-lbl">Combined Est. Total</div></div>
-  <div class="sum-box"><div class="sum-val" id="sumPID">—</div><div class="sum-lbl">Est. $/Inmate/Day (both)</div></div>
+  <div class="sum-box"><div class="sum-val" id="sumPID">—</div><div class="sum-lbl">Est. $/Inmate/Day</div></div>
 </div>
 
 <div class="content" id="mainContent"></div>
 
 <script>
-/* ── Item format: [name, category, pack, $/case, servPerCase, cycleUses, note] ── */
+/* ── Item format: { c, item, pack, price, spc (servings/case), cu (cycle uses), note } ── */
+/* cycleUses = # of the 14 days per rotation cycle where this item is served to every person */
 const SHV_ITEMS = [
   // Proteins
   {c:'Proteins',        item:'Chicken Patty BRD 3oz FC',  pack:'40 lb',     price:86.29, spc:213, cu:2,  note:'Lunch · W1 Sat, W2 Thu'},
@@ -211,33 +212,16 @@ const SHV_ITEMS = [
   {c:'Beverages',       item:'Drink Mix Fortified Dairy', pack:'25 lb',     price:47.37, spc:800, cu:42, note:'Fortified bev · 3 per day (BK + lunch + dinner) × 14 days'},
 ];
 
-const PFG_ITEMS = [
-  {c:'Proteins',        item:'Sausage Patty 2oz',         pack:'160 ct',    price:41.60, spc:160, cu:9,  note:'Breakfast · 9 of 14 mornings · PFG Invoice #6776963'},
-  {c:'Proteins',        item:'Eggs Grade A Large',        pack:'30 dz',     price:18.00, spc:360, cu:9,  note:'Breakfast · 9 of 14 mornings (some days both egg + sausage)'},
-  {c:'Proteins',        item:'Turkey Breast Sliced',      pack:'6/2 lb',    price:19.20, spc:96,  cu:3,  note:'Lunch · W1 Mon & Fri, W2 Tue · 2 oz/person'},
-  {c:'Dairy',           item:'Milk ½ Pint',               pack:'50 ct',     price:12.50, spc:50,  cu:5,  note:'Breakfast · 5 of 14 mornings (Tue/Thu W1; Mon/Tue/Thu W2)'},
-  {c:'Bakery',          item:'Tortillas Flour 6"',        pack:'12/24 ct',  price:17.28, spc:144, cu:2,  note:'Black Bean Beef Bowl · W1 Fri, W2 Fri · 2 per person'},
-];
-
-/* ── Comparison table: items where both vendors carry the same product ── */
-const CMP_ITEMS = [
-  /* KEEP PFG — PFG is cheaper */
-  {item:'AP Flour',                pfgPack:'50 lb', pfgPrice:20.44, shvPack:'50 lb', shvPrice:23.61, saves:3.17,  winner:'PFG', note:'Baking base'},
-  {item:'Parboiled Rice',          pfgPack:'50 lb', pfgPrice:26.38, shvPack:'50 lb', shvPrice:31.46, saves:5.08,  winner:'PFG', note:'Currently on Shaver list — consider switching'},
-  {item:'Pinto Beans Dry',         pfgPack:'50 lb', pfgPrice:25.67, shvPack:'50 lb', shvPrice:29.15, saves:3.48,  winner:'PFG', note:'Dry beans option (vs. canned on Shaver list)'},
-  {item:'Cream of Mushroom Soup',  pfgPack:'12 ct', pfgPrice:54.94, shvPack:'12 ct', shvPrice:60.50, saves:5.56,  winner:'PFG', note:'Casserole base'},
-  {item:'Granulated Sugar',        pfgPack:'50 lb', pfgPrice:35.14, shvPack:'50 lb', shvPrice:36.52, saves:1.38,  winner:'PFG', note:'Baking'},
-  /* USE SHAVER — Shaver is cheaper */
-  {item:'Grape Drink Mix',         pfgPack:'1000/1gm',pfgPrice:49.95,shvPack:'1000/1gm',shvPrice:20.63,saves:29.32, winner:'SHV', note:'Exact same product — biggest single savings'},
-  {item:'Great Northern Beans Dry',pfgPack:'50 lb', pfgPrice:56.05, shvPack:'50 lb', shvPrice:39.00, saves:17.05, winner:'SHV', note:'Bean side / soup base'},
-  {item:'Jelly Assorted 200ct',    pfgPack:'200 ct',pfgPrice:19.20, shvPack:'200 LC', shvPrice:9.53,  saves:9.67,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Rotini Pasta',            pfgPack:'2/10 lb',pfgPrice:23.83,shvPack:'2/10 lb',shvPrice:13.73, saves:10.10, winner:'SHV', note:'Already on Shaver list'},
-  {item:'Carrots Sliced Frozen',   pfgPack:'20 lb', pfgPrice:22.43, shvPack:'20 lb', shvPrice:14.34, saves:8.09,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Potato Flakes Dehy',      pfgPack:'40 lb', pfgPrice:59.35, shvPack:'40 lb', shvPrice:51.62, saves:7.73,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Oats / Oatmeal',          pfgPack:'50 lb', pfgPrice:35.15, shvPack:'50 lb', shvPrice:28.33, saves:6.82,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Elbow Macaroni',          pfgPack:'2/10 lb',pfgPrice:19.81,shvPack:'2/10 lb',shvPrice:13.10, saves:6.71,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Cheese Sauce',            pfgPack:'6/#10', pfgPrice:55.09, shvPack:'6/#10', shvPrice:48.12, saves:6.97,  winner:'SHV', note:'Already on Shaver list'},
-  {item:'Yellow Cake Mix',         pfgPack:'50 lb', pfgPrice:42.77, shvPack:'50 lb', shvPrice:40.42, saves:2.35,  winner:'SHV', note:'Already on Shaver list'},
+/* ── Big Daddy Foods — bulk monthly meat order ── */
+const BD_ITEMS = [
+  {c:'Ground Beef',
+   item:'Ground Beef Blend 80/20 (SEP-4/10)',
+   pack:'4/10 lb',  price:98.00, spc:256, cu:8,
+   note:'Spaghetti (W1 Mon, W2 Wed) · Lasagna (W1 Wed, W2 Tue) · Beef Mac (W1 Thu, W2 Mon) · Black Bean Beef Bowl (W1 Fri, W2 Fri) · ~2.5 oz/serving raw · verify price from current BD invoice'},
+  {c:'Burger Patties',
+   item:'Beef Patty BRD 3oz TVP/Beef Blend (FG-BC/TVP-20-3.2)',
+   pack:'100 ct',   price:45.00, spc:100, cu:2,
+   note:'Lunch sandwich · W1 Sunday, W2 Saturday · Invoice BA24865 · $0.45/patty'},
 ];
 
 /* ── Helpers ── */
@@ -249,23 +233,16 @@ function fmt$(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,m
 function fmtN(v){ return v.toLocaleString(); }
 
 function buildTable(items, colorClass){
-  let html='';
-  let curCat='';
-  let catTotal=0;
-  let catRows='';
-
+  let html='', curCat='', catRows='';
   function flushCat(){
     if(!curCat) return;
-    html+=`<tr class="cat-row"><td colspan="5">${curCat}</td></tr>`;
-    html+=catRows;
-    catRows=''; catTotal=0;
+    html+=`<tr class="cat-row"><td colspan="5">${curCat}</td></tr>`+catRows;
+    catRows='';
   }
-
   items.forEach(item=>{
     if(item.c!==curCat){ flushCat(); curCat=item.c; }
     const cs=cases(item);
     const lt=cs*item.price;
-    catTotal+=lt;
     catRows+=`<tr>
       <td><div>${item.item}</div><div class="item-note">${item.note}</div></td>
       <td class="r">${item.pack}</td>
@@ -278,22 +255,10 @@ function buildTable(items, colorClass){
   return html;
 }
 
-function buildCmpTable(){
-  const pfgWins = CMP_ITEMS.filter(r=>r.winner==='PFG');
-  const shvWins = CMP_ITEMS.filter(r=>r.winner==='SHV');
-  function rows(arr){
-    return arr.map(r=>`<tr>
-      <td><div>${r.item}</div><div class="item-note">${r.note}</div></td>
-      <td class="r pfg-c">${fmt$(r.pfgPrice)}<div class="item-note">${r.pfgPack}</div></td>
-      <td class="r shv-c">${fmt$(r.shvPrice)}<div class="item-note">${r.shvPack}</div></td>
-      <td class="r"><span class="badge badge-save">Save ${fmt$(r.saves)}/case</span></td>
-      <td class="r"><span class="badge ${r.winner==='PFG'?'badge-pfg':'badge-shv'}">${r.winner==='PFG'?'PFG':'Shaver'}</span></td>
-    </tr>`).join('');
-  }
-  return `<tr class="cat-row"><td colspan="5">Items where PFG is cheaper — keep with PFG</td></tr>
-${rows(pfgWins)}
-<tr class="cat-row"><td colspan="5">Items where Shaver is cheaper — order from Shaver</td></tr>
-${rows(shvWins)}`;
+function downloadPDF(){
+  document.title='Jefferson-County-Monthly-Order-Guide';
+  window.print();
+  document.title='Monthly Order Guide — Shaver & Big Daddy';
 }
 
 function recalc(){
@@ -302,21 +267,17 @@ function recalc(){
   document.getElementById('sumDays').textContent=days;
 
   const shvTotal=SHV_ITEMS.reduce((s,i)=>s+cases(i)*i.price,0);
-  const pfgTotal=PFG_ITEMS.reduce((s,i)=>s+cases(i)*i.price,0);
-  const combined=shvTotal+pfgTotal;
+  const bdTotal =BD_ITEMS.reduce((s,i)=>s+cases(i)*i.price,0);
+  const combined=shvTotal+bdTotal;
   const pid=combined/(n*days);
 
   document.getElementById('sumShv').textContent=fmt$(shvTotal);
-  document.getElementById('sumPfg').textContent=fmt$(pfgTotal);
+  document.getElementById('sumBd').textContent=fmt$(bdTotal);
   document.getElementById('sumAll').textContent=fmt$(combined);
   document.getElementById('sumPID').textContent=fmt$(pid);
 
-  /* ── Shaver section ── */
   const shvBody=buildTable(SHV_ITEMS,'shv-c');
-  /* ── PFG section ── */
-  const pfgBody=buildTable(PFG_ITEMS,'pfg-c');
-  /* ── Comparison section ── */
-  const cmpBody=buildCmpTable();
+  const bdBody =buildTable(BD_ITEMS,'bd-c');
 
   document.getElementById('mainContent').innerHTML=`
 
@@ -324,13 +285,13 @@ function recalc(){
     <div class="vendor-section">
       <div class="vendor-hdr shv">
         <i class="fa-solid fa-box-open"></i>
-        <h2>Shaver Foods / ISP — Monthly Order</h2>
-        <span class="v-sub">ISP Price List 03/01/26 · Cases rounded up · Adjust for stock on hand</span>
+        <h2>Shaver Foods / ISP — Monthly Bulk Order</h2>
+        <span class="v-sub">ISP Price List 03/01/26 · Cases rounded up · Adjust qty for stock on hand before ordering</span>
       </div>
       <table class="order-tbl">
         <thead><tr>
-          <th style="width:38%">Item</th>
-          <th class="r">Pack</th>
+          <th style="width:40%">Item</th>
+          <th class="r">Pack Size</th>
           <th class="r">$/Case</th>
           <th class="r">Est. Cases</th>
           <th class="r">Line Total</th>
@@ -338,66 +299,44 @@ function recalc(){
         <tbody>
           ${shvBody}
           <tr class="tbl-total">
-            <td colspan="4" style="font-weight:900">SHAVER ESTIMATED TOTAL — ${days} days · ${fmtN(n)} inmates</td>
+            <td colspan="4">SHAVER ESTIMATED TOTAL — ${days}-day period · ${fmtN(n)} inmates</td>
             <td class="r">${fmt$(shvTotal)}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- ════ PFG ════ -->
-    <div class="vendor-section pg-break">
-      <div class="vendor-hdr pfg">
+    <!-- ════ BIG DADDY ════ -->
+    <div class="vendor-section" style="margin-top:28px">
+      <div class="vendor-hdr" style="background:var(--bd)!important">
         <i class="fa-solid fa-truck"></i>
-        <h2>Performance Food Group (PFG) — Monthly Order</h2>
-        <span class="v-sub">PFG Invoice #6776963 · Verify all pricing vs. current order guide before submitting</span>
+        <h2>Big Daddy Foods — Monthly Bulk Meat Order</h2>
+        <span class="v-sub">Invoice BA24865 · Verify all pricing vs. current invoice before ordering · Ground beef price estimated — confirm with BD rep</span>
       </div>
       <table class="order-tbl">
         <thead><tr>
-          <th style="width:38%">Item</th>
-          <th class="r">Pack</th>
+          <th style="width:40%">Item</th>
+          <th class="r">Pack Size</th>
           <th class="r">$/Case</th>
           <th class="r">Est. Cases</th>
           <th class="r">Line Total</th>
         </tr></thead>
         <tbody>
-          ${pfgBody}
+          ${bdBody}
           <tr class="tbl-total">
-            <td colspan="4" style="font-weight:900">PFG ESTIMATED TOTAL — ${days} days · ${fmtN(n)} inmates</td>
-            <td class="r">${fmt$(pfgTotal)}</td>
+            <td colspan="4">BIG DADDY ESTIMATED TOTAL — ${days}-day period · ${fmtN(n)} inmates</td>
+            <td class="r">${fmt$(bdTotal)}</td>
           </tr>
         </tbody>
       </table>
-      <div class="order-notes" style="margin-bottom:24px">
-        <strong>PFG Note:</strong> Case prices above are derived from per-serving costs on PFG Invoice #6776963. Verify exact case pricing and available pack sizes against your current order guide before placing order. Quantities use the same formula as the Shaver list: <em>cases = ⌈(inmates × days served per cycle × cycles) ÷ servings per case⌉</em>.
-      </div>
     </div>
 
-    <!-- ════ PRICE COMPARISON ════ -->
-    <div class="vendor-section pg-break">
-      <div class="vendor-hdr cmp">
-        <i class="fa-solid fa-scale-balanced"></i>
-        <h2>Vendor Price Comparison — Items Available from Both Vendors</h2>
-        <span class="v-sub">Use this table to confirm which vendor to order from for each item</span>
-      </div>
-      <table class="order-tbl">
-        <thead><tr>
-          <th style="width:32%">Item</th>
-          <th class="r">PFG Price</th>
-          <th class="r">Shaver Price</th>
-          <th class="r">Savings/Case</th>
-          <th class="r">Best Price</th>
-        </tr></thead>
-        <tbody>${cmpBody}</tbody>
-      </table>
-      <div class="order-notes">
-        <strong>Summary:</strong> Items currently on the Shaver order list are already sourced from the lower-cost vendor.
-        The top opportunities still to act on: <strong>switch Drink Mix to Shaver ($29.32/case savings)</strong>,
-        confirm Rice is sourced from PFG ($5.08/case cheaper than Shaver), and keep AP Flour, Sugar, and Cream of Mushroom with PFG.<br><br>
-        <strong>Big Daddy Foods (BD) — order separately:</strong> Ground beef (SEP-4/10), Burger Patties (FG-BC/TVP-20-3.2 100ct/$45.00),
-        Chicken Nuggets (PP90377). BD supplies all ground-beef-based dinner entrees: Spaghetti, Lasagna, Beef Mac, Black Bean Beef Bowl,
-        and all Beef Patty BRD sandwich days. Reference Invoice BA24865.
-      </div>
+    <div class="order-notes" style="margin-top:20px">
+      <strong>Ordering Notes:</strong><br>
+      • <strong>Shaver:</strong> All dry goods, canned goods, bakery, cereals, pasta, condiments, and beverages. One monthly bulk order — cases calculated above ensure full coverage through the 28-day rotation with no mid-month reorder needed.<br>
+      • <strong>Big Daddy:</strong> All ground beef for casserole entrées (Spaghetti, Lasagna, Beef Mac, Black Bean Beef Bowl) and Beef Patty BRD lunch days. Ground beef case price is estimated — confirm with your BD rep before placing order.<br>
+      • <strong>PFG:</strong> Continue weekly ordering as normal for sausage patties, eggs, turkey sliced, milk, and tortillas. No changes to PFG cadence.<br>
+      • <strong>All quantities</strong> are calculated as: <em>⌈(inmates × days served per cycle × cycles) ÷ servings per case⌉</em>, rounded up. Reduce by any quantity currently in stock before ordering.
     </div>
   `;
 }
