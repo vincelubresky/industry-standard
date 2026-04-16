@@ -278,15 +278,26 @@ const I={
   cookieSug:   ['Sugar Cookie',              '1 ea',   115,'SHV',0.07],
 };
 
-/* ── Breakfast (same all 4 weeks) ── */
-const BK=[
-  [I.sausage,I.grits,   I.biscuit,I.jelly,I.fortBev],                     // Mon
-  [I.egg,    I.oatmeal, I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],    // Tue
-  [I.sausage,I.grits,   I.biscuit,I.jelly,I.fortBev],                     // Wed
-  [I.egg,    I.grits,   I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],    // Thu
-  [I.sausage,I.oatmeal, I.biscuit,I.jelly,I.fortBev,I.cakeLg],           // Fri
-  [I.egg,I.sausage,I.oatmeal,I.fortBev,I.cakeLg],                        // Sat
-  [I.sausage,I.egg,I.grits,I.fortBev,I.cakeLg],                          // Sun
+/* ── Breakfast — Week 1: Sausage + Grits forward ── */
+const BK1=[
+  [I.sausage,I.grits,   I.biscuit,I.jelly,I.fortBev],                    // Mon
+  [I.egg,    I.oatmeal, I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],   // Tue
+  [I.sausage,I.grits,   I.biscuit,I.jelly,I.fortBev],                    // Wed
+  [I.egg,    I.grits,   I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],   // Thu
+  [I.sausage,I.oatmeal, I.biscuit,I.jelly,I.fortBev,I.cakeLg],          // Fri
+  [I.egg,    I.sausage, I.oatmeal,I.fortBev,I.cakeLg],                   // Sat
+  [I.sausage,I.egg,     I.grits,  I.fortBev,I.cakeLg],                   // Sun
+];
+
+/* ── Breakfast — Week 2: Egg + Oatmeal forward (visually distinct) ── */
+const BK2=[
+  [I.egg,    I.oatmeal, I.biscuit,I.jelly,I.fortBev],                    // Mon
+  [I.sausage,I.grits,   I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],   // Tue
+  [I.egg,    I.oatmeal, I.biscuit,I.jelly,I.fortBev],                    // Wed
+  [I.sausage,I.oatmeal, I.biscuit,I.jelly,I.milk,I.fortBev,I.cakeLg],   // Thu
+  [I.egg,    I.grits,   I.biscuit,I.jelly,I.fortBev,I.cakeLg],           // Fri
+  [I.sausage,I.egg,     I.grits,  I.fortBev,I.cakeLg],                   // Sat
+  [I.egg,    I.sausage, I.oatmeal,I.fortBev,I.cakeLg],                   // Sun
 ];
 
 /* ── 2-Week Menu ── */
@@ -294,7 +305,7 @@ const BK=[
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const WEEKS=[
   /* ══ WEEK 1 ══ */
-  {title:'Week 1',
+  {title:'Week 1', bk:BK1,
    lunch:[
      // Sandwich + 1 starch + bev + dessert
      // turkey ×2 · PB&J ×2 · salami ×1 · chicken patty ×1 · beef patty ×1
@@ -318,7 +329,7 @@ const WEEKS=[
    ]
   },
   /* ══ WEEK 2 ══ */
-  {title:'Week 2',
+  {title:'Week 2', bk:BK2,
    lunch:[
      // turkey ×1 · PB&J ×2 · salami ×2 · chicken patty ×1 · beef patty ×1
      [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieSug],  // Mon  — salami
@@ -403,7 +414,7 @@ function renderScreen(){
       <div class="week-title">${wk.title} &nbsp;<span style="color:var(--muted);font-size:13px;font-weight:500">Monday – Sunday · 2-week repeating cycle</span></div>
       <div class="days-scroll">`;
     DAYS.forEach((day,di)=>{
-      html+=screenCard(wk.title,day,BK[di],wk.lunch[di],wk.dinner[di]);
+      html+=screenCard(wk.title,day,wk.bk[di],wk.lunch[di],wk.dinner[di]);
     });
     html+=`</div></div>`;
   });
@@ -442,7 +453,7 @@ function renderPrint(){
         <tr>
           <td class="pw-lbl bk">☀<br>BREAK<br>FAST</td>
           ${DAYS.map((_,di)=>{
-            const items=BK[di];
+            const items=wk.bk[di];
             const prot=items.find(it=>it[5]);
             const sides=items.filter(it=>!it[5]);
             return `<td class="pw-cell bk">
