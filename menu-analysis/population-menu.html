@@ -39,7 +39,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 .legend-label{font-size:11px;font-weight:800;color:var(--muted);margin-right:2px}
 .vbadge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:800}
 .v-SHV{background:#dbeafe;color:#1d4ed8}.v-PFG{background:#ffedd5;color:#c2410c}
-.v-BD{background:#ede9fe;color:#6d28d9}.v-IH{background:#dcfce7;color:#15803d}.v-COM{background:#f1f5f9;color:#475569}
+.v-BD{background:#ede9fe;color:#6d28d9}
 .prot-key{font-size:11px;color:var(--prot);font-weight:900;margin-left:10px;padding:2px 10px;background:var(--prot-bg);border-radius:8px;border:1px solid var(--prot-bd)}
 
 /* ══ Week tabs ══ */
@@ -184,10 +184,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <!-- ══ SCREEN: Legend ══ -->
 <div class="legend">
   <span class="legend-label">Vendor:</span>
-  <span class="vbadge v-SHV">SHV</span><span style="font-size:11px;color:#475569">&nbsp;Shaver/ISP&nbsp;&nbsp;</span>
+  <span class="vbadge v-SHV">SHV</span><span style="font-size:11px;color:#475569">&nbsp;Shaver Foods / ISP&nbsp;&nbsp;</span>
   <span class="vbadge v-PFG">PFG</span><span style="font-size:11px;color:#475569">&nbsp;Performance Food Group&nbsp;&nbsp;</span>
-  <span class="vbadge v-IH">IH</span><span style="font-size:11px;color:#475569">&nbsp;In-House&nbsp;&nbsp;</span>
-  <span class="vbadge v-COM">COM</span><span style="font-size:11px;color:#475569">&nbsp;Commodity</span>
+  <span class="vbadge v-BD">BD</span><span style="font-size:11px;color:#475569">&nbsp;Big Daddy Foods</span>
   <span class="prot-key"><i class="fa-solid fa-star" style="font-size:9px;margin-right:4px"></i>★ = Primary Protein</span>
 </div>
 
@@ -214,8 +213,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--te
 <script>
 /* ── Vendor map ── */
 const V={
-  SHV:{l:'SHV',c:'v-SHV'},PFG:{l:'PFG',c:'v-PFG'},
-  BD:{l:'BD',c:'v-BD'},IH:{l:'IH',c:'v-IH'},COM:{l:'COM',c:'v-COM'}
+  SHV:{l:'SHV',c:'v-SHV'},PFG:{l:'PFG',c:'v-PFG'},BD:{l:'BD',c:'v-BD'}
 };
 function vb(k){const v=V[k];return`<span class="vbadge ${v.c}">${v.l}</span>`;}
 function vbp(k){const v=V[k];return`<span class="pitem-vbadge ${v.c}">${v.l}</span>`;}
@@ -226,58 +224,58 @@ function f$(v){return'$'+v.toFixed(2);}
 const P=true;
 const I={
   /* Breakfast proteins */
-  sausage:     ['Turkey Sausage Hot Link','2 oz',   140,'SHV',0.26,P],
-  egg:         ['Boiled Egg',             '1 lg',    70,'PFG',0.05,P],
-  /* Lunch hot entrées — IH = in-house bulk cook, ingredient cost only */
-  spagMeat:    ['Spaghetti w/ Meat Sauce','8 oz',   290,'IH', 0.28,P],
-  chkTacos:    ['Chicken Tacos',          '8 oz',   275,'IH', 0.32,P],
-  chkTezz:     ['Chicken Tezz',          '8 oz',   280,'PFG',0.35,P],
-  rbRiceChk:   ['Red Beans & Rice w/ Chicken','8 oz',260,'IH',0.26,P],
-  lasagna:     ['Lasagna',               '8 oz',   310,'IH', 0.32,P],
-  beefMac:     ['Beef Mac w/ Elbow',     '8 oz',   340,'IH', 0.28,P],
-  whiteBChili: ['White Bean Chili',      '8 oz',   240,'IH', 0.22,P],
-  beefStroga:  ['Beef Stroganoff',       '8 oz',   310,'IH', 0.30,P],
-  cheesyChkMac:['Cheesy Chicken Mac',   '8 oz',   320,'IH', 0.28,P],
-  chkRiceCass: ['Chicken & Rice Casserole','8 oz', 270,'IH', 0.24,P],
+  sausage:     ['Sausage Patty',              '2 oz',   130,'PFG',0.26,P],
+  egg:         ['Boiled Egg',                 '1 lg',    70,'PFG',0.05,P],
+  /* Casserole dinner entrees (in-house assembled from Shaver/BD ingredients) */
+  spagMeat:    ['Spaghetti w/ Meat Sauce',    '8 oz',   290,'BD', 0.28,P],
+  rbRiceChk:   ['Red Beans & Rice w/ Chicken','8 oz',   260,'SHV',0.26,P],
+  lasagna:     ['Lasagna',                    '8 oz',   310,'SHV',0.32,P],
+  whiteBChili: ['White Bean Chili',           '8 oz',   240,'SHV',0.22,P],
+  cheesyChkMac:['Cheesy Chicken Mac',         '8 oz',   320,'SHV',0.28,P],
+  chkRiceCass: ['Chicken & Rice Casserole',   '8 oz',   270,'SHV',0.24,P],
+  chkTatoTot:  ['Chicken Tater Tot Casserole','8 oz',   330,'SHV',0.30,P],
+  mexBeefBowl: ['Black Bean Beef Bowl',       '8 oz',   305,'BD', 0.27,P],
+  /* Unused entrees kept for reference */
+  chkTacos:    ['Chicken Tacos',              '8 oz',   275,'SHV',0.32,P],
+  chkTezz:     ['Chicken Tezz',              '8 oz',   280,'PFG',0.35,P],
+  beefMac:     ['Beef Mac w/ Elbow',         '8 oz',   340,'BD', 0.28,P],
+  beefStroga:  ['Beef Stroganoff',           '8 oz',   310,'BD', 0.30,P],
   /* Lunch sandwich proteins */
-  salami:      ['Salami (Turkey/Chik)',  '2 oz',   100,'SHV',0.18,P],
-  turkey:      ['Turkey (sliced)',       '2 oz',    65,'SHV',0.20,P],
-  chkPatty:    ['Chicken Patty BRD',    '3 oz',   170,'SHV',0.38,P],
-  beefPatty:   ['Beef Patty BRD',       '3 oz',   200,'SHV',0.42,P],
-  pbutter:     ['Peanut Butter',        '.75 oz',  130,'COM',0.08,P],
-  /* Casserole / bowl dinner entrees */
-  chkTatoTot:  ['Chicken Tater Tot Casserole','8 oz',330,'IH',0.30,P],
-  mexBeefBowl: ['Black Bean Beef Bowl',       '8 oz',305,'IH',0.27,P],
+  salami:      ['Salami (Turkey/Chik)',       '2 oz',   100,'SHV',0.18,P],
+  turkey:      ['Turkey (sliced)',            '2 oz',    65,'PFG',0.20,P],
+  chkPatty:    ['Chicken Patty BRD',         '3 oz',   170,'SHV',0.38,P],
+  beefPatty:   ['Beef Patty BRD',            '3 oz',   200,'BD', 0.45,P],
+  pbutter:     ['Peanut Butter',             '.75 oz',  130,'SHV',0.08,P],
   /* Breads & Starches */
-  cornbread:   ['Cornbread',            '1 pc',   180,'IH', 0.08],
-  tortillas:   ['Tortillas',            '2 ea',   180,'COM',0.08],
-  wheatBr2:    ['Wheat Bread',          '2 sl',   160,'COM',0.07],
-  biscuit:     ['Biscuit',              '1 ea',   210,'IH', 0.12],
-  rice4:       ['White Parboiled Rice', '4 oz',   130,'COM',0.06],
-  grits:       ['Butter Grits',         '1 cup',  170,'COM',0.07],
-  oatmeal:     ['Oatmeal',             '1 cup',   155,'COM',0.09],
+  cornbread:   ['Cornbread',                 '1 pc',   180,'SHV',0.08],
+  tortillas:   ['Tortillas',                 '2 ea',   180,'PFG',0.08],
+  wheatBr2:    ['Wheat Bread',               '2 sl',   160,'SHV',0.07],
+  biscuit:     ['Biscuit',                   '1 ea',   210,'SHV',0.12],
+  rice4:       ['White Parboiled Rice',      '4 oz',   130,'SHV',0.06],
+  grits:       ['Butter Grits',              '1 cup',  170,'SHV',0.07],
+  oatmeal:     ['Oatmeal',                   '1 cup',  155,'SHV',0.09],
   /* Condiments */
-  mustard:     ['Mustard',             '.5 oz',     5,'COM',0.02],
-  jelly:       ['Jelly',              '.5 oz',     35,'COM',0.04],
+  mustard:     ['Mustard',                   '.5 oz',    5,'SHV',0.02],
+  jelly:       ['Jelly',                     '.5 oz',   35,'SHV',0.04],
   /* Dairy / Bev */
-  milk:        ['Milk',               '½ pt',    100,'PFG',0.25],
-  fortBev:     ['Fortified Beverage', '8 oz',     60,'COM',0.08],
+  milk:        ['Milk',                      '½ pt',   100,'PFG',0.25],
+  fortBev:     ['Fortified Beverage',        '8 oz',    60,'SHV',0.08],
   /* Vegetables & Sides */
-  peasCar:     ['Peas & Carrots',     '4 oz',     55,'SHV',0.08],
-  carrots:     ['Carrots',            '4 oz',     45,'SHV',0.08],
-  grnBeans:    ['Green Beans',        '4 oz',     35,'COM',0.07],
-  northBns:    ['Northern Beans',     '4 oz',    120,'COM',0.08],
-  pintoBns:    ['Pinto Beans',        '4 oz',    120,'COM',0.08],
-  blackBns:    ['Black Beans',        '4 oz',    120,'COM',0.08],
-  mashedPot:   ['Mashed Potatoes',    '4 oz',    105,'COM',0.09],
-  mixedVeg:    ['Mixed Veggies',      '4 oz',     45,'SHV',0.08],
-  pastaSal:    ['Pasta Salad',        '4 oz',    155,'IH', 0.14],
+  peasCar:     ['Peas & Carrots',            '4 oz',    55,'SHV',0.08],
+  carrots:     ['Carrots',                   '4 oz',    45,'SHV',0.08],
+  grnBeans:    ['Green Beans',               '4 oz',    35,'SHV',0.07],
+  northBns:    ['Northern Beans',            '4 oz',   120,'SHV',0.08],
+  pintoBns:    ['Pinto Beans',               '4 oz',   120,'SHV',0.08],
+  blackBns:    ['Black Beans',               '4 oz',   120,'SHV',0.08],
+  mashedPot:   ['Mashed Potatoes',           '4 oz',   105,'SHV',0.09],
+  mixedVeg:    ['Mixed Veggies',             '4 oz',    45,'SHV',0.08],
+  pastaSal:    ['Pasta Salad',               '4 oz',   155,'SHV',0.14],
   /* Desserts */
-  cakeReg:     ['Yellow Cake',        'reg',     280,'IH', 0.10],
-  cakeLg:      ['Yellow Cake',        'lg',      350,'IH', 0.14],
-  cookieOat:   ['Oatmeal Cookie',     '1 ea',    115,'COM',0.07],
-  cookieCC:    ['Choc. Chip Cookie',  '1 ea',    130,'COM',0.07],
-  cookieSug:   ['Sugar Cookie',       '1 ea',    115,'COM',0.07],
+  cakeReg:     ['Yellow Cake',               'reg',    280,'SHV',0.10],
+  cakeLg:      ['Yellow Cake',               'lg',     350,'SHV',0.14],
+  cookieOat:   ['Oatmeal Cookie',            '1 ea',   115,'SHV',0.07],
+  cookieCC:    ['Choc. Chip Cookie',         '1 ea',   130,'SHV',0.07],
+  cookieSug:   ['Sugar Cookie',              '1 ea',   115,'SHV',0.07],
 };
 
 /* ── Breakfast (same all 4 weeks) ── */
@@ -489,11 +487,9 @@ function renderPrint(){
         <div class="pw-legend-inner">
           <div class="pw-legend-l">
             <span class="pw-legend-key">Vendors:</span>
-            <span>${vb('SHV')} Shaver/ISP &nbsp;</span>
+            <span>${vb('SHV')} Shaver Foods / ISP &nbsp;</span>
             <span>${vb('PFG')} Performance Food Group &nbsp;</span>
-            <span>${vb('IH')} In-House (ingredient cost) &nbsp;</span>
-            <span>${vb('COM')} Commodity &nbsp;</span>
-            <span class="pw-legend-key" style="margin-left:6pt">Cost = per inmate per meal</span>
+            <span>${vb('BD')} Big Daddy Foods &nbsp;</span>
           </div>
           <div class="pw-legend-r">Industry Standard Food Service · Jefferson County · Internal Use Only</div>
         </div>

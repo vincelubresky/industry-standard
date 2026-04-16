@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shaver Monthly Order List — Industry Standard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --navy:#0f172a; --navy2:#1e293b; --border:#e2e8f0;
+  --bg:#f8fafc; --text:#0f172a; --muted:#64748b;
+  --shv:#1d4ed8; --shv-bg:#dbeafe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+
+/* ── Top bar ── */
+.top-bar{background:var(--navy);color:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.top-bar a{color:#94a3b8;text-decoration:none;font-size:13px;font-weight:600}
+.top-bar a:hover{color:#fff}
+.top-bar-title{font-size:14px;font-weight:800;color:#e2e8f0}
+.btn-print{background:#0369a1;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:13px;font-weight:800;cursor:pointer}
+.btn-print:hover{background:#0284c7}
+
+/* ── Header ── */
+.doc-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1e3a5f 100%);color:#fff;padding:22px 28px 18px}
+.doc-header h1{font-size:20px;font-weight:900;letter-spacing:-.02em}
+.doc-header p{color:#94a3b8;font-size:13px;margin-top:4px}
+
+/* ── Controls ── */
+.controls{background:#fff;border-bottom:2px solid var(--border);padding:14px 24px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.ctrl-group{display:flex;align-items:center;gap:10px}
+.ctrl-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ctrl-input{border:1.5px solid var(--border);border-radius:7px;padding:6px 12px;font-size:14px;font-weight:700;width:90px;text-align:center;color:var(--text)}
+.ctrl-input:focus{outline:none;border-color:#2563eb}
+.ctrl-select{border:1.5px solid var(--border);border-radius:7px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--text);background:#fff;cursor:pointer}
+.ctrl-select:focus{outline:none;border-color:#2563eb}
+.ctrl-note{font-size:11px;color:var(--muted)}
+
+/* ── Summary bar ── */
+.summary-bar{background:var(--navy2);color:#fff;padding:10px 24px;display:flex;gap:32px;flex-wrap:wrap;align-items:center}
+.sum-item{display:flex;flex-direction:column;gap:1px}
+.sum-val{font-size:18px;font-weight:900}
+.sum-lbl{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em}
+.sum-item.highlight .sum-val{color:#34d399}
+
+/* ── Main content ── */
+.content{padding:20px 24px 60px}
+
+/* ── Category block ── */
+.cat-block{margin-bottom:28px}
+.cat-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--navy);background:#f1f5f9;border:1px solid var(--border);border-radius:8px 8px 0 0;padding:9px 16px;display:flex;align-items:center;gap:8px}
+.cat-title i{color:var(--shv);font-size:14px}
+
+/* ── Order table ── */
+.order-tbl{width:100%;border-collapse:collapse;border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;overflow:hidden}
+.order-tbl th{background:var(--navy);color:#fff;padding:8px 12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;text-align:left}
+.order-tbl th.num{text-align:right}
+.order-tbl td{padding:9px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.order-tbl td.num{text-align:right;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.order-tbl td.price{text-align:right;color:#15803d;font-weight:800}
+.order-tbl td.total{text-align:right;color:#0369a1;font-weight:800}
+.order-tbl tr:last-child td{border-bottom:none}
+.order-tbl tr:nth-child(even) td{background:#f8fafc}
+.order-tbl .item-name{font-weight:700;color:var(--navy)}
+.order-tbl .item-note{font-size:11px;color:var(--muted);margin-top:2px}
+.order-tbl .qty-box{width:70px;border:1.5px solid var(--border);border-radius:5px;padding:5px 8px;font-size:13px;font-weight:700;text-align:center;background:#fff}
+.order-tbl .qty-box:focus{outline:none;border-color:#2563eb}
+
+/* ── Grand total ── */
+.grand-total{background:var(--navy);color:#fff;border-radius:8px;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;margin-top:20px}
+.gt-label{font-size:14px;font-weight:700;color:#cbd5e1}
+.gt-value{font-size:24px;font-weight:900;color:#34d399}
+.gt-cases{font-size:13px;color:#94a3b8;margin-top:2px}
+
+/* ── Notes section ── */
+.order-notes{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:14px 18px;margin-top:20px;font-size:12.5px;color:#92400e;line-height:1.7}
+.order-notes strong{color:#713f12}
+
+/* ══════════════════════════════
+   PRINT STYLES
+══════════════════════════════ */
+@media print{
+  @page{size:letter portrait;margin:.35in}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .top-bar,.controls{display:none!important}
+  body{background:#fff;font-size:11px}
+  .doc-header{padding:10pt 14pt 8pt;background:#0f172a!important}
+  .doc-header h1{font-size:14pt}
+  .summary-bar{padding:7pt 14pt;background:#1e293b!important}
+  .sum-val{font-size:13pt}
+  .content{padding:8pt 0 0}
+  .cat-block{margin-bottom:14pt;page-break-inside:avoid}
+  .cat-title{font-size:9pt;padding:5pt 8pt}
+  .order-tbl th{font-size:8pt;padding:5pt 8pt}
+  .order-tbl td{font-size:9pt;padding:5pt 8pt}
+  .order-tbl .qty-box{border:1pt solid #000;width:50pt;background:#fff}
+  .grand-total{background:#0f172a!important;padding:10pt 14pt}
+  .gt-value{font-size:16pt}
+  .order-notes{font-size:8.5pt;padding:8pt 10pt}
+  .btn-print{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="top-bar">
+  <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Dashboard</a>
+  <div class="top-bar-title">Shaver Foods — Monthly Bulk Order Form</div>
+  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print / Save PDF</button>
+</div>
+
+<!-- Header -->
+<div class="doc-header">
+  <h1><i class="fa-solid fa-clipboard-list" style="margin-right:10px;color:#60a5fa"></i>Shaver Foods — Monthly Bulk Order</h1>
+  <p>Jefferson County Detention · Industry Standard Food Service · Based on 2-Week Population Menu Rotation</p>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label"><i class="fa-solid fa-users" style="margin-right:4px"></i>Inmate Count</span>
+    <input class="ctrl-input" type="number" id="inmateCount" value="1000" min="100" max="3000" oninput="recalc()">
+    <span class="ctrl-note">average daily population</span>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label"><i class="fa-solid fa-calendar" style="margin-right:4px"></i>Order Period</span>
+    <select class="ctrl-select" id="orderPeriod" onchange="recalc()">
+      <option value="2">2 Weeks (1 cycle)</option>
+      <option value="4" selected>4 Weeks / 1 Month (2 cycles)</option>
+    </select>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-note" style="color:#15803d;font-weight:700"><i class="fa-solid fa-circle-info" style="margin-right:4px"></i>Cases rounded up to nearest whole case. Adjust qty as needed before ordering.</span>
+  </div>
+</div>
+
+<!-- Summary bar -->
+<div class="summary-bar">
+  <div class="sum-item">
+    <div class="sum-val" id="sumPop">1,000</div>
+    <div class="sum-lbl">Inmates</div>
+  </div>
+  <div class="sum-item">
+    <div class="sum-val" id="sumDays">28</div>
+    <div class="sum-lbl">Days</div>
+  </div>
+  <div class="sum-item">
+    <div class="sum-val" id="sumCases">—</div>
+    <div class="sum-lbl">Total Cases</div>
+  </div>
+  <div class="sum-item highlight">
+    <div class="sum-val" id="sumCost">—</div>
+    <div class="sum-lbl">Est. Total Cost</div>
+  </div>
+  <div class="sum-item">
+    <div class="sum-val" id="sumPerInmate">—</div>
+    <div class="sum-lbl">Est. Cost / Inmate / Day</div>
+  </div>
+</div>
+
+<!-- Order content -->
+<div class="content" id="orderContent"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   SHAVER ORDER DATA
+   cycleUses = # of meal days per 14-day cycle where this
+               item is served (every occurrence, every inmate gets 1 serving)
+   servPerCase = approximate servings per case at stated portion
+══════════════════════════════════════════════════════ */
+const CATS = [
+  {
+    cat: 'Proteins',
+    icon: 'fa-drumstick-bite',
+    items: [
+      { item:'Chicken Patty BRD FC 3oz', pack:'40#',       price:86.29, servPerCase:213, cycleUses:2,
+        note:'Lunch · 1 patty/person · W1 Sat, W2 Thu' },
+      { item:'Salami Logs Chik',          pack:'2/10#',     price:31.82, servPerCase:160, cycleUses:3,
+        note:'Lunch · 2 oz/person · W1 Wed, W2 Mon + Sun' },
+    ]
+  },
+  {
+    cat: 'Bakery & Mixes',
+    icon: 'fa-bread-slice',
+    items: [
+      { item:'Bread Wheat Slice',         pack:'12/28oz',   price:29.06, servPerCase:120, cycleUses:14,
+        note:'Lunch · 2 slices/person · Every lunch sandwich' },
+      { item:'Biscuit Mix',               pack:'50#',       price:34.90, servPerCase:400, cycleUses:14,
+        note:'Breakfast · 1 biscuit/person · Every day' },
+      { item:'Cake Mix Yellow',           pack:'50#',       price:40.42, servPerCase:400, cycleUses:14,
+        note:'Dinner dessert · 1 piece/person · Every dinner' },
+      { item:'Cookie Oatmeal Ice',        pack:'24/18ea',   price:20.91, servPerCase:432, cycleUses:2,
+        note:'Lunch dessert · 1 cookie/person · W1 Mon, W2 Wed' },
+      { item:'Cookie Choc Chip .278oz',   pack:'24/18ea',   price:20.91, servPerCase:432, cycleUses:2,
+        note:'Lunch dessert · 1 cookie/person · W1 Wed, W2 Fri' },
+    ]
+  },
+  {
+    cat: 'Cereals',
+    icon: 'fa-bowl-food',
+    items: [
+      { item:'Grits Quick White',         pack:'50#',       price:28.00, servPerCase:533, cycleUses:8,
+        note:'Breakfast · 1 cup/person · Mon, Wed, Thu, Sun (4 days/wk)' },
+      { item:'Oats Quick',                pack:'50#',       price:28.33, servPerCase:533, cycleUses:6,
+        note:'Breakfast · 1 cup/person · Tue, Fri, Sat (3 days/wk)' },
+    ]
+  },
+  {
+    cat: 'Pasta',
+    icon: 'fa-utensils',
+    items: [
+      { item:'Pasta Rotini',              pack:'2/10#',     price:13.73, servPerCase:160, cycleUses:12,
+        note:'Pasta salad side · 1 oz dry/person · 6 lunch + 6 dinner nights/cycle' },
+      { item:'Pasta Spaghetti',           pack:'2/10#',     price:13.13, servPerCase:160, cycleUses:2,
+        note:'Dinner entrée · 2 oz dry/person · W1 Mon, W2 Wed' },
+      { item:'Pasta Lasagna',             pack:'10#',       price:13.85, servPerCase:80,  cycleUses:2,
+        note:'Dinner entrée · 2 oz dry/person · W1 Wed, W2 Tue' },
+      { item:'Pasta Elbow Mac',           pack:'2/10#',     price:13.10, servPerCase:160, cycleUses:2,
+        note:'Cheesy Chicken Mac · 2 oz dry/person · W1 Sat, W2 Thu' },
+    ]
+  },
+  {
+    cat: 'Rice & Potato',
+    icon: 'fa-seedling',
+    items: [
+      { item:'Rice Parboiled',            pack:'50#',       price:31.46, servPerCase:400, cycleUses:10,
+        note:'Lunch + dinner sides & entrée base · 4 oz cooked/person · ~5 days/wk' },
+      { item:'Fries Tater Tots',          pack:'6/5#',      price:28.85, servPerCase:160, cycleUses:2,
+        note:'Chicken Tater Tot Casserole · 3 oz/person · W1 Thu, W2 Sun' },
+      { item:'Potato Dehy Flakes',        pack:'40#',       price:51.62, servPerCase:213, cycleUses:4,
+        note:'Mashed potato side · ~1 oz dry/person · W1 Thu+Sun, W2 Wed+Sat' },
+    ]
+  },
+  {
+    cat: 'Canned Beans',
+    icon: 'fa-jar',
+    items: [
+      { item:'Beans Black',               pack:'6/10',      price:31.60, servPerCase:150, cycleUses:1,
+        note:'Black Bean Beef Bowl · 4 oz/person · W2 Fri' },
+      { item:'Beans Kidney Red',          pack:'6/10',      price:33.60, servPerCase:150, cycleUses:1,
+        note:'Red Beans & Rice w/ Chicken · 4 oz/person · W1 Tue' },
+      { item:'Beans Navy',                pack:'6/10',      price:32.71, servPerCase:150, cycleUses:4,
+        note:'White Bean Chili (2×) + Northern bean side (2×) · 4 oz/person' },
+      { item:'Beans Pinto',               pack:'6/10',      price:31.46, servPerCase:150, cycleUses:2,
+        note:'Dinner side · 4 oz/person · W1 Wed, W2 Wed' },
+    ]
+  },
+  {
+    cat: 'Canned Vegetables',
+    icon: 'fa-leaf',
+    items: [
+      { item:'Beans Green Cut',           pack:'6/10',      price:30.84, servPerCase:150, cycleUses:2,
+        note:'Dinner side · 4 oz/person · W1 Mon, W2 Sun' },
+      { item:'Carrots Sliced',            pack:'6/10',      price:28.96, servPerCase:150, cycleUses:3,
+        note:'Dinner side · 4 oz/person · W1 Tue+Thu, W2 Tue' },
+      { item:'Mixed Vegetables',          pack:'6/10',      price:33.19, servPerCase:150, cycleUses:2,
+        note:'Dinner side · 4 oz/person · W1 Sun, W2 Thu' },
+      { item:'Tomato Crushed',            pack:'6/10',      price:29.28, servPerCase:75,  cycleUses:2,
+        note:'Sauce base · Spaghetti + Beef Bowl · ~8 oz/person as ingredient' },
+      { item:'Tomato Sauce',              pack:'6/10',      price:28.89, servPerCase:75,  cycleUses:3,
+        note:'Sauce base · Spaghetti + Lasagna + Beef Bowl · ~8 oz/person as ingredient' },
+    ]
+  },
+  {
+    cat: 'Condiments & Spreads',
+    icon: 'fa-jar-wheat',
+    items: [
+      { item:'Peanut Butter Creamy',      pack:'35#',       price:47.01, servPerCase:747, cycleUses:4,
+        note:'PB&J lunch · .75 oz/person · 2 days/wk' },
+      { item:'Jelly Assorted',            pack:'200ea',     price:9.88,  servPerCase:200, cycleUses:18,
+        note:'Breakfast biscuit (14) + PB&J lunch (4) = 18 per cycle' },
+      { item:'Mustard',                   pack:'4/1gal',    price:23.05, servPerCase:1024,cycleUses:10,
+        note:'Lunch sandwich non-PBJ days · .5 oz/person · ~10 days/cycle' },
+      { item:'Mayo',                      pack:'4/1gal',    price:41.48, servPerCase:512, cycleUses:12,
+        note:'Pasta salad dressing · .5 oz/person · 12 pasta salad days/cycle' },
+    ]
+  },
+  {
+    cat: 'Beverages',
+    icon: 'fa-mug-hot',
+    items: [
+      { item:'Drink Mix Dairy',           pack:'25#',       price:47.37, servPerCase:800, cycleUses:42,
+        note:'Fortified beverage · 1 per meal (breakfast + lunch + dinner) = 3/day × 14 days' },
+    ]
+  },
+];
+
+/* ── Calculation ── */
+function getN(){ return parseInt(document.getElementById('inmateCount').value)||1000; }
+function getWeeks(){ return parseInt(document.getElementById('orderPeriod').value)||4; }
+function getCycles(){ return getWeeks()/2; } // 14-day cycle
+
+function casesNeeded(item){
+  const cycles = getCycles();
+  const n = getN();
+  return Math.ceil((n * item.cycleUses * cycles) / item.servPerCase);
+}
+
+function fmt$(v){ return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtN(v){ return v.toLocaleString(); }
+
+function recalc(){
+  const n = getN();
+  const weeks = getWeeks();
+  const days = weeks * 7;
+
+  document.getElementById('sumPop').textContent = fmtN(n);
+  document.getElementById('sumDays').textContent = days;
+
+  let totalCases = 0;
+  let totalCost = 0;
+
+  const content = document.getElementById('orderContent');
+  content.innerHTML = CATS.map(cat => {
+    const rows = cat.items.map(item => {
+      const cases = casesNeeded(item);
+      const lineTotal = cases * item.price;
+      totalCases += cases;
+      totalCost += lineTotal;
+      return `<tr>
+        <td>
+          <div class="item-name">${item.item}</div>
+          <div class="item-note">${item.note}</div>
+        </td>
+        <td>${item.pack}</td>
+        <td class="num price">${fmt$(item.price)}</td>
+        <td class="num">${fmtN(item.servPerCase)}</td>
+        <td class="num">${item.cycleUses}×/cycle</td>
+        <td class="num">${fmtN(cases)}</td>
+        <td><input class="qty-box" type="number" value="${cases}" min="0"></td>
+        <td class="num total">${fmt$(lineTotal)}</td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="cat-block">
+      <div class="cat-title"><i class="fa-solid ${cat.icon}"></i>${cat.cat}</div>
+      <table class="order-tbl">
+        <thead>
+          <tr>
+            <th style="width:32%">Item</th>
+            <th>Pack</th>
+            <th class="num">$/Case</th>
+            <th class="num">Serv/Case</th>
+            <th class="num">Frequency</th>
+            <th class="num">Cases Needed</th>
+            <th class="num" style="width:80px">Qty Order</th>
+            <th class="num">Line Total</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join('');
+
+  // Grand total
+  const perInmatePerDay = totalCost / (n * days);
+  content.innerHTML += `
+    <div class="grand-total">
+      <div>
+        <div class="gt-label">Estimated Monthly Shaver Order Total</div>
+        <div class="gt-cases">${fmtN(totalCases)} total cases · ${days}-day period · ${fmtN(n)} inmates</div>
+      </div>
+      <div style="text-align:right">
+        <div class="gt-value">${fmt$(totalCost)}</div>
+        <div style="font-size:12px;color:#6ee7b7;margin-top:2px">${fmt$(perInmatePerDay)} / inmate / day (Shaver only)</div>
+      </div>
+    </div>
+    <div class="order-notes">
+      <strong>Ordering Notes:</strong><br>
+      • Cases rounded up to nearest whole case — adjust qty column as needed based on current stock on hand.<br>
+      • This list covers <strong>Shaver Foods / ISP items only</strong>. Order PFG items separately (sausage patties, eggs, turkey sliced, milk, tortillas).
+      Order Big Daddy Foods separately (burger patties, ground beef for beef bowl and spaghetti).<br>
+      • Pasta salad rotini quantity based on 12 service days/cycle at 1 oz dry per person.
+      Adjust upward if pasta salad is also used in other applications.<br>
+      • Verify all prices against current ISP price list before submitting — prices reflect Shaver ISP list dated March 1–31, 2026.<br>
+      • Cake mix and biscuit mix yields assume ~400 portions per 50# bag. Adjust based on actual portion size used in your kitchen.
+    </div>`;
+
+  document.getElementById('sumCases').textContent = fmtN(totalCases);
+  document.getElementById('sumCost').textContent = fmt$(totalCost);
+  document.getElementById('sumPerInmate').textContent = fmt$(perInmatePerDay);
+}
+
+// Boot
+recalc();
+</script>
+</body>
+</html>
