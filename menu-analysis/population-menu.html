@@ -235,10 +235,10 @@ const I={
   salami:      ['Salami (Turkey/Chik)',  '2 oz',   100,'SHV',0.18,P],
   turkey:      ['Turkey (sliced)',       '2 oz',    65,'SHV',0.20,P],
   chkPatty:    ['Chicken Patty BRD',    '3 oz',   170,'SHV',0.38,P],
+  beefPatty:   ['Beef Patty BRD',       '3 oz',   200,'SHV',0.42,P],
   pbutter:     ['Peanut Butter',        '.75 oz',  130,'COM',0.08,P],
-  /* Mexican-style dinner plates */
-  blackBnsRiceChk: ['Black Beans & Rice w/ Chicken','8 oz',280,'IH',0.28,P],
-  blackBnsRiceBeef:['Black Beans & Rice w/ Beef',   '8 oz',295,'IH',0.28,P],
+  /* Casserole dinner entrees */
+  chkTatoTot:  ['Chicken Tater Tot Casserole','8 oz',330,'IH',0.30,P],
   /* Breads & Starches */
   cornbread:   ['Cornbread',            '1 pc',   180,'IH', 0.08],
   tortillas:   ['Tortillas',            '2 ea',   180,'COM',0.08],
@@ -283,51 +283,54 @@ const BK=[
 ];
 
 /* ── 2-Week Menu ── */
-/* LUNCH = SANDWICHES (1 starch side) · DINNER = HOT MEALS */
+/* LUNCH = SANDWICHES (1 starch side) · DINNER = HOT CASSEROLE MEALS */
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 const WEEKS=[
   /* ══ WEEK 1 ══ */
   {title:'Week 1',
    lunch:[
      // Sandwich + 1 starch + bev + dessert
-     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieOat],  // Mon
-     [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cakeReg],    // Tue
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.pastaSal, I.fortBev,I.cookieCC],   // Wed
-     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeReg],    // Thu
-     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieSug],  // Fri
-     [I.chkPatty, I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cakeLg],     // Sat
-     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sun
+     // turkey ×2 · PB&J ×2 · salami ×1 · chicken patty ×1 · beef patty ×1
+     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieOat],  // Mon  — turkey
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.rice4,    I.fortBev,I.cakeReg],    // Tue  — PB&J ①
+     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cookieCC],   // Wed  — salami
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.mashedPot,I.fortBev,I.cakeReg],    // Thu  — PB&J ②
+     [I.turkey,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieSug],  // Fri  — turkey
+     [I.chkPatty, I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sat  — chicken patty
+     [I.beefPatty,I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeLg],     // Sun  — beef patty
    ],
    dinner:[
-     // Hot entrée + sides (pasta salad 2–3 nights · rice 1–2 · beans 1–2) + bev + dessert
-     [I.spagMeat,       I.grnBeans, I.pastaSal,  I.fortBev,I.cakeReg],  // Mon  — pasta salad ①
-     [I.blackBnsRiceChk,I.carrots,               I.fortBev,I.cakeReg],  // Tue  — black beans+rice in dish
-     [I.lasagna,        I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ①
-     [I.chkTezz,        I.rice4,    I.mixedVeg,  I.fortBev,I.cakeReg],  // Thu  — rice ①
-     [I.rbRiceChk,      I.carrots,               I.fortBev,I.cakeReg],  // Fri  — red beans+rice in dish
-     [I.beefMac,        I.northBns,              I.fortBev,I.cakeLg],   // Sat  — beans ②
-     [I.chkRiceCass,    I.pastaSal,              I.fortBev,I.cakeLg],   // Sun  — pasta salad ③ · rice in dish
+     // Casserole entrée + sides (pasta salad 3 nights · rice 1 · beans 2) + bev + dessert
+     [I.spagMeat,    I.grnBeans, I.pastaSal,  I.fortBev,I.cakeReg],  // Mon  — pasta salad ①
+     [I.rbRiceChk,   I.carrots,               I.fortBev,I.cakeReg],  // Tue  — red beans+rice in dish
+     [I.lasagna,     I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ①
+     [I.chkTatoTot,  I.rice4,    I.carrots,   I.fortBev,I.cakeReg],  // Thu  — rice ①
+     [I.whiteBChili, I.pastaSal,              I.fortBev,I.cakeReg],  // Fri  — pasta salad ③ · beans in chili
+     [I.cheesyChkMac,I.northBns,              I.fortBev,I.cakeLg],   // Sat  — beans ②
+     [I.chkRiceCass, I.mixedVeg,              I.fortBev,I.cakeLg],   // Sun  — rice in dish
    ]
   },
   /* ══ WEEK 2 ══ */
   {title:'Week 2',
    lunch:[
-     [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieSug],  // Mon
-     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeReg],    // Tue
-     [I.chkPatty, I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cookieOat],  // Wed
-     [I.pbutter,  I.wheatBr2,I.jelly,  I.pastaSal, I.fortBev,I.cakeReg],    // Thu
-     [I.turkey,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieCC],   // Fri
-     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sat
-     [I.turkey,   I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeLg],     // Sun
+     // turkey ×1 · PB&J ×2 · salami ×2 · chicken patty ×1 · beef patty ×1
+     [I.salami,   I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cookieSug],  // Mon  — salami
+     [I.turkey,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeReg],    // Tue  — turkey
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.mashedPot,I.fortBev,I.cookieOat],  // Wed  — PB&J ①
+     [I.chkPatty, I.wheatBr2,I.mustard,I.rice4,    I.fortBev,I.cakeReg],    // Thu  — chicken patty
+     [I.pbutter,  I.wheatBr2,I.jelly,  I.pastaSal, I.fortBev,I.cookieCC],   // Fri  — PB&J ②
+     [I.beefPatty,I.wheatBr2,I.mustard,I.mashedPot,I.fortBev,I.cakeLg],     // Sat  — beef patty
+     [I.salami,   I.wheatBr2,I.mustard,I.pastaSal, I.fortBev,I.cakeLg],     // Sun  — salami
    ],
    dinner:[
-     [I.cheesyChkMac,    I.pastaSal, I.carrots,   I.fortBev,I.cakeReg],  // Mon  — pasta salad ①
-     [I.blackBnsRiceBeef,I.grnBeans,              I.fortBev,I.cakeReg],  // Tue  — black beans+rice in dish
-     [I.beefStroga,      I.northBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ①
-     [I.whiteBChili,     I.rice4,    I.mixedVeg,  I.fortBev,I.cakeReg],  // Thu  — rice ① · white beans in chili
-     [I.spagMeat,        I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Fri  — pasta salad ③ · beans ②
-     [I.chkTezz,         I.carrots,               I.fortBev,I.cakeLg],   // Sat
-     [I.rbRiceChk,       I.mixedVeg,              I.fortBev,I.cakeLg],   // Sun  — red beans+rice in dish
+     // All 7 casseroles again, different order + sides
+     [I.chkRiceCass, I.pastaSal,              I.fortBev,I.cakeReg],  // Mon  — pasta salad ① · rice in dish
+     [I.lasagna,     I.northBns, I.carrots,   I.fortBev,I.cakeReg],  // Tue  — beans ①
+     [I.spagMeat,    I.pintoBns, I.pastaSal,  I.fortBev,I.cakeReg],  // Wed  — pasta salad ② · beans ②
+     [I.cheesyChkMac,I.rice4,    I.mixedVeg,  I.fortBev,I.cakeReg],  // Thu  — rice ①
+     [I.rbRiceChk,   I.pastaSal,              I.fortBev,I.cakeReg],  // Fri  — pasta salad ③ · red beans+rice in dish
+     [I.whiteBChili, I.rice4,                 I.fortBev,I.cakeLg],   // Sat  — rice ② · beans in chili
+     [I.chkTatoTot,  I.grnBeans,              I.fortBev,I.cakeLg],   // Sun
    ]
   }
 ];
