@@ -688,9 +688,12 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.cafe-section').forEach(s => {
     s.style.display = (tab === 'cafe') ? 'block' : 'none';
   });
-  document.querySelectorAll('.ceo-section').forEach(s => {
-    s.style.display = (tab === 'ceo') ? 'block' : 'none';
-  });
+  // CEO tab: show only summary by default; sub-sections shown via showCeoSection()
+  document.querySelectorAll('.ceo-section').forEach(s => s.style.display = 'none');
+  if (tab === 'ceo') {
+    const sumSection = document.getElementById('ceo-summary');
+    if (sumSection) sumSection.style.display = 'block';
+  }
 
   // Show/hide bid tracker
   const bidWrap = document.getElementById('bid-tracker-wrap');
@@ -745,6 +748,21 @@ function switchTab(tab, persist = true) {
 
   // Scroll to top on switch
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── CEO Section Navigation ───────────────────────────────── */
+function showCeoSection(id) {
+  // Hide all CEO sections, show only the target
+  document.querySelectorAll('.ceo-section').forEach(s => s.style.display = 'none');
+  const target = document.getElementById(id);
+  if (target) {
+    target.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Update sidebar active state
+  document.querySelectorAll('.nav-item[data-tab="ceo"]').forEach(n => n.classList.remove('active'));
+  const navLink = document.querySelector(`.nav-item[href="#${id}"]`);
+  if (navLink) navLink.classList.add('active');
 }
 
 function initTabs() {
@@ -1903,6 +1921,52 @@ function renderCeoSummary() {
           <span>2 locations: Birmingham (primary) + Bessemer · 5 revenue lines</span>
         </div>
       </div>
+    </div>
+
+    <div class="ceo-nav-grid">
+      <div class="ceo-nav-card" onclick="showCeoSection('ceo-scorecard')">
+        <div class="ceo-nav-icon" style="background:linear-gradient(135deg,#1e3a8a,#2563eb)">
+          <i class="fa-solid fa-table-cells-large"></i>
+        </div>
+        <div class="ceo-nav-body">
+          <div class="ceo-nav-title">Profitability Scorecard</div>
+          <div class="ceo-nav-sub">Revenue line performance vs target COGS% · 5 lines analyzed</div>
+        </div>
+        <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
+      </div>
+
+      <div class="ceo-nav-card" onclick="showCeoSection('ceo-actions')">
+        <div class="ceo-nav-icon" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div class="ceo-nav-body">
+          <div class="ceo-nav-title">Strategic Action Plan</div>
+          <div class="ceo-nav-sub">Ranked by priority · owner-assigned · estimated financial impact</div>
+        </div>
+        <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
+      </div>
+
+      <div class="ceo-nav-card" onclick="showCeoSection('ceo-trend')">
+        <div class="ceo-nav-icon" style="background:linear-gradient(135deg,#065f46,#059669)">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <div class="ceo-nav-body">
+          <div class="ceo-nav-title">Net Margin Trend</div>
+          <div class="ceo-nav-sub">14 weeks · weekly net after materials + labor · Jan 5 – Apr 12, 2026</div>
+        </div>
+        <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
+      </div>
+
+      <div class="ceo-nav-card" onclick="showCeoSection('ceo-findings')">
+        <div class="ceo-nav-icon" style="background:linear-gradient(135deg,#92400e,#d97706)">
+          <i class="fa-solid fa-magnifying-glass-chart"></i>
+        </div>
+        <div class="ceo-nav-body">
+          <div class="ceo-nav-title">COGS Findings &amp; Discrepancies</div>
+          <div class="ceo-nav-sub">Anomalies identified in 14-week financial data · requires follow-up</div>
+        </div>
+        <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
+      </div>
     </div>`;
 }
 
@@ -1921,6 +1985,7 @@ function renderCeoScorecard() {
   const totalAnnualSavings = CEO_DATA.lines.reduce((s, l) => s + l.annualSavings, 0);
 
   el.innerHTML = `
+    <div class="ceo-back-btn" onclick="showCeoSection('ceo-summary')"><i class="fa-solid fa-arrow-left"></i> Back to Summary</div>
     <div class="ceo-scorecard-grid">
       ${CEO_DATA.lines.map(line => {
         const cfg = statusConfig[line.status];
@@ -1989,6 +2054,7 @@ function renderCeoActions() {
   };
 
   el.innerHTML = `
+    <div class="ceo-back-btn" onclick="showCeoSection('ceo-summary')"><i class="fa-solid fa-arrow-left"></i> Back to Summary</div>
     <div class="ceo-actions-list">
       ${CEO_DATA.actions.map(a => {
         const pc = priCfg[a.priority];
@@ -2049,6 +2115,7 @@ function renderCeoTrend() {
   }).join('');
 
   el.innerHTML = `
+    <div class="ceo-back-btn" onclick="showCeoSection('ceo-summary')"><i class="fa-solid fa-arrow-left"></i> Back to Summary</div>
     <div class="ceo-trend-stats">
       <div class="ceo-trend-stat"><div class="ceo-trend-stat-v">${fmt(avgNet)}</div><div class="ceo-trend-stat-l">Avg Weekly Net</div></div>
       <div class="ceo-trend-stat"><div class="ceo-trend-stat-v" style="color:#16a34a">${fmt(maxNet)}</div><div class="ceo-trend-stat-l">Best Week (${weeks.find(w=>w.net===maxNet).week})</div></div>
@@ -2104,6 +2171,7 @@ function renderCeoFindings() {
   const flagColor = { bad: '#dc2626', flag: '#ca8a04', ok: '#16a34a' };
 
   el.innerHTML = `
+    <div class="ceo-back-btn" onclick="showCeoSection('ceo-summary')"><i class="fa-solid fa-arrow-left"></i> Back to Summary</div>
     <div class="ceo-findings-intro">
       The following discrepancies were identified by analyzing 14 weeks of actual P&amp;L data.
       Each item requires a management response — either explanation, correction, or documented follow-up.
@@ -2568,4 +2636,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bdInmateEl = document.getElementById('bdInmateInput');
   if (bdInmateEl) bdInmateEl.addEventListener('input', () => renderBigDaddyInvoice());
+
+  // CEO sidebar nav — intercept anchor clicks to use single-section view
+  document.querySelectorAll('.nav-item[data-tab="ceo"][href^="#ceo-"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const id = link.getAttribute('href').slice(1);
+      showCeoSection(id);
+    });
+  });
 });
