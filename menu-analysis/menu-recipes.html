@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jefferson County — Population Menu Recipes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --navy:#0f172a;--navy2:#1e293b;--border:#e2e8f0;--bg:#f8fafc;--text:#0f172a;--muted:#64748b;
+  --bk:#b45309;--bk-bg:#fef3c7;--bk-bd:#fde68a;
+  --lu:#0369a1;--lu-bg:#e0f2fe;--lu-bd:#bae6fd;
+  --di:#15803d;--di-bg:#dcfce7;--di-bd:#bbf7d0;
+  --sd:#7c3aed;--sd-bg:#f5f3ff;--sd-bd:#ddd6fe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+
+/* ── Top bar ── */
+.top-bar{background:var(--navy);color:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top-bar a{color:#94a3b8;text-decoration:none;font-size:13px;font-weight:600}
+.top-bar a:hover{color:#fff}
+.btn-print{background:#0369a1;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:13px;font-weight:800;cursor:pointer}
+.btn-print:hover{background:#0284c7}
+
+/* ── Header ── */
+.doc-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#1e3a5f 100%);color:#fff;padding:22px 28px 18px}
+.doc-header h1{font-size:22px;font-weight:900;letter-spacing:-.02em}
+.doc-header p{color:#94a3b8;font-size:13px;margin-top:4px}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.meta-pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:3px 12px;font-size:11px;color:#e2e8f0}
+
+/* ── Filter tabs ── */
+.filter-bar{display:flex;gap:8px;padding:14px 20px;background:#fff;border-bottom:2px solid var(--border);flex-wrap:wrap;align-items:center}
+.filter-label{font-size:11px;font-weight:800;color:var(--muted);margin-right:4px;text-transform:uppercase;letter-spacing:.05em}
+.filter-btn{background:none;border:1.5px solid var(--border);border-radius:20px;padding:5px 16px;font-size:12px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s}
+.filter-btn:hover,.filter-btn.active{color:#fff;border-color:transparent}
+.filter-btn[data-cat="all"].active{background:var(--navy)}
+.filter-btn[data-cat="breakfast"].active{background:var(--bk);border-color:var(--bk)}
+.filter-btn[data-cat="lunch"].active{background:var(--lu);border-color:var(--lu)}
+.filter-btn[data-cat="dinner"].active{background:var(--di);border-color:var(--di)}
+.filter-btn[data-cat="sides"].active{background:var(--sd);border-color:var(--sd)}
+
+/* ── Scale note ── */
+.scale-note{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:8px;padding:10px 18px;margin:16px 20px 4px;font-size:12.5px;color:#92400e;display:flex;gap:10px;align-items:flex-start}
+.scale-note i{margin-top:2px;flex-shrink:0}
+
+/* ── Recipe grid ── */
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;padding:16px 20px 48px}
+
+/* ── Recipe card ── */
+.recipe-card{background:#fff;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.recipe-card.hidden{display:none}
+
+.rc-header{padding:14px 18px 12px;border-bottom:1.5px solid var(--border)}
+.rc-cat{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:2px 9px;border-radius:10px;margin-bottom:8px}
+.rc-cat.breakfast{background:var(--bk-bg);color:var(--bk);border:1px solid var(--bk-bd)}
+.rc-cat.lunch    {background:var(--lu-bg);color:var(--lu);border:1px solid var(--lu-bd)}
+.rc-cat.dinner   {background:var(--di-bg);color:var(--di);border:1px solid var(--di-bd)}
+.rc-cat.sides    {background:var(--sd-bg);color:var(--sd);border:1px solid var(--sd-bd)}
+.rc-title{font-size:17px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.rc-meta{display:flex;gap:14px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.rc-meta span{display:flex;align-items:center;gap:4px}
+.rc-meta i{font-size:10px}
+
+.rc-body{padding:14px 18px;flex:1;display:flex;flex-direction:column;gap:14px}
+
+.rc-section-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:6px}
+
+.rc-ingredients ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.rc-ingredients li{font-size:13px;color:var(--text);display:flex;gap:8px;align-items:baseline}
+.rc-ingredients li::before{content:"·";font-weight:900;color:var(--muted);flex-shrink:0}
+
+.rc-steps ol{list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:step}
+.rc-steps li{font-size:13px;color:var(--text);display:flex;gap:10px;align-items:baseline;counter-increment:step}
+.rc-steps li::before{content:counter(step);font-size:11px;font-weight:900;background:var(--navy2);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+
+.rc-note{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:11.5px;color:var(--muted);line-height:1.6}
+.rc-note strong{color:var(--text)}
+
+/* ── Print ── */
+@media print{
+  .top-bar,.filter-bar,.scale-note{display:none!important}
+  body{background:#fff;font-size:12px}
+  .doc-header{padding:14px 20px}
+  .doc-header h1{font-size:18px}
+  .recipe-grid{grid-template-columns:repeat(2,1fr);gap:14px;padding:12px 16px 24px}
+  .recipe-card.hidden{display:flex!important}
+  .recipe-card{page-break-inside:avoid;border:1pt solid #cbd5e1}
+  .rc-title{font-size:14px}
+  .rc-ingredients li,.rc-steps li{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Dashboard</a>
+  <div style="font-size:13px;font-weight:800;color:#e2e8f0">Jefferson County · Population Menu Recipes</div>
+  <button class="btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-right:6px"></i>Print / Save PDF</button>
+</div>
+
+<div class="doc-header">
+  <h1>Population Menu — Recipe Reference</h1>
+  <p>Industry Standard Food Service &nbsp;·&nbsp; Jefferson County Jail &nbsp;·&nbsp; All recipes written per 100 servings — scale to daily count</p>
+  <div class="meta-row">
+    <span class="meta-pill"><i class="fa-solid fa-utensils" style="margin-right:5px"></i>2-Week Rotation · All Meals</span>
+    <span class="meta-pill"><i class="fa-solid fa-scale-balanced" style="margin-right:5px"></i>Per 100 Servings</span>
+    <span class="meta-pill"><i class="fa-solid fa-triangle-exclamation" style="margin-right:5px"></i>Verify with Kitchen Director before service</span>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" data-cat="all" onclick="filter('all',this)">All Recipes</button>
+  <button class="filter-btn" data-cat="breakfast" onclick="filter('breakfast',this)">☀ Breakfast</button>
+  <button class="filter-btn" data-cat="lunch" onclick="filter('lunch',this)">🥪 Lunch (Sandwiches)</button>
+  <button class="filter-btn" data-cat="dinner" onclick="filter('dinner',this)">🔥 Dinner (Hot Entrées)</button>
+  <button class="filter-btn" data-cat="sides" onclick="filter('sides',this)">🥗 Sides &amp; Starches</button>
+</div>
+
+<div class="scale-note">
+  <i class="fa-solid fa-circle-info"></i>
+  <span>All recipes are written for <strong>100 servings</strong>. To scale: multiply all ingredient quantities by your daily inmate count ÷ 100. Example: 1,050 inmates = multiply by 10.5. Verify cooking times when scaling above 200 servings — larger batch depths require longer hold and cook times.</span>
+</div>
+
+<div class="recipe-grid" id="recipe-grid"></div>
+
+<script>
+const RECIPES = [
+
+  /* ════════════════════════════════
+     BREAKFAST
+  ════════════════════════════════ */
+  {
+    cat: 'breakfast', title: 'Butter Grits',
+    yield: '100 servings · 1 cup each',
+    time: '25 min', temp: '160°F hold',
+    ingredients: [
+      '12.5 lbs quick-cook grits',
+      '8 gallons water',
+      '1 lb margarine or butter',
+      '3 tbsp salt',
+    ],
+    steps: [
+      'Bring water and salt to a rolling boil in a steam-jacketed kettle or large stock pot.',
+      'Slowly whisk in grits in a steady stream to prevent clumping.',
+      'Reduce heat to medium-low. Stir constantly for the first 5 minutes, then stir every 2–3 minutes.',
+      'Cook 15–20 minutes until thick and creamy. Grits should coat the back of a spoon.',
+      'Stir in margarine until fully melted. Adjust salt.',
+      'Hold at 160°F or above in a steam table pan. Stir before each service.',
+    ],
+    note: 'Grits thicken as they sit. Add small amounts of hot water and stir to restore consistency during service. Do not let grits drop below 140°F.'
+  },
+  {
+    cat: 'breakfast', title: 'Oatmeal',
+    yield: '100 servings · 1 cup each',
+    time: '15 min', temp: '160°F hold',
+    ingredients: [
+      '12.5 lbs rolled oats (not instant)',
+      '7.5 gallons water',
+      '2 tbsp salt',
+      '1 lb brown sugar (optional — stir in at service)',
+    ],
+    steps: [
+      'Bring water and salt to a full boil.',
+      'Add oats all at once and stir to combine.',
+      'Reduce heat to medium. Cook 5–7 minutes, stirring frequently, until oats are tender and creamy.',
+      'Remove from heat. Let stand 2 minutes — oats will continue to thicken.',
+      'Hold at 160°F in a steam table pan. Stir before service.',
+    ],
+    note: 'Oatmeal continues to thicken during holding. Thin with hot water as needed. Offer brown sugar packets on the service line for inmates to add themselves.'
+  },
+  {
+    cat: 'breakfast', title: 'Scratch Biscuits',
+    yield: '100 biscuits · 1 per serving',
+    time: '30 min total', temp: '425°F',
+    ingredients: [
+      '12.5 lbs biscuit mix (or: 10 lbs AP flour + 5 oz baking powder + 2.5 tbsp salt)',
+      '1 gallon cold buttermilk (or cold water)',
+      '1.5 lbs cold shortening or lard',
+    ],
+    steps: [
+      'Preheat oven to 425°F. Grease sheet pans.',
+      'Combine flour, baking powder, and salt in a large mixing bowl.',
+      'Cut in cold shortening with a pastry cutter until mixture resembles coarse crumbs. Do not over-mix.',
+      'Add cold buttermilk and stir until dough just comes together. Do not knead.',
+      'Turn dough onto lightly floured surface. Pat to 3/4" thickness — do not roll.',
+      'Cut with a 3" biscuit cutter. Place touching on prepared pans.',
+      'Bake 12–14 minutes until golden brown on top.',
+    ],
+    note: 'The less you handle biscuit dough, the fluffier the result. Cold fat and cold liquid = tall, flaky biscuits. Leftover dough scraps can be pressed together once only.'
+  },
+  {
+    cat: 'breakfast', title: 'Boiled Eggs',
+    yield: '100 servings · 1 egg each',
+    time: '20 min', temp: '165°F internal',
+    ingredients: [
+      '100 large shell eggs',
+      'Cold water to cover',
+      'Ice water bath for cooling',
+    ],
+    steps: [
+      'Place eggs in a single layer in a large pot (or batch in multiple pots).',
+      'Cover with cold water by at least 1 inch.',
+      'Bring to a full boil over high heat.',
+      'Once boiling, reduce to a gentle simmer. Cover and cook exactly 10–12 minutes.',
+      'Immediately transfer to a large ice water bath. Let sit 10 minutes.',
+      'Drain. Eggs may be peeled for service or served in-shell.',
+    ],
+    note: 'For 1,000+ servings, batch in groups of 100 eggs per pot. Do not crowd — eggs need full water contact. Ice bath stops the cooking and prevents the grey-green ring around the yolk.'
+  },
+  {
+    cat: 'breakfast', title: 'Turkey Sausage Hot Links',
+    yield: '100 servings · 2 oz each',
+    time: '20 min', temp: '165°F internal',
+    ingredients: [
+      '12.5 lbs turkey sausage hot links (Shaver ISP product)',
+      'Water for steaming, or sheet pans for oven',
+    ],
+    steps: [
+      'OVEN METHOD: Place links on lightly greased sheet pans. Bake at 350°F for 18–20 minutes, turning once halfway, until browned and 165°F internal.',
+      'STEAM METHOD: Place links in perforated hotel pan. Steam at 250°F for 12–15 minutes until 165°F internal.',
+      'Hold at 140°F or above in covered hotel pans on steam table.',
+    ],
+    note: 'Do not boil sausage links — they split and lose flavor. Oven method gives better color and texture. Check internal temp with probe thermometer before service.'
+  },
+
+  /* ════════════════════════════════
+     LUNCH — SANDWICHES
+  ════════════════════════════════ */
+  {
+    cat: 'lunch', title: 'Turkey Sandwich',
+    yield: '100 servings',
+    time: '15 min assembly', temp: 'Serve cold',
+    ingredients: [
+      '12.5 lbs sliced turkey breast (2 oz per sandwich)',
+      '200 slices wheat bread (2 per sandwich) — ~14 loaves',
+      '100 mustard packets (0.5 oz each)',
+    ],
+    steps: [
+      'Lay out bread slices in pairs on a clean prep surface or assembly line.',
+      'Place 2 oz turkey on one slice of each pair.',
+      'Pair with the second bread slice. Cut diagonally if feasible for volume.',
+      'Place each sandwich in a sealed bag or tray. Add mustard packet.',
+      'Hold in refrigerated trays at 41°F or below until service.',
+    ],
+    note: 'For high-volume service, set up an assembly line with two workers — one builds, one bags. Turkey must stay at or below 41°F until service. Do not pre-make more than 2 hours in advance unless held in a walk-in cooler.'
+  },
+  {
+    cat: 'lunch', title: 'Salami Sandwich',
+    yield: '100 servings',
+    time: '15 min assembly', temp: 'Serve cold',
+    ingredients: [
+      '12.5 lbs sliced turkey/chicken salami (2 oz per sandwich)',
+      '200 slices wheat bread (2 per sandwich) — ~14 loaves',
+      '100 mustard packets (0.5 oz each)',
+    ],
+    steps: [
+      'Lay out bread slices in pairs on clean prep surface.',
+      'Fan 2 oz salami on one slice per pair.',
+      'Top, bag, and add mustard packet.',
+      'Hold at 41°F or below until service.',
+    ],
+    note: 'Salami is shelf-stable until opened. Once sliced and on bread, treat as a perishable. Rotate stock FIFO — first in, first out.'
+  },
+  {
+    cat: 'lunch', title: 'Peanut Butter & Jelly',
+    yield: '100 servings',
+    time: '20 min assembly', temp: 'Serve at room temp',
+    ingredients: [
+      '4.7 lbs peanut butter (0.75 oz per sandwich)',
+      '200 slices wheat bread — ~14 loaves',
+      '100 jelly packets (0.5 oz each)',
+    ],
+    steps: [
+      'Lay out bread slices in pairs.',
+      'Spread 0.75 oz (1.5 tbsp) peanut butter on one slice per pair using a portion scoop or spreader.',
+      'Add jelly packet to tray — inmates apply at service, or spread 0.5 oz on the second slice.',
+      'Bag or tray. PB&J does not require refrigeration if served within 4 hours.',
+    ],
+    note: 'Check your facility\'s allergy policy. Confirm no peanut allergy accommodations are needed before serving. Use a portion scoop to ensure consistent 0.75 oz servings and control cost.'
+  },
+  {
+    cat: 'lunch', title: 'Chicken Patty Sandwich',
+    yield: '100 servings',
+    time: '25 min', temp: '165°F internal',
+    ingredients: [
+      '100 breaded chicken patties, 3 oz each (Shaver ISP)',
+      '200 slices wheat bread — ~14 loaves',
+      '100 mustard packets',
+    ],
+    steps: [
+      'Preheat oven to 375°F. Arrange frozen patties on lightly greased sheet pans — do not overlap.',
+      'Bake 18–22 minutes until golden brown and 165°F internal. Flip halfway through if not using a convection oven.',
+      'Assemble immediately: chicken patty on wheat bread, bag, add mustard packet.',
+      'Hold assembled sandwiches above 140°F if serving hot, or cool rapidly to 41°F for cold service.',
+    ],
+    note: 'Do not microwave individual patties for this volume — oven baking gives consistent color and crispness across the batch. If using convection oven, reduce time to 14–16 minutes at 350°F.'
+  },
+
+  /* ════════════════════════════════
+     DINNER — HOT ENTRÉES
+  ════════════════════════════════ */
+  {
+    cat: 'dinner', title: 'Spaghetti w/ Meat Sauce',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '12 lbs ground beef (or 50/50 TVP blend)',
+      '10 lbs spaghetti, broken into thirds',
+      '4 cans (#10) tomato sauce',
+      '2 cans (#10) diced tomatoes, drained',
+      '3 large onions, diced',
+      '1 head garlic (12 cloves), minced',
+      '4 tbsp Italian seasoning',
+      '2 tbsp dried oregano',
+      '2 tbsp sugar (cuts acidity)',
+      'Salt and black pepper to taste',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Brown ground beef in batches in a large rondeau or steam-jacketed kettle over medium-high heat. Drain excess fat.',
+      'Add oil and diced onion to the same pan. Cook until softened, 5–7 minutes. Add garlic and cook 1 minute more.',
+      'Return beef to pan. Add tomato sauce, diced tomatoes, Italian seasoning, oregano, sugar, salt, and pepper.',
+      'Bring to a boil, then reduce to a low simmer. Cook uncovered 30–40 minutes, stirring every 10 minutes.',
+      'Meanwhile, cook spaghetti in heavily salted boiling water according to package directions. Drain.',
+      'Combine pasta and sauce, or serve pasta with sauce ladled over. Hold at 140°F or above.',
+    ],
+    note: 'To use TVP blend: rehydrate TVP Beef Chunks (Shaver) per package before browning. A 50/50 mix reduces protein cost ~40% with no noticeable difference in a sauced dish like this.'
+  },
+  {
+    cat: 'dinner', title: 'Lasagna',
+    yield: '100 servings · 8 oz each · approx. 4 full hotel pans',
+    time: '2 hrs', temp: '350°F · 165°F internal',
+    ingredients: [
+      '15 lbs ground beef (or 50/50 TVP blend)',
+      '15 lbs lasagna noodles (no-boil preferred)',
+      '5 cans (#10) tomato sauce',
+      '2 cans (#10) diced tomatoes',
+      '10 lbs ricotta cheese (or large-curd cottage cheese)',
+      '5 lbs shredded mozzarella',
+      '4 eggs, beaten (binder for ricotta layer)',
+      '3 large onions, diced',
+      '1 head garlic, minced',
+      '4 tbsp Italian seasoning',
+      'Salt and black pepper',
+    ],
+    steps: [
+      'Brown beef, drain. Sauté onion and garlic. Combine with tomato sauce and diced tomatoes. Season with Italian seasoning, salt, pepper. Simmer 20 minutes.',
+      'Mix ricotta with beaten eggs, 1 tbsp salt, and 1 tsp pepper in a large bowl.',
+      'Preheat oven to 350°F. Spray hotel pans generously.',
+      'LAYER (per pan): ladle thin layer of meat sauce on bottom → single layer of noodles → ricotta mix → meat sauce → mozzarella. Repeat layers ending with noodles, sauce, and mozzarella on top.',
+      'Cover tightly with foil. Bake 45–55 minutes. Uncover last 15 minutes to brown the cheese.',
+      'Let rest 15 minutes before cutting into 25 portions per full hotel pan.',
+    ],
+    note: 'No-boil noodles absorb moisture from the sauce during baking — ensure meat sauce is thin enough to hydrate them (add 1–2 cups water to sauce if using no-boil noodles). Cottage cheese is a cost-effective substitute for ricotta at this scale.'
+  },
+  {
+    cat: 'dinner', title: 'Black Beans & Rice w/ Chicken',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr 15 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '15 lbs chicken breast or thigh, cooked and shredded or diced',
+      '6 cans (#10) black beans, drained and rinsed (or 10 lbs dry black beans, soaked overnight)',
+      '8 lbs long-grain parboiled rice, cooked (yields ~24 lbs cooked)',
+      '3 large onions, diced',
+      '4 green bell peppers, diced',
+      '1 head garlic, minced',
+      '4 tbsp ground cumin',
+      '2 tbsp chili powder',
+      '2 tbsp dried oregano',
+      '1 tbsp smoked paprika',
+      '1 gallon chicken broth',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Cook rice: combine rice, 1.75 parts water, 1 tbsp salt. Bring to boil, cover, simmer 20–25 minutes. Fluff and hold.',
+      'If using dry black beans: simmer soaked beans in fresh water 1.5–2 hours until tender. Drain.',
+      'Sauté onion and bell pepper in oil until softened, 7–8 minutes. Add garlic and cook 1 minute.',
+      'Add beans, cumin, chili powder, oregano, paprika, and chicken broth. Bring to a boil, then simmer 20 minutes.',
+      'Fold in shredded or diced chicken. Simmer 10 more minutes until chicken is heated through and flavors meld.',
+      'Taste and adjust seasoning. Serve over or mixed with rice.',
+    ],
+    note: 'Chicken can be roasted, poached, or steamed a day ahead and shredded cold — fold it in the final 10 minutes of simmering. Canned beans are faster and consistent; dry beans are cheaper but require overnight soaking.'
+  },
+  {
+    cat: 'dinner', title: 'Black Beans & Rice w/ Beef',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '15 lbs ground beef (or 50/50 TVP blend)',
+      '6 cans (#10) black beans, drained and rinsed',
+      '8 lbs long-grain parboiled rice, cooked',
+      '3 large onions, diced',
+      '4 green bell peppers, diced',
+      '1 head garlic, minced',
+      '5 tbsp ground cumin',
+      '3 tbsp chili powder',
+      '2 tbsp dried oregano',
+      '2 tsp cayenne pepper (optional)',
+      '1 gallon beef broth',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Cook rice and hold (same method as Black Beans & Rice w/ Chicken).',
+      'Brown ground beef in batches. Drain excess fat.',
+      'Sauté onion and bell pepper in oil, 7–8 minutes. Add garlic, cook 1 minute.',
+      'Add browned beef, black beans, cumin, chili powder, oregano, cayenne, and beef broth.',
+      'Bring to a boil. Reduce heat and simmer 25–30 minutes, stirring occasionally, until sauce thickens.',
+      'Taste, adjust seasoning. Serve over or mixed with rice.',
+    ],
+    note: 'The beef version is bolder in seasoning than the chicken version. If combining both in the same service day, the beef version gets the extra cumin and chili powder listed above.'
+  },
+  {
+    cat: 'dinner', title: 'Red Beans & Rice w/ Chicken',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr 30 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '15 lbs chicken breast or thigh, cooked and shredded',
+      '6 cans (#10) red kidney beans, drained (or 10 lbs dry red beans, soaked overnight)',
+      '8 lbs long-grain parboiled rice, cooked',
+      '4 large onions, diced',
+      '6 stalks celery, diced',
+      '3 green bell peppers, diced',
+      '1 head garlic, minced',
+      '4 tbsp Cajun seasoning (or 2 tbsp paprika + 1 tbsp cayenne + 1 tbsp thyme + 1 tbsp garlic powder)',
+      '3 bay leaves',
+      '1.5 gallons chicken broth',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Cook rice and hold.',
+      'Sauté onion, celery, and bell pepper (the "Holy Trinity") in oil over medium heat until softened, 10 minutes.',
+      'Add garlic and cook 2 minutes more.',
+      'Add beans, Cajun seasoning, bay leaves, and chicken broth. Bring to a boil.',
+      'Reduce to a low simmer. Cook 30–40 minutes, stirring occasionally. Mash a small amount of beans against the pot wall to thicken the sauce.',
+      'Remove bay leaves. Fold in shredded chicken. Simmer 10 minutes.',
+      'Taste, adjust salt and Cajun seasoning. Serve over rice.',
+    ],
+    note: 'This is a New Orleans-style preparation. The "Holy Trinity" (onion, celery, bell pepper) is the flavor foundation. Mashing some beans directly in the pot creates a thick, hearty sauce without added starch.'
+  },
+  {
+    cat: 'dinner', title: 'Chicken Tezz',
+    yield: '100 servings · 8 oz each',
+    time: '45 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '20 lbs chicken breast, sliced thin or cut into 1" strips',
+      '4 red bell peppers, julienned',
+      '4 green bell peppers, julienned',
+      '4 large onions, julienned',
+      '1 head garlic, minced',
+      '4 tbsp ground cumin',
+      '3 tbsp chili powder',
+      '2 tbsp smoked paprika',
+      '2 tbsp garlic powder',
+      '2 tbsp onion powder',
+      '1 tsp cayenne pepper',
+      '3 tbsp lime juice (or white vinegar)',
+      '3 tbsp vegetable oil',
+      'Salt and black pepper',
+    ],
+    steps: [
+      'Mix cumin, chili powder, paprika, garlic powder, onion powder, cayenne, salt, and pepper. Toss chicken strips in seasoning mix to coat evenly.',
+      'Sauté seasoned chicken in batches in hot oil over high heat until cooked through, 4–5 minutes per batch. Do not crowd the pan — batching ensures browning not steaming.',
+      'Remove chicken to a hotel pan. In same pan, sauté onions and bell peppers until slightly softened but still with a little texture, 4–5 minutes.',
+      'Combine chicken and peppers/onions. Drizzle with lime juice, toss together.',
+      'Taste and adjust seasoning. Hold at 140°F or above.',
+    ],
+    note: 'Chicken Tezz is similar to a fajita-style stir-fry. For institutional volume, a large rondeau or two works well. Do not overcook the peppers — they should have slight bite. Serve over rice or as a standalone entrée.'
+  },
+  {
+    cat: 'dinner', title: 'Beef Mac w/ Elbow',
+    yield: '100 servings · 8 oz each',
+    time: '45 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '12 lbs ground beef (or 50/50 TVP blend)',
+      '10 lbs elbow macaroni',
+      '3 cans (#10) tomato sauce',
+      '2 cans (#10) diced tomatoes, drained',
+      '3 large onions, diced',
+      '1 head garlic, minced',
+      '4 tbsp Italian seasoning',
+      '2 tbsp sugar',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Brown ground beef in batches, drain fat. Set aside.',
+      'Sauté onions in oil until translucent, 5–7 min. Add garlic, cook 1 min.',
+      'Add tomato sauce, diced tomatoes, Italian seasoning, sugar, salt, and pepper. Stir in beef. Simmer 20 minutes.',
+      'Meanwhile, cook elbow macaroni in heavily salted boiling water until al dente. Drain well.',
+      'Combine pasta and meat sauce. The pasta will absorb some sauce as it sits — add a splash of water or broth if it tightens too much during holding.',
+      'Hold at 140°F or above in covered hotel pans.',
+    ],
+    note: 'This is a high-yield, low-cost entrée. Pasta absorbs moisture during holding — prepare sauce slightly thinner than your target consistency and it will tighten to the right texture.'
+  },
+  {
+    cat: 'dinner', title: 'Chicken & Rice Casserole',
+    yield: '100 servings · 8 oz each · approx. 4 full hotel pans',
+    time: '1 hr 15 min', temp: '325°F · 165°F internal',
+    ingredients: [
+      '20 lbs chicken breast or thigh, cooked and diced',
+      '10 lbs long-grain parboiled rice, cooked',
+      '4 cans (#10) cream of mushroom soup (or chicken gravy)',
+      '2 lbs frozen mixed vegetables, thawed',
+      '2 large onions, diced and sautéed',
+      '2 tbsp garlic powder',
+      '2 tbsp onion powder',
+      '1 tbsp dried thyme',
+      '1 gallon chicken broth',
+      'Salt and black pepper',
+    ],
+    steps: [
+      'Preheat oven to 325°F. Grease hotel pans.',
+      'Combine cream of mushroom soup with chicken broth in a large bowl until smooth.',
+      'Mix in cooked rice, diced chicken, thawed vegetables, sautéed onion, garlic powder, onion powder, thyme, salt, and pepper.',
+      'Divide mixture evenly among hotel pans. Each pan should be about 3/4 full.',
+      'Cover tightly with foil. Bake 40–45 minutes until casserole is bubbling and internal temperature reaches 165°F.',
+      'Uncover for last 10 minutes if you want a slightly set top. Rest 10 minutes before service.',
+    ],
+    note: 'This is the most forgiving batch recipe in the rotation — it does not dry out easily. Chicken can be cooked the day before. If broth is unavailable, water with extra garlic powder and a bay leaf works. Casserole holds well in a steam table for 2+ hours.'
+  },
+  {
+    cat: 'dinner', title: 'Cheesy Chicken Mac',
+    yield: '100 servings · 8 oz each',
+    time: '50 min', temp: '325°F · 165°F internal',
+    ingredients: [
+      '15 lbs chicken breast, cooked and diced',
+      '10 lbs elbow macaroni, cooked al dente and drained',
+      '2 cans (#10) cheese sauce',
+      '4 lbs shredded cheddar cheese',
+      '1 gallon whole milk or evaporated milk',
+      '4 tbsp butter or margarine',
+      '2 tbsp garlic powder',
+      '2 tbsp onion powder',
+      'Salt and black pepper',
+    ],
+    steps: [
+      'Preheat oven to 325°F. Grease hotel pans.',
+      'In a large pot, heat canned cheese sauce with milk, butter, garlic powder, and onion powder over medium heat, stirring until smooth.',
+      'Whisk in shredded cheddar a little at a time until fully melted and sauce is creamy. Season with salt and pepper.',
+      'Fold in cooked macaroni and diced chicken. Mix until evenly coated.',
+      'Divide into hotel pans. Top each pan with additional shredded cheese if desired.',
+      'Bake uncovered 20–25 minutes until bubbly and lightly browned on top. Hold at 140°F or above.',
+    ],
+    note: 'Cheese sauce should be slightly thinner than your target — the baked pasta absorbs moisture. If the sauce breaks (turns grainy), whisk vigorously off heat. This is one of the most popular meals in a rotation.'
+  },
+  {
+    cat: 'dinner', title: 'Beef Stroganoff',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '20 lbs ground beef (or cubed beef chuck)',
+      '3 large onions, diced',
+      '1 head garlic, minced',
+      '4 cans (#10) cream of mushroom soup',
+      '2 quarts sour cream (or sour cream substitute)',
+      '4 tbsp Worcestershire sauce',
+      '2 tbsp garlic powder',
+      '2 tbsp onion powder',
+      '1 gallon beef broth',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Brown beef in batches (drain well if using ground beef). Set aside.',
+      'Sauté diced onion in oil until translucent, 6–8 minutes. Add garlic, cook 1 minute.',
+      'Add cream of mushroom soup, beef broth, and Worcestershire sauce. Stir until smooth.',
+      'Return beef to the pan. Bring to a simmer. Cook 20–25 minutes until sauce thickens.',
+      'IMPORTANT: Remove from heat before adding sour cream. Stir in sour cream off-heat — adding sour cream to boiling liquid causes it to curdle.',
+      'Season with garlic powder, onion powder, salt, and pepper. Serve over egg noodles or rice.',
+    ],
+    note: 'Step 5 is critical — always add sour cream off-heat. Reheat gently on the steam table at 140°F without boiling. Egg noodles are traditional but parboiled rice is a cost-effective alternative at this scale.'
+  },
+  {
+    cat: 'dinner', title: 'White Bean Chili',
+    yield: '100 servings · 8 oz each',
+    time: '1 hr 15 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '15 lbs chicken breast or ground turkey, cooked and shredded/crumbled',
+      '6 cans (#10) great northern or navy beans, drained and rinsed',
+      '3 large onions, diced',
+      '1 head garlic, minced',
+      '4 cans (#10) diced green chiles (mild) or 2 gallons chicken broth',
+      '4 tbsp ground cumin',
+      '3 tbsp chili powder',
+      '2 tbsp dried oregano',
+      '1 tbsp garlic powder',
+      '1 tsp cayenne pepper',
+      '1 gallon chicken broth',
+      'Salt and black pepper',
+      '2 tbsp vegetable oil',
+    ],
+    steps: [
+      'Sauté diced onion in oil until soft, 7–8 minutes. Add garlic and cook 2 minutes.',
+      'Add drained beans, green chiles, cumin, chili powder, oregano, garlic powder, cayenne, and chicken broth.',
+      'Bring to a boil. Reduce heat and simmer 30 minutes, stirring every 10 minutes.',
+      'Using a large spoon, mash approximately 1/4 of the beans against the side of the pot. This thickens the chili without starch.',
+      'Fold in cooked shredded chicken or crumbled turkey. Simmer 15 more minutes.',
+      'Taste and adjust seasoning — white bean chili typically needs a generous hand with cumin. Serve hot.',
+    ],
+    note: 'This chili is mild unless cayenne is increased. For a thicker consistency without mashing, stir in a small amount of masa harina (corn flour) mixed with cold water. Leftovers hold well and improve in flavor after 24 hours.'
+  },
+
+  /* ════════════════════════════════
+     SIDES & STARCHES
+  ════════════════════════════════ */
+  {
+    cat: 'sides', title: 'Pasta Salad',
+    yield: '100 servings · 4 oz each',
+    time: '30 min + 2 hr chill', temp: 'Serve cold · 41°F or below',
+    ingredients: [
+      '10 lbs elbow macaroni, cooked, rinsed cold, and drained',
+      '2 lbs frozen peas and carrots, thawed',
+      '1 quart mayonnaise',
+      '1 cup yellow mustard',
+      '1 cup sweet pickle relish',
+      '1 cup diced dill pickles (optional)',
+      '2 tbsp white vinegar',
+      '2 tbsp sugar',
+      '2 tbsp salt',
+      '1 tbsp black pepper',
+      '1 tbsp celery salt (optional)',
+    ],
+    steps: [
+      'Cook macaroni in heavily salted water until just past al dente (it will firm up when chilled). Rinse immediately under cold water to stop cooking. Drain thoroughly.',
+      'In a very large mixing bowl, combine mayonnaise, mustard, relish, vinegar, sugar, salt, pepper, and celery salt. Whisk until smooth.',
+      'Add drained macaroni and thawed vegetables. Fold until evenly coated.',
+      'Taste and adjust — pasta salad needs aggressive seasoning at room temperature as flavor mutes when cold.',
+      'Cover and refrigerate at least 2 hours before service. The pasta continues to absorb the dressing as it chills.',
+      'Before service, stir and add a splash of additional mayo if the salad has dried out.',
+    ],
+    note: 'Pasta salad must be held at 41°F or below. Make day-ahead — it tastes significantly better after overnight chilling. Do not let sit above 41°F for more than 2 hours during service.'
+  },
+  {
+    cat: 'sides', title: 'Mashed Potatoes (from flakes)',
+    yield: '100 servings · 4 oz each',
+    time: '20 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '10 lbs instant potato flakes',
+      '2.5 gallons hot water (190–200°F)',
+      '1 lb butter or margarine',
+      '1 quart warm milk or water',
+      '3 tbsp salt',
+      '1 tbsp white pepper',
+    ],
+    steps: [
+      'Bring water to near-boil. Remove from heat.',
+      'Add butter, salt, and pepper. Stir until butter melts.',
+      'Slowly stir in potato flakes with a heavy whisk. Add warm milk to reach desired consistency.',
+      'Do not over-stir — potato flakes become gluey with excessive agitation.',
+      'Taste and adjust salt. Hold at 140°F or above in covered hotel pans on steam table.',
+    ],
+    note: 'Reconstituted potato flakes thicken quickly. If too thick, thin with warm water — not cold. Stir gently before each service to prevent a crust forming on top. The Shaver ISP potato flakes (40 LB, $51.62) are the recommended source.'
+  },
+  {
+    cat: 'sides', title: 'White Parboiled Rice',
+    yield: '100 servings · 4 oz each (cooked weight)',
+    time: '30 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '10 lbs parboiled long-grain rice',
+      '5 gallons water',
+      '3 tbsp salt',
+      '2 tbsp butter or vegetable oil (prevents clumping)',
+    ],
+    steps: [
+      'Bring water to a full boil. Add salt and butter.',
+      'Add rice all at once and stir once to prevent sticking.',
+      'Return to boil. Reduce to a simmer. Cover tightly.',
+      'Cook 20–25 minutes until rice is tender and water is absorbed.',
+      'Remove from heat. Let stand covered 5 minutes. Fluff with a large fork before service.',
+    ],
+    note: 'Parboiled rice (PFG, $26.38/50 lb) holds better than regular long-grain and does not get gummy in a steam table. Do not lift the lid during cooking — steam is what finishes the top layers.'
+  },
+  {
+    cat: 'sides', title: 'Green Beans',
+    yield: '100 servings · 4 oz each',
+    time: '20 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '6 cans (#10) cut green beans',
+      '2 tbsp butter or margarine',
+      '2 tsp garlic powder',
+      '2 tsp onion powder',
+      'Salt and black pepper to taste',
+    ],
+    steps: [
+      'Drain green beans. Rinse briefly with warm water.',
+      'Combine beans, butter, garlic powder, onion powder, salt, and pepper in a hotel pan.',
+      'Heat in a 325°F oven for 15–20 minutes, or steam for 10–12 minutes until heated through.',
+      'Taste and adjust seasoning before service.',
+    ],
+    note: 'Canned green beans are already fully cooked. The goal is to season and heat through — not re-cook. Over-simmering turns them grey and mushy. For best flavor, drain the brine completely.'
+  },
+  {
+    cat: 'sides', title: 'Carrots (Sliced)',
+    yield: '100 servings · 4 oz each',
+    time: '20 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '25 lbs frozen sliced carrots (Shaver ISP)',
+      '2 tbsp butter or margarine',
+      '2 tbsp brown sugar or honey (optional)',
+      '1 tsp salt',
+    ],
+    steps: [
+      'Steam frozen carrots from frozen in a perforated hotel pan for 12–15 minutes until tender.',
+      'Alternatively, heat in a 350°F oven with 1 cup water in the pan, covered, for 20 minutes.',
+      'Toss with butter, salt, and brown sugar if using. Hold at 140°F.',
+    ],
+    note: 'Frozen Shaver carrots are pre-cut and blanched — they cook fast. Do not boil in standing water or they become waterlogged. Steaming gives better color and texture. Brown sugar is optional but cuts the bitterness for high-volume acceptance.'
+  },
+  {
+    cat: 'sides', title: 'Pinto Beans',
+    yield: '100 servings · 4 oz each',
+    time: '20 min (canned) / 2 hrs (dry)', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '6 cans (#10) pinto beans, drained and rinsed (or 8 lbs dry pinto beans, soaked overnight)',
+      '1 large onion, diced',
+      '3 tsp garlic powder',
+      '2 tsp cumin',
+      '2 tsp chili powder',
+      '2 tsp salt',
+      '2 cups chicken or vegetable broth',
+      '1 tbsp vegetable oil',
+    ],
+    steps: [
+      'IF DRY: Soak overnight in cold water. Drain, cover with fresh water by 2". Bring to boil, simmer 1.5–2 hours until tender.',
+      'Sauté diced onion in oil until soft. Add garlic powder, cumin, and chili powder — toast 1 minute.',
+      'Add drained beans and broth. Simmer 10–15 minutes for canned, 20 minutes for freshly cooked.',
+      'Mash a small amount of beans to thicken the liquid. Season with salt.',
+    ],
+    note: 'Pinto beans at institutional scale are almost always canned — the cost of labor for soaking and cooking dry beans rarely pencils out at this volume. Use PFG dry pinto beans ($25.67/50 lb) for large upcoming events planned in advance.'
+  },
+  {
+    cat: 'sides', title: 'Northern Beans',
+    yield: '100 servings · 4 oz each',
+    time: '20 min (canned)', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '6 cans (#10) great northern beans, drained and rinsed',
+      '1 large onion, diced',
+      '3 tsp garlic powder',
+      '2 tsp dried thyme',
+      '2 tsp salt',
+      '1 tsp black pepper',
+      '2 cups chicken broth',
+      '1 tbsp butter',
+    ],
+    steps: [
+      'Sauté diced onion in butter until soft, 5 minutes.',
+      'Add garlic powder, thyme, salt, and pepper. Cook 1 minute.',
+      'Add drained northern beans and chicken broth. Stir to combine.',
+      'Simmer over medium heat 15 minutes until beans are fully heated and liquid is slightly reduced.',
+      'Taste and adjust seasoning before service.',
+    ],
+    note: 'Great northern beans are mild and absorb seasoning well. Thyme is the key aromatic here. For more depth, add a smoked ham bone or 2 oz smoked turkey wings during simmering.'
+  },
+  {
+    cat: 'sides', title: 'Mixed Vegetables (Frozen)',
+    yield: '100 servings · 4 oz each',
+    time: '15 min', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '25 lbs frozen mixed vegetables (Shaver ISP — peas, carrots, corn, green beans)',
+      '2 tbsp butter or margarine',
+      '2 tsp garlic powder',
+      '1.5 tsp salt',
+      '1 tsp black pepper',
+    ],
+    steps: [
+      'Steam frozen mixed vegetables from frozen in perforated hotel pans for 10–12 minutes until heated through and tender.',
+      'Toss with butter, garlic powder, salt, and pepper.',
+      'Hold at 140°F or above.',
+    ],
+    note: 'Do not over-cook — frozen mixed vegetables are already blanched and just need to be heated. Over-steaming makes peas mushy and corn tough. 12 minutes is the max.'
+  },
+  {
+    cat: 'sides', title: 'Black Beans (Side)',
+    yield: '100 servings · 4 oz each',
+    time: '20 min (canned)', temp: '165°F · hold 140°F+',
+    ingredients: [
+      '6 cans (#10) black beans, drained and rinsed',
+      '1 large onion, diced',
+      '4 tsp ground cumin',
+      '2 tsp garlic powder',
+      '1 tsp chili powder',
+      '1 tsp salt',
+      '2 cups chicken or vegetable broth',
+      '1 tbsp vegetable oil',
+    ],
+    steps: [
+      'Sauté diced onion in oil until translucent, 5–7 minutes.',
+      'Add cumin, garlic powder, and chili powder. Stir and toast 1 minute.',
+      'Add drained black beans and broth. Stir to combine.',
+      'Simmer 15 minutes, stirring occasionally. Mash a small amount of beans to thicken.',
+      'Season with salt. Hold at 140°F or above.',
+    ],
+    note: 'These differ from the Black Beans & Rice entrée — this is a plainer seasoned side. Cumin is the dominant flavor. If serving alongside a Mexican-style entrée, reduce cumin to avoid doubling up on the same flavor.'
+  },
+
+];
+
+/* ── Render ── */
+function renderCards(){
+  const grid = document.getElementById('recipe-grid');
+  grid.innerHTML = RECIPES.map(r => `
+    <div class="recipe-card" data-cat="${r.cat}">
+      <div class="rc-header">
+        <div class="rc-cat ${r.cat}">
+          ${{breakfast:'☀ Breakfast',lunch:'🥪 Lunch',dinner:'🔥 Dinner',sides:'🥗 Side'}[r.cat]}
+        </div>
+        <div class="rc-title">${r.title}</div>
+        <div class="rc-meta">
+          <span><i class="fa-solid fa-users"></i> ${r.yield}</span>
+          <span><i class="fa-solid fa-clock"></i> ${r.time}</span>
+          <span><i class="fa-solid fa-temperature-half"></i> ${r.temp}</span>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="rc-ingredients">
+          <div class="rc-section-lbl"><i class="fa-solid fa-basket-shopping" style="margin-right:4px"></i>Ingredients — per 100 servings</div>
+          <ul>${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
+        </div>
+        <div class="rc-steps">
+          <div class="rc-section-lbl"><i class="fa-solid fa-list-ol" style="margin-right:4px"></i>Instructions</div>
+          <ol>${r.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+        </div>
+        ${r.note ? `<div class="rc-note"><strong>Note:</strong> ${r.note}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function filter(cat, btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.recipe-card').forEach(card=>{
+    card.classList.toggle('hidden', cat !== 'all' && card.dataset.cat !== cat);
+  });
+}
+
+renderCards();
+</script>
+</body>
+</html>
