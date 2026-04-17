@@ -1643,7 +1643,7 @@ const CAFE_DATA = {
       targetCogsWk: 3283,
       gapWeekly: 830,
       gapAnnual: 43160,
-      insight: 'Birmingham's biggest single lever is the chicken tenders swap — one menu substitution saves $260–300/week. Combined with a salad bar restriction and produce contract, three actions alone close 80% of the entire gap.',
+      insight: "Birmingham's biggest single lever is the chicken tenders swap — one menu substitution saves $260–300/week. Combined with a salad bar restriction and produce contract, three actions alone close 80% of the entire gap.",
       phases: [
         {
           phase: 1,
