@@ -515,88 +515,88 @@ const DATA = {
 //  WEEKLY REPORT — April 6–12, 2026
 // ============================================================
 const REPORT = {
-  week:    "April 6–12, 2026",
-  prepared:"April 13, 2026",
-  totalRevenue: 88029.11,
-  totalCOGS:    43553.59,
-  totalCOGSPct: 49.48,
-  weeklyNet:    25889.21,
-  netMarginPct: 29.41,
+  week:    "April 13–19, 2026",
+  prepared:"April 20, 2026",
+  totalRevenue: 91502.55,
+  totalCOGS:    50796.49,
+  totalCOGSPct: 55.51,
+  weeklyNet:    22119.75,
+  netMarginPct: 24.17,
 
   locations: {
     birmingham: {
       label: "Birmingham",
       revenue: {
-        total: 67692.23,
+        total: 69440.28,
         items: [
-          { cat: "Population",        amount: 50447.63, pct: 74.52 },
-          { cat: "Cafe",              amount:  5090.40, pct:  7.52 },
-          { cat: "Academy",           amount:  2545.20, pct:  3.76 },
-          { cat: "Soft Trays",        amount:  5460.00, pct:  8.07 },
-          { cat: "Milk",              amount:  2130.00, pct:  3.15 },
-          { cat: "JBS",               amount:  2019.00, pct:  2.98 }
+          { cat: "Population",        amount: 50065.68, pct: 72.10 },
+          { cat: "Cafe",              amount:  5090.40, pct:  7.33 },
+          { cat: "Academy",           amount:  4045.20, pct:  5.83 },
+          { cat: "Soft Trays",        amount:  6090.00, pct:  8.77 },
+          { cat: "Milk",              amount:  2130.00, pct:  3.07 },
+          { cat: "JBS",               amount:  2019.00, pct:  2.91 }
         ]
       },
       materialCOGS: {
-        total: 24291.07, totalPct: 35.88,
+        total: 29009.93, totalPct: 41.77,
         items: [
-          { cat: "Population",        amount: 14632.84, pct: 29.01 },
-          { cat: "Cafe / Acad / JBS", amount:  4298.01, pct: 44.52 },
-          { cat: "Soft Trays",        amount:  2570.10, pct: 47.07 },
+          { cat: "Population",        amount: 17367.57, pct: 34.69 },
+          { cat: "Cafe / Acad / JBS", amount:  5553.39, pct: 49.79 },
+          { cat: "Soft Trays",        amount:  3089.95, pct: 50.74 },
           { cat: "Milk",              amount:  1384.50, pct: 65.00 },
-          { cat: "Chem / Disp.",      amount:  1405.62, pct:  2.08 }
+          { cat: "Chem / Disp.",      amount:  1614.52, pct:  2.32 }
         ]
       },
-      labor:     { amount:  5851.66, pct:  8.64 },
-      totalCOGS: { amount: 30142.73, pct: 44.53 },
+      labor:     { amount:  6368.59, pct:  9.17 },
+      totalCOGS: { amount: 35378.52, pct: 50.95 },
       detailedNet: [
-        { cat: "Population",        amount: 35814.79, pct: 52.91 },
-        { cat: "Cafe / Acad / JBS", amount:  5356.59, pct:  7.91 },
-        { cat: "Soft Trays",        amount:  2889.90, pct:  4.27 },
-        { cat: "Milk",              amount:   745.50, pct:  1.10 },
-        { cat: "Chem / Disp.",      amount: -1405.62, pct: -2.08 }
+        { cat: "Population",        amount: 32698.11, pct: 47.09 },
+        { cat: "Cafe / Acad / JBS", amount:  5601.21, pct:  8.07 },
+        { cat: "Soft Trays",        amount:  3000.05, pct:  4.32 },
+        { cat: "Milk",              amount:   745.50, pct:  1.07 },
+        { cat: "Chem / Disp.",      amount: -1614.52, pct: -2.32 }
       ],
       payroll: {
-        salaries: { amount: 12714.23, pct: 18.78 },
-        taxes:    { amount:  1225.50, pct:  1.81 }
+        salaries: { amount: 12714.23, pct: 18.31 },
+        taxes:    { amount:  1225.50, pct:  1.76 }
       },
-      netLocation: { amount: 23609.77, pct: 34.88 }
+      netLocation: { amount: 20122.03, pct: 28.98 }
     },
     bessemer: {
       label: "Bessemer",
       revenue: {
-        total: 20336.88,
+        total: 22062.27,
         items: [
-          { cat: "Population",  amount: 14665.38, pct: 72.11 },
-          { cat: "Cafe",        amount:  3181.50, pct: 15.64 },
-          { cat: "Soft Trays",  amount:  1890.00, pct:  9.29 },
-          { cat: "Milk",        amount:   600.00, pct:  2.95 }
+          { cat: "Population",  amount: 14800.02, pct: 67.08 },
+          { cat: "Cafe",        amount:  4772.25, pct: 21.63 },
+          { cat: "Soft Trays",  amount:  1890.00, pct:  8.57 },
+          { cat: "Milk",        amount:   600.00, pct:  2.72 }
         ]
       },
       materialCOGS: {
-        total: 10526.98, totalPct: 51.76,
+        total: 12165.59, totalPct: 55.14,
         items: [
-          { cat: "Population",  amount:  6571.74, pct: 44.81 },
-          { cat: "Cafe",        amount:  2219.01, pct: 69.75 },
-          { cat: "Soft Trays",  amount:   889.65, pct: 47.07 },
+          { cat: "Population",  amount:  8079.23, pct: 54.59 },
+          { cat: "Cafe",        amount:  2218.01, pct: 46.48 },
+          { cat: "Soft Trays",  amount:   958.95, pct: 50.74 },
           { cat: "Milk",        amount:   390.00, pct: 65.00 },
-          { cat: "Chem / Disp.",amount:   456.58, pct:  2.25 }
+          { cat: "Chem / Disp.",amount:   519.40, pct:  2.35 }
         ]
       },
-      labor:     { amount:  2883.88, pct: 14.18 },
-      totalCOGS: { amount: 13410.86, pct: 65.94 },
+      labor:     { amount:  3252.38, pct: 14.74 },
+      totalCOGS: { amount: 15417.97, pct: 69.88 },
       detailedNet: [
-        { cat: "Population",  amount:  8093.64, pct: 39.80 },
-        { cat: "Cafe",        amount:   962.49, pct:  4.73 },
-        { cat: "Soft Trays",  amount:  1000.35, pct:  4.92 },
-        { cat: "Milk",        amount:   210.00, pct:  1.03 },
-        { cat: "Chem / Disp.",amount:  -456.58, pct: -2.25 }
+        { cat: "Population",  amount:  6720.79, pct: 30.46 },
+        { cat: "Cafe",        amount:  2554.24, pct: 11.58 },
+        { cat: "Soft Trays",  amount:   931.05, pct:  4.22 },
+        { cat: "Milk",        amount:   210.00, pct:  0.95 },
+        { cat: "Chem / Disp.",amount:  -519.40, pct: -2.35 }
       ],
       payroll: {
-        salaries: { amount: 4238.08, pct: 20.84 },
-        taxes:    { amount:  408.50, pct:  2.01 }
+        salaries: { amount: 4238.08, pct: 19.21 },
+        taxes:    { amount:  408.50, pct:  1.85 }
       },
-      netLocation: { amount: 2279.44, pct: 11.21 }
+      netLocation: { amount: 1997.72, pct:  9.05 }
     }
   }
 };
@@ -1451,8 +1451,10 @@ const CAFE_DATA = {
   revWeekly:   { birmingham: 9654.60, bessemer: 3181.50 },
   targetFoodCostPct: 0.30,
 
-  // 14 weeks of actual COGS from Weekly - 2026.xlsx
-  // Birmingham % = birmCogs / $9,654.60 (Café + Academy + JBS combined revenue)
+  // 15 weeks of actual COGS from Weekly - 2026 (2).xlsx
+  // Birmingham % = café COGS / $9,654.60 (normalized Café + Academy + JBS combined rev baseline)
+  // Bessemer % = café COGS / actual Bessemer café revenue that week
+  // NOTE: Bessemer café revenue jumped from $3,181.50 to $4,772.25 week of Apr 13–19 (new contract/pricing)
   weeklyFinancials: [
     { week: "Jan 5–11",      birmCogs: 3823.76, birmPct: 0.396, besCogs: 1602.15, besPct: 0.504 },
     { week: "Jan 12–18",     birmCogs: 4123.69, birmPct: 0.427, besCogs: 1250.00, besPct: 0.393 },
@@ -1467,7 +1469,8 @@ const CAFE_DATA = {
     { week: "Mar 16–22",     birmCogs: 4682.47, birmPct: 0.485, besCogs: 1924.02, besPct: 0.605 },
     { week: "Mar 23–29",     birmCogs: 4470.41, birmPct: 0.463, besCogs: 1965.66, besPct: 0.618 },
     { week: "Mar 30–Apr 5",  birmCogs: 3940.89, birmPct: 0.408, besCogs: 2229.27, besPct: 0.701 },
-    { week: "Apr 6–12",      birmCogs: 4298.01, birmPct: 0.445, besCogs: 2219.01, besPct: 0.697 }
+    { week: "Apr 6–12",      birmCogs: 4298.01, birmPct: 0.445, besCogs: 2219.01, besPct: 0.697 },
+    { week: "Apr 13–19",     birmCogs: 4524.96, birmPct: 0.469, besCogs: 2218.01, besPct: 0.465 }
   ],
 
   // Per-serving ingredient cost analysis
@@ -2145,15 +2148,15 @@ const CAFE_DATA = {
 //  CEO EXECUTIVE DASHBOARD DATA
 // ============================================================
 const CEO_DATA = {
-  asOf:   "April 12, 2026",
-  period: "14-week avg · Jan 5 – Apr 12, 2026",
+  asOf:   "April 19, 2026",
+  period: "15-week avg · Jan 5 – Apr 19, 2026",
 
   kpis: {
-    weeklyRevAvg:    87500,
-    annualRevenue:   4550000,
-    weeklyNetAvg:    23131,
-    annualNet:       1203000,
-    avgNetPct:       0.260,
+    weeklyRevAvg:    87878,
+    annualRevenue:   4570000,
+    weeklyNetAvg:    23064,
+    annualNet:       1199000,
+    avgNetPct:       0.263,
     totalSavingsOpp: 247000   // combined all identified opportunities
   },
 
@@ -2226,7 +2229,7 @@ const CEO_DATA = {
     }
   ],
 
-  // 14-week net margin trend
+  // 15-week net margin trend
   weeklyTrend: [
     { week: "Jan 5",  net: 20537,  pct: 0.231 },
     { week: "Jan 12", net: 21803,  pct: 0.244 },
@@ -2241,7 +2244,8 @@ const CEO_DATA = {
     { week: "Mar 16", net: 21037,  pct: 0.244 },
     { week: "Mar 23", net: 21426,  pct: 0.238 },
     { week: "Mar 30", net: 18703,  pct: 0.213 },
-    { week: "Apr 6",  net: 25889,  pct: 0.294 }
+    { week: "Apr 6",  net: 25889,  pct: 0.294 },
+    { week: "Apr 13", net: 22120,  pct: 0.242 }
   ],
 
   // COGS discrepancies and anomalies found in the weekly financial data
@@ -2280,7 +2284,7 @@ const CEO_DATA = {
       icon: "fa-chart-line",
       title: "Bessemer Café COGS — 54-Point Swing",
       location: "Bessemer",
-      detail: "Bessemer café food cost has ranged from 35.3% to 89.9% across 14 weeks on perfectly flat weekly revenue of $3,181.50. This is a 54.6-point variance — impossible to explain by menu variation alone. Revenue is contract-fixed; cost should be predictable within a narrow band. Likely causes: bulk ordering in some weeks covering multiple weeks of usage, deliveries not aligned to the billing week, or no par-level ordering discipline. Standardize weekly order quantities immediately.",
+      detail: "Bessemer café food cost has ranged from 35.3% to 89.9% across 15 weeks. Revenue jumped from contract-flat $3,181.50 to $4,772.25 in the week of Apr 13–19 — monitor whether this represents a new pricing tier or a one-time anomaly. Variance of 54.6 points across prior weeks on flat revenue is impossible to explain by menu variation alone. Likely causes: bulk ordering in some weeks covering multiple weeks of usage, deliveries not aligned to the billing week, or no par-level ordering discipline. Standardize weekly order quantities immediately.",
       numbers: [
         { label: "Low COGS", value: "35.3%", flag: "ok" },
         { label: "High COGS", value: "89.9%", flag: "bad" },
@@ -2294,7 +2298,7 @@ const CEO_DATA = {
       icon: "fa-arrow-trend-down",
       title: "Net Margin Declining Since February Peak",
       location: "Both Locations",
-      detail: "Net margin peaked at 34.8% (Feb 16) and has trended down for most of the March–April period. The Mar 30 week hit $18,703 net — the second lowest on record. Five of the last six weeks have been below the 14-week average. Birmingham and Bessemer population COGS are both trending higher in Q1 close vs early February. If the trend continues, Q2 annualized net falls below $1M. Population vendor switch is the fastest available lever.",
+      detail: "Net margin peaked at 34.8% (Feb 16) and has trended down for most of the March–April period. The Mar 30 week hit $18,703 net — the second lowest on record. The Apr 13–19 week recovered to $22,120 on record revenue of $91,503 (first week above $90K), but COGS ran at 55.5%. Birmingham and Bessemer population COGS are both trending higher vs early February. Population vendor switch remains the fastest available lever to recover margin.",
       numbers: [
         { label: "Feb 16 Peak Net", value: "$30,113", flag: "ok" },
         { label: "Mar 30 Net", value: "$18,703", flag: "bad" },

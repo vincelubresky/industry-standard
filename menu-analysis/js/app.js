@@ -1985,7 +1985,7 @@ function renderCeoSummary() {
         </div>
         <div class="ceo-nav-body">
           <div class="ceo-nav-title">Net Margin Trend</div>
-          <div class="ceo-nav-sub">14 weeks · weekly net after materials + labor · Jan 5 – Apr 12, 2026</div>
+          <div class="ceo-nav-sub">15 weeks · weekly net after materials + labor · Jan 5 – Apr 19, 2026</div>
         </div>
         <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
       </div>
@@ -1996,7 +1996,7 @@ function renderCeoSummary() {
         </div>
         <div class="ceo-nav-body">
           <div class="ceo-nav-title">COGS Findings &amp; Discrepancies</div>
-          <div class="ceo-nav-sub">Anomalies identified in 14-week financial data · requires follow-up</div>
+          <div class="ceo-nav-sub">Anomalies identified in 15-week financial data · requires follow-up</div>
         </div>
         <i class="fa-solid fa-chevron-right ceo-nav-arrow"></i>
       </div>
@@ -2206,7 +2206,7 @@ function renderCeoFindings() {
   el.innerHTML = `
     <div class="ceo-back-btn" onclick="showCeoSection('ceo-summary')"><i class="fa-solid fa-arrow-left"></i> Back to Summary</div>
     <div class="ceo-findings-intro">
-      The following discrepancies were identified by analyzing 14 weeks of actual P&amp;L data.
+      The following discrepancies were identified by analyzing 15 weeks of actual P&amp;L data.
       Each item requires a management response — either explanation, correction, or documented follow-up.
     </div>
     <div class="ceo-findings-list">
@@ -2278,8 +2278,8 @@ function renderCafeStats() {
   const costPerMealActual = actualCogsWeekly / totalMealsWeekly;
 
   const stats = [
-    { label: "Birmingham Avg Food Cost",  value: (birmAvg*100).toFixed(1)+'%', icon: "fa-chart-pie",        color: "#dc2626",   note: "14-week avg · target 30%",    badge: "Critical" },
-    { label: "Bessemer Avg Food Cost",    value: (besAvg*100).toFixed(1)+'%',  icon: "fa-chart-pie",        color: "#ea580c",   note: "14-week avg · target 30%",    badge: "High" },
+    { label: "Birmingham Avg Food Cost",  value: (birmAvg*100).toFixed(1)+'%', icon: "fa-chart-pie",        color: "#dc2626",   note: "15-week avg · target 30%",    badge: "Critical" },
+    { label: "Bessemer Avg Food Cost",    value: (besAvg*100).toFixed(1)+'%',  icon: "fa-chart-pie",        color: "#ea580c",   note: "15-week avg · target 30%",    badge: "High" },
     { label: "Actual Cost Per Meal",      value: '$'+costPerMealActual.toFixed(2), icon: "fa-utensils",     color: "#1d4ed8",   note: 'at $'+d.ratePerMeal+'/meal rate · '+(costPerMealActual > d.ratePerMeal ? 'over rate' : 'thin margin') },
     { label: "Annual Savings @ 30% Target", value: '$'+annualOpportunity.toLocaleString(), icon: "fa-piggy-bank", color: "#166534", note: "Combined Birmingham + Bessemer" }
   ];
@@ -2520,7 +2520,7 @@ function renderLocationPlan(loc) {
       <div class="lp-snap-card lp-snap-current">
         <div class="lp-snap-label">Current Food Cost</div>
         <div class="lp-snap-val" style="color:#dc2626">${(plan.currentPct*100).toFixed(1)}%</div>
-        <div class="lp-snap-sub">$${plan.currentCogsWk.toLocaleString()}/wk avg · 14-week actual</div>
+        <div class="lp-snap-sub">$${plan.currentCogsWk.toLocaleString()}/wk avg · 15-week actual</div>
       </div>
       <div class="lp-snap-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
       <div class="lp-snap-card lp-snap-target">
@@ -2664,8 +2664,8 @@ function renderPopulationOverview() {
   const cogsBeColor   = besPopCogs.pct  <= 35 ? '#16a34a' : besPopCogs.pct  <= 45 ? '#ca8a04' : '#dc2626';
 
   const stats = [
-    { label: "Birmingham Food Cost",  value: birmPopCogs.pct.toFixed(1)+'%',  icon: "fa-building",   color: cogsBirmColor, note: "week of Apr 6–12 · target ≤35%" },
-    { label: "Bessemer Food Cost",    value: besPopCogs.pct.toFixed(1)+'%',   icon: "fa-store",      color: cogsBeColor,  note: "week of Apr 6–12 · target ≤35%" },
+    { label: "Birmingham Food Cost",  value: birmPopCogs.pct.toFixed(1)+'%',  icon: "fa-building",   color: cogsBirmColor, note: "week of Apr 13–19 · target ≤35%" },
+    { label: "Bessemer Food Cost",    value: besPopCogs.pct.toFixed(1)+'%',   icon: "fa-store",      color: cogsBeColor,  note: "week of Apr 13–19 · target ≤35%" },
     { label: "Actual Cost Per Meal",  value: '$'+costPerMeal.toFixed(2),       icon: "fa-utensils",   color: "#dc2626",    note: 'vs $'+targetPerMeal.toFixed(2)+' target · '+dailyPopBirm.toLocaleString()+' Bham + '+dailyPopBess+' Bess · 3 meals/day' },
     { label: "Annual Shaver Savings", value: '$'+CEO_DATA.lines[0].annualSavings.toLocaleString(), icon: "fa-piggy-bank", color: "#16a34a", note: "23 items confirmed cheaper · full vendor transition" }
   ];
