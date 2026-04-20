@@ -238,7 +238,7 @@ function exportExcel() {
 
 function exportCSV() {
   const lines = [
-    'Jefferson County Menu Analysis — Industry Standard', `Prepared: April 11 2026`, '',
+    'Industry Standard — Food Service Management — Jefferson County Jail', `Prepared: April 2026`, '',
     '=== SWITCH TO SHAVER ===',
     'Item,PFG Price,PFG Unit,Shaver Price,Shaver Unit,Savings/Case,Priority',
     ...DATA.switchToShaver.map(r => `"${r.item}",${r.pfgPrice},"${r.pfgUnit}",${r.shaverPrice},"${r.shaverUnit}","${r.savings||r.note||''}",${r.priority.toUpperCase()}`),
@@ -277,7 +277,7 @@ function exportPDF() {
     doc.addPage(); y=M;
     doc.setFillColor(...HEAD); doc.rect(0,0,pageW,28,'F');
     doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...SUB);
-    doc.text('INDUSTRY STANDARD  |  Jefferson County Menu Analysis', M, 18);
+    doc.text('INDUSTRY STANDARD  |  Food Service Management  |  Jefferson County Jail', M, 18);
     y=44;
   }
   function checkPage(n=60) { if(y+n>pageH-M) newPage(); }
@@ -292,12 +292,12 @@ function exportPDF() {
   doc.setFillColor(...BG); doc.rect(0,0,pageW,pageH,'F');
   doc.setFillColor(...ACC); doc.rect(0,0,pageW,6,'F');
   doc.setFont('helvetica','bold'); doc.setFontSize(28); doc.setTextColor(...TEXT);
-  doc.text('Jefferson County Jail', M, 80);
+  doc.text('Industry Standard', M, 80);
   doc.setFontSize(18); doc.setTextColor(...SUB);
-  doc.text('Vendor Price Comparison & Menu Analysis', M, 108);
+  doc.text('Jefferson County Jail — Food Service Management', M, 108);
   doc.setFillColor(...HEAD); doc.roundedRect(M,126,pageW-M*2,72,6,6,'F');
   doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...SUB);
-  doc.text('Prepared by: Industry Standard  ·  April 11, 2026', M+16, 150);
+  doc.text('Prepared by: Industry Standard  ·  April 2026', M+16, 150);
   doc.text('Sources: PFG Invoice #6776963 (04/07/26)  ·  Shaver ISP Price List (03/01/26–03/31/26)', M+16, 168);
   doc.text('CONFIDENTIAL — Internal use only', M+16, 186);
   const kpiW=(pageW-M*2-30)/4, kpiColors=[GREEN,RED,ACC,AMBER];
