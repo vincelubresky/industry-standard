@@ -1489,7 +1489,7 @@ const CAFE_DATA = {
     { item: "Breakfast Potatoes",             category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Mon / Sat / Sun / Thu breakfast",   status: "needsPrice", estimated: 0.20, note: "Hashbrowns in PFG catalog $23.24/2×10# — verify per-serving" },
     { item: "Cinnamon Rolls w/ Icing",        category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "Thu (Wk 4) breakfast",              status: "needsPrice", estimated: 0.30 },
     { item: "Bananas (whole, 40 lb case)",    category: "Produce",   pfgCost: null,  shaverCost: null,  forestWoodCost: 0.137, frequency: "Daily — every breakfast",  status: "forestWood", note: "Forest Wood: $21.95/40 lb case ≈ 160 servings → $0.14/banana. Lock this in — strong price." },
-    { item: "Oranges (navel, whole)",         category: "Produce",   pfgCost: null,  shaverCost: null,  forestWoodCost: 0.431, frequency: "Daily — every breakfast",  status: "forestWood", note: "Forest Wood: $37.95/case. Assumes 88-count standard case → $0.43/orange. CONFIRM CASE SIZE — if 113-count the price drops to $0.34; if 56 lb the price drops to ~$0.30." },
+    { item: "Oranges (navel, whole)",         category: "Produce",   pfgCost: null,  shaverCost: null,  forestWoodCost: 0.275, frequency: "Daily — every breakfast",  status: "forestWood", note: "Forest Wood: $37.95/case · range 88–138 count depending on size. Order 138-count → $0.28/orange (best per-serving cost). 88-count = $0.43, 113-count = $0.34, 138-count = $0.28." },
     { item: "Loaf Bread",                     category: "Starch",    pfgCost: 0.07,  shaverCost: null,  frequency: "Daily breakfast",                   status: "known" },
     { item: "Jelly Packet",                   category: "Condiment", pfgCost: 0.076, shaverCost: 0.048, frequency: "Breakfast (biscuit days)",           status: "known",      shaverSavings: 0.028 },
     { item: "Chicken Tenders (4 oz)",         category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Mon lunch — Wk 1, 2, 3",           status: "needsPrice", estimated: 1.25, note: "Most expensive item on cafe menu." },
@@ -1515,13 +1515,13 @@ const CAFE_DATA = {
   opportunities: [
     {
       rank: 1,
-      title: "Lock In Forest Wood Produce Contract (Pricing in Hand)",
-      detail: "Forest Wood (current milk vendor) has quoted: bananas $21.95/40 lb ($0.14/serving) and oranges $37.95/case ($0.43/serving, assuming 88-count). Combined: $0.57/person/day × 130 people × 365 days = ~$27,000/year. ACTION: (1) Confirm orange case count with Forest Wood — a 113-count case drops oranges to $0.34, saving ~$3,400/year. (2) Bundle produce + milk on same weekly delivery to eliminate a separate vendor trip. (3) Lock in standing order to avoid spot-price exposure.",
-      weeklyLow: 0, weeklyHigh: 180,
-      annualLow: 0, annualHigh: 9400,
+      title: "Execute Forest Wood Produce Standing Order — Ready to Place",
+      detail: "Forest Wood (current milk vendor) confirmed range: oranges $37.95/case, 88–138 count depending on size. Order 138-count → $0.28/orange. Combined with bananas ($0.14): $0.42/person/day × 130 people × 365 days = $19,929/year. Previous uncontracted estimate was ~$0.55/person = ~$26,000/year. Locking in 138-count oranges + 40 lb banana case saves an estimated $6,000–$6,500/year vs. uncontracted spot pricing.",
+      weeklyLow: 115, weeklyHigh: 130,
+      annualLow: 6000, annualHigh: 6500,
       priority: "critical",
       icon: "fa-apple-whole",
-      action: "Call Forest Wood: confirm orange case count (88, 100, or 113). Then execute standing weekly order for bananas + oranges alongside existing milk delivery. One vendor, one invoice, one delivery."
+      action: "Place standing weekly order with Forest Wood: (1) Bananas — 40 lb case at $21.95. (2) Oranges — 138-count case at $37.95. Add to existing milk delivery run. One vendor, one invoice, ~$6,000/year locked in savings."
     },
     {
       rank: 2,
