@@ -606,105 +606,248 @@ const REPORT = {
 // ============================================================
 const BIDS = {
 
+  // Current contracts we operate
+  won: [
+    {
+      id: "jefferson-county-current",
+      agency: "Jefferson County Sheriff",
+      facility: "Jefferson County Jail",
+      location: "Birmingham + Bessemer, AL",
+      scope: "Full inmate food service operations — 2 facilities",
+      population: 1200,
+      estimatedValue: "~$1.6M/yr",
+      bid: "Direct contract — Sheriff discretion",
+      status: "won",
+      myStatus: "won",
+      note: "Current operator. Birmingham (main) + Bessemer (annex). 15-week financial performance tracked in Executive Dashboard.",
+      contact: { name: "Jefferson County Sheriff's Office", title: "Corrections Division", phone: "", email: "", url: "jeffcosheriffal.com/corrections" },
+      lastUpdated: "April 2026"
+    }
+  ],
+
+  // Bids open or pending verification
   verify: [
     {
       id: "montgomery-county-detention",
       agency: "Montgomery County",
       facility: "Mac Sim Butler Detention Facility",
+      location: "Montgomery, AL",
       scope: "Inmate food service operations",
+      population: 800,
+      estimatedValue: "~$1.1M/yr",
       bid: "IFB 52200-25B-009",
       status: "verify",
-      statusLabel: "VERIFY STATUS",
-      note: "Issued FY2025 — award status unconfirmed. Call today to determine if still open.",
-      contact: { name: "Myrtle Singleton", title: "Administrative Services Manager", phone: "334-832-7705" },
-      location: "Montgomery, AL"
+      myStatus: "prospecting",
+      note: "Issued FY2025 — award status unconfirmed. Call today to determine if still open or recently awarded.",
+      contact: { name: "Myrtle Singleton", title: "Administrative Services Manager", phone: "334-832-7705", email: "", url: "" },
+      lastUpdated: "April 2026"
     }
   ],
 
+  // Known upcoming RFPs / expiring contracts
   upcoming: [
     {
       id: "montgomery-municipal-jail",
       agency: "City of Montgomery",
       facility: "Municipal Jail",
+      location: "Montgomery, AL",
       scope: "Full inmate food service operations",
+      population: 500,
+      estimatedValue: "~$700K/yr",
       bid: "Re-bid of Contract 26-923",
       status: "upcoming",
-      statusLabel: "COMING UP",
+      myStatus: "prospecting",
       contractExpires: "November 21, 2026",
       expectedRFP: "August–October 2026",
       actionDate: "2026-08-01",
-      note: "Current contract ends Nov 21, 2026. RFP expected 60–90 days prior. Incumbent unknown — call now to position.",
-      contact: { name: "Ken Barwick", title: "Purchasing", phone: "334-625-2610", email: "kbarwick@montgomeryal.gov" },
-      location: "Montgomery, AL"
+      note: "RFP expected 60–90 days before contract expiration. Contact Ken Barwick now — get on their radar before the solicitation opens.",
+      contact: { name: "Ken Barwick", title: "Purchasing", phone: "334-625-2610", email: "kbarwick@montgomeryal.gov", url: "" },
+      lastUpdated: "April 2026"
     },
     {
       id: "jefferson-county-paca",
       agency: "Jefferson County / PACA",
       facility: "County Facilities incl. Youth Detention",
+      location: "Birmingham, AL",
       scope: "Food supply — frozen, chilled, and dry goods (commodity supply, not full service)",
+      population: null,
+      estimatedValue: "Varies by bid",
       bid: "Annual PACA Supply Bids",
       status: "upcoming",
-      statusLabel: "COMING UP",
+      myStatus: "monitoring",
       contractExpires: "Feb–Sep 2026 (rolling)",
       expectedRFP: "Rolling — monitor quarterly",
       actionDate: "2026-06-01",
       note: "Multiple annual supply bids (BID #14-25, #51-25, etc.) with renewal cycles. Piggyback contracts available to member agencies.",
       contact: { name: "PACA Purchasing", title: "", phone: "", email: "", url: "paca.jccal.org" },
-      location: "Birmingham, AL"
+      lastUpdated: "April 2026"
     }
   ],
 
+  // Monitor — research contract expirations, not yet actively pursuing
   radar: [
     {
-      id: "adoc-canteen",
-      agency: "Alabama Dept. of Corrections",
-      facility: "17 ADOC Facilities Statewide",
-      scope: "Inmate canteen / commissary operations",
-      bid: "RFP 005-25000000002",
+      id: "madison-county-detention",
+      agency: "Madison County Sheriff",
+      facility: "Madison County Detention Facility",
+      location: "Huntsville, AL",
+      scope: "Full inmate food service operations",
+      population: 800,
+      estimatedValue: "~$1.2M/yr",
+      bid: "Research needed",
       status: "radar",
-      statusLabel: "ON RADAR",
-      contractExpires: "~2028–2030",
-      expectedRFP: "~2028",
-      note: "Closed Oct 2025, recently awarded. Estimated $500K–$2M/yr. Next cycle in ~3 years.",
-      contact: { name: "Niketta Jeans", title: "ADOC Buyer", phone: "334-353-5515", email: "niketta.jeans@doc.alabama.gov" },
-      location: "Statewide, AL"
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "Fast-growing county. ~800 daily population. Call to identify current vendor and contract expiration date.",
+      contact: { name: "Madison County Sheriff's Office", title: "Corrections Division", phone: "256-533-8820", email: "", url: "madisoncountyalsheriff.com" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "shelby-county-jail",
+      agency: "Shelby County Sheriff",
+      facility: "Shelby County Jail",
+      location: "Columbiana, AL",
+      scope: "Full inmate food service operations",
+      population: 350,
+      estimatedValue: "~$500K/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "Adjacent to Jefferson County — natural geographic expansion. Determine current vendor and contract term.",
+      contact: { name: "Shelby County Sheriff's Office", title: "Jail Division", phone: "205-669-4181", email: "", url: "shelbysheriff.com" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "mobile-metro-jail",
+      agency: "Mobile County Sheriff",
+      facility: "Mobile Metro Jail",
+      location: "Mobile, AL",
+      scope: "Full inmate food service operations",
+      population: 1100,
+      estimatedValue: "~$1.5M/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "One of the largest county jails in Alabama. High-value target. Research current operator — likely under contract through 2026–2027.",
+      contact: { name: "Mobile County Sheriff's Office", title: "Corrections Division", phone: "251-574-8633", email: "", url: "mobileso.com" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "tuscaloosa-county-jail",
+      agency: "Tuscaloosa County Sheriff",
+      facility: "Tuscaloosa County Jail",
+      location: "Tuscaloosa, AL",
+      scope: "Full inmate food service operations",
+      population: 400,
+      estimatedValue: "~$580K/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "University city — transient population above county average. Call to determine current vendor.",
+      contact: { name: "Tuscaloosa County Sheriff's Office", title: "Jail Division", phone: "205-752-0616", email: "", url: "tuscaloosasheriff.com" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "etowah-county-detention",
+      agency: "Etowah County Sheriff",
+      facility: "Etowah County Detention Center",
+      location: "Gadsden, AL",
+      scope: "Full inmate food service operations",
+      population: 400,
+      estimatedValue: "~$580K/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "Notable for high federal ICE hold population which increases facility revenue. Worth researching current vendor and contract term.",
+      contact: { name: "Etowah County Sheriff's Office", title: "Detention Center", phone: "256-549-4120", email: "", url: "etowahcountysheriff.com" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "calhoun-county-jail",
+      agency: "Calhoun County Sheriff",
+      facility: "Calhoun County Jail",
+      location: "Anniston, AL",
+      scope: "Full inmate food service operations",
+      population: 300,
+      estimatedValue: "~$440K/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "Contact Sheriff's Office to identify current vendor and contract expiration date.",
+      contact: { name: "Calhoun County Sheriff's Office", title: "Jail Division", phone: "256-236-6421", email: "", url: "" },
+      lastUpdated: "April 2026"
+    },
+    {
+      id: "lee-county-detention",
+      agency: "Lee County Sheriff",
+      facility: "Lee County Detention Center",
+      location: "Opelika, AL",
+      scope: "Full inmate food service operations",
+      population: 300,
+      estimatedValue: "~$440K/yr",
+      bid: "Research needed",
+      status: "radar",
+      myStatus: "prospecting",
+      contractExpires: "Unknown",
+      expectedRFP: "Research needed",
+      note: "Auburn/Opelika metro area. Growing population. Research current food service vendor.",
+      contact: { name: "Lee County Sheriff's Office", title: "Jail Division", phone: "334-749-5651", email: "", url: "" },
+      lastUpdated: "April 2026"
     },
     {
       id: "adoc-statewide",
       agency: "Alabama Dept. of Corrections",
       facility: "All 27 ADOC Prisons",
+      location: "Statewide, AL",
       scope: "Full food service management — all 27 facilities",
+      population: 22000,
+      estimatedValue: "~$30M+/yr",
       bid: "Statewide Food Service Contract",
       status: "radar",
-      statusLabel: "ON RADAR",
+      myStatus: "monitoring",
       contractExpires: "~2028–2030",
       expectedRFP: "~2028",
-      note: "Awarded to Aramark Nov 2025. Largest food service contract in Alabama corrections. Monitor for performance issues or early re-bid.",
+      note: "Awarded to Aramark November 2025. Largest food service contract in Alabama corrections. Monitor for performance failures — Aramark has had prior ADOC performance issues.",
       contact: { name: "ADOC Procurement", title: "", phone: "334-353-3870", email: "", url: "doc.alabama.gov" },
-      location: "Statewide, AL"
+      lastUpdated: "April 2026"
     },
     {
-      id: "jefferson-county-jail",
-      agency: "Jefferson County Sheriff",
-      facility: "Jefferson County Jail (Birmingham + Bessemer)",
-      scope: "Inmate food service — ~1,100–1,200 daily population",
-      bid: "Unknown — Sheriff discretion",
+      id: "adoc-canteen",
+      agency: "Alabama Dept. of Corrections",
+      facility: "17 ADOC Facilities Statewide",
+      location: "Statewide, AL",
+      scope: "Inmate canteen / commissary operations",
+      population: null,
+      estimatedValue: "~$500K–$2M/yr",
+      bid: "RFP 005-25000000002",
       status: "radar",
-      statusLabel: "ON RADAR",
-      contractExpires: "Unknown",
-      expectedRFP: "Unknown — monitor",
-      note: "No public RFP found. Alabama sheriff's food fund law allows direct contracting. Contact Sheriff's Office to learn current vendor and contract term.",
-      contact: { name: "Jefferson County Sheriff's Office", title: "Corrections Division", phone: "", email: "", url: "jeffcosheriffal.com/corrections" },
-      location: "Birmingham, AL"
+      myStatus: "monitoring",
+      contractExpires: "~2028–2030",
+      expectedRFP: "~2028",
+      note: "Closed October 2025, recently awarded. Recurring contract every ~5 years.",
+      contact: { name: "Niketta Jeans", title: "ADOC Buyer", phone: "334-353-5515", email: "niketta.jeans@doc.alabama.gov", url: "" },
+      lastUpdated: "April 2026"
     }
   ],
 
   portals: [
-    { name: "ADOC RFP Page",         url: "http://www.doc.state.al.us/RequestForProposals" },
-    { name: "Alabama STAARS/AlabamaBuys", url: "https://procurement.staars.alabama.gov" },
-    { name: "BidNet Direct — Alabama", url: "https://www.bidnetdirect.com/alabama" },
-    { name: "Jefferson County PACA",  url: "https://paca.jccal.org" },
-    { name: "Alabama Bid Network",    url: "https://www.alabamabids.com" }
+    { name: "ADOC RFP Page",        icon: "fa-gavel",               url: "http://www.doc.state.al.us/RequestForProposals",  subtitle: "doc.state.al.us"      },
+    { name: "Alabama STAARS",        icon: "fa-building-columns",    url: "https://procurement.staars.alabama.gov",          subtitle: "AlabamaBuys portal"   },
+    { name: "BidNet Direct — AL",    icon: "fa-magnifying-glass-dollar", url: "https://www.bidnetdirect.com/alabama",        subtitle: "bidnetdirect.com"     },
+    { name: "Jefferson Co. PACA",    icon: "fa-boxes-stacked",       url: "https://paca.jccal.org",                          subtitle: "paca.jccal.org"       },
+    { name: "Alabama Bid Network",   icon: "fa-file-contract",       url: "https://www.alabamabids.com",                     subtitle: "alabamabids.com"      },
+    { name: "DemandStar — Alabama",  icon: "fa-star",                url: "https://network.demandstar.com/",                 subtitle: "demandstar.com"       }
   ]
 };
 

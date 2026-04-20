@@ -2074,6 +2074,27 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
 .bid-timeline-item.highlight .bid-timeline-date { color: #60a5fa; }
 .bid-timeline-arrow { color: var(--text-400); font-size: 11px; }
 
+.bid-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600;
+  background: var(--bg-2); color: var(--text-300);
+  padding: 2px 10px; border-radius: 20px;
+}
+.bid-pill.mono { font-family: monospace; font-size: 10px; }
+.bid-portals-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+.bid-portal-card {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 16px 10px;
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius); text-decoration: none;
+  transition: border-color .15s;
+}
+.bid-portal-card:hover { border-color: var(--accent); }
+
 /* radar grid */
 .bid-radar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .bid-radar-card { border-top: 3px solid rgba(139,92,246,0.5); }

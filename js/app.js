@@ -1754,17 +1754,167 @@ function renderMealIdeas() {
 }
 
 /* ── Bid Tracker ──────────────────────────────────────────── */
-function initBidTracker() {
-  // Countdown: days until Montgomery Municipal Jail expected RFP (Aug 1, 2026)
-  const rfpTarget = new Date('2026-08-01T00:00:00');
-  const el = document.getElementById('montgomery-days');
-  if (el) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const diff = Math.ceil((rfpTarget - today) / 86400000);
-    el.textContent = diff > 0 ? diff + ' days' : diff === 0 ? 'Today' : 'Overdue';
+function renderBidTracker() {
+  const myStatusMeta = {
+    won:         { label: 'Active Contract', cls: '#22c55e',  bg: 'rgba(34,197,94,0.12)'   },
+    prospecting: { label: 'Prospecting',     cls: '#f59e0b',  bg: 'rgba(245,158,11,0.12)'  },
+    contacted:   { label: 'Contacted',       cls: '#22d3ee',  bg: 'rgba(34,211,238,0.12)'  },
+    submitted:   { label: 'Bid Submitted',   cls: '#60a5fa',  bg: 'rgba(96,165,250,0.12)'  },
+    monitoring:  { label: 'Monitoring',      cls: '#a78bfa',  bg: 'rgba(167,139,250,0.12)' },
+    lost:        { label: 'Not Awarded',     cls: '#f87171',  bg: 'rgba(248,113,113,0.12)' }
+  };
+
+  function myStatusBadge(s) {
+    const m = myStatusMeta[s] || { label: s, cls: '#94a3b8', bg: 'rgba(148,163,184,0.12)' };
+    return `<span style="font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 10px;border-radius:20px;background:${m.bg};color:${m.cls};border:1px solid ${m.cls}33;white-space:nowrap">${m.label}</span>`;
   }
-  // Set initial last-checked timestamp
+
+  function contactLine(c) {
+    if (!c) return '';
+    const parts = [];
+    if (c.name) parts.push(`<span><i class="fa-solid fa-user" style="color:var(--accent);margin-right:4px"></i><strong>${c.name}</strong>${c.title ? ' — ' + c.title : ''}</span>`);
+    if (c.phone) parts.push(`<span><i class="fa-solid fa-phone" style="color:var(--accent);margin-right:4px"></i><a href="tel:${c.phone.replace(/\D/g,'')}" style="color:var(--accent)">${c.phone}</a></span>`);
+    if (c.email) parts.push(`<span><i class="fa-solid fa-envelope" style="color:var(--accent);margin-right:4px"></i><a href="mailto:${c.email}" style="color:var(--accent)">${c.email}</a></span>`);
+    if (c.url)   parts.push(`<span><i class="fa-solid fa-globe" style="color:var(--accent);margin-right:4px"></i><a href="https://${c.url.replace(/^https?:\/\//,'')}" target="_blank" style="color:var(--accent)">${c.url}</a></span>`);
+    if (!parts.length) return '';
+    return `<div style="display:flex;flex-wrap:wrap;gap:5px 18px;font-size:12px;color:var(--text-300)">${parts.join('')}</div>`;
+  }
+
+  function countdownHtml(actionDate) {
+    if (!actionDate) return '';
+    const target = new Date(actionDate + 'T00:00:00');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const diff = Math.ceil((target - today) / 86400000);
+    const txt = diff > 0 ? diff + ' days' : diff === 0 ? 'Today' : Math.abs(diff) + ' days ago';
+    const col = diff <= 0 ? '#ef4444' : diff <= 30 ? '#f59e0b' : '#60a5fa';
+    return `<div style="text-align:center;padding:0 4px"><div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Days Away</div><div style="font-size:15px;font-weight:800;color:${col}">${txt}</div></div>`;
+  }
+
+  function metaPills(b) {
+    const pills = [];
+    if (b.population) pills.push(`<span class="bid-pill"><i class="fa-solid fa-users"></i> ~${b.population.toLocaleString()}/day</span>`);
+    if (b.estimatedValue) pills.push(`<span class="bid-pill"><i class="fa-solid fa-dollar-sign"></i> ${b.estimatedValue}</span>`);
+    if (b.bid && b.bid !== 'Research needed' && b.bid !== 'Unknown — Sheriff discretion') pills.push(`<span class="bid-pill mono">${b.bid}</span>`);
+    return pills.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">${pills.join('')}</div>` : '';
+  }
+
+  function buildCard(b, borderColor, showCountdown) {
+    const noteIcon  = b.status === 'verify' ? 'fa-triangle-exclamation' : 'fa-lightbulb';
+    const noteColor = b.status === 'verify' ? 'var(--amber)' : '#60a5fa';
+    const expiryRow = (b.contractExpires && b.contractExpires !== 'Unknown') ? `
+      <div style="display:flex;align-items:center;gap:8px;background:var(--bg-2);border-radius:8px;padding:8px 14px;margin-bottom:12px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Contract Expires</div><div style="font-size:13px;font-weight:600;color:var(--text-200)">${b.contractExpires}</div></div>
+        ${b.expectedRFP ? `<i class="fa-solid fa-arrow-right" style="color:var(--text-400);font-size:11px"></i><div style="text-align:center"><div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Expected RFP</div><div style="font-size:13px;font-weight:600;color:#60a5fa">${b.expectedRFP}</div></div>` : ''}
+        ${showCountdown && b.actionDate ? `<i class="fa-solid fa-arrow-right" style="color:var(--text-400);font-size:11px"></i>${countdownHtml(b.actionDate)}` : ''}
+      </div>` : '';
+    return `
+      <div class="card" style="border-top:3px solid ${borderColor};margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+          <div>
+            <div style="font-size:18px;font-weight:700;color:var(--text-100)">${b.agency}</div>
+            <div style="font-size:13px;color:var(--text-400);margin-top:2px">${b.facility} &nbsp;·&nbsp; ${b.location}</div>
+          </div>
+          ${myStatusBadge(b.myStatus)}
+        </div>
+        ${metaPills(b)}
+        ${expiryRow}
+        ${b.scope ? `<div style="font-size:13px;color:var(--text-200);margin-bottom:10px"><strong>Scope:</strong> ${b.scope}</div>` : ''}
+        ${b.note ? `<div style="background:var(--bg-2);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-300);margin-bottom:12px;line-height:1.6"><i class="fa-solid ${noteIcon}" style="color:${noteColor};margin-right:6px"></i>${b.note}</div>` : ''}
+        ${contactLine(b.contact)}
+        <div style="margin-top:8px;font-size:10px;color:var(--text-400)"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Updated: ${b.lastUpdated || '—'}</div>
+      </div>`;
+  }
+
+  function sectionHead(badge, badgeStyle, subtitle, extra) {
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <span style="${badgeStyle}">${badge}</span>
+      <span style="font-size:13px;font-weight:600;color:var(--text-200)">${subtitle}</span>
+      ${extra || ''}
+    </div>`;
+  }
+
+  // WON
+  const wonEl = document.getElementById('bids-won');
+  if (wonEl && BIDS.won && BIDS.won.length) {
+    wonEl.innerHTML = `<div class="section bid-section">
+      ${sectionHead('ACTIVE CONTRACT','background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px','Current operations')}
+      ${BIDS.won.map(b => buildCard(b,'#22c55e',false)).join('')}
+    </div>`;
+  }
+
+  // VERIFY
+  const verifyEl = document.getElementById('bids-open');
+  if (verifyEl) {
+    verifyEl.innerHTML = `<div class="section bid-section">
+      ${sectionHead('VERIFY STATUS','background:rgba(245,158,11,0.15);color:var(--amber);border:1px solid rgba(245,158,11,0.3);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px','Call Today')}
+      ${BIDS.verify.map(b => buildCard(b,'var(--amber)',false)).join('')}
+    </div>`;
+  }
+
+  // UPCOMING
+  const upcomingEl = document.getElementById('bids-upcoming');
+  if (upcomingEl) {
+    upcomingEl.innerHTML = `<div class="section bid-section">
+      ${sectionHead('COMING UP','background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px','Start Positioning Now')}
+      ${BIDS.upcoming.map(b => buildCard(b,'#3b82f6',true)).join('')}
+    </div>`;
+  }
+
+  // RADAR
+  const radarEl = document.getElementById('bids-radar');
+  if (radarEl) {
+    radarEl.innerHTML = `<div class="section bid-section">
+      ${sectionHead('ON RADAR','background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.25);font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 10px;border-radius:20px',
+        'Research contract expirations',
+        `<span style="font-size:12px;color:var(--text-400)">${BIDS.radar.length} opportunities tracked</span>`)}
+      <div class="bid-radar-grid">
+        ${BIDS.radar.map(b => {
+          const reYear = (b.expectedRFP && b.expectedRFP !== 'Research needed') ? b.expectedRFP : '?';
+          return `
+            <div class="card" style="border-top:3px solid rgba(139,92,246,0.5)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+                <span style="font-size:11px;background:rgba(139,92,246,0.1);color:#a78bfa;padding:2px 10px;border-radius:20px;font-weight:700">${reYear}</span>
+                ${myStatusBadge(b.myStatus)}
+              </div>
+              <div style="font-size:15px;font-weight:700;color:var(--text-100);margin-bottom:2px">${b.agency}</div>
+              <div style="font-size:12px;color:var(--text-400);margin-bottom:6px">${b.facility} &nbsp;·&nbsp; ${b.location}</div>
+              ${metaPills(b)}
+              <div style="font-size:12px;color:var(--text-300);line-height:1.5;margin-bottom:8px">${b.note}</div>
+              ${contactLine(b.contact)}
+              <div style="margin-top:8px;font-size:10px;color:var(--text-400)"><i class="fa-regular fa-clock" style="margin-right:4px"></i>Updated: ${b.lastUpdated || '—'}</div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }
+
+  // PORTALS
+  const portalsEl = document.getElementById('bids-portals');
+  if (portalsEl) {
+    portalsEl.innerHTML = `<div class="section bid-section">
+      <div style="font-size:13px;font-weight:600;color:var(--text-300);margin-bottom:12px;text-transform:uppercase;letter-spacing:.06em"><i class="fa-solid fa-link" style="margin-right:8px;color:var(--accent)"></i>Procurement Portals — Check These Regularly</div>
+      <div class="bid-portals-grid">
+        ${BIDS.portals.map(p => `
+          <a href="${p.url}" target="_blank" class="bid-portal-card">
+            <i class="fa-solid ${p.icon}" style="font-size:20px;color:var(--accent)"></i>
+            <div style="font-size:12px;font-weight:600;color:var(--text-200);text-align:center">${p.name}</div>
+            <div style="font-size:10px;color:var(--text-400)">${p.subtitle}</div>
+          </a>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // Update nav badge counts
+  const vBadge = document.querySelector('.nav-item[href="#bids-open"] .nav-badge');
+  const uBadge = document.querySelector('.nav-item[href="#bids-upcoming"] .nav-badge');
+  const rBadge = document.querySelector('.nav-item[href="#bids-radar"] .nav-badge');
+  if (vBadge) vBadge.textContent = BIDS.verify.length;
+  if (uBadge) uBadge.textContent = BIDS.upcoming.length;
+  if (rBadge) rBadge.textContent = BIDS.radar.length;
+}
+
+function initBidTracker() {
+  renderBidTracker();
   bidRefresh(false);
 }
 
