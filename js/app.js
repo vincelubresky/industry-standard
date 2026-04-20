@@ -2414,13 +2414,15 @@ function renderCafeIngredients() {
   if (!el) return;
 
   const cats = [...new Set(CAFE_DATA.ingredients.map(i => i.category))];
-  const knownCount    = CAFE_DATA.ingredients.filter(i => i.status === 'known').length;
-  const needsCount    = CAFE_DATA.ingredients.filter(i => i.status === 'needsPrice').length;
-  const shaverSwitch  = CAFE_DATA.ingredients.filter(i => i.shaverSavings > 0).length;
+  const knownCount      = CAFE_DATA.ingredients.filter(i => i.status === 'known').length;
+  const needsCount      = CAFE_DATA.ingredients.filter(i => i.status === 'needsPrice').length;
+  const shaverSwitch    = CAFE_DATA.ingredients.filter(i => i.shaverSavings > 0).length;
+  const forestWoodCount = CAFE_DATA.ingredients.filter(i => i.status === 'forestWood').length;
 
   el.innerHTML = `
     <div class="cafe-ing-summary-bar">
       <span class="cafe-ing-bar-item green"><i class="fa-solid fa-circle-check"></i> ${knownCount} Items Priced</span>
+      <span class="cafe-ing-bar-item orange"><i class="fa-solid fa-truck"></i> ${forestWoodCount} Forest Wood Quoted</span>
       <span class="cafe-ing-bar-item red"><i class="fa-solid fa-circle-question"></i> ${needsCount} Need Pricing</span>
       <span class="cafe-ing-bar-item blue"><i class="fa-solid fa-arrows-rotate"></i> ${shaverSwitch} Shaver Switch Available</span>
     </div>
@@ -2430,14 +2432,17 @@ function renderCafeIngredients() {
         <div class="cafe-ing-category">
           <div class="cafe-ing-cat-title">${cat}</div>
           <table class="cafe-ing-table">
-            <thead><tr><th>Item</th><th>Frequency</th><th>PFG $/serving</th><th>Shaver $/serving</th><th>Status</th></tr></thead>
+            <thead><tr><th>Item</th><th>Frequency</th><th>PFG $/serving</th><th>Shaver $/serving</th><th>Forest Wood $/serving</th><th>Status</th></tr></thead>
             <tbody>
               ${items.map(i => {
-                const pfgDisplay    = i.pfgCost    ? '$'+i.pfgCost.toFixed(3)   : i.estimated ? '~$'+i.estimated.toFixed(2)+' est.' : '—';
-                const shaverDisplay = i.shaverCost ? '$'+i.shaverCost.toFixed(3) : '—';
+                const pfgDisplay        = i.pfgCost        ? '$'+i.pfgCost.toFixed(3)        : i.estimated ? '~$'+i.estimated.toFixed(2)+' est.' : '—';
+                const shaverDisplay     = i.shaverCost     ? '$'+i.shaverCost.toFixed(3)     : '—';
+                const forestWoodDisplay = i.forestWoodCost ? '$'+i.forestWoodCost.toFixed(3) : '—';
                 const savings = i.shaverSavings ? `<span class="cafe-shaver-save">Shaver saves $${i.shaverSavings.toFixed(3)}/serving</span>` : '';
                 const statusBadge = i.status === 'known'
                   ? '<span class="cafe-status-badge known">Priced</span>'
+                  : i.status === 'forestWood'
+                  ? '<span class="cafe-status-badge forestwood">Forest Wood</span>'
                   : '<span class="cafe-status-badge needs">Needs Quote</span>';
                 const rowClass = i.status === 'needsPrice' ? 'cafe-ing-row needs' : 'cafe-ing-row';
                 const flagNote = i.note ? `<div class="cafe-ing-note"><i class="fa-solid fa-circle-info"></i> ${i.note}</div>` : '';
@@ -2446,6 +2451,7 @@ function renderCafeIngredients() {
                   <td class="cafe-ing-freq">${i.frequency}</td>
                   <td class="cafe-ing-cost">${pfgDisplay}</td>
                   <td class="cafe-ing-cost">${shaverDisplay}${savings}</td>
+                  <td class="cafe-ing-cost">${forestWoodDisplay}</td>
                   <td>${statusBadge}</td>
                 </tr>`;
               }).join('')}
@@ -2453,7 +2459,7 @@ function renderCafeIngredients() {
           </table>
         </div>`;
     }).join('')}
-    <div class="cafe-ing-footnote"><i class="fa-solid fa-info-circle"></i> Estimated costs based on typical institutional food service pricing. All items marked "Needs Quote" should be confirmed with PFG and Shaver before ordering.</div>`;
+    <div class="cafe-ing-footnote"><i class="fa-solid fa-info-circle"></i> Estimated costs based on typical institutional food service pricing. All items marked "Needs Quote" should be confirmed with PFG and Shaver before ordering. Forest Wood pricing as of April 2026 — confirm case sizes before placing standing order.</div>`;
 }
 
 function renderCafeRotation() {

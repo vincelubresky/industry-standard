@@ -3636,9 +3636,10 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   display: flex; align-items: center; gap: 7px;
   font-size: 13px; font-weight: 600;
 }
-.cafe-ing-bar-item.green { color: #16a34a; }
-.cafe-ing-bar-item.red   { color: #dc2626; }
-.cafe-ing-bar-item.blue  { color: #2563eb; }
+.cafe-ing-bar-item.green  { color: #16a34a; }
+.cafe-ing-bar-item.red    { color: #dc2626; }
+.cafe-ing-bar-item.blue   { color: #2563eb; }
+.cafe-ing-bar-item.orange { color: #d97706; }
 
 .cafe-ing-category { margin-bottom: 24px; }
 .cafe-ing-cat-title {
@@ -3666,8 +3667,9 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   display: inline-block; padding: 2px 8px; border-radius: 20px;
   font-size: 10px; font-weight: 600; white-space: nowrap;
 }
-.cafe-status-badge.known { background: #dcfce7; color: #15803d; }
-.cafe-status-badge.needs { background: #fee2e2; color: #dc2626; }
+.cafe-status-badge.known       { background: #dcfce7; color: #15803d; }
+.cafe-status-badge.needs       { background: #fee2e2; color: #dc2626; }
+.cafe-status-badge.forestwood  { background: #fef3c7; color: #d97706; }
 .cafe-ing-footnote {
   margin-top: 8px; padding: 10px 14px;
   background: var(--bg-alt); border-radius: 8px;

@@ -844,9 +844,10 @@ const MEAL_IDEAS = {
    Used by the price-reference modal to cite where each price comes from.
    ============================================================ */
 const VENDOR_SOURCES = {
-  pfg:      { key: "pfg",      name: "PFG",        fullName: "Performance Food Group",    doc: "Invoice #6776963",         date: "April 7, 2026"    },
-  shaver:   { key: "shaver",   name: "Shaver ISP", fullName: "Shaver Foods ISP Price List", doc: "ISP Price List",         date: "March 1–31, 2026" },
-  bigDaddy: { key: "bigDaddy", name: "Big Daddy",  fullName: "Big Daddy Foods, Inc.",     doc: "Sales Order BA24865",      date: "April 9, 2026"    }
+  pfg:        { key: "pfg",        name: "PFG",          fullName: "Performance Food Group",      doc: "Invoice #6776963",         date: "April 7, 2026"    },
+  shaver:     { key: "shaver",     name: "Shaver ISP",   fullName: "Shaver Foods ISP Price List", doc: "ISP Price List",           date: "March 1–31, 2026" },
+  bigDaddy:   { key: "bigDaddy",   name: "Big Daddy",    fullName: "Big Daddy Foods, Inc.",       doc: "Sales Order BA24865",      date: "April 9, 2026"    },
+  forestWood: { key: "forestWood", name: "Forest Wood",  fullName: "Forest Wood (current milk vendor)", doc: "Verbal/Written Quote",  date: "April 2026"       }
 };
 
 /* ============================================================
@@ -1487,7 +1488,8 @@ const CAFE_DATA = {
     { item: "French Toast w/ Syrup",          category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Tue (Wk 2–3) / Mon (Wk 1)",        status: "needsPrice", estimated: 0.25 },
     { item: "Breakfast Potatoes",             category: "Starch",    pfgCost: null,  shaverCost: null,  frequency: "Mon / Sat / Sun / Thu breakfast",   status: "needsPrice", estimated: 0.20, note: "Hashbrowns in PFG catalog $23.24/2×10# — verify per-serving" },
     { item: "Cinnamon Rolls w/ Icing",        category: "Bakery",    pfgCost: null,  shaverCost: null,  frequency: "Thu (Wk 4) breakfast",              status: "needsPrice", estimated: 0.30 },
-    { item: "Fresh Fruit (orange + banana)",  category: "Produce",   pfgCost: null,  shaverCost: null,  frequency: "Daily — every breakfast",           status: "needsPrice", estimated: 0.55, note: "LARGEST single cost driver. Get produce contract immediately." },
+    { item: "Bananas (whole, 40 lb case)",    category: "Produce",   pfgCost: null,  shaverCost: null,  forestWoodCost: 0.137, frequency: "Daily — every breakfast",  status: "forestWood", note: "Forest Wood: $21.95/40 lb case ≈ 160 servings → $0.14/banana. Lock this in — strong price." },
+    { item: "Oranges (navel, whole)",         category: "Produce",   pfgCost: null,  shaverCost: null,  forestWoodCost: 0.431, frequency: "Daily — every breakfast",  status: "forestWood", note: "Forest Wood: $37.95/case. Assumes 88-count standard case → $0.43/orange. CONFIRM CASE SIZE — if 113-count the price drops to $0.34; if 56 lb the price drops to ~$0.30." },
     { item: "Loaf Bread",                     category: "Starch",    pfgCost: 0.07,  shaverCost: null,  frequency: "Daily breakfast",                   status: "known" },
     { item: "Jelly Packet",                   category: "Condiment", pfgCost: 0.076, shaverCost: 0.048, frequency: "Breakfast (biscuit days)",           status: "known",      shaverSavings: 0.028 },
     { item: "Chicken Tenders (4 oz)",         category: "Protein",   pfgCost: null,  shaverCost: null,  frequency: "Mon lunch — Wk 1, 2, 3",           status: "needsPrice", estimated: 1.25, note: "Most expensive item on cafe menu." },
@@ -1513,13 +1515,13 @@ const CAFE_DATA = {
   opportunities: [
     {
       rank: 1,
-      title: "Get a Produce Contract for Fresh Fruit",
-      detail: "Fresh fruit (orange + banana) is served EVERY breakfast. Bessemer: ~50 people/day · Birmingham: ~80 people/day (café-only) = ~130 people/day. At ~$0.55/person/day that's ~$26,000/year in fruit. A produce contract at $0.25–0.30/person/day cuts that to ~$12,000–14,000/year.",
-      weeklyLow: 200, weeklyHigh: 290,
-      annualLow: 10000, annualHigh: 15000,
+      title: "Lock In Forest Wood Produce Contract (Pricing in Hand)",
+      detail: "Forest Wood (current milk vendor) has quoted: bananas $21.95/40 lb ($0.14/serving) and oranges $37.95/case ($0.43/serving, assuming 88-count). Combined: $0.57/person/day × 130 people × 365 days = ~$27,000/year. ACTION: (1) Confirm orange case count with Forest Wood — a 113-count case drops oranges to $0.34, saving ~$3,400/year. (2) Bundle produce + milk on same weekly delivery to eliminate a separate vendor trip. (3) Lock in standing order to avoid spot-price exposure.",
+      weeklyLow: 0, weeklyHigh: 180,
+      annualLow: 0, annualHigh: 9400,
       priority: "critical",
       icon: "fa-apple-whole",
-      action: "Get quotes from Shaver produce section, Sysco, or local produce distributor. Standing weekly order on whole oranges (3/4 bushel) and bananas (40 lb case)."
+      action: "Call Forest Wood: confirm orange case count (88, 100, or 113). Then execute standing weekly order for bananas + oranges alongside existing milk delivery. One vendor, one invoice, one delivery."
     },
     {
       rank: 2,
