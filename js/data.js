@@ -754,12 +754,12 @@ const MENU_ROTATION = [
         dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Turkey Sandwich",                  protein: "Turkey",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.52", cal: 820 },
-        dinner:    { main: "Mashed Potatoes & Gravy + Sausage",protein: "Sausage",        sides: ["Cornbread","Green Beans"],                      cost: "$0.48", cal: 960 } },
+        lunch:     { main: "Chicken Fritter Sandwich",         protein: "Chicken",         sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.54", cal: 860 },
+        dinner:    { main: "Beef Patty & Brown Gravy",         protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.52", cal: 920 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "PB&J Sandwich",                    protein: "Peanut Butter",   sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.54", cal: 840 },
-        dinner:    { main: "Ziti Casserole + Salami",          protein: "Salami",          sides: ["Cornbread"],                                    cost: "$0.42", cal: 950 } }
+        lunch:     { main: "Beef Patty Sandwich",              protein: "Beef",            sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.56", cal: 860 },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.55", cal: 1020 } }
     ]
   },
   {
@@ -787,12 +787,12 @@ const MENU_ROTATION = [
         dinner:    { main: "Mashed Potatoes & Gravy + Sausage",protein: "Sausage",        sides: ["Cornbread"],                                    cost: "$0.45", cal: 920 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Salami Sandwich",                  protein: "Salami",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.46", cal: 800 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread","Mixed Veg"],                        cost: "$0.55", cal: 1020 } },
+        lunch:     { main: "Beef Patty Sandwich",              protein: "Beef",            sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.56", cal: 860 },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.55", cal: 1020 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Turkey Sandwich",                  protein: "Turkey",          sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.52", cal: 820 },
-        dinner:    { main: "Rotini Casserole + Sausage + Cheese Sauce", protein: "Sausage",sides: ["Cornbread"],                                   cost: "$0.45", cal: 960 } }
+        lunch:     { main: "Chicken Fritter Sandwich",         protein: "Chicken",         sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.54", cal: 860 },
+        dinner:    { main: "Beef Patty & Brown Gravy + Rice",  protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.52", cal: 940 } }
     ]
   }
 ];
