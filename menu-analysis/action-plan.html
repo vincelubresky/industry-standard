@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jefferson County Jail — Food Service Action Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 0 auto;
+    background: #fff;
+    padding: 0.55in 0.65in 0.5in;
+  }
+
+  /* ── Header ── */
+  .doc-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 14px;
+    border-bottom: 3px solid #1e293b;
+    margin-bottom: 18px;
+  }
+  .doc-header-left h1 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #1e293b;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .doc-header-left p {
+    font-size: 10.5px;
+    color: #64748b;
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  .doc-header-right {
+    text-align: right;
+  }
+  .doc-header-right .label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #94a3b8;
+  }
+  .doc-header-right .value {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  /* ── KPI Bar ── */
+  .kpi-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .kpi-card {
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border-left: 3px solid #1e293b;
+  }
+  .kpi-card.green  { border-left-color: #16a34a; background: #f0fdf4; }
+  .kpi-card.blue   { border-left-color: #2563eb; background: #eff6ff; }
+  .kpi-card.amber  { border-left-color: #d97706; background: #fffbeb; }
+  .kpi-card.red    { border-left-color: #dc2626; background: #fef2f2; }
+  .kpi-val  { font-size: 18px; font-weight: 900; line-height: 1; margin-bottom: 2px; }
+  .kpi-val.green { color: #16a34a; }
+  .kpi-val.blue  { color: #2563eb; }
+  .kpi-val.amber { color: #d97706; }
+  .kpi-val.red   { color: #dc2626; }
+  .kpi-lbl  { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; }
+  .kpi-note { font-size: 9px; color: #94a3b8; margin-top: 1px; }
+
+  /* ── Two-column layout ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .full-col { margin-bottom: 14px; }
+
+  /* ── Section ── */
+  .section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: #1e293b;
+    color: #fff;
+    padding: 7px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-header .step-badge {
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .section-header .step-badge.green  { background: #16a34a; }
+  .section-header .step-badge.blue   { background: #2563eb; }
+  .section-header .step-badge.amber  { background: #b45309; }
+  .section-header .step-badge.purple { background: #7c3aed; }
+  .section-header h2 {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .section-header .due {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.65);
+    white-space: nowrap;
+  }
+  .section-body { padding: 10px 12px; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 8.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94a3b8;
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+  }
+  td {
+    padding: 4px 8px;
+    font-size: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.savings { color: #16a34a; font-weight: 700; }
+  td.price   { color: #2563eb; font-weight: 600; }
+  td.keep    { color: #dc2626; font-weight: 600; }
+
+  .priority-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 1px 5px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+  .priority-badge.high   { background: #fef2f2; color: #dc2626; }
+  .priority-badge.med    { background: #fffbeb; color: #b45309; }
+  .priority-badge.low    { background: #f0fdf4; color: #16a34a; }
+  .priority-badge.keep   { background: #eff6ff; color: #2563eb; }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+  .checklist li .num {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #1e293b;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .checklist li .num.green  { background: #16a34a; }
+  .checklist li .num.blue   { background: #2563eb; }
+  .checklist li .num.amber  { background: #d97706; }
+  .checklist li strong { color: #1e293b; }
+
+  /* ── Cap Box ── */
+  .cap-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .cap-card {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 6px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cap-card .loc   { font-size: 10px; font-weight: 800; color: #1e293b; }
+  .cap-card .cap   { font-size: 14px; font-weight: 900; color: #dc2626; }
+  .cap-card .note  { font-size: 8.5px; color: #64748b; margin-top: 1px; }
+
+  /* ── Menu grid ── */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .meal-block { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 7px 9px; }
+  .meal-block .meal-label {
+    font-size: 8.5px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 4px;
+  }
+  .meal-block .meal-items { font-size: 9.5px; color: #334155; line-height: 1.6; }
+
+  /* ── Ongoing rules ── */
+  .rule-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .rule-card {
+    background: #f8fafc;
+    border-left: 3px solid #2563eb;
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+  }
+  .rule-card .rule-title { font-size: 10px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .rule-card .rule-body  { font-size: 9.5px; color: #64748b; line-height: 1.45; }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .doc-footer .footer-left { font-size: 9px; color: #94a3b8; }
+  .doc-footer .footer-right { font-size: 9px; color: #94a3b8; text-align: right; }
+  .footer-savings {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #16a34a;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; }
+    .page {
+      width: 100%;
+      min-height: auto;
+      padding: 0.45in 0.55in;
+      box-shadow: none;
+    }
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <h1>Jefferson County Jail<br>Food Service Action Plan</h1>
+      <p>Vendor transition · Menu implementation · Ordering controls — Industry Standard</p>
+    </div>
+    <div class="doc-header-right">
+      <div class="label">Prepared</div>
+      <div class="value">April 20, 2026</div>
+      <div class="label" style="margin-top:6px">Prepared By</div>
+      <div class="value">Industry Standard</div>
+    </div>
+  </div>
+
+  <!-- KPI Bar -->
+  <div class="kpi-bar">
+    <div class="kpi-card green">
+      <div class="kpi-val green">$48,000</div>
+      <div class="kpi-lbl">Annual Population Savings</div>
+      <div class="kpi-note">Full Shaver vendor transition</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-val blue">$1,146+</div>
+      <div class="kpi-lbl">Monthly Savings — Month 1</div>
+      <div class="kpi-note">23 items confirmed cheaper at Shaver</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-val amber">$0.54</div>
+      <div class="kpi-lbl">Target Cost Per Meal</div>
+      <div class="kpi-note">vs $0.76 current actual</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-val red">38.5%</div>
+      <div class="kpi-lbl">Current Population COGS</div>
+      <div class="kpi-note">Target ≤35% — gap closes via Shaver</div>
+    </div>
+  </div>
+
+  <!-- Step 1 + Step 2 side by side -->
+  <div class="two-col">
+
+    <!-- Step 1: Shaver Order -->
+    <div class="section">
+      <div class="section-header">
+        <span class="step-badge red">Step 1</span>
+        <h2>Place Shaver ISP Order</h2>
+        <span class="due">Due: Tue Apr 21</span>
+      </div>
+      <div class="section-body">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Shaver Price</th>
+              <th>Saves vs PFG</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Grape Drink Mix 1000/1gm</td><td class="price">$20.63/cs</td><td class="savings">$29.32/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Great Northern Beans 50 LB</td><td class="price">$39.00/cs</td><td class="savings">$17.05/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Jelly Assorted 200ct</td><td class="price">$9.53/cs</td><td class="savings">$9.67/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Rotini Pasta 2/10 LB</td><td class="price">$13.73/cs</td><td class="savings">$10.10/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Elbow Macaroni 2/10 LB</td><td class="price">$13.10/cs</td><td class="savings">$6.71/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Ziti Pasta 2/10 LB</td><td class="price">$13.73/cs</td><td class="savings">$8.04/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Carrots Sliced Frozen 20 LB</td><td class="price">$14.34/cs</td><td class="savings">$8.09/cs</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Okra Cut Breaded 20 LB</td><td class="price">$26.77/cs</td><td class="savings">$0.39/lb</td><td><span class="priority-badge high">High</span></td></tr>
+            <tr><td>Potato Flakes 40 LB</td><td class="price">$51.62/cs</td><td class="savings">$7.73/cs</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Grits Quick 50 LB</td><td class="price">$28.00/cs</td><td class="savings">$0.40/lb</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Oats / Oatmeal 50 LB</td><td class="price">$28.33/cs</td><td class="savings">$6.82/cs</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Cheese Sauce 6/10</td><td class="price">$48.12/cs</td><td class="savings">$6.97/cs</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Onion Powder 6/1 LB</td><td class="price">$24.64/cs</td><td class="savings">$2.35/lb</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Garlic Powder 6/1 LB</td><td class="price">$24.02/cs</td><td class="savings">$2.15/lb</td><td><span class="priority-badge med">Med</span></td></tr>
+            <tr><td>Cake Mixes (Yellow/Coffee/Strawberry)</td><td class="price">~$42/cs avg</td><td class="savings">~$2/cs avg</td><td><span class="priority-badge low">Low</span></td></tr>
+            <tr><td>Tomato Sauce · Diced Tomatoes · Fry Oil · Margarine · Peas &amp; Carrots</td><td class="price">—</td><td class="savings">&lt;$1/cs each</td><td><span class="priority-badge low">Low</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:8px;padding:6px 8px;background:#eff6ff;border-radius:5px;font-size:9.5px;color:#1e40af">
+          <strong>Keep with PFG (PFG is cheaper):</strong> AP Flour · Granulated Sugar · Parboiled Rice · Cream of Mushroom Soup · Bread Pullman · Pinto Beans
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Prep + Step 3: Menu -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- Step 2 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="step-badge amber">Step 2</span>
+          <h2>This Week — Prep for Menu Rollout</h2>
+          <span class="due">Apr 21–25</span>
+        </div>
+        <div class="section-body">
+          <ul class="checklist">
+            <li><span class="num amber">1</span><div>Print the 2-week menu rotation — one copy for the kitchen, one for the manager's binder.</div></li>
+            <li><span class="num amber">2</span><div>Walk inventory against Week 1. Cross-reference what's on hand against the new menu before the Shaver delivery arrives. Note gaps.</div></li>
+            <li><span class="num amber">3</span><div>Brief kitchen staff. The biggest change is hot dinner entrees replacing sandwich-only dinners. No new cooking methods — all batch/casserole prep.</div></li>
+            <li><span class="num amber">4</span><div>Post COGS caps at the ordering station (see below). These go up before the new menu starts.</div></li>
+          </ul>
+          <div class="cap-row">
+            <div class="cap-card">
+              <div>
+                <div class="loc">Birmingham</div>
+                <div class="note">Weekly COGS hard cap</div>
+              </div>
+              <div class="cap">$3,860/wk</div>
+            </div>
+            <div class="cap-card">
+              <div>
+                <div class="loc">Bessemer</div>
+                <div class="note">Weekly COGS hard cap</div>
+              </div>
+              <div class="cap">$1,650/wk</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="section">
+        <div class="section-header">
+          <span class="step-badge green">Step 3</span>
+          <h2>Go Live — New Menu Rotation</h2>
+          <span class="due">Mon Apr 27</span>
+        </div>
+        <div class="section-body">
+          <p style="font-size:9.5px;color:#64748b;margin-bottom:7px">Start <strong>Week 1</strong> on Monday April 27. Week 2 begins May 4. Repeat on a 2-week cycle.</p>
+          <div class="menu-grid">
+            <div class="meal-block">
+              <div class="meal-label">Breakfast — Daily</div>
+              <div class="meal-items">Sausage or Egg (rotating)<br>Grits or Oatmeal<br>Biscuit · Jelly · Fortified Bev<br>Cake 3x/week · Milk 2x/week</div>
+            </div>
+            <div class="meal-block">
+              <div class="meal-label">Lunch — Daily</div>
+              <div class="meal-items">Sandwich protein (Turkey, PB&amp;J, Salami, Chicken/Beef Patty)<br>Wheat Bread · Condiment<br>Vegetable side · Starch side<br>Fortified Bev · Dessert</div>
+            </div>
+            <div class="meal-block">
+              <div class="meal-label">Dinner — Rotating Hot Entrees</div>
+              <div class="meal-items">Spaghetti w/ Meat Sauce<br>Chicken Rice Casserole<br>Lasagna · Beef Mac<br>Mexican Beef Bowl<br>Cheesy Chicken Mac<br>+ Vegetable · Bev · Dessert</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Step 4: Ongoing Rules -->
+  <div class="full-col">
+    <div class="section">
+      <div class="section-header">
+        <span class="step-badge purple">Step 4</span>
+        <h2>Ongoing — Ordering Discipline (Permanent Rules)</h2>
+        <span class="due">Starting Apr 27 · Every week</span>
+      </div>
+      <div class="section-body">
+        <div class="rule-grid">
+          <div class="rule-card">
+            <div class="rule-title">Order weekly — never in bulk</div>
+            <div class="rule-body">If supplies run low mid-week, that's a par-level problem to solve — not a reason to double-order next week. One order per week, per location.</div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-title">$400+ orders require sign-off</div>
+            <div class="rule-body">Any single order over $400 needs a second set of eyes before it's placed. This eliminates the bulk-buy spikes that pushed Bessemer to 89.9% COGS in a single week.</div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-title">Track running weekly COGS total</div>
+            <div class="rule-body">Post the running total somewhere visible. If Birmingham is at $3,400 on Thursday, there is $460 left for the week — not a blank check for a new full order.</div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-title">Two vendors, split by item — always</div>
+            <div class="rule-body"><strong>Shaver ISP:</strong> drink mix, pastas, carrots, beans, grits, oats, cake mixes, spices, cheese sauce.<br><strong>PFG:</strong> flour, sugar, rice, cream of mushroom, bread, pinto beans, everything else.</div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-title">Verify Shaver pricing quarterly</div>
+            <div class="rule-body">The ISP renews annually (March–March). Each quarter, spot-check the 23-item switch list and confirm Shaver is still cheaper. Adjust if pricing shifts.</div>
+          </div>
+          <div class="rule-card" style="border-left-color:#16a34a">
+            <div class="rule-title" style="color:#16a34a">Target: achieve $0.54/meal by Q3 2026</div>
+            <div class="rule-body">Current actual is $0.76/meal. Full Shaver transition + COGS caps + weekly ordering discipline closes the gap. $48,000 in annual savings at scale.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div class="footer-left">
+      Jefferson County Jail · Birmingham &amp; Bessemer · Industry Standard Food Service<br>
+      Based on PFG Invoice #6776963 (04/07/26) and Shaver ISP (03/01–03/31/26)
+    </div>
+    <div class="footer-right">
+      <span class="footer-savings">Total Annual Impact: $48,000+ in food cost savings</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
