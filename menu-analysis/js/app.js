@@ -2262,7 +2262,7 @@ function renderCafeStats() {
   const weeklyOverspend   = Math.max(0, actualCogsWeekly - targetCogsWeekly);
   const annualOpportunity = Math.round(weeklyOverspend * 52);
 
-  const totalMealsWeekly = (d.headcount.birmingham + d.headcount.bessemer) * 7;
+  const totalMealsWeekly = (d.mealsPerDay.birmingham + d.mealsPerDay.bessemer) * 7;
   const costPerMealActual = actualCogsWeekly / totalMealsWeekly;
 
   const stats = [

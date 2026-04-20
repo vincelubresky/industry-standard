@@ -1503,7 +1503,11 @@ const MENU_ORDER_LIST = {
 //  CAFÉ ANALYSIS DATA
 // ============================================================
 const CAFE_DATA = {
-  headcount: { birmingham: 240, bessemer: 150 },
+  // headcount = people per day (not meal transactions). Bessemer: 50 people × 3 meals = 150 transactions/day.
+  // Birmingham: ~80 people × 3 meals = 240 transactions/day (café-only; total site revenue includes Academy + JBS).
+  // Confirm Birmingham headcount — user estimates 200–300 meals/day total across all site revenue.
+  headcount: { birmingham: 80, bessemer: 50 },
+  mealsPerDay: { birmingham: 240, bessemer: 150 },  // actual meal transactions used for revenue/COGS math
   ratePerMeal: 3.03,
   // Birmingham revenue = Café ($5,090.40) + Academy ($2,545.20) + JBS ($2,019.00) = $9,654.60
   revWeekly:   { birmingham: 9654.60, bessemer: 3181.50 },
@@ -1569,9 +1573,9 @@ const CAFE_DATA = {
     {
       rank: 1,
       title: "Get a Produce Contract for Fresh Fruit",
-      detail: "Fresh fruit (orange + banana) is served EVERY breakfast to 390 people. At ~$0.55/person/day that's $78,000/year just in fruit. A produce vendor contract could cut this to $0.25–0.30/person/day.",
-      weeklyLow: 676, weeklyHigh: 910,
-      annualLow: 35000, annualHigh: 47000,
+      detail: "Fresh fruit (orange + banana) is served EVERY breakfast. Bessemer: ~50 people/day · Birmingham: ~80 people/day (café-only) = ~130 people/day. At ~$0.55/person/day that's ~$26,000/year in fruit. A produce contract at $0.25–0.30/person/day cuts that to ~$12,000–14,000/year.",
+      weeklyLow: 200, weeklyHigh: 290,
+      annualLow: 10000, annualHigh: 15000,
       priority: "critical",
       icon: "fa-apple-whole",
       action: "Get quotes from Shaver produce section, Sysco, or local produce distributor. Standing weekly order on whole oranges (3/4 bushel) and bananas (40 lb case)."
@@ -1712,8 +1716,8 @@ const CAFE_DATA = {
             {
               num: 8,
               title: 'Request produce quotes — oranges and bananas standing order',
-              detail: 'Fresh fruit is served every breakfast to 240 people. At ~$0.50/person/day the annual fruit cost exceeds $43,000. Contact Shaver produce and one local distributor for per-case pricing on navel oranges (3/4 bushel case) and bananas (40 lb case). A standing weekly order commands 10–20% below spot.',
-              impact: 'Sets up Phase 3 — locks in $25–35K/yr savings'
+              detail: 'Fresh fruit is served every breakfast. Birmingham café serves ~80 people/day (240 meal transactions). Contact Regional Produce Distributors or a local produce vendor for per-case pricing on navel oranges (3/4 bushel case) and bananas (40 lb case). A standing weekly order commands 10–20% below spot.',
+              impact: 'Sets up Phase 3 — reduces fruit cost from ~$0.55 to ~$0.28/person'
             }
           ]
         },
@@ -1730,8 +1734,8 @@ const CAFE_DATA = {
             {
               num: 9,
               title: 'Execute produce contract — weekly standing order',
-              detail: 'With quotes in hand, lock in a contracted per-case price for oranges and bananas. A standing weekly order eliminates spot-price volatility and ensures consistent delivery. Target: $0.25–0.30/person/day vs current ~$0.50. At 240 people × 7 days, every $0.10/day saved = $87/week.',
-              impact: '$350–500/wk · $18,000–$26,000/yr for Birmingham alone'
+              detail: 'With quotes in hand, lock in a contracted per-case price for oranges and bananas. A standing weekly order eliminates spot-price volatility and ensures consistent delivery. Target: $0.25–0.30/person/day vs current ~$0.55. At 80 people × 7 days, every $0.10/day saved = $56/week.',
+              impact: '$140–200/wk · $7,000–$10,000/yr for Birmingham café'
             },
             {
               num: 10,
