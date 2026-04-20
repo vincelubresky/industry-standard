@@ -30,20 +30,19 @@
     </div>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section-label">Vendor Analysis</div>
-    <a href="#overview" class="nav-item active"><i class="fa-solid fa-chart-line"></i>Overview</a>
-    <a href="#switch-to-shaver" class="nav-item"><i class="fa-solid fa-arrows-rotate"></i>Switch to Shaver<span class="nav-badge red">23</span></a>
-    <a href="#keep-with-pfg" class="nav-item"><i class="fa-solid fa-shield-check"></i>Keep with PFG<span class="nav-badge green">6</span></a>
-    <a href="#monthly-savings" class="nav-item"><i class="fa-solid fa-piggy-bank"></i>Monthly Savings<span class="nav-badge amber">$1K+</span></a>
-    <a href="#new-items" class="nav-item"><i class="fa-solid fa-circle-plus"></i>New Items<span class="nav-badge">18</span></a>
-    <a href="#priority-actions" class="nav-item"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
-    <a href="#full-catalog" class="nav-item"><i class="fa-solid fa-book-open"></i>Shaver Catalog</a>
+    <div class="nav-section-label" data-tab="analysis">Vendor Analysis</div>
+    <a href="#overview" class="nav-item" data-tab="analysis"><i class="fa-solid fa-chart-line"></i>Overview</a>
+    <a href="#switch-to-shaver" class="nav-item" data-tab="analysis"><i class="fa-solid fa-arrows-rotate"></i>Switch to Shaver<span class="nav-badge red">23</span></a>
+    <a href="#keep-with-pfg" class="nav-item" data-tab="analysis"><i class="fa-solid fa-shield-check"></i>Keep with PFG<span class="nav-badge green">6</span></a>
+    <a href="#monthly-savings" class="nav-item" data-tab="analysis"><i class="fa-solid fa-piggy-bank"></i>Monthly Savings<span class="nav-badge amber">$1K+</span></a>
+    <a href="#priority-actions" class="nav-item" data-tab="analysis"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
+    <a href="#full-catalog" class="nav-item" data-tab="analysis"><i class="fa-solid fa-book-open"></i>Shaver Catalog</a>
     <div class="nav-section-label">Documents</div>
     <a href="population-menu.html" target="_blank" class="nav-item"><i class="fa-solid fa-utensils"></i>Printable Menu <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <a href="vendor-order-guide.html" target="_blank" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i>Vendor Order Guide <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <a href="shaver-order-list.html" target="_blank" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Shaver Order List <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <div class="nav-section-label" data-tab="menus">Menus</div>
-    <a href="#menu-rotation" class="nav-item" data-tab="menus"><i class="fa-solid fa-calendar-week"></i>4-Week Rotation</a>
+    <a href="#menu-rotation" class="nav-item" data-tab="menus"><i class="fa-solid fa-calendar-week"></i>2-Week Rotation</a>
     <a href="#meal-ideas" class="nav-item" data-tab="menus"><i class="fa-solid fa-lightbulb"></i>Meal Ideas Library</a>
     <a href="#protein-sourcing" class="nav-item" data-tab="menus"><i class="fa-solid fa-tag"></i>Protein Sourcing</a>
     <a href="#bd-invoice" class="nav-item" data-tab="menus"><i class="fa-solid fa-file-invoice-dollar"></i>Big Daddy Invoice</a>
@@ -387,7 +386,7 @@
         <div class="section-icon purple"><i class="fa-solid fa-clipboard-list"></i></div>
         <div>
           <div class="section-title">Current Menu Assessment</div>
-          <div class="section-subtitle">4-week rotation analysis — what's working and where the gaps are</div>
+          <div class="section-subtitle">2-week rotation analysis — what's working and where the gaps are</div>
         </div>
       </div>
     </div>
@@ -419,7 +418,7 @@
         </div>
         <div class="assessment-item">
           <div class="assessment-bullet amber">2</div>
-          <div class="assessment-text"><strong>Limited Breakfast Protein <span class="pill med" style="font-size:10px;padding:2px 6px">MED</span></strong><p>Breakfast protein alternates only sausage and egg — no variety across the 4-week rotation.</p></div>
+          <div class="assessment-text"><strong>Limited Breakfast Protein <span class="pill med" style="font-size:10px;padding:2px 6px">MED</span></strong><p>Breakfast protein alternates only sausage and egg — no variety across the 2-week rotation.</p></div>
         </div>
         <div class="assessment-item">
           <div class="assessment-bullet red">4</div>
@@ -669,7 +668,7 @@
         <div class="section-icon blue"><i class="fa-solid fa-cart-shopping"></i></div>
         <div>
           <div class="section-title">Menu Order List</div>
-          <div class="section-subtitle">4-week cycle · 300 inmates · quantities + vendor assignments from rotation data</div>
+          <div class="section-subtitle">2-week cycle · 300 inmates · quantities + vendor assignments from rotation data</div>
         </div>
       </div>
     </div>
@@ -1360,14 +1359,14 @@
   ══════════════════════════════════════ -->
   <div id="menus-wrap" style="display:none">
 
-    <!-- 4-Week Rotation -->
+    <!-- 2-Week Rotation -->
     <section class="section" id="menu-rotation">
       <div class="section-header">
         <div class="section-title-group">
           <div class="section-icon" style="background:rgba(16,185,129,.12)"><i class="fa-solid fa-calendar-week" style="color:var(--success)"></i></div>
           <div>
-            <div class="section-title">4-Week Menu Rotation</div>
-            <div class="section-subtitle">Breakfast · Hot Lunch · Sandwich Dinner — edit in data.js to adjust</div>
+            <div class="section-title">2-Week Menu Rotation</div>
+            <div class="section-subtitle">Sandwich Lunch · Hot Casserole Dinner — edit in data.js to adjust</div>
           </div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -1380,8 +1379,6 @@
       <div class="menu-week-bar" id="menuWeekBar">
         <button class="menu-week-btn active" data-week="0" onclick="showMenuWeek(0)">Week 1</button>
         <button class="menu-week-btn" data-week="1" onclick="showMenuWeek(1)">Week 2</button>
-        <button class="menu-week-btn" data-week="2" onclick="showMenuWeek(2)">Week 3</button>
-        <button class="menu-week-btn" data-week="3" onclick="showMenuWeek(3)">Week 4</button>
       </div>
 
       <!-- Grid rendered by JS -->

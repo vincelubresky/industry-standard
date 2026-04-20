@@ -725,6 +725,9 @@ function switchTab(tab, persist = true) {
   document.querySelectorAll('.nav-section-label[data-tab="ceo"], .nav-item[data-tab="ceo"]').forEach(el => {
     el.style.display = (tab === 'ceo') ? '' : 'none';
   });
+  document.querySelectorAll('.nav-section-label[data-tab="analysis"], .nav-item[data-tab="analysis"]').forEach(el => {
+    el.style.display = (tab === 'analysis') ? '' : 'none';
+  });
 
   // Sync active nav item
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -752,6 +755,10 @@ function switchTab(tab, persist = true) {
     const el = document.querySelector('.nav-item[href="#ceo-summary"]');
     if (el) el.classList.add('active');
   }
+  if (tab === 'analysis') {
+    const el = document.querySelector('.nav-item[data-tab="analysis"]');
+    if (el) el.classList.add('active');
+  }
 
   // Render report charts when switching to report tab
   if (tab === 'report') setTimeout(renderReportCharts, 80);
@@ -776,20 +783,25 @@ function showCeoSection(id) {
 }
 
 function initTabs() {
-  // v5: Population tab added
+  // v6: Nav cleanup — analysis sidebar items now tab-gated
   const VER_KEY = 'is_tab_ver';
-  if (localStorage.getItem(VER_KEY) !== '5') {
+  if (localStorage.getItem(VER_KEY) !== '6') {
     localStorage.removeItem(TAB_KEY);
-    localStorage.setItem(VER_KEY, '5');
+    localStorage.setItem(VER_KEY, '6');
   }
   const saved = localStorage.getItem(TAB_KEY) || 'ceo';
   switchTab(saved, false);
 
-  // Tab-switching nav links (calculator + all report links)
+  // Tab-switching nav links — switches tab and optionally scrolls to anchor
   document.querySelectorAll('.nav-item[data-tab]').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
       switchTab(el.dataset.tab);
+      const href = el.getAttribute('href');
+      if (href && href.startsWith('#') && href.length > 1) {
+        const target = document.getElementById(href.slice(1));
+        if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 140);
+      }
       if (window.innerWidth <= 768) { sidebarOpen = false; applySidebarState(true); }
     });
   });
@@ -838,8 +850,8 @@ function initTabs() {
     });
   });
 
-  // Analysis links → switch to analysis tab then scroll to section
-  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab]):not([href^="#report-"]):not([href^="#cafe-"]):not([href^="#pop-"])').forEach(el => {
+  // Fallback: any remaining anchor nav items without data-tab → analysis tab
+  document.querySelectorAll('.nav-item[href^="#"]:not([data-tab])').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
       switchTab('analysis');
@@ -1056,11 +1068,11 @@ function renderPrintMenu() {
       <div class="pm-header">
         <div class="pm-header-left">
           <div class="pm-facility">Jefferson County Jail</div>
-          <div class="pm-doc-title">4-Week Menu Rotation &mdash; <strong>${week.label}</strong></div>
+          <div class="pm-doc-title">2-Week Menu Rotation &mdash; <strong>${week.label}</strong></div>
           <div class="pm-prepared">Prepared by Industry Standard &bull; ${prepared}</div>
         </div>
         <div class="pm-header-right">
-          <div class="pm-week-badge">Week ${week.week} of 4</div>
+          <div class="pm-week-badge">Week ${week.week} of 2</div>
         </div>
       </div>
 
@@ -1531,11 +1543,11 @@ function downloadMenuPDF() {
     doc.text('Jefferson County Jail', mg + 12, mg + 18);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    doc.text(`4-Week Menu Rotation \u2014 ${week.label}`, mg + 12, mg + 33);
+    doc.text(`2-Week Menu Rotation \u2014 ${week.label}`, mg + 12, mg + 33);
     doc.text(`Prepared by Industry Standard  \u00b7  ${prepared}`, mg + 12, mg + 46);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
-    doc.text(`Week ${week.week} of 4`, pageW - mg - 12, mg + 32, { align: 'right' });
+    doc.text(`Week ${week.week} of 2`, pageW - mg - 12, mg + 32, { align: 'right' });
 
     // ── Menu table ───────────────────────────────────────────
     const BF_CLR = [255, 251, 235];
@@ -1614,7 +1626,7 @@ function downloadMenuPDF() {
     doc.text(`Page ${wi + 1} of ${MENU_ROTATION.length}`, pageW - mg, pageH - 18, { align: 'right' });
   });
 
-  doc.save('Jefferson-County-4-Week-Menu.pdf');
+  doc.save('Jefferson-County-2-Week-Menu.pdf');
   showToast('Menu PDF downloaded \u2014 4 pages', 'success');
 }
 
@@ -1850,14 +1862,14 @@ function renderMenuOrderList() {
 
   html += `
     <div class="weekly-net-banner" style="margin-top:4px">
-      <div class="wn-label">Grand Total — 4-Week Cycle</div>
+      <div class="wn-label">Grand Total — 2-Week Cycle</div>
       <div class="wn-amount">$${data.basis.grandTotal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
       <div class="wn-pct">~$${data.basis.perInmatePerDay.toFixed(2)} / inmate / day</div>
       <div class="wn-sub">Shaver $18,934 &nbsp;+&nbsp; Big Daddy $1,080 &nbsp;+&nbsp; PFG $3,208</div>
     </div>
     <p class="small text-muted" style="margin-top:10px;padding:0 4px">
       <i class="fa-solid fa-circle-info" style="color:var(--accent)"></i>
-      &nbsp;Quantities from 4-week rotation at 300 inmates. PFG items marked
+      &nbsp;Quantities from 2-week rotation at 300 inmates. PFG items marked
       <span class="mol-est-badge">est.</span> use unconfirmed or market prices — verify before ordering.
       Margarine, oil, and gravy quantities are estimates; adjust to your kitchen usage.
     </p>`;
@@ -2640,9 +2652,11 @@ function renderPopulationOverview() {
   const totalCogs = birmPopCogs.amount + besPopCogs.amount;
   const combinedPct = (totalCogs / totalRev) * 100;
 
-  // ~1,150 daily avg, 3 meals/day = 8,050 meals/week
-  const dailyPop = 1150;
-  const weeklyMeals = dailyPop * 7;
+  // Birmingham: ~1,150/day · Bessemer: ~350/day · 3 meals each = 31,500 meals/week
+  const dailyPopBirm = 1150;
+  const dailyPopBess = 350;
+  const dailyPop = dailyPopBirm + dailyPopBess;
+  const weeklyMeals = dailyPop * 3 * 7;
   const costPerMeal = totalCogs / weeklyMeals;
   const targetPerMeal = 0.54;
 
@@ -2652,7 +2666,7 @@ function renderPopulationOverview() {
   const stats = [
     { label: "Birmingham Food Cost",  value: birmPopCogs.pct.toFixed(1)+'%',  icon: "fa-building",   color: cogsBirmColor, note: "week of Apr 6–12 · target ≤35%" },
     { label: "Bessemer Food Cost",    value: besPopCogs.pct.toFixed(1)+'%',   icon: "fa-store",      color: cogsBeColor,  note: "week of Apr 6–12 · target ≤35%" },
-    { label: "Actual Cost Per Meal",  value: '$'+costPerMeal.toFixed(2),       icon: "fa-utensils",   color: "#dc2626",    note: 'vs $'+targetPerMeal.toFixed(2)+' target · '+dailyPop.toLocaleString()+' daily population' },
+    { label: "Actual Cost Per Meal",  value: '$'+costPerMeal.toFixed(2),       icon: "fa-utensils",   color: "#dc2626",    note: 'vs $'+targetPerMeal.toFixed(2)+' target · '+dailyPopBirm.toLocaleString()+' Bham + '+dailyPopBess+' Bess · 3 meals/day' },
     { label: "Annual Shaver Savings", value: '$'+CEO_DATA.lines[0].annualSavings.toLocaleString(), icon: "fa-piggy-bank", color: "#16a34a", note: "23 items confirmed cheaper · full vendor transition" }
   ];
 

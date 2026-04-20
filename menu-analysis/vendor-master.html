@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Master Price Comparison — Industry Standard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #111;
+    background: #fff;
+    padding: 20px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid #111;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .page-header-left h1 {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .page-header-left p {
+    font-size: 11px;
+    color: #555;
+    margin-top: 3px;
+  }
+  .page-header-right {
+    text-align: right;
+    font-size: 10px;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ── KPI BAR ── */
+  .kpi-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .kpi-card {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #f9fafb;
+  }
+  .kpi-card.green  { border-color: #16a34a40; background: #f0fdf4; }
+  .kpi-card.blue   { border-color: #2563eb40; background: #eff6ff; }
+  .kpi-card.amber  { border-color: #d9770040; background: #fffbeb; }
+  .kpi-card.red    { border-color: #dc262640; background: #fef2f2; }
+  .kpi-value { font-size: 22px; font-weight: 800; line-height: 1; }
+  .kpi-card.green .kpi-value  { color: #16a34a; }
+  .kpi-card.blue  .kpi-value  { color: #2563eb; }
+  .kpi-card.amber .kpi-value  { color: #d97706; }
+  .kpi-card.red   .kpi-value  { color: #dc2626; }
+  .kpi-label { font-size: 10px; font-weight: 600; color: #374151; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .kpi-note  { font-size: 9.5px; color: #6b7280; margin-top: 2px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+  .section-header:first-of-type { margin-top: 0; }
+  .section-header.shaver { background: #f0fdf4; border-left: 4px solid #16a34a; }
+  .section-header.pfg    { background: #eff6ff; border-left: 4px solid #2563eb; }
+  .section-header.produce{ background: #fffbeb; border-left: 4px solid #d97706; }
+  .section-header.nodata { background: #fef2f2; border-left: 4px solid #dc2626; }
+  .section-header h2 { font-size: 12px; font-weight: 700; }
+  .section-header span { font-size: 10px; font-weight: 400; color: #555; }
+
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 4px;
+    font-size: 10.5px;
+  }
+  thead tr { background: #111; color: #fff; }
+  thead th {
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9.5px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  thead th.right { text-align: right; }
+  tbody tr:nth-child(even) { background: #f9fafb; }
+  tbody tr:hover { background: #f3f4f6; }
+  td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #f3f4f6;
+    vertical-align: middle;
+  }
+  td.right { text-align: right; font-variant-numeric: tabular-nums; }
+  td.item-name { font-weight: 600; color: #111; }
+  td.unit      { color: #6b7280; font-size: 9.5px; }
+
+  /* price cells */
+  .price-pfg    { color: #374151; }
+  .price-shaver { color: #374151; }
+  .price-winner { font-weight: 700; }
+  .price-loser  { color: #9ca3af; text-decoration: line-through; }
+
+  /* badges */
+  .badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .badge-shaver  { background: #dcfce7; color: #15803d; }
+  .badge-pfg     { background: #dbeafe; color: #1d4ed8; }
+  .badge-produce { background: #fef9c3; color: #a16207; }
+  .badge-high    { background: #fee2e2; color: #b91c1c; }
+  .badge-med     { background: #fef3c7; color: #92400e; }
+  .badge-low     { background: #f0fdf4; color: #166534; }
+
+  .savings-cell { color: #16a34a; font-weight: 700; }
+  .savings-mo   { color: #059669; font-weight: 600; }
+  .note-cell    { font-size: 9px; color: #6b7280; font-style: italic; }
+
+  /* produce table */
+  .produce-row td { background: #fffbeb !important; }
+
+  /* totals row */
+  .totals-row td {
+    font-weight: 700;
+    background: #111 !important;
+    color: #fff;
+    border-top: 2px solid #111;
+  }
+  .totals-row td.savings-cell { color: #86efac; }
+  .totals-row td.savings-mo   { color: #6ee7b7; }
+
+  /* ── FOOTER NOTE ── */
+  .footnote {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 9.5px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .footnote strong { color: #111; }
+
+  /* ── PRINT ── */
+  @page {
+    size: letter portrait;
+    margin: 0.45in 0.45in 0.45in 0.45in;
+  }
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { padding: 0; font-size: 9.5px; background: #fff; }
+    .kpi-value { font-size: 17px; }
+    .no-print { display: none !important; }
+    .print-wrap { padding: 0; }
+
+    /* keep section header with its table */
+    .section-header { page-break-after: avoid; break-after: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; break-inside: avoid; }
+    thead { display: table-header-group; }
+
+    /* force new page before produce and high-volume sections */
+    .page-break-before { page-break-before: always; break-before: always; margin-top: 0; }
+
+    /* ensure backgrounds print */
+    thead tr,
+    .totals-row td,
+    .kpi-card,
+    .section-header,
+    .badge { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    /* tighten spacing for print */
+    .kpi-bar { gap: 7px; margin-bottom: 12px; }
+    .kpi-card { padding: 7px 10px; }
+    .section-header { margin-top: 12px; padding: 5px 10px; }
+    td { padding: 3.5px 6px; }
+    thead th { padding: 4px 6px; }
+    .page-header { margin-bottom: 10px; }
+    .footnote { margin-top: 10px; padding: 7px 10px; font-size: 8.5px; }
+  }
+
+  /* ── BUTTON BAR ── */
+  .btn-bar {
+    position: fixed;
+    top: 14px; right: 14px;
+    display: flex; gap: 8px;
+    z-index: 100;
+  }
+  .action-btn {
+    background: #111; color: #fff;
+    border: none; border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.15s;
+  }
+  .action-btn:hover { background: #333; }
+  .action-btn.green { background: #16a34a; }
+  .action-btn.green:hover { background: #15803d; }
+</style>
+</head>
+<body>
+
+<div class="btn-bar no-print">
+  <button class="action-btn" onclick="window.print()">&#128438; Print</button>
+  <button class="action-btn green" onclick="downloadPDF()">&#11015; Download PDF</button>
+</div>
+
+<script>
+function downloadPDF() {
+  const btn = document.querySelector('.btn-bar');
+  btn.style.display = 'none';
+  const opt = {
+    margin:      [0.45, 0.45, 0.45, 0.45],
+    filename:    'IS-Vendor-Master-Price-Comparison.pdf',
+    image:       { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF:       { unit: 'in', format: 'letter', orientation: 'portrait' },
+    pagebreak:   { mode: ['css', 'legacy'], before: '.page-break-before' }
+  };
+  html2pdf().set(opt).from(document.body).save().then(() => {
+    btn.style.display = 'flex';
+  });
+}
+</script>
+
+<div class="print-wrap">
+<!-- HEADER -->
+<div class="page-header">
+  <div class="page-header-left">
+    <h1>Vendor Master Price Comparison</h1>
+    <p>Industry Standard &mdash; Jefferson County &mdash; All Accounts: Birmingham &amp; Bessemer Population + Café</p>
+  </div>
+  <div class="page-header-right">
+    Prepared: April 2026<br>
+    Vendors: PFG &nbsp;|&nbsp; Shaver ISP &nbsp;|&nbsp; Produce TBD<br>
+    Based on invoices 6776965 · 6781372 · 6782848 · 6783573 · 6783574
+  </div>
+</div>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+  <div class="kpi-card green">
+    <div class="kpi-value">$13,756</div>
+    <div class="kpi-label">Annual Savings Available</div>
+    <div class="kpi-note">By switching 23 items to Shaver ISP</div>
+  </div>
+  <div class="kpi-card blue">
+    <div class="kpi-value">$1,146</div>
+    <div class="kpi-label">Monthly Savings</div>
+    <div class="kpi-note">Confirmed on Shaver switch items</div>
+  </div>
+  <div class="kpi-card amber">
+    <div class="kpi-value">23</div>
+    <div class="kpi-label">Items: Switch to Shaver</div>
+    <div class="kpi-note">Shaver is cheaper case-for-case</div>
+  </div>
+  <div class="kpi-card red">
+    <div class="kpi-value">6+</div>
+    <div class="kpi-label">Items: Need Produce Quotes</div>
+    <div class="kpi-note">Fresh fruit — no contract price yet</div>
+  </div>
+</div>
+
+<!-- SECTION A: SWITCH TO SHAVER -->
+<div class="section-header shaver">
+  <h2>&#9650; SWITCH TO SHAVER ISP &mdash; 23 Items</h2>
+  <span>Shaver is cheaper. Transition these immediately.</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:22%">Item</th>
+      <th>Pack</th>
+      <th class="right">PFG Price</th>
+      <th class="right">Shaver Price</th>
+      <th class="right">Save / Case</th>
+      <th class="right">Mo. Volume</th>
+      <th class="right">Mo. Savings</th>
+      <th style="width:8%">Priority</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="item-name">Grape Drink Mix</td>
+      <td class="unit">1000/1gm</td>
+      <td class="right price-loser">$49.95</td>
+      <td class="right price-winner" style="color:#16a34a">$20.63</td>
+      <td class="right savings-cell">$29.32</td>
+      <td class="right">8 cs</td>
+      <td class="right savings-mo">$234.56</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Great Northern Beans</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-loser">$56.05</td>
+      <td class="right price-winner" style="color:#16a34a">$39.00</td>
+      <td class="right savings-cell">$17.05</td>
+      <td class="right">6 cs</td>
+      <td class="right savings-mo">$102.30</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Rotini Pasta</td>
+      <td class="unit">2/10 LB</td>
+      <td class="right price-loser">$23.83</td>
+      <td class="right price-winner" style="color:#16a34a">$13.73</td>
+      <td class="right savings-cell">$10.10</td>
+      <td class="right" rowspan="3" style="vertical-align:middle">26 cs (all pasta)</td>
+      <td class="right" rowspan="3" style="vertical-align:middle" class="savings-mo">$208.00</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Elbow Macaroni</td>
+      <td class="unit">2/10 LB</td>
+      <td class="right price-loser">$19.81</td>
+      <td class="right price-winner" style="color:#16a34a">$13.10</td>
+      <td class="right savings-cell">$6.71</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Ziti Pasta</td>
+      <td class="unit">2/10 LB</td>
+      <td class="right price-loser">$21.77</td>
+      <td class="right price-winner" style="color:#16a34a">$13.73</td>
+      <td class="right savings-cell">$8.04</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Carrots Sliced Frozen</td>
+      <td class="unit">20 LB</td>
+      <td class="right price-loser">$22.43</td>
+      <td class="right price-winner" style="color:#16a34a">$14.34</td>
+      <td class="right savings-cell">$8.09</td>
+      <td class="right">24 cs</td>
+      <td class="right savings-mo">$194.16</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Jelly Assorted 200ct</td>
+      <td class="unit">200/.5oz</td>
+      <td class="right price-loser">$19.20</td>
+      <td class="right price-winner" style="color:#16a34a">$9.53</td>
+      <td class="right savings-cell">$9.67</td>
+      <td class="right">2 cs</td>
+      <td class="right savings-mo">$19.34</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Okra Cut Breaded Frozen</td>
+      <td class="unit">PFG 12/2LB · Shaver 20LB</td>
+      <td class="right price-loser">$41.41</td>
+      <td class="right price-winner" style="color:#16a34a">$26.77</td>
+      <td class="right savings-cell">$0.39/lb</td>
+      <td class="right">&mdash;</td>
+      <td class="right">&mdash;</td>
+      <td><span class="badge badge-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Grits Quick</td>
+      <td class="unit">PFG 8/5LB · Shaver 50LB</td>
+      <td class="right price-loser">$38.47</td>
+      <td class="right price-winner" style="color:#16a34a">$28.00</td>
+      <td class="right savings-cell">$0.40/lb</td>
+      <td class="right">12 cs</td>
+      <td class="right savings-mo">$192.84</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Potato Flakes Dehydrated</td>
+      <td class="unit">40 LB</td>
+      <td class="right price-loser">$59.35</td>
+      <td class="right price-winner" style="color:#16a34a">$51.62</td>
+      <td class="right savings-cell">$7.73</td>
+      <td class="right">7 cs</td>
+      <td class="right savings-mo">$54.11</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Oats / Oatmeal</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-loser">$35.15</td>
+      <td class="right price-winner" style="color:#16a34a">$28.33</td>
+      <td class="right savings-cell">$6.82</td>
+      <td class="right">6 cs</td>
+      <td class="right savings-mo">$40.92</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Cheese Sauce</td>
+      <td class="unit">6/#10</td>
+      <td class="right price-loser">$55.09</td>
+      <td class="right price-winner" style="color:#16a34a">$48.12</td>
+      <td class="right savings-cell">$6.97</td>
+      <td class="right">2 cs</td>
+      <td class="right savings-mo">$13.94</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Onion Powder</td>
+      <td class="unit">PFG 5LB · Shaver 6/1LB</td>
+      <td class="right price-loser">$32.26</td>
+      <td class="right price-winner" style="color:#16a34a">$24.64</td>
+      <td class="right savings-cell">$2.35/lb</td>
+      <td class="right" rowspan="2" style="vertical-align:middle">2 cs</td>
+      <td class="right" rowspan="2" style="vertical-align:middle" class="savings-mo">$22.48</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Garlic Powder</td>
+      <td class="unit">PFG 5LB · Shaver 6/1LB</td>
+      <td class="right price-loser">$30.77</td>
+      <td class="right price-winner" style="color:#16a34a">$24.02</td>
+      <td class="right savings-cell">$2.15/lb</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Peas &amp; Carrots Frozen</td>
+      <td class="unit">PFG 20LB · Shaver 30LB</td>
+      <td class="right price-loser">$22.35</td>
+      <td class="right price-winner" style="color:#16a34a">$29.77</td>
+      <td class="right savings-cell">$0.13/lb</td>
+      <td class="right">16 cs</td>
+      <td class="right savings-mo">&mdash;</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Gravy Mix (Country)</td>
+      <td class="unit">PFG 6/16oz · Shaver 6/3LB</td>
+      <td class="right price-loser">$29.92</td>
+      <td class="right price-winner" style="color:#16a34a">$37.82</td>
+      <td class="right savings-cell">$2.89/lb</td>
+      <td class="right">2 cs</td>
+      <td class="right savings-mo">&mdash;</td>
+      <td><span class="badge badge-med">Med</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Yellow Cake Mix</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-loser">$42.77</td>
+      <td class="right price-winner" style="color:#16a34a">$40.42</td>
+      <td class="right savings-cell">$2.35</td>
+      <td class="right" rowspan="3" style="vertical-align:middle">32 cs</td>
+      <td class="right" rowspan="3" style="vertical-align:middle" class="savings-mo">$64.00</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Coffee Cake Mix</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-loser">$45.04</td>
+      <td class="right price-winner" style="color:#16a34a">$42.88</td>
+      <td class="right savings-cell">$2.16</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Strawberry Cake Mix</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-loser">$46.13</td>
+      <td class="right price-winner" style="color:#16a34a">$44.63</td>
+      <td class="right savings-cell">$1.50</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Tomato Sauce</td>
+      <td class="unit">6/#10</td>
+      <td class="right price-loser">$29.67</td>
+      <td class="right price-winner" style="color:#16a34a">$28.89</td>
+      <td class="right savings-cell">$0.78</td>
+      <td class="right">4 cs</td>
+      <td class="right savings-mo">$3.12</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Diced Tomatoes</td>
+      <td class="unit">6/#10</td>
+      <td class="right price-loser">$30.94</td>
+      <td class="right price-winner" style="color:#16a34a">$30.36</td>
+      <td class="right savings-cell">$0.58</td>
+      <td class="right">2 cs</td>
+      <td class="right savings-mo">$1.16</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Fry Oil Clear</td>
+      <td class="unit">35 LB</td>
+      <td class="right price-loser">$35.70</td>
+      <td class="right price-winner" style="color:#16a34a">$35.07</td>
+      <td class="right savings-cell">$0.63</td>
+      <td class="right">7 cs</td>
+      <td class="right savings-mo">$4.41</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Margarine Solid</td>
+      <td class="unit">30/1 LB</td>
+      <td class="right price-loser">$38.73</td>
+      <td class="right price-winner" style="color:#16a34a">$38.46</td>
+      <td class="right savings-cell">$0.27</td>
+      <td class="right">3 cs</td>
+      <td class="right savings-mo">$0.81</td>
+      <td><span class="badge badge-low">Low</span></td>
+    </tr>
+    <tr class="totals-row">
+      <td colspan="6" style="font-size:11px; letter-spacing:0.3px; text-transform:uppercase;">TOTAL CONFIRMED MONTHLY SAVINGS — SHAVER SWITCH</td>
+      <td class="right savings-cell" style="font-size:14px;">$1,146</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION B: STAY WITH PFG -->
+<div class="section-header pfg">
+  <h2>&#9632; STAY WITH PFG &mdash; 6 Items</h2>
+  <span>PFG is cheaper or comparable. Keep these on the PFG order.</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:25%">Item</th>
+      <th>Pack / Notes</th>
+      <th class="right">PFG Price</th>
+      <th class="right">Shaver Price</th>
+      <th class="right">PFG Saves</th>
+      <th>Recommendation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="item-name">Parboiled Rice</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-winner" style="color:#2563eb">$26.38</td>
+      <td class="right price-loser">$31.46</td>
+      <td class="right" style="color:#2563eb; font-weight:700;">$5.08</td>
+      <td><span class="badge badge-pfg">Stay PFG</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Cream of Mushroom Soup</td>
+      <td class="unit">12/50oz</td>
+      <td class="right price-winner" style="color:#2563eb">$54.94</td>
+      <td class="right price-loser">$60.50</td>
+      <td class="right" style="color:#2563eb; font-weight:700;">$5.56</td>
+      <td><span class="badge badge-pfg">Stay PFG</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Pinto Beans Dry</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-winner" style="color:#2563eb">$25.67</td>
+      <td class="right price-loser">$29.15</td>
+      <td class="right" style="color:#2563eb; font-weight:700;">$3.48</td>
+      <td><span class="badge badge-pfg">Stay PFG</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">AP Flour</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-winner" style="color:#2563eb">$20.44</td>
+      <td class="right price-loser">$23.61</td>
+      <td class="right" style="color:#2563eb; font-weight:700;">$3.17</td>
+      <td><span class="badge badge-pfg">Stay PFG</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Granulated Sugar</td>
+      <td class="unit">50 LB</td>
+      <td class="right price-winner" style="color:#2563eb">$35.14</td>
+      <td class="right price-loser">$36.52</td>
+      <td class="right" style="color:#2563eb; font-weight:700;">$1.38</td>
+      <td><span class="badge badge-pfg">Stay PFG</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Bread — Pullman Whole Grain</td>
+      <td class="unit">PFG 10/24oz @ $0.104/oz &nbsp;|&nbsp; Shaver 12/28oz @ $0.087/oz</td>
+      <td class="right">$24.90</td>
+      <td class="right" style="color:#16a34a; font-weight:700;">$29.06</td>
+      <td class="right" style="color:#d97706; font-weight:700;">&#9650; See note</td>
+      <td><span class="badge badge-produce">Re-Evaluate</span> &nbsp;<span class="note-cell">Shaver cheaper per oz</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION C: PRODUCE / FRUIT — NEEDS QUOTES -->
+<div class="section-header produce page-break-before">
+  <h2>&#9679; PRODUCE &amp; FRESH FRUIT &mdash; Send for Bids</h2>
+  <span>No contract in place. Currently bought at retail or through PFG spot pricing. Get standing-order quotes immediately.</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:22%">Item</th>
+      <th>Spec</th>
+      <th>Usage</th>
+      <th class="right">Est. Weekly Qty</th>
+      <th class="right">Current Cost</th>
+      <th class="right">Est. Annual Spend</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody class="produce-rows">
+    <tr>
+      <td class="item-name">Navel Oranges (whole)</td>
+      <td class="unit">40 lb case</td>
+      <td>Daily breakfast — both cafés</td>
+      <td class="right">10–11 cases</td>
+      <td class="right" style="color:#d97706; font-weight:600;">Retail / Unknown</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$26,000+</td>
+      <td><span class="badge badge-produce">Need Quote</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Bananas</td>
+      <td class="unit">40 lb case</td>
+      <td>Daily breakfast — both cafés</td>
+      <td class="right">3–4 cases</td>
+      <td class="right" style="color:#d97706; font-weight:600;">Retail / Unknown</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">Included above</td>
+      <td><span class="badge badge-produce">Need Quote</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Strawberries (fresh)</td>
+      <td class="unit">1 lb clamshell / flat</td>
+      <td>Bessemer café — salad bar / breakfast</td>
+      <td class="right">8–12 lbs</td>
+      <td class="right" style="color:#d97706; font-weight:600;">$2.70/lb (PFG spot)</td>
+      <td class="right" style="color:#d97706;">~$1,400</td>
+      <td><span class="badge badge-produce">Re-Bid</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Peaches (fresh / IQF)</td>
+      <td class="unit">Case</td>
+      <td>Peach cobbler — ~2×/month Birmingham</td>
+      <td class="right">2–3 cs/month</td>
+      <td class="right" style="color:#d97706; font-weight:600;">Unknown</td>
+      <td class="right" style="color:#d97706;">~$600–900</td>
+      <td><span class="badge badge-produce">Need Quote</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Apples (baking)</td>
+      <td class="unit">Case</td>
+      <td>Apple cobbler — ~1×/month Birmingham</td>
+      <td class="right">1–2 cs/month</td>
+      <td class="right" style="color:#d97706; font-weight:600;">Unknown</td>
+      <td class="right" style="color:#d97706;">~$300–500</td>
+      <td><span class="badge badge-produce">Need Quote</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Lettuce — Green Leaf</td>
+      <td class="unit">24 ct case</td>
+      <td>Café salad bar — both locations</td>
+      <td class="right">2–3 cases</td>
+      <td class="right" style="color:#d97706; font-weight:600;">$28.15 (PFG spot)</td>
+      <td class="right" style="color:#d97706;">~$2,900</td>
+      <td><span class="badge badge-produce">Re-Bid</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Tomatoes</td>
+      <td class="unit">25 LB</td>
+      <td>Café salad bar — Bessemer confirmed</td>
+      <td class="right">1–2 cases</td>
+      <td class="right" style="color:#d97706; font-weight:600;">$60.53 (PFG spot)</td>
+      <td class="right" style="color:#d97706;">~$3,100</td>
+      <td><span class="badge badge-produce">Re-Bid</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Cucumber</td>
+      <td class="unit">10 LB</td>
+      <td>Café salad bar — Bessemer confirmed</td>
+      <td class="right">1 case</td>
+      <td class="right" style="color:#d97706; font-weight:600;">$20.61 (PFG spot)</td>
+      <td class="right" style="color:#d97706;">~$1,100</td>
+      <td><span class="badge badge-produce">Re-Bid</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Peppers (Suntan/Bell)</td>
+      <td class="unit">22 LB</td>
+      <td>Café salad bar — Bessemer confirmed</td>
+      <td class="right">1 case</td>
+      <td class="right" style="color:#d97706; font-weight:600;">$55.89 (PFG spot)</td>
+      <td class="right" style="color:#d97706;">~$2,900</td>
+      <td><span class="badge badge-produce">Re-Bid</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- SECTION D: MAJOR ITEMS — NO COMPARISON DATA YET -->
+<div class="section-header nodata page-break-before">
+  <h2>&#9634; HIGH-VOLUME ITEMS &mdash; No Vendor Comparison Yet</h2>
+  <span>These are among the largest spend items on the invoices. Currently single-sourced through PFG. Should be bid out.</span>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:25%">Item</th>
+      <th>Pack</th>
+      <th class="right">PFG Price</th>
+      <th class="right">Weekly Volume</th>
+      <th class="right">Est. Annual Spend</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="item-name">Chicken Breast Fritter BNLS</td>
+      <td class="unit">1/20 LB</td>
+      <td class="right">$43.48/cs</td>
+      <td class="right">~46 cases (920 lbs)</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$104,000</td>
+      <td><span class="badge badge-high">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Bread Pullman Whole Grain</td>
+      <td class="unit">10/24 oz</td>
+      <td class="right">$24.90/cs</td>
+      <td class="right">~85 cases (850 loaves)</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$110,000</td>
+      <td><span class="badge badge-high">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Turkey Salami Log</td>
+      <td class="unit">3/10 LB</td>
+      <td class="right">$60.22/cs</td>
+      <td class="right">~20 cases (600 lbs)</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$62,600</td>
+      <td><span class="badge badge-high">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Smoked Turkey Breast SKNLS</td>
+      <td class="unit">2/9 LB avg</td>
+      <td class="right">$3.58/lb</td>
+      <td class="right">~21 cases (~393 lbs)</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$72,700</td>
+      <td><span class="badge badge-high">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Chicken Sausage Patty 1.15oz</td>
+      <td class="unit">278/1.15oz</td>
+      <td class="right">$61.54/cs</td>
+      <td class="right">~25 cases</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$80,000</td>
+      <td><span class="badge badge-high">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Buttermilk Biscuit Dough</td>
+      <td class="unit">216/2.25oz</td>
+      <td class="right">$49.39/cs</td>
+      <td class="right">~25 cases</td>
+      <td class="right" style="color:#dc2626; font-weight:700;">~$64,200</td>
+      <td><span class="badge badge-med">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Eggs (White, Medium AA)</td>
+      <td class="unit">30 dz</td>
+      <td class="right">$36.94/cs</td>
+      <td class="right">~13 cases (390 doz)</td>
+      <td class="right" style="color:#d97706; font-weight:700;">~$25,000</td>
+      <td><span class="badge badge-med">Bid Out</span></td>
+    </tr>
+    <tr>
+      <td class="item-name">Oatmeal Cookies</td>
+      <td class="unit">12/12oz</td>
+      <td class="right">$22.34/cs</td>
+      <td class="right">~31 cases</td>
+      <td class="right" style="color:#d97706; font-weight:700;">~$36,000</td>
+      <td><span class="badge badge-med">Evaluate</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- FOOTNOTE -->
+<div class="footnote">
+  <strong>Source data:</strong> PFG Invoices 6776965 · 6781372 · 6782848 · 6783573 · 6783574 (Apr 13–15, 2026) &nbsp;|&nbsp;
+  Shaver ISP Price List (Mar 2026) &nbsp;|&nbsp;
+  <strong>Total confirmed weekly PFG spend across all 4 accounts: $27,458.</strong> &nbsp;|&nbsp;
+  Annualized PFG spend: ~$1,428,000/year. &nbsp;|&nbsp;
+  <strong>Produce items</strong> are currently purchased at spot/retail with no standing contract — annual exposure on fresh fruit alone estimated at $26,000+. &nbsp;|&nbsp;
+  <strong>Pullman bread note:</strong> PFG case price ($24.90/10 loaves) is lower, but Shaver's 12/28oz format ($29.06) is $0.017/oz cheaper — evaluate based on actual loaves consumed per week. &nbsp;|&nbsp;
+  Priority badges indicate urgency of switching: <strong>High</strong> = act this week &nbsp;|&nbsp; <strong>Med</strong> = next order cycle &nbsp;|&nbsp; <strong>Low</strong> = ongoing.
+</div>
+
+</div><!-- end print-wrap -->
+</body>
+</html>
