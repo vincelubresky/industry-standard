@@ -1940,118 +1940,168 @@ function _renderFinSnapshot() {
   if (!el) return;
   const F = FINANCIALS;
 
-  const $k = n => '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const $k  = n => '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const $k2 = n => '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0});
   const netWC = F.ar.total - F.ap.total;
   const annualizedRev = F.pl2026.qtdRevenue * 4;
   const gm2026 = F.pl2026.grossMarginPct * 100;
   const gm2025 = F.pl2025.grossMarginPct * 100;
   const gmDelta = (gm2026 - gm2025).toFixed(1);
-  const nm2026 = (F.pl2026.netIncome / F.pl2026.qtdRevenue * 100).toFixed(1);
-  const nm2025 = (F.pl2025.netIncome / F.pl2025.annualRevenue * 100).toFixed(1);
-  const nmDelta = (parseFloat(nm2026) - parseFloat(nm2025)).toFixed(1);
+  const nm2026 = (F.pl2026.netIncome / F.pl2026.qtdRevenue * 100);
+  const nm2025 = (F.pl2025.netIncome / F.pl2025.annualRevenue * 100);
+  const nmDelta = (nm2026 - nm2025).toFixed(1);
   const jeffcoGrowth = ((annualizedRev - F.pl2025.jeffcoRevenue) / F.pl2025.jeffcoRevenue * 100).toFixed(1);
-  // DSO: A/R / daily revenue (Q1 / 90 days)
   const dso = Math.round(F.ar.total / (F.pl2026.qtdRevenue / 90));
-  // DPO: A/P / daily COGS (Q1 / 90 days)
   const dpo = Math.round(F.ap.total / (F.pl2026.qtdCogs / 90));
+  const distOver = F.cashFlow.ytd2026.distributions + F.cashFlow.ytd2026.netIncome; // neg = overpaid
 
-  const riskMap = { high: { cls: 'high', tag: 'ACTION REQUIRED' }, med: { cls: 'watch', tag: 'WATCH' }, low: { cls: 'pos', tag: 'POSITIVE' } };
+  // Business health indicators
+  const health = [
+    { label: 'Revenue (Core)',  status: 'amber', value: '+'+jeffcoGrowth+'% YoY',  note: 'JeffCo contract growing; headline down due to MCDF loss' },
+    { label: 'Gross Margin',    status: 'green', value: gm2026.toFixed(1)+'%',      note: 'Up 8.7pp YoY — strongest quarter on record' },
+    { label: 'Net Margin',      status: 'green', value: nm2026.toFixed(1)+'%',      note: 'Up '+nmDelta+'pp vs 2025 full year' },
+    { label: 'Cash Position',   status: 'amber', value: $k(F.cash.balance),         note: 'Thin — flat despite strong earnings due to distributions' },
+    { label: 'A/R Collections', status: 'amber', value: $k(F.ar.pastDue)+' late',   note: 'Jefferson County 5–12 days past due; follow up immediately' },
+    { label: 'A/P Status',      status: 'red',   value: $k(F.ap.pastDue)+' overdue',note: 'PFG invoices 11+ days past due — primary supplier risk' },
+    { label: 'Distributions',   status: distOver < 0 ? 'red' : 'amber',
+                                 value: distOver < 0 ? 'Over-distributed' : 'On pace',
+                                 note: distOver < 0
+                                   ? `$${Math.abs(Math.round(distOver)).toLocaleString()} paid out beyond 2026 YTD earnings`
+                                   : 'Monitor as year progresses' }
+  ];
+  const healthColor = { green: '#22c55e', amber: '#f59e0b', red: '#ef4444' };
+  const healthBg    = { green: 'rgba(34,197,94,0.1)', amber: 'rgba(245,158,11,0.1)', red: 'rgba(239,68,68,0.1)' };
+
+  // CEO action items
+  const actions = [
+    { urgency: 'URGENT',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',  icon: 'fa-circle-exclamation',
+      title: 'Collect overdue A/R from Jefferson County',
+      body: `${$k(F.ar.pastDue)} across invoices JEFFCO-667 through JEFFCO-672 is 5–12 days past due. Issue formal collection notice. Cash is needed to service the overdue PFG balance.` },
+    { urgency: 'URGENT',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',  icon: 'fa-circle-exclamation',
+      title: 'Settle overdue A/P with PFG',
+      body: `${$k(F.ap.pastDue)} owed to PFG is 11+ days past due. PFG is the company's primary food supplier — a payment dispute could disrupt operations. Collect from Jefferson County first, then remit.` },
+    { urgency: 'REVIEW',      color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', icon: 'fa-triangle-exclamation',
+      title: 'Review 2026 partner distribution schedule',
+      body: `YTD distributions of ${$k(F.cashFlow.ytd2026.distributions)} exceed YTD net income of ${$k(F.cashFlow.ytd2026.netIncome)} by $${Math.abs(Math.round(distOver)).toLocaleString()}. With only $${Math.round(F.cash.balance/1000)}K cash on hand, continued over-distribution is a liquidity risk. Consider suspending or reducing draws until Q2 earnings are confirmed.` },
+    { urgency: 'OPPORTUNITY', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', icon: 'fa-bullseye',
+      title: 'Re-bid Montgomery County (MCDF) contract',
+      body: `Industry Standard operated MCDF from Jan–Jun 2025, generating ${$k(F.pl2025.mcdfRevenue)} before the contract ended. As prior operator, the company holds institutional knowledge and relationships that are a competitive advantage. A successful re-bid would add ~$1.3M annualized revenue (based on 2025 pace).` },
+    { urgency: 'OPPORTUNITY', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', icon: 'fa-bullseye',
+      title: 'Execute vendor switch to Shaver ISP on high-savings items',
+      body: `Documented savings of $1,146+/month (23 line items) by switching key ingredients from PFG to Shaver ISP. Largest gains: grape drink mix ($235/mo), pasta ($208/mo), frozen carrots ($194/mo), grits ($193/mo). Annualized impact: $13,700+/year with no menu changes required.` },
+  ];
 
   el.innerHTML = `
-    <!-- Executive banner -->
+    <!-- Header -->
     <div class="fin-exec-banner">
       <div>
-        <div class="fin-exec-banner-title">Industry Standard · Financial Overview</div>
+        <div class="fin-exec-banner-title">Industry Standard · CEO Financial Brief</div>
         <div class="fin-exec-banner-sub">Jefferson County Jail · Food Service Management · P&amp;L, A/R &amp; A/P as of ${F.asOf}</div>
       </div>
       <div class="fin-exec-banner-date">As of ${F.asOf}</div>
     </div>
 
-    <!-- Hero KPIs — top-line metrics -->
-    <div class="fin-hero-grid">
-      <div class="fin-hero-card blue">
-        <div class="fin-hero-label">Revenue Run-Rate</div>
-        <div class="fin-hero-value">${$k(annualizedRev)}</div>
-        <div class="fin-hero-sub">Q1 2026 · Annualized</div>
-        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> Core JeffCo +${jeffcoGrowth}% YoY</div>
+    <!-- Business narrative -->
+    <div class="fin-narrative">
+      <div class="fin-narrative-label">Business Overview</div>
+      <p class="fin-narrative-body">
+        Industry Standard operates the food service contract at Jefferson County Detention Center
+        across two facilities — Birmingham Jail and Bessemer Jail. Q1 2026 revenue of ${$k(F.pl2026.qtdRevenue)}
+        puts the business on a <strong>${$k(annualizedRev)} annualized run-rate</strong>, up approximately ${jeffcoGrowth}% on the retained
+        Jefferson County contract year-over-year. Headline revenue declined from ${$k(F.pl2025.annualRevenue)} in 2025 due
+        to the non-renewal of the Montgomery County (MCDF) contract in June 2025, which had contributed
+        ${$k(F.pl2025.mcdfRevenue)} in the first half of that year.
+      </p>
+      <p class="fin-narrative-body" style="margin-top:8px">
+        Profitability has improved substantially: gross margin expanded from
+        <strong>${gm2025.toFixed(1)}% in 2025 to ${gm2026.toFixed(1)}% in Q1 2026</strong>, and net margin improved from
+        ${nm2025.toFixed(1)}% to ${nm2026.toFixed(1)}%. The two critical near-term issues are overdue receivables
+        from Jefferson County (${$k(F.ar.pastDue)}) and overdue payables to primary supplier PFG (${$k(F.ap.pastDue)}),
+        both of which require immediate follow-up. Partner distributions in 2026 YTD have outpaced earnings,
+        applying additional pressure on a thin cash position of ${$k(F.cash.balance)}.
+      </p>
+    </div>
+
+    <!-- 5-metric summary strip -->
+    <div class="fin-five-grid">
+      <div class="fin-five-card">
+        <div class="fin-five-label">Annualized Revenue</div>
+        <div class="fin-five-value">${$k(annualizedRev)}</div>
+        <div class="fin-five-context">Q1 2026 pace · JeffCo only</div>
       </div>
-      <div class="fin-hero-card ${parseFloat(gmDelta) >= 5 ? 'green' : 'amber'}">
-        <div class="fin-hero-label">Gross Margin</div>
-        <div class="fin-hero-value">${gm2026.toFixed(1)}%</div>
-        <div class="fin-hero-sub">Q1 2026 · vs 38.8% in 2025</div>
-        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> +${gmDelta}pp improvement</div>
+      <div class="fin-five-card" style="border-color:#22c55e">
+        <div class="fin-five-label">Gross Margin</div>
+        <div class="fin-five-value" style="color:#22c55e">${gm2026.toFixed(1)}%</div>
+        <div class="fin-five-context">▲ +${gmDelta}pp from 2025</div>
       </div>
-      <div class="fin-hero-card ${parseFloat(nm2026) >= 10 ? 'green' : 'amber'}">
-        <div class="fin-hero-label">Net Margin</div>
-        <div class="fin-hero-value">${nm2026}%</div>
-        <div class="fin-hero-sub">Q1 2026 · vs ${nm2025}% in 2025</div>
-        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> +${nmDelta}pp improvement</div>
+      <div class="fin-five-card" style="border-color:#22c55e">
+        <div class="fin-five-label">Net Margin</div>
+        <div class="fin-five-value" style="color:#22c55e">${nm2026.toFixed(1)}%</div>
+        <div class="fin-five-context">▲ +${nmDelta}pp from 2025</div>
       </div>
-      <div class="fin-hero-card ${F.cash.balance < 75000 ? 'amber' : 'green'}">
-        <div class="fin-hero-label">Cash on Hand</div>
-        <div class="fin-hero-value">${$k(F.cash.balance)}</div>
-        <div class="fin-hero-sub">${F.cash.accountName}</div>
-        <div class="fin-hero-delta neu"><i class="fa-solid fa-minus" style="font-size:9px"></i> Flat despite net income</div>
+      <div class="fin-five-card" style="border-color:#f59e0b">
+        <div class="fin-five-label">Cash on Hand</div>
+        <div class="fin-five-value" style="color:#f59e0b">${$k(F.cash.balance)}</div>
+        <div class="fin-five-context">Renasant · Thin position</div>
+      </div>
+      <div class="fin-five-card" style="border-color:${netWC >= 0 ? '#22c55e' : '#ef4444'}">
+        <div class="fin-five-label">Net Working Capital</div>
+        <div class="fin-five-value" style="color:${netWC >= 0 ? '#22c55e' : '#ef4444'}">${netWC >= 0 ? '+' : ''}${$k(netWC)}</div>
+        <div class="fin-five-context">A/R ${$k(F.ar.total)} – A/P ${$k(F.ap.total)}</div>
       </div>
     </div>
 
-    <!-- Working Capital row -->
-    <div class="fin-wc-grid">
-      <div class="fin-wc-card" style="border-top:3px solid #f59e0b">
-        <div class="fin-wc-label">Accounts Receivable</div>
-        <div class="fin-wc-value" style="color:#f59e0b">${$k(F.ar.total)}</div>
-        <div class="fin-wc-sub"><span style="color:#ef4444;font-weight:700">${$k(F.ar.pastDue)} past due</span> · ${$k(F.ar.current)} current</div>
-      </div>
-      <div class="fin-wc-card" style="border-top:3px solid #ef4444">
-        <div class="fin-wc-label">Accounts Payable</div>
-        <div class="fin-wc-value" style="color:#ef4444">${$k(F.ap.total)}</div>
-        <div class="fin-wc-sub"><span style="color:#ef4444;font-weight:700">${$k(F.ap.pastDue)} past due to PFG</span> · ${$k(F.ap.current)} current</div>
-      </div>
-      <div class="fin-wc-card" style="border-top:3px solid ${netWC >= 0 ? '#22c55e' : '#ef4444'}">
-        <div class="fin-wc-label">Net Working Capital</div>
-        <div class="fin-wc-value" style="color:${netWC >= 0 ? '#22c55e' : '#ef4444'}">${netWC >= 0 ? '+' : '-'}${$k(Math.abs(netWC))}</div>
-        <div class="fin-wc-sub">A/R minus A/P · ${netWC >= 0 ? 'Positive — thin margin' : 'Negative — act now'}</div>
-      </div>
+    <!-- Business health panel -->
+    <div class="fin-section-label">Business Health at a Glance</div>
+    <div class="fin-health-grid">
+      ${health.map(h => `
+        <div class="fin-health-item">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div style="width:10px;height:10px;border-radius:50%;background:${healthColor[h.status]};flex-shrink:0;box-shadow:0 0 6px ${healthColor[h.status]}55"></div>
+            <div class="fin-health-name">${h.label}</div>
+          </div>
+          <div class="fin-health-value" style="color:${healthColor[h.status]}">${h.value}</div>
+          <div class="fin-health-note">${h.note}</div>
+        </div>`).join('')}
     </div>
 
-    <!-- Quick ratios -->
+    <!-- Operational metrics strip -->
+    <div class="fin-section-label">Operational Metrics</div>
     <div class="fin-ratios-grid">
       <div class="fin-ratio-card">
         <div class="fin-ratio-label">Days Sales Outstanding</div>
         <div class="fin-ratio-value">${dso} days</div>
-        <div class="fin-ratio-context">Target &lt;30 · Healthy collection rate</div>
+        <div class="fin-ratio-context">A/R / daily revenue · Target &lt;30</div>
       </div>
       <div class="fin-ratio-card">
         <div class="fin-ratio-label">Days Payable Outstanding</div>
-        <div class="fin-ratio-value">${dpo} days</div>
-        <div class="fin-ratio-context">PFG bills running 11+ days late</div>
+        <div class="fin-ratio-value" style="color:#f59e0b">${dpo} days</div>
+        <div class="fin-ratio-context">A/P / daily COGS · PFG running late</div>
       </div>
       <div class="fin-ratio-card">
-        <div class="fin-ratio-label">2025 Full-Year Revenue</div>
-        <div class="fin-ratio-value">${$k(F.pl2025.annualRevenue)}</div>
-        <div class="fin-ratio-context">Incl. $669K MCDF (ended Jun '25)</div>
+        <div class="fin-ratio-label">A/R Past Due Rate</div>
+        <div class="fin-ratio-value" style="color:#f59e0b">${Math.round(F.ar.pastDue/F.ar.total*100)}%</div>
+        <div class="fin-ratio-context">${$k(F.ar.pastDue)} of ${$k(F.ar.total)} outstanding</div>
       </div>
       <div class="fin-ratio-card">
-        <div class="fin-ratio-label">Gross Margin Trend</div>
-        <div class="fin-ratio-value" style="color:#22c55e">+${gmDelta}pp</div>
-        <div class="fin-ratio-context">38.8% (2025 FY) → 47.5% (Q1 2026)</div>
+        <div class="fin-ratio-label">2026 YTD Distribution Rate</div>
+        <div class="fin-ratio-value" style="color:${distOver < 0 ? '#ef4444' : '#f59e0b'}">${Math.round(Math.abs(F.cashFlow.ytd2026.distributions)/F.cashFlow.ytd2026.netIncome*100)}%</div>
+        <div class="fin-ratio-context">Of YTD net income distributed${distOver < 0 ? ' — over 100%' : ''}</div>
       </div>
     </div>
 
-    <!-- Priority actions / risk register -->
-    <div class="fin-section-label">Priority Actions &amp; Key Insights</div>
-    <div class="fin-risk-register">
-      ${F.alerts.map(a => {
-        const r = riskMap[a.severity];
-        return `
-          <div class="fin-risk-item ${r.cls}">
-            <span class="fin-risk-tag">${r.tag}</span>
-            <div>
-              <div class="fin-risk-title">${a.label}</div>
-              <div class="fin-risk-body">${a.detail}</div>
-            </div>
-          </div>`;
-      }).join('')}
+    <!-- CEO Action Items -->
+    <div class="fin-section-label">CEO Action Items — Prioritized</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${actions.map((a, i) => `
+        <div class="fin-action-item" style="background:${a.bg};border-left:3px solid ${a.color}">
+          <div class="fin-action-header">
+            <div class="fin-action-num" style="background:${a.color}">${i + 1}</div>
+            <span class="fin-action-tag" style="color:${a.color};background:${a.bg};border:1px solid ${a.color}44">${a.urgency}</span>
+            <span class="fin-action-title">${a.title}</span>
+          </div>
+          <div class="fin-action-body">${a.body}</div>
+        </div>`).join('')}
     </div>
   `;
 }
@@ -2067,6 +2117,29 @@ function _renderFinPL() {
   const months26 = F.pl2026.months;
   const maxExp = Math.max(...F.pl2026.topExpenses.map(e => e.amount));
 
+  // Build monthly trend chart data (2025 + 2026 Q1)
+  const allMonths = [
+    ...months25.map(m => ({ ...m, year: '2025' })),
+    ...months26.map(m => ({ ...m, year: '2026' }))
+  ];
+  const maxAbsNI  = Math.max(...allMonths.map(m => Math.abs(m.netIncome)));
+  const maxRevBar = Math.max(...allMonths.map(m => m.revenue));
+
+  const chartBars = allMonths.map((m, i) => {
+    const niPct   = Math.round(Math.abs(m.netIncome) / maxAbsNI * 80) + 4;
+    const revPct  = Math.round(m.revenue / maxRevBar * 100);
+    const isNeg   = m.netIncome < 0;
+    const is2026  = m.year === '2026';
+    const $ni     = (isNeg ? '(' : '') + '$' + Math.round(Math.abs(m.netIncome)/1000) + 'K' + (isNeg ? ')' : '');
+    return `
+      <div class="fin-chart-col${is2026 ? ' fin-chart-col-2026' : ''}">
+        <div class="fin-chart-bar-wrap" title="${m.month} ${m.year} · Net Income ${$ni}">
+          <div class="fin-chart-bar" style="height:${niPct}%;background:${isNeg ? '#ef4444' : (is2026 ? '#3b82f6' : '#22c55e')}"></div>
+        </div>
+        <div class="fin-chart-label">${m.month}${is2026 ? "'" : ''}</div>
+      </div>`;
+  }).join('');
+
   el.innerHTML = `
     <div class="section">
       <div class="section-header">
@@ -2077,6 +2150,20 @@ function _renderFinPL() {
             <div class="section-subtitle">Year-over-year comparison · Monthly trend · Operating expense breakdown</div>
           </div>
         </div>
+      </div>
+
+      <!-- Monthly net income trend bar chart -->
+      <div class="fin-section-label">Net Income by Month — 2025 + Q1 2026</div>
+      <div class="card" style="padding:16px 20px 10px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="font-size:11px;color:var(--text-400)">Bar height = net income magnitude · Red = net loss · Blue = 2026</div>
+          <div style="display:flex;gap:12px;font-size:10px">
+            <span><span style="display:inline-block;width:10px;height:10px;background:#22c55e;border-radius:2px;margin-right:4px"></span>2025 Profit</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#ef4444;border-radius:2px;margin-right:4px"></span>Net Loss</span>
+            <span><span style="display:inline-block;width:10px;height:10px;background:#3b82f6;border-radius:2px;margin-right:4px"></span>2026 Q1</span>
+          </div>
+        </div>
+        <div class="fin-chart-wrap">${chartBars}</div>
       </div>
 
       <!-- YoY comparison cards -->

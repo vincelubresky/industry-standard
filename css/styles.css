@@ -4292,17 +4292,76 @@ tbody td { padding:13px 18px; font-size:13.5px; }
 .fin-cf-row:last-of-type { border-bottom: none; }
 .fin-cf-label { color: var(--text-400); }
 
+/* ── CEO Executive Brief additions ───────────────────── */
+.fin-narrative {
+  background: var(--bg-1); border: 1px solid var(--border); border-radius: 10px;
+  padding: 18px 22px; margin-bottom: 16px;
+}
+.fin-narrative-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--text-400); margin-bottom: 10px;
+}
+.fin-narrative-body { font-size: 13px; color: var(--text-300); line-height: 1.65; margin: 0; }
+
+.fin-five-grid {
+  display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 16px;
+}
+.fin-five-card {
+  background: var(--bg-1); border: 1px solid var(--border); border-radius: 10px;
+  padding: 16px 14px; border-top: 3px solid var(--border);
+}
+.fin-five-label   { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--text-400); margin-bottom: 8px; }
+.fin-five-value   { font-size: 22px; font-weight: 900; color: var(--text-100); line-height: 1; margin-bottom: 5px; }
+.fin-five-context { font-size: 10px; color: var(--text-400); }
+
+.fin-health-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px;
+}
+.fin-health-item {
+  background: var(--bg-1); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px;
+}
+.fin-health-name  { font-size: 11px; font-weight: 700; color: var(--text-200); }
+.fin-health-value { font-size: 14px; font-weight: 800; margin-bottom: 3px; }
+.fin-health-note  { font-size: 10px; color: var(--text-400); line-height: 1.4; }
+
+.fin-action-item  { border-radius: 8px; padding: 14px 16px; }
+.fin-action-header { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+.fin-action-num   {
+  width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 11px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.fin-action-tag   {
+  font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+  padding: 2px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+}
+.fin-action-title { font-size: 13px; font-weight: 700; color: var(--text-100); }
+.fin-action-body  { font-size: 12px; color: var(--text-300); line-height: 1.55; padding-left: 32px; }
+
+/* ── Monthly trend bar chart ─────────────────────────── */
+.fin-chart-wrap  { display: flex; align-items: flex-end; gap: 4px; height: 90px; padding-bottom: 0; }
+.fin-chart-col   { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; cursor: default; }
+.fin-chart-col-2026 { border-left: 1px dashed rgba(59,130,246,0.3); padding-left: 2px; }
+.fin-chart-bar-wrap { width: 100%; flex: 1; display: flex; align-items: flex-end; }
+.fin-chart-bar  { width: 100%; border-radius: 3px 3px 0 0; transition: opacity .15s; }
+.fin-chart-col:hover .fin-chart-bar { opacity: 0.75; }
+.fin-chart-label { font-size: 8px; color: var(--text-400); margin-top: 4px; text-align: center; white-space: nowrap; }
+
 @media (max-width: 960px) {
   .fin-hero-grid   { grid-template-columns: repeat(2,1fr); }
   .fin-wc-grid     { grid-template-columns: 1fr 1fr; }
   .fin-ratios-grid { grid-template-columns: repeat(2,1fr); }
   .fin-comp-grid   { grid-template-columns: 1fr; }
   .fin-cf-grid     { grid-template-columns: 1fr; }
+  .fin-five-grid   { grid-template-columns: repeat(3,1fr); }
+  .fin-health-grid { grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 600px) {
   .fin-hero-grid   { grid-template-columns: 1fr; }
   .fin-wc-grid     { grid-template-columns: 1fr; }
   .fin-ratios-grid { grid-template-columns: 1fr 1fr; }
   .fin-bar-item    { grid-template-columns: 90px 1fr 65px; }
+  .fin-five-grid   { grid-template-columns: 1fr 1fr; }
+  .fin-health-grid { grid-template-columns: 1fr; }
+  .fin-action-body { padding-left: 0; }
 }
 
