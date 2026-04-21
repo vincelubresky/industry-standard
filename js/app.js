@@ -702,6 +702,10 @@ function switchTab(tab, persist = true) {
   const bidWrap = document.getElementById('bid-tracker-wrap');
   if (bidWrap) bidWrap.style.display = (tab === 'bids') ? 'block' : 'none';
 
+  // Show/hide financials
+  const finWrap = document.getElementById('financials-wrap');
+  if (finWrap) finWrap.style.display = (tab === 'financials') ? 'block' : 'none';
+
   // Show/hide menus
   const menusWrap = document.getElementById('menus-wrap');
   if (menusWrap) menusWrap.style.display = (tab === 'menus') ? 'block' : 'none';
@@ -727,6 +731,9 @@ function switchTab(tab, persist = true) {
   });
   document.querySelectorAll('.nav-section-label[data-tab="analysis"], .nav-item[data-tab="analysis"]').forEach(el => {
     el.style.display = (tab === 'analysis') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="financials"], .nav-item[data-tab="financials"]').forEach(el => {
+    el.style.display = (tab === 'financials') ? '' : 'none';
   });
 
   // Sync active nav item
@@ -1918,6 +1925,341 @@ function initBidTracker() {
   bidRefresh(false);
 }
 
+/* ── Financials Dashboard ─────────────────────────────────── */
+function renderFinancials() {
+  if (typeof FINANCIALS === 'undefined') return;
+  _renderFinSnapshot();
+  _renderFinPL();
+  _renderFinAR();
+  _renderFinAP();
+}
+
+function _renderFinSnapshot() {
+  const el = document.getElementById('fin-snapshot');
+  if (!el) return;
+  const F = FINANCIALS;
+  const netWC = F.ar.total - F.ap.total;
+
+  el.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(34,197,94,0.12)"><i class="fa-solid fa-gauge-simple-high" style="color:#22c55e"></i></div>
+          <div>
+            <div class="section-title">Financial Snapshot</div>
+            <div class="section-subtitle">Industry Standard · As of ${F.asOf}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+        ${[
+          { label: 'Cash on Hand',       val: '$'+F.cash.balance.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),   sub: F.cash.accountName,          color: '#22c55e', icon: 'fa-building-columns' },
+          { label: 'A/R Outstanding',    val: '$'+F.ar.total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),         sub: '$'+F.ar.pastDue.toLocaleString('en-US',{maximumFractionDigits:0})+' past due', color: '#f59e0b', icon: 'fa-arrow-down-to-bracket' },
+          { label: 'A/P Outstanding',    val: '$'+F.ap.total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),         sub: '$'+F.ap.pastDue.toLocaleString('en-US',{maximumFractionDigits:0})+' past due', color: '#ef4444', icon: 'fa-arrow-up-from-bracket' },
+          { label: 'Net Working Capital',val: (netWC >= 0 ? '+' : '') + '$'+Math.abs(netWC).toLocaleString('en-US',{maximumFractionDigits:0}), sub: 'A/R minus A/P',             color: netWC >= 0 ? '#22c55e' : '#ef4444', icon: 'fa-scale-balanced' }
+        ].map(k => `
+          <div class="card" style="border-top:3px solid ${k.color}">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div style="font-size:12px;color:var(--text-400);font-weight:600;text-transform:uppercase;letter-spacing:.05em">${k.label}</div>
+              <i class="fa-solid ${k.icon}" style="color:${k.color};opacity:.6"></i>
+            </div>
+            <div style="font-size:26px;font-weight:800;color:var(--text-100);margin:6px 0 2px">${k.val}</div>
+            <div style="font-size:11px;color:var(--text-400)">${k.sub}</div>
+          </div>`).join('')}
+      </div>
+
+      <!-- Alerts -->
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${F.alerts.map(a => `
+          <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg-2);border-radius:8px;padding:10px 14px;border-left:3px solid ${a.color}">
+            <i class="fa-solid ${a.icon}" style="color:${a.color};margin-top:2px;flex-shrink:0"></i>
+            <div>
+              <span style="font-size:12px;font-weight:700;color:var(--text-100)">${a.label} &nbsp;</span>
+              <span style="font-size:12px;color:var(--text-300)">${a.detail}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function _renderFinPL() {
+  const el = document.getElementById('fin-pl');
+  if (!el) return;
+  const F = FINANCIALS;
+
+  function pct(n, d) { return d ? ((n/d)*100).toFixed(1)+'%' : '—'; }
+  function fmt(n) { return '$'+Math.round(n).toLocaleString('en-US'); }
+
+  const months25 = F.pl2025.months;
+  const months26 = F.pl2026.months;
+
+  el.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(59,130,246,0.12)"><i class="fa-solid fa-chart-line" style="color:var(--accent)"></i></div>
+          <div>
+            <div class="section-title">Profit & Loss</div>
+            <div class="section-subtitle">Monthly trend · 2025 full year vs 2026 Q1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Year totals comparison -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+        <div class="card" style="border-top:3px solid var(--text-400)">
+          <div style="font-size:11px;font-weight:700;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2025 Full Year</div>
+          ${[
+            ['Total Revenue',    fmt(F.pl2025.annualRevenue), ''],
+            ['  Jefferson Co.',  fmt(F.pl2025.jeffcoRevenue), '(active)'],
+            ['  MCDF',           fmt(F.pl2025.mcdfRevenue),   '(ended Jun 2025)'],
+            ['Gross Profit',     fmt(F.pl2025.grossProfit),   pct(F.pl2025.grossProfit, F.pl2025.annualRevenue)+' margin'],
+            ['Total Expenses',   fmt(F.pl2025.annualExpenses),''],
+            ['Net Income',       fmt(F.pl2025.netIncome),     pct(F.pl2025.netIncome, F.pl2025.annualRevenue)+' margin'],
+            ['Partner Distrib.', '-$'+F.pl2025.partnerDistributions.toLocaleString(), ''],
+          ].map(([l,v,n]) => `
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--text-300)">${l}</span>
+              <span style="font-weight:700;color:var(--text-100)">${v} <span style="font-weight:400;color:var(--text-400);font-size:11px">${n}</span></span>
+            </div>`).join('')}
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent)">
+          <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2026 Q1 (Jan–Mar)</div>
+          ${[
+            ['Total Revenue',   fmt(F.pl2026.qtdRevenue),  ''],
+            ['  Birmingham',    fmt(F.pl2026.birmRevenue), ''],
+            ['  Bessemer',      fmt(F.pl2026.besRevenue),  ''],
+            ['Gross Profit',    fmt(F.pl2026.grossProfit), pct(F.pl2026.grossProfit, F.pl2026.qtdRevenue)+' margin'],
+            ['Total Expenses',  fmt(F.pl2026.qtdExpenses), ''],
+            ['Net Income',      fmt(F.pl2026.netIncome),   pct(F.pl2026.netIncome, F.pl2026.qtdRevenue)+' margin'],
+            ['YTD Distrib.',    '-$212,586', '(exceeds net income)'],
+          ].map(([l,v,n]) => `
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">
+              <span style="color:var(--text-300)">${l}</span>
+              <span style="font-weight:700;color:var(--text-100)">${v} <span style="font-weight:400;color:var(--text-400);font-size:11px">${n}</span></span>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Monthly P&L tables -->
+      <div style="font-size:12px;font-weight:700;color:var(--text-300);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2025 Monthly Detail</div>
+      <div class="table-wrap" style="margin-bottom:20px">
+        <table class="cafe-ing-table">
+          <thead><tr><th>Month</th><th class="right">Revenue</th><th class="right">COGS</th><th class="right">Gross Profit</th><th class="right">GP%</th><th class="right">Expenses</th><th class="right">Net Income</th><th class="right">Net%</th></tr></thead>
+          <tbody>
+            ${months25.map(m => `
+              <tr style="${m.netIncome < 0 ? 'background:rgba(239,68,68,0.06)' : ''}">
+                <td style="font-weight:600">${m.month}</td>
+                <td class="right">${fmt(m.revenue)}</td>
+                <td class="right">${fmt(m.cogs)}</td>
+                <td class="right">${fmt(m.grossProfit)}</td>
+                <td class="right" style="color:${m.grossProfit/m.revenue > 0.40 ? '#22c55e' : '#f59e0b'}">${pct(m.grossProfit,m.revenue)}</td>
+                <td class="right">${fmt(m.expenses)}</td>
+                <td class="right" style="font-weight:700;color:${m.netIncome < 0 ? '#ef4444' : '#22c55e'}">${fmt(m.netIncome)}</td>
+                <td class="right" style="color:${m.netIncome < 0 ? '#ef4444' : 'var(--text-300)'}">${pct(m.netIncome,m.revenue)}</td>
+              </tr>`).join('')}
+          </tbody>
+          <tfoot>
+            <tr style="font-weight:700;background:var(--bg-2)">
+              <td>Full Year</td>
+              <td class="right">${fmt(F.pl2025.annualRevenue)}</td>
+              <td class="right">${fmt(F.pl2025.annualCogs)}</td>
+              <td class="right">${fmt(F.pl2025.grossProfit)}</td>
+              <td class="right">${pct(F.pl2025.grossProfit,F.pl2025.annualRevenue)}</td>
+              <td class="right">${fmt(F.pl2025.annualExpenses)}</td>
+              <td class="right" style="color:#22c55e">${fmt(F.pl2025.netIncome)}</td>
+              <td class="right">${pct(F.pl2025.netIncome,F.pl2025.annualRevenue)}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text-300);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2026 Q1 Monthly Detail</div>
+      <div class="table-wrap">
+        <table class="cafe-ing-table">
+          <thead><tr><th>Month</th><th class="right">Revenue</th><th class="right">COGS</th><th class="right">Gross Profit</th><th class="right">GP%</th><th class="right">Expenses</th><th class="right">Net Income</th><th class="right">Net%</th><th>Note</th></tr></thead>
+          <tbody>
+            ${months26.map(m => `
+              <tr>
+                <td style="font-weight:600">${m.month}</td>
+                <td class="right">${fmt(m.revenue)}</td>
+                <td class="right">${fmt(m.cogs)}</td>
+                <td class="right">${fmt(m.grossProfit)}</td>
+                <td class="right" style="color:${m.grossProfit/m.revenue > 0.45 ? '#22c55e' : '#f59e0b'}">${pct(m.grossProfit,m.revenue)}</td>
+                <td class="right">${fmt(m.expenses)}</td>
+                <td class="right" style="font-weight:700;color:${m.netIncome < 0 ? '#ef4444' : '#22c55e'}">${fmt(m.netIncome)}</td>
+                <td class="right">${pct(m.netIncome,m.revenue)}</td>
+                <td style="font-size:11px;color:var(--text-400)">${m.note || ''}</td>
+              </tr>`).join('')}
+          </tbody>
+          <tfoot>
+            <tr style="font-weight:700;background:var(--bg-2)">
+              <td>Q1 Total</td>
+              <td class="right">${fmt(F.pl2026.qtdRevenue)}</td>
+              <td class="right">${fmt(F.pl2026.qtdCogs)}</td>
+              <td class="right">${fmt(F.pl2026.grossProfit)}</td>
+              <td class="right" style="color:#22c55e">${pct(F.pl2026.grossProfit,F.pl2026.qtdRevenue)}</td>
+              <td class="right">${fmt(F.pl2026.qtdExpenses)}</td>
+              <td class="right" style="color:#22c55e">${fmt(F.pl2026.netIncome)}</td>
+              <td class="right">${pct(F.pl2026.netIncome,F.pl2026.qtdRevenue)}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>`;
+}
+
+function _renderFinAR() {
+  const el = document.getElementById('fin-ar');
+  if (!el) return;
+  const F = FINANCIALS;
+  const fmt = n => (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+
+  const arRows = F.ar.items.map(i => {
+    const isPast = i.aging === '1-30 days';
+    const isCredit = i.amount < 0;
+    const rowBg = isPast && !isCredit ? 'background:rgba(239,68,68,0.04)' : '';
+    const amtColor = isCredit ? '#22c55e' : isPast ? '#ef4444' : 'var(--text-100)';
+    const badgeBg = isCredit ? 'rgba(34,197,94,0.12)' : isPast ? 'rgba(239,68,68,0.12)' : 'rgba(34,197,94,0.12)';
+    const badgeColor = isCredit ? '#22c55e' : isPast ? '#ef4444' : '#22c55e';
+    const badgeLabel = isCredit ? 'Payment' : isPast ? 'Past Due' : 'Current';
+    return '<tr style="' + rowBg + '">' +
+      '<td style="font-family:monospace;font-size:11px">' + i.inv + '</td>' +
+      '<td style="font-size:12px">' + i.customer + '</td>' +
+      '<td style="font-size:12px;color:var(--text-400)">' + i.location + '</td>' +
+      '<td style="font-size:11px;color:var(--text-400)">' + i.date + '</td>' +
+      '<td style="font-size:11px;color:var(--text-400)">' + i.due + '</td>' +
+      '<td class="right" style="font-weight:700;color:' + amtColor + '">' + fmt(i.amount) + '</td>' +
+      '<td><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:' + badgeBg + ';color:' + badgeColor + '">' + badgeLabel + '</span></td>' +
+      '</tr>';
+  }).join('');
+
+  el.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(245,158,11,0.12)"><i class="fa-solid fa-arrow-down-to-bracket" style="color:var(--amber)"></i></div>
+          <div>
+            <div class="section-title">A/R Aging — Accounts Receivable</div>
+            <div class="section-subtitle">As of ${F.asOf} · Total outstanding: ${fmt(F.ar.total)}</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="card" style="flex:1;min-width:160px;border-top:3px solid #ef4444;text-align:center;padding:14px">
+          <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Past Due</div>
+          <div style="font-size:22px;font-weight:800;color:#ef4444">${fmt(F.ar.pastDue)}</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px;border-top:3px solid #22c55e;text-align:center;padding:14px">
+          <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Current</div>
+          <div style="font-size:22px;font-weight:800;color:#22c55e">${fmt(F.ar.current)}</div>
+        </div>
+        <div class="card" style="flex:1;min-width:160px;border-top:3px solid var(--accent);text-align:center;padding:14px">
+          <div style="font-size:10px;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em">Total Outstanding</div>
+          <div style="font-size:22px;font-weight:800;color:var(--accent)">${fmt(F.ar.total)}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="cafe-ing-table">
+          <thead><tr><th>Invoice</th><th>Customer</th><th>Location</th><th>Date</th><th>Due</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>${arRows}</tbody>
+          <tfoot>
+            <tr style="font-weight:700;background:var(--bg-2)">
+              <td colspan="5">Total</td>
+              <td class="right" style="color:var(--accent)">${fmt(F.ar.total)}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>`;
+}
+
+function _renderFinAP() {
+  const el = document.getElementById('fin-ap');
+  if (!el) return;
+  const F = FINANCIALS;
+  const fmt = n => (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2});
+
+  // Group by vendor
+  const vendors = [...new Set(F.ap.items.map(i => i.vendor))];
+  const byVendor = vendors.map(v => ({
+    vendor: v,
+    total: F.ap.items.filter(i => i.vendor === v).reduce((s,i) => s+i.amount, 0),
+    items: F.ap.items.filter(i => i.vendor === v)
+  })).sort((a,b) => Math.abs(b.total) - Math.abs(a.total));
+
+  const vendorColors = { PFG: '#ef4444', 'Big Daddy': '#f59e0b', 'Forest Wood': '#22c55e', HireQuest: '#60a5fa', EMC: '#a78bfa' };
+
+  const vendorCards = byVendor.map(v => {
+    const vcol = vendorColors[v.vendor] || 'var(--accent)';
+    const valColor = v.total < 0 ? '#22c55e' : vcol;
+    const sign = v.total < 0 ? '-' : '';
+    const valStr = sign + '$' + Math.abs(v.total).toLocaleString('en-US', {minimumFractionDigits:0,maximumFractionDigits:0});
+    return '<div class="card" style="border-top:3px solid ' + vcol + '">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text-200);margin-bottom:4px">' + v.vendor + '</div>' +
+      '<div style="font-size:20px;font-weight:800;color:' + valColor + '">' + valStr + '</div>' +
+      '<div style="font-size:11px;color:var(--text-400)">' + v.items.length + ' bill' + (v.items.length !== 1 ? 's' : '') + '</div>' +
+      '</div>';
+  }).join('');
+
+  const apRows = F.ap.items.map(i => {
+    const isPast = i.aging === '1-30 days';
+    const isCredit = i.aging === 'credit';
+    const col = vendorColors[i.vendor] || 'var(--accent)';
+    const rowBg = isPast ? 'background:rgba(239,68,68,0.04)' : '';
+    const dueColor = isPast ? '#ef4444' : 'var(--text-400)';
+    const amtColor = isCredit ? '#22c55e' : isPast ? '#ef4444' : 'var(--text-100)';
+    const badgeBg = isCredit ? 'rgba(167,139,250,0.12)' : isPast ? 'rgba(239,68,68,0.12)' : 'rgba(34,197,94,0.12)';
+    const badgeColor = isCredit ? '#a78bfa' : isPast ? '#ef4444' : '#22c55e';
+    const badgeLabel = isCredit ? 'Credit' : isPast ? 'Past Due' : 'Current';
+    return '<tr style="' + rowBg + '">' +
+      '<td style="font-weight:600;color:' + col + '">' + i.vendor + '</td>' +
+      '<td style="font-family:monospace;font-size:11px">' + i.bill + '</td>' +
+      '<td style="font-size:12px;color:var(--text-400)">' + i.location + '</td>' +
+      '<td style="font-size:11px;color:' + dueColor + '">' + (i.due || '—') + '</td>' +
+      '<td class="right" style="font-weight:700;color:' + amtColor + '">' + fmt(i.amount) + '</td>' +
+      '<td><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:' + badgeBg + ';color:' + badgeColor + '">' + badgeLabel + '</span></td>' +
+      '</tr>';
+  }).join('');
+
+  el.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(239,68,68,0.12)"><i class="fa-solid fa-arrow-up-from-bracket" style="color:#ef4444"></i></div>
+          <div>
+            <div class="section-title">A/P Aging — Accounts Payable</div>
+            <div class="section-subtitle">As of ${F.asOf} · Total outstanding: ${fmt(F.ap.total)}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vendor summary cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+        ${vendorCards}
+      </div>
+
+      <!-- Full detail table -->
+      <div class="table-wrap">
+        <table class="cafe-ing-table">
+          <thead><tr><th>Vendor</th><th>Bill #</th><th>Location</th><th>Due Date</th><th class="right">Amount</th><th>Status</th></tr></thead>
+          <tbody>${apRows}</tbody>
+          <tfoot>
+            <tr style="font-weight:700;background:var(--bg-2)">
+              <td colspan="4">Total</td>
+              <td class="right" style="color:#ef4444">${fmt(F.ap.total)}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>`;
+}
+
 /* ── Menu Order List ──────────────────────────────────────── */
 function renderMenuOrderList() {
   const container = document.getElementById('mol-container');
@@ -3055,6 +3397,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(renderChart, 150);
   initTabs();
   initBidTracker();
+  renderFinancials();
   renderMenuRotation();
   renderMenuOrderList();
   renderCafeAnalysis();

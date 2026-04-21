@@ -4186,3 +4186,10 @@ tbody td { padding:13px 18px; font-size:13.5px; }
 .assessment-grid { gap:24px; }
 .assessment-item { padding:18px 24px; }
 
+/* ── Financials Tab ──────────────────────────────── */
+.fin-kpi-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px;
+}
+@media (max-width: 900px) { .fin-kpi-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) { .fin-kpi-grid { grid-template-columns: 1fr; } }
+

@@ -637,8 +637,8 @@ const BIDS = {
       estimatedValue: "~$1.1M/yr",
       bid: "IFB 52200-25B-009",
       status: "verify",
-      myStatus: "prospecting",
-      note: "Issued FY2025 — award status unconfirmed. Call today to determine if still open or recently awarded.",
+      myStatus: "contacted",
+      note: "Industry Standard was the prior MCDF operator (Jan–Jun 2025, ~$669K revenue). Contract ended June 2025 — IFB 52200-25B-009 is the re-bid. Prior operator status is a significant competitive advantage. Call Myrtle Singleton to determine award status and re-engage.",
       contact: { name: "Myrtle Singleton", title: "Administrative Services Manager", phone: "334-832-7705", email: "", url: "" },
       lastUpdated: "April 2026"
     }
@@ -848,6 +848,184 @@ const BIDS = {
     { name: "Jefferson Co. PACA",    icon: "fa-boxes-stacked",       url: "https://paca.jccal.org",                          subtitle: "paca.jccal.org"       },
     { name: "Alabama Bid Network",   icon: "fa-file-contract",       url: "https://www.alabamabids.com",                     subtitle: "alabamabids.com"      },
     { name: "DemandStar — Alabama",  icon: "fa-star",                url: "https://network.demandstar.com/",                 subtitle: "demandstar.com"       }
+  ]
+};
+
+/* ============================================================
+   FINANCIALS — P&L, Cash Flow, A/R & A/P Aging
+   Source: QuickBooks export — as of April 20, 2026
+   ============================================================ */
+const FINANCIALS = {
+  asOf: "April 20, 2026",
+
+  // ── Cash Position ────────────────────────────────────────
+  cash: {
+    balance: 52616.72,
+    accountName: "Renasant Checking (5537)",
+    note: "Beginning 2026: $53,957. Near-flat despite $206K YTD net income — $212K in partner distributions YTD."
+  },
+
+  // ── A/R Aging (as of Apr 20, 2026) ──────────────────────
+  ar: {
+    total: 241460.89,
+    pastDue: 151977.34,
+    current: 89483.55,
+    items: [
+      { inv: "JEFFCO-667", customer: "Jefferson County Sheriff's Office", location: "Birmingham Jail",  date: "04/06/2026", due: "04/08/2026", amount: 58326.23,  aging: "1-30 days" },
+      { inv: "JEFFCO-669", customer: "Jefferson County Sheriff's Office", location: "COVID Housing",    date: "04/06/2026", due: "04/08/2026", amount: 9660.00,   aging: "1-30 days" },
+      { inv: "PAYMENT",    customer: "JBS Mental Health Authority",       location: "",                 date: "04/13/2026", due: "04/13/2026", amount: -2019.00,  aging: "1-30 days" },
+      { inv: "JEFFCO-670", customer: "Jefferson County Sheriff's Office", location: "COVID Housing",    date: "04/13/2026", due: "04/15/2026", amount: 10080.00,  aging: "1-30 days" },
+      { inv: "JEFFCO-671", customer: "Jefferson County Sheriff's Office", location: "Bessemer Jail",    date: "04/13/2026", due: "04/15/2026", amount: 17846.88,  aging: "1-30 days" },
+      { inv: "JEFFCO-672", customer: "Jefferson County Sheriff's Office", location: "Birmingham Jail",  date: "04/13/2026", due: "04/15/2026", amount: 58083.23,  aging: "1-30 days" },
+      { inv: "JEFFCO-673", customer: "Jefferson County Sheriff's Office", location: "Birmingham Jail",  date: "04/20/2026", due: "04/22/2026", amount: 59201.28,  aging: "current"   },
+      { inv: "JEFFCO-674", customer: "Jefferson County Sheriff's Office", location: "Bessemer Jail",    date: "04/20/2026", due: "04/22/2026", amount: 19572.27,  aging: "current"   },
+      { inv: "JEFFCO-675", customer: "Jefferson County Sheriff's Office", location: "COVID Housing",    date: "04/20/2026", due: "04/22/2026", amount: 10710.00,  aging: "current"   }
+    ]
+  },
+
+  // ── A/P Aging (as of Apr 20, 2026) ──────────────────────
+  ap: {
+    total: 218810.16,
+    pastDue: 61799.40,
+    current: 160807.57,
+    credits: -3796.81,
+    items: [
+      // 1-30 past due (PFG Apr 9 due date — 11 days late)
+      { vendor: "PFG",          bill: "4/9/26",    location: "Birmingham Jail",  due: "04/09/2026", amount: 13975.22, aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Bessemer Jail",    due: "04/09/2026", amount: 5288.90,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Bessemer Cafe",    due: "04/09/2026", amount: 1559.41,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Bessemer Chem",    due: "04/09/2026", amount: 547.78,   aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Bessemer ToGo",    due: "04/09/2026", amount: 889.65,   aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Birmingham Cafe",  due: "04/09/2026", amount: 4055.17,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Birmingham Chem",  due: "04/09/2026", amount: 1214.32,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/9/26",    location: "Birmingham ToGo",  due: "04/09/2026", amount: 2471.25,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Birmingham Jail",  due: "04/16/2026", amount: 14172.21, aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Bessemer Jail",    due: "04/16/2026", amount: 5850.65,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Bessemer Cafe",    due: "04/16/2026", amount: 1924.02,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Bessemer Chem",    due: "04/16/2026", amount: 484.89,   aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Bessemer ToGo",    due: "04/16/2026", amount: 889.65,   aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Birmingham Cafe",  due: "04/16/2026", amount: 4682.47,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Birmingham Chem",  due: "04/16/2026", amount: 1322.56,  aging: "1-30 days" },
+      { vendor: "PFG",          bill: "4/16/26",   location: "Birmingham ToGo",  due: "04/16/2026", amount: 2471.25,  aging: "1-30 days" },
+      // Current
+      { vendor: "Forest Wood",  bill: "2054602",   location: "Birmingham Jail",  due: "04/20/2026", amount: 1384.50,  aging: "current"   },
+      { vendor: "Forest Wood",  bill: "2054603",   location: "Bessemer Jail",    due: "04/20/2026", amount: 390.00,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Birmingham Jail",  due: "04/23/2026", amount: 14639.44, aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Bessemer Jail",    due: "04/23/2026", amount: 6048.11,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Bessemer Cafe",    due: "04/23/2026", amount: 1965.66,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Bessemer Chem",    due: "04/23/2026", amount: 431.03,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Bessemer ToGo",    due: "04/23/2026", amount: 889.65,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Academy",          due: "04/23/2026", amount: 2444.39,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Birmingham Cafe",  due: "04/23/2026", amount: 4470.41,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Birmingham Chem",  due: "04/23/2026", amount: 1304.80,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/23/26",   location: "Birmingham ToGo",  due: "04/23/2026", amount: 2570.10,  aging: "current"   },
+      { vendor: "Forest Wood",  bill: "2059696",   location: "Birmingham Jail",  due: "04/27/2026", amount: 1384.50,  aging: "current"   },
+      { vendor: "HireQuest",    bill: "2759320",   location: "Bessemer Jail",    due: "04/28/2026", amount: 462.50,   aging: "current"   },
+      { vendor: "Forest Wood",  bill: "2059697",   location: "Bessemer Jail",    due: "04/28/2026", amount: 390.00,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Birmingham Jail",  due: "04/30/2026", amount: 16545.04, aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Bessemer Jail",    due: "04/30/2026", amount: 6181.56,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Bessemer Cafe",    due: "04/30/2026", amount: 2229.27,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Bessemer Chem",    due: "04/30/2026", amount: 391.05,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Bessemer ToGo",    due: "04/30/2026", amount: 790.80,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Academy",          due: "04/30/2026", amount: 749.84,   aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Birmingham Cafe",  due: "04/30/2026", amount: 3940.89,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Birmingham Chem",  due: "04/30/2026", amount: 1467.41,  aging: "current"   },
+      { vendor: "PFG",          bill: "4/30/26",   location: "Birmingham ToGo",  due: "04/30/2026", amount: 2471.25,  aging: "current"   },
+      { vendor: "Big Daddy",    bill: "BA24865",   location: "Bessemer Jail",    due: "04/30/2026", amount: 8728.40,  aging: "current"   },
+      { vendor: "Big Daddy",    bill: "BA24864",   location: "Birmingham Jail",  due: "04/30/2026", amount: 9797.60,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Birmingham Jail",  due: "05/07/2026", amount: 14632.84, aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Bessemer Jail",    due: "05/07/2026", amount: 6571.74,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Bessemer Cafe",    due: "05/07/2026", amount: 2219.01,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Bessemer Chem",    due: "05/07/2026", amount: 456.58,   aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Bessemer ToGo",    due: "05/07/2026", amount: 889.65,   aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Birmingham Cafe",  due: "05/07/2026", amount: 4298.01,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Birmingham Chem",  due: "05/07/2026", amount: 1405.62,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/7/26",    location: "Birmingham ToGo",  due: "05/07/2026", amount: 2570.10,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Birmingham Jail",  due: "05/14/2026", amount: 15408.05, aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Bessemer Jail",    due: "05/14/2026", amount: 6333.55,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Bessemer Cafe",    due: "05/14/2026", amount: 2218.01,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Bessemer Chem",    due: "05/14/2026", amount: 519.40,   aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Bessemer ToGo",    due: "05/14/2026", amount: 958.95,   aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Academy",          due: "05/14/2026", amount: 1028.43,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Birmingham Cafe",  due: "05/14/2026", amount: 4524.96,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Birmingham Chem",  due: "05/14/2026", amount: 1614.52,  aging: "current"   },
+      { vendor: "PFG",          bill: "5/14/26",   location: "Birmingham ToGo",  due: "05/14/2026", amount: 3089.95,  aging: "current"   },
+      // Credits (91+ days)
+      { vendor: "EMC",          bill: "36-1901",   location: "Jefferson County", due: "",           amount: -2152.81, aging: "credit"    },
+      { vendor: "EMC",          bill: "51058",     location: "",                 due: "",           amount: -1644.00, aging: "credit"    }
+    ]
+  },
+
+  // ── P&L 2025 Full Year ───────────────────────────────────
+  pl2025: {
+    period: "Full Year 2025",
+    annualRevenue: 4814886.13,
+    jeffcoRevenue: 4146006.51,
+    mcdfRevenue:   668879.62,
+    annualCogs:    2946162.49,
+    grossProfit:   1868723.64,
+    grossMarginPct: 0.3881,
+    annualExpenses: 1485493.67,
+    netIncome:     417108.78,
+    partnerDistributions: 295000,
+    note: "MCDF (Montgomery County) contract ran Jan–Jun 2025 ($669K revenue), ended June 2026. Jefferson County is now the sole contract.",
+    months: [
+      { month: "Jan", revenue: 400901, cogs: 271046, grossProfit: 129855, expenses: 108504, netIncome: 21351 },
+      { month: "Feb", revenue: 413908, cogs: 264812, grossProfit: 149096, expenses: 114426, netIncome: 34670 },
+      { month: "Mar", revenue: 534399, cogs: 280675, grossProfit: 253725, expenses: 101910, netIncome: 177698 },
+      { month: "Apr", revenue: 436657, cogs: 340487, grossProfit: 96170,  expenses: 121669, netIncome: -25499 },
+      { month: "May", revenue: 439130, cogs: 276405, grossProfit: 162725, expenses: 115893, netIncome: 46832 },
+      { month: "Jun", revenue: 428896, cogs: 214313, grossProfit: 214583, expenses: 113806, netIncome: 100777 },
+      { month: "Jul", revenue: 315300, cogs: 255808, grossProfit: 59492,  expenses: 144946, netIncome: -80705 },
+      { month: "Aug", revenue: 325600, cogs: 196961, grossProfit: 128639, expenses: 124817, netIncome: 5356  },
+      { month: "Sep", revenue: 405308, cogs: 222968, grossProfit: 182340, expenses: 107695, netIncome: 74646 },
+      { month: "Oct", revenue: 344368, cogs: 205123, grossProfit: 139245, expenses: 110929, netIncome: 28316 },
+      { month: "Nov", revenue: 345218, cogs: 207036, grossProfit: 138182, expenses: 115836, netIncome: 22346 },
+      { month: "Dec", revenue: 425200, cogs: 210528, grossProfit: 214672, expenses: 205063, netIncome: 11323 }
+    ]
+  },
+
+  // ── P&L 2026 YTD ────────────────────────────────────────
+  pl2026: {
+    period: "Q1 2026 (Jan–Mar)",
+    qtdRevenue:    1134919.37,
+    birmRevenue:    869941.68,
+    besRevenue:     264977.69,
+    qtdCogs:        596350.03,
+    birmCogs:       420476.72,
+    besCogs:        175873.31,
+    grossProfit:    538569.34,
+    grossMarginPct: 0.4747,
+    qtdExpenses:    412913.98,
+    netIncome:      125655.36,
+    months: [
+      { month: "Jan", revenue: 349239, cogs: 208546, grossProfit: 140693, expenses: 132266, netIncome: 8427,  note: "Jan COGS spike — weather double-order week of Jan 19" },
+      { month: "Feb", revenue: 345559, cogs: 155488, grossProfit: 190071, expenses: 142794, netIncome: 47277, note: "" },
+      { month: "Mar", revenue: 440121, cogs: 232316, grossProfit: 207805, expenses: 137854, netIncome: 69951, note: "" }
+    ],
+    topExpenses: [
+      { label: "Salaries",         amount: 219204 },
+      { label: "Taxes & Licenses", amount: 36917  },
+      { label: "Insurance",        amount: 38592  },
+      { label: "Car & Truck",      amount: 32304  },
+      { label: "Legal/Prof Svcs",  amount: 24858  },
+      { label: "Travel",           amount: 16939  }
+    ]
+  },
+
+  // ── Cash Flow Summary ────────────────────────────────────
+  cashFlow: {
+    y2025: { netIncome: 417109, operatingCF: 340013, distributions: -295000, cashEnd: 53957 },
+    ytd2026: { netIncome: 206296, operatingCF: 216338, distributions: -212586, cashEnd: 52617 }
+  },
+
+  // ── Alerts ───────────────────────────────────────────────
+  alerts: [
+    { severity: "high",   icon: "fa-triangle-exclamation", color: "#ef4444", label: "A/P Past Due",       detail: "$61,799 owed to PFG is 11+ days past due. Collect from Jefferson County first — A/R is $152K past due." },
+    { severity: "high",   icon: "fa-triangle-exclamation", color: "#ef4444", label: "A/R Past Due",       detail: "$151,977 from Jefferson County is 5–12 days past due (JEFFCO-667 through JEFFCO-672). Follow up on payment." },
+    { severity: "med",    icon: "fa-circle-info",          color: "#f59e0b", label: "Distributions vs Net Income", detail: "$212,586 in partner distributions YTD 2026 vs $206,296 net income. Distributions exceed earnings — monitor cash closely." },
+    { severity: "med",    icon: "fa-circle-info",          color: "#f59e0b", label: "MCDF Contract Lost", detail: "Montgomery County (MCDF) contributed $669K revenue in Jan–Jun 2025 before contract ended. $0 from MCDF since July 2025. Industry Standard is prior operator — advantage when re-bidding." },
+    { severity: "low",    icon: "fa-lightbulb",            color: "#22c55e", label: "Margin Improving",   detail: "Gross margin improved from 38.8% (2025 full year) to 47.5% (Q1 2026). COGS discipline is working post-MCDF." }
   ]
 };
 

@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=12">
+  <link rel="stylesheet" href="css/styles.css?v=13">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
@@ -74,6 +74,11 @@
     <a href="#pop-location-breakdown" class="nav-item" data-tab="pop"><i class="fa-solid fa-scale-balanced"></i>Location Breakdown</a>
     <a href="#pop-vendor-switches" class="nav-item" data-tab="pop"><i class="fa-solid fa-arrows-rotate"></i>Vendor Switches<span class="nav-badge green">$48K</span></a>
     <a href="#pop-menu" class="nav-item" data-tab="pop"><i class="fa-solid fa-calendar-week"></i>Menu Rotation</a>
+    <div class="nav-section-label" data-tab="financials">Financials</div>
+    <a href="#fin-snapshot"  class="nav-item" data-tab="financials"><i class="fa-solid fa-gauge-simple-high"></i>Snapshot</a>
+    <a href="#fin-pl"        class="nav-item" data-tab="financials"><i class="fa-solid fa-chart-line"></i>P&amp;L Trend</a>
+    <a href="#fin-ar"        class="nav-item" data-tab="financials"><i class="fa-solid fa-arrow-down-to-bracket"></i>A/R Aging</a>
+    <a href="#fin-ap"        class="nav-item" data-tab="financials"><i class="fa-solid fa-arrow-up-from-bracket"></i>A/P Aging</a>
     <div class="nav-section-label" data-tab="bids">Bid Tracker</div>
     <a href="#bids-won"      class="nav-item" data-tab="bids"><i class="fa-solid fa-circle-check"></i>Active Contracts<span class="nav-badge" style="background:rgba(34,197,94,0.2);color:#22c55e">1</span></a>
     <a href="#bids-open"     class="nav-item" data-tab="bids"><i class="fa-solid fa-exclamation-circle"></i>Verify Now<span class="nav-badge amber">1</span></a>
@@ -129,6 +134,9 @@
     </button>
     <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-arrows-rotate"></i>Vendors
+    </button>
+    <button class="tab-btn" data-tab="financials" onclick="switchTab('financials')">
+      <i class="fa-solid fa-chart-line"></i>Financials
     </button>
   </div>
 
@@ -1466,6 +1474,13 @@
 
   </div><!-- /bid-tracker-wrap -->
 
+  <div id="financials-wrap" style="display:none">
+    <div id="fin-snapshot"></div>
+    <div id="fin-pl"></div>
+    <div id="fin-ar"></div>
+    <div id="fin-ap"></div>
+  </div><!-- /financials-wrap -->
+
   <!-- ══════════════════════════════════════
        EXECUTIVE DASHBOARD
   ══════════════════════════════════════ -->
@@ -1710,7 +1725,7 @@
      ══════════════════════════════════════ -->
 <div id="print-menu-wrap"></div>
 
-<script src="js/data.js?v=12"></script>
-<script src="js/app.js?v=12"></script>
+<script src="js/data.js?v=13"></script>
+<script src="js/app.js?v=13"></script>
 </body>
 </html>
