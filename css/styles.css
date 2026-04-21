@@ -4365,3 +4365,146 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   .fin-action-body { padding-left: 0; }
 }
 
+/* ═══════════════════════════════════════════════════
+   BUSINESS BRIEF — Printable M&A Document
+═══════════════════════════════════════════════════ */
+.brief-controls {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.brief-print-btn {
+  display: inline-flex; align-items: center; gap: 8px; background: #1e3a5f;
+  color: white; border: none; padding: 10px 22px; border-radius: 8px;
+  font-weight: 700; font-size: 13px; cursor: pointer; transition: background .15s;
+}
+.brief-print-btn:hover { background: #1e40af; }
+.brief-print-btn i { font-size: 14px; }
+.brief-hint { font-size: 12px; color: var(--text-400); }
+
+.brief-doc { max-width: 860px; margin: 0 auto; font-family: -apple-system, 'Segoe UI', Arial, sans-serif; }
+
+.brief-page {
+  background: #fff; border: 1px solid #d1d5db;
+  border-radius: 10px; padding: 50px 54px;
+  margin-bottom: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  color: #111827;
+}
+
+/* ── Document Header ── */
+.brief-header { border-bottom: 3px solid #1e3a5f; padding-bottom: 22px; margin-bottom: 32px; display: flex; justify-content: space-between; align-items: flex-start; }
+.brief-header-left {}
+.brief-company  { font-size: 30px; font-weight: 900; color: #1e3a5f; letter-spacing: .04em; line-height: 1; }
+.brief-tagline  { font-size: 13px; font-weight: 600; color: #2563eb; margin-top: 5px; }
+.brief-prepared { font-size: 10px; color: #9ca3af; margin-top: 10px; text-transform: uppercase; letter-spacing: .1em; }
+.brief-confidential {
+  font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em;
+  background: #1e3a5f; color: white; padding: 4px 10px; border-radius: 4px; white-space: nowrap;
+}
+.brief-page-header {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+  color: #9ca3af; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 28px;
+  display: flex; justify-content: space-between;
+}
+
+/* ── Sections ── */
+.brief-section { margin-bottom: 30px; }
+.brief-section:last-child { margin-bottom: 0; }
+.brief-section-title {
+  font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em;
+  color: #1e3a5f; padding-bottom: 6px; margin-bottom: 14px;
+  border-bottom: 2px solid #2563eb; display: inline-block;
+}
+.brief-body { font-size: 13px; color: #374151; line-height: 1.72; margin: 0; }
+.brief-body + .brief-body { margin-top: 10px; }
+
+/* ── Key Metrics Grid ── */
+.brief-metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.brief-metric-card {
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+  padding: 14px 16px; border-top: 3px solid #2563eb;
+}
+.brief-metric-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #6b7280; margin-bottom: 6px; }
+.brief-metric-value { font-size: 22px; font-weight: 900; color: #1e3a5f; line-height: 1; margin-bottom: 3px; }
+.brief-metric-note  { font-size: 10px; color: #6b7280; }
+
+/* ── Brief Tables ── */
+.brief-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.brief-table th {
+  background: #1e3a5f; color: white; padding: 9px 12px;
+  text-align: left; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+}
+.brief-table th.r, .brief-table td.r { text-align: right; }
+.brief-table td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 12px; }
+.brief-table tr:nth-child(even) td { background: #f9fafb; }
+.brief-table tr.total td { font-weight: 800; background: #eff6ff; color: #1e3a5f; border-top: 2px solid #1e3a5f; border-bottom: 2px solid #1e3a5f; }
+.brief-table tr.sub td  { color: #9ca3af; padding-left: 28px; }
+.brief-table tr.hi td   { color: #15803d; font-weight: 700; }
+.brief-table tr.lo td   { color: #dc2626; }
+
+/* ── Two-column layout ── */
+.brief-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.brief-col-head { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: #1e3a5f; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
+
+/* ── Bullet list ── */
+.brief-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.brief-list li { font-size: 12px; color: #374151; padding-left: 16px; position: relative; line-height: 1.55; }
+.brief-list li::before { content: '▸'; position: absolute; left: 0; color: #2563eb; font-size: 10px; top: 2px; }
+.brief-list.tight { gap: 4px; }
+
+/* ── Strategic Roadmap ── */
+.brief-roadmap { display: flex; flex-direction: column; gap: 0; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.brief-roadmap-item { display: grid; grid-template-columns: 88px 1fr; }
+.brief-roadmap-phase {
+  background: #1e3a5f; color: white; padding: 14px 12px;
+  font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+  display: flex; align-items: flex-start; line-height: 1.4;
+}
+.brief-roadmap-item:not(:last-child) .brief-roadmap-phase { border-bottom: 1px solid #2d4e6e; }
+.brief-roadmap-content { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; background: #fff; }
+.brief-roadmap-item:last-child .brief-roadmap-content { border-bottom: none; }
+.brief-roadmap-title  { font-size: 12px; font-weight: 700; color: #111827; margin-bottom: 5px; }
+.brief-roadmap-items  { font-size: 11px; color: #6b7280; line-height: 1.6; }
+
+/* ── Targets grid ── */
+.brief-targets-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+.brief-target-card {
+  background: #f0f7ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 14px; text-align: center;
+}
+.brief-target-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #1d4ed8; margin-bottom: 6px; }
+.brief-target-value { font-size: 18px; font-weight: 900; color: #1e3a5f; }
+.brief-target-note  { font-size: 10px; color: #6b7280; margin-top: 3px; }
+
+/* ── Acquisition thesis cards ── */
+.brief-thesis-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+.brief-thesis-card { background: #f0f7ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px 16px; }
+.brief-thesis-head { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: #1d4ed8; margin-bottom: 6px; }
+.brief-thesis-body { font-size: 11px; color: #374151; line-height: 1.55; }
+
+/* ── Valuation box ── */
+.brief-valuation {
+  background: #1e3a5f; color: white; border-radius: 10px;
+  padding: 28px 32px; text-align: center; margin-top: 24px;
+}
+.brief-val-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; opacity: .6; margin-bottom: 8px; }
+.brief-val-range { font-size: 40px; font-weight: 900; letter-spacing: -.01em; margin-bottom: 6px; }
+.brief-val-basis { font-size: 11px; opacity: .7; margin-bottom: 16px; }
+.brief-val-grid  { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 16px; border-top: 1px solid rgba(255,255,255,.2); padding-top: 16px; }
+.brief-val-col   { text-align: center; }
+.brief-val-col-label { font-size: 9px; opacity: .6; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.brief-val-col-value { font-size: 18px; font-weight: 800; }
+.brief-val-disclaimer { font-size: 10px; opacity: .5; margin-top: 14px; font-style: italic; }
+
+/* ── Print styles ── */
+@media print {
+  .sidebar, .tab-bar, #tabBar,
+  .brief-controls,
+  .content > *:not(#brief-wrap) { display: none !important; }
+  #brief-wrap     { display: block !important; }
+  .brief-doc      { max-width: 100%; }
+  .brief-page     { border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 !important; margin: 0 !important; page-break-after: always; }
+  .brief-page:last-child { page-break-after: auto; }
+  .main-layout    { display: block !important; }
+  body            { background: white !important; padding: 0 !important; margin: 0 !important; }
+  .brief-confidential { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+

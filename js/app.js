@@ -706,6 +706,10 @@ function switchTab(tab, persist = true) {
   const finWrap = document.getElementById('financials-wrap');
   if (finWrap) finWrap.style.display = (tab === 'financials') ? 'block' : 'none';
 
+  // Show/hide brief
+  const briefWrap = document.getElementById('brief-wrap');
+  if (briefWrap) briefWrap.style.display = (tab === 'brief') ? 'block' : 'none';
+
   // Show/hide menus
   const menusWrap = document.getElementById('menus-wrap');
   if (menusWrap) menusWrap.style.display = (tab === 'menus') ? 'block' : 'none';
@@ -734,6 +738,9 @@ function switchTab(tab, persist = true) {
   });
   document.querySelectorAll('.nav-section-label[data-tab="financials"], .nav-item[data-tab="financials"]').forEach(el => {
     el.style.display = (tab === 'financials') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="brief"], .nav-item[data-tab="brief"]').forEach(el => {
+    el.style.display = (tab === 'brief') ? '' : 'none';
   });
 
   // Sync active nav item
@@ -2554,6 +2561,479 @@ function _renderFinCashFlow() {
     </div>`;
 }
 
+/* ── Business Brief / M&A Document ───────────────────────── */
+function renderBrief() {
+  const el = document.getElementById('brief-container');
+  if (!el || typeof FINANCIALS === 'undefined') return;
+  const F = FINANCIALS;
+
+  const $  = n => '$' + Math.round(n).toLocaleString('en-US');
+  const $m = n => '$' + (n / 1000000).toFixed(2) + 'M';
+  const p  = (n, d) => d ? ((n/d)*100).toFixed(1) + '%' : '—';
+  const annRev  = F.pl2026.qtdRevenue * 4;
+  const annNI   = F.pl2026.netIncome  * 4;
+  const gm2026  = (F.pl2026.grossMarginPct * 100).toFixed(1);
+  const gm2025  = (F.pl2025.grossMarginPct * 100).toFixed(1);
+  const nm2026  = (F.pl2026.netIncome / F.pl2026.qtdRevenue * 100).toFixed(1);
+  const nm2025  = (F.pl2025.netIncome / F.pl2025.annualRevenue * 100).toFixed(1);
+  const jeffGrowth = ((annRev - F.pl2025.jeffcoRevenue) / F.pl2025.jeffcoRevenue * 100).toFixed(1);
+  const netWC   = F.ar.total - F.ap.total;
+
+  // Valuation math (4-6x annualized NI proxy for EBITDA)
+  const loVal = Math.round(annNI * 4 / 10000) * 10000;
+  const hiVal = Math.round(annNI * 6 / 10000) * 10000;
+
+  el.innerHTML = `
+    <!-- Print Controls -->
+    <div class="brief-controls no-print">
+      <button class="brief-print-btn" onclick="window.print()">
+        <i class="fa-solid fa-print"></i> Print / Save as PDF
+      </button>
+      <span class="brief-hint">In your browser's print dialog, select <strong>Save as PDF</strong> · Landscape or Portrait · Letter size</span>
+    </div>
+
+    <div class="brief-doc">
+
+      <!-- ═══ PAGE 1 — EXECUTIVE SUMMARY ═══ -->
+      <div class="brief-page">
+        <div class="brief-header">
+          <div class="brief-header-left">
+            <div class="brief-company">INDUSTRY STANDARD</div>
+            <div class="brief-tagline">Food Service Management · Jefferson County Detention Center</div>
+            <div class="brief-prepared">Business Overview · April 2026</div>
+          </div>
+          <div class="brief-confidential">Confidential</div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="brief-section">
+          <div class="brief-section-title">Business at a Glance</div>
+          <div class="brief-metrics-grid">
+            <div class="brief-metric-card">
+              <div class="brief-metric-label">Annualized Revenue</div>
+              <div class="brief-metric-value">${$m(annRev)}</div>
+              <div class="brief-metric-note">Q1 2026 pace · Jefferson County only</div>
+            </div>
+            <div class="brief-metric-card" style="border-top-color:#16a34a">
+              <div class="brief-metric-label">Gross Margin</div>
+              <div class="brief-metric-value" style="color:#15803d">${gm2026}%</div>
+              <div class="brief-metric-note">▲ +${((F.pl2026.grossMarginPct - F.pl2025.grossMarginPct)*100).toFixed(1)}pp vs 2025 full year</div>
+            </div>
+            <div class="brief-metric-card" style="border-top-color:#16a34a">
+              <div class="brief-metric-label">Net Margin (Q1 2026)</div>
+              <div class="brief-metric-value" style="color:#15803d">${nm2026}%</div>
+              <div class="brief-metric-note">▲ +${(parseFloat(nm2026)-parseFloat(nm2025)).toFixed(1)}pp vs 2025 full year</div>
+            </div>
+            <div class="brief-metric-card">
+              <div class="brief-metric-label">2025 Full-Year Revenue</div>
+              <div class="brief-metric-value">${$m(F.pl2025.annualRevenue)}</div>
+              <div class="brief-metric-note">Includes $669K MCDF (ended Jun '25)</div>
+            </div>
+            <div class="brief-metric-card">
+              <div class="brief-metric-label">2025 Net Income</div>
+              <div class="brief-metric-value">${$(F.pl2025.netIncome)}</div>
+              <div class="brief-metric-note">${nm2025}% net margin</div>
+            </div>
+            <div class="brief-metric-card" style="border-top-color:#2563eb">
+              <div class="brief-metric-label">Core Contract Growth</div>
+              <div class="brief-metric-value" style="color:#1d4ed8">+${jeffGrowth}%</div>
+              <div class="brief-metric-note">JeffCo YoY (apples-to-apples)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business Overview -->
+        <div class="brief-section">
+          <div class="brief-section-title">Business Overview</div>
+          <p class="brief-body">
+            Industry Standard operates the food service contract at Jefferson County Detention Center
+            across two facilities in the Birmingham metro area — Birmingham Jail and Bessemer Jail.
+            The company provides three daily meals for an average combined population of approximately
+            1,500 detainees, managing all procurement, food preparation, staffing, and compliance.
+          </p>
+          <p class="brief-body" style="margin-top:10px">
+            In 2025, the company operated two contracts simultaneously — Jefferson County ($4.15M) and
+            Montgomery County MCDF ($669K) — generating $4.81M in total revenue and $417K in net income.
+            The MCDF contract concluded in June 2025; however, the core Jefferson County business grew
+            approximately ${jeffGrowth}% year-over-year on a comparable basis. Q1 2026 performance
+            reflects continued improvement: gross margin expanded to ${gm2026}% and net margin reached
+            ${nm2026}%, driven by procurement optimization and tighter cost controls.
+          </p>
+        </div>
+
+        <!-- Competitive Advantages -->
+        <div class="brief-section">
+          <div class="brief-section-title">Competitive Advantages</div>
+          <div class="brief-two-col">
+            <div>
+              <div class="brief-col-head">Operational</div>
+              <ul class="brief-list">
+                <li>Established multi-year relationship with Jefferson County Sheriff's Office</li>
+                <li>Two-facility operations with shared procurement and staffing efficiencies</li>
+                <li>Proven food cost controls — gross margin improved 8.7pp in one year</li>
+                <li>Experienced on-site team with institutional knowledge of facility requirements</li>
+                <li>Prior operator at Montgomery County MCDF — immediate re-bid advantage</li>
+              </ul>
+            </div>
+            <div>
+              <div class="brief-col-head">Market Position</div>
+              <ul class="brief-list">
+                <li>Government contract revenue — recurring, predictable, contract-protected</li>
+                <li>Active bid pipeline: 9 Alabama counties on radar, 2 upcoming solicitations</li>
+                <li>Statewide ADOC (Alabama DOC) canteen contract identified as long-term target</li>
+                <li>Documented vendor cost savings of $13,700+/year available through Shaver ISP</li>
+                <li>Scalable operations model replicable at additional county facilities</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 2 — FINANCIAL PERFORMANCE ═══ -->
+      <div class="brief-page">
+        <div class="brief-page-header">
+          <span>INDUSTRY STANDARD · Financial Performance</span>
+          <span>Confidential · April 2026</span>
+        </div>
+
+        <!-- P&L Summary -->
+        <div class="brief-section">
+          <div class="brief-section-title">Profit &amp; Loss Summary</div>
+          <table class="brief-table">
+            <thead>
+              <tr>
+                <th>Line Item</th>
+                <th class="r">2025 Full Year</th>
+                <th class="r">% of Rev</th>
+                <th class="r">Q1 2026</th>
+                <th class="r">% of Rev</th>
+                <th class="r">2026 Annualized</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Revenue</td>
+                <td class="r">${$(F.pl2025.annualRevenue)}</td>
+                <td class="r">100.0%</td>
+                <td class="r">${$(F.pl2026.qtdRevenue)}</td>
+                <td class="r">100.0%</td>
+                <td class="r">${$(annRev)}</td>
+              </tr>
+              <tr class="sub">
+                <td>Jefferson County</td>
+                <td class="r">${$(F.pl2025.jeffcoRevenue)}</td>
+                <td class="r">${p(F.pl2025.jeffcoRevenue, F.pl2025.annualRevenue)}</td>
+                <td class="r">${$(F.pl2026.qtdRevenue)}</td>
+                <td class="r">100.0%</td>
+                <td class="r">—</td>
+              </tr>
+              <tr class="sub">
+                <td>MCDF (ended Jun 2025)</td>
+                <td class="r">${$(F.pl2025.mcdfRevenue)}</td>
+                <td class="r">${p(F.pl2025.mcdfRevenue, F.pl2025.annualRevenue)}</td>
+                <td class="r">—</td>
+                <td class="r">—</td>
+                <td class="r">—</td>
+              </tr>
+              <tr>
+                <td>Cost of Goods Sold</td>
+                <td class="r">${$(F.pl2025.annualCogs)}</td>
+                <td class="r">${p(F.pl2025.annualCogs, F.pl2025.annualRevenue)}</td>
+                <td class="r">${$(F.pl2026.qtdCogs)}</td>
+                <td class="r">${p(F.pl2026.qtdCogs, F.pl2026.qtdRevenue)}</td>
+                <td class="r">${$(F.pl2026.qtdCogs*4)}</td>
+              </tr>
+              <tr class="hi">
+                <td>Gross Profit</td>
+                <td class="r">${$(F.pl2025.grossProfit)}</td>
+                <td class="r">${gm2025}%</td>
+                <td class="r">${$(F.pl2026.grossProfit)}</td>
+                <td class="r">${gm2026}%</td>
+                <td class="r">${$(F.pl2026.grossProfit*4)}</td>
+              </tr>
+              <tr>
+                <td>Operating Expenses</td>
+                <td class="r">${$(F.pl2025.annualExpenses)}</td>
+                <td class="r">${p(F.pl2025.annualExpenses, F.pl2025.annualRevenue)}</td>
+                <td class="r">${$(F.pl2026.qtdExpenses)}</td>
+                <td class="r">${p(F.pl2026.qtdExpenses, F.pl2026.qtdRevenue)}</td>
+                <td class="r">${$(F.pl2026.qtdExpenses*4)}</td>
+              </tr>
+              <tr class="total">
+                <td>Net Income</td>
+                <td class="r">${$(F.pl2025.netIncome)}</td>
+                <td class="r">${nm2025}%</td>
+                <td class="r">${$(F.pl2026.netIncome)}</td>
+                <td class="r">${nm2026}%</td>
+                <td class="r">${$(annNI)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cash Flow + Working Capital side by side -->
+        <div class="brief-two-col" style="margin-top:28px">
+          <div>
+            <div class="brief-section-title">Cash Flow Summary</div>
+            <table class="brief-table">
+              <thead><tr><th>Item</th><th class="r">2025</th><th class="r">2026 YTD</th></tr></thead>
+              <tbody>
+                <tr><td>Net Income</td><td class="r">${$(F.cashFlow.y2025.netIncome)}</td><td class="r">${$(F.cashFlow.ytd2026.netIncome)}</td></tr>
+                <tr><td>Operating Cash Flow</td><td class="r">${$(F.cashFlow.y2025.operatingCF)}</td><td class="r">${$(F.cashFlow.ytd2026.operatingCF)}</td></tr>
+                <tr><td>Partner Distributions</td><td class="r" style="color:#dc2626">(${$(Math.abs(F.cashFlow.y2025.distributions))})</td><td class="r" style="color:#dc2626">(${$(Math.abs(F.cashFlow.ytd2026.distributions))})</td></tr>
+                <tr class="total"><td>Ending Cash</td><td class="r">${$(F.cashFlow.y2025.cashEnd)}</td><td class="r">${$(F.cashFlow.ytd2026.cashEnd)}</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:10px;color:#9ca3af;margin-top:8px">⚠ 2026 YTD distributions exceed net income — cash remains compressed.</p>
+          </div>
+          <div>
+            <div class="brief-section-title">Working Capital Position</div>
+            <table class="brief-table">
+              <thead><tr><th>Item</th><th class="r">Amount</th><th class="r">Status</th></tr></thead>
+              <tbody>
+                <tr><td>Accounts Receivable</td><td class="r">${$(F.ar.total)}</td><td class="r" style="color:#ca8a04">Active</td></tr>
+                <tr class="sub"><td>Past Due (&gt;2 days)</td><td class="r" style="color:#dc2626">${$(F.ar.pastDue)}</td><td class="r" style="color:#dc2626">Collect Now</td></tr>
+                <tr class="sub"><td>Current</td><td class="r">${$(F.ar.current)}</td><td class="r" style="color:#16a34a">On Track</td></tr>
+                <tr><td>Accounts Payable</td><td class="r">${$(F.ap.total)}</td><td class="r" style="color:#ca8a04">Active</td></tr>
+                <tr class="sub"><td>Past Due (PFG)</td><td class="r" style="color:#dc2626">${$(F.ap.pastDue)}</td><td class="r" style="color:#dc2626">Pay Immediately</td></tr>
+                <tr class="total"><td>Net Working Capital</td><td class="r" style="color:${netWC >= 0 ? '#15803d' : '#dc2626'}">${netWC >= 0 ? '+' : ''}${$(netWC)}</td><td class="r">${netWC >= 0 ? 'Positive' : 'Negative'}</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:10px;color:#9ca3af;margin-top:8px">Cash on hand: ${$(F.cash.balance)} (${F.cash.accountName})</p>
+          </div>
+        </div>
+
+        <!-- Top Expenses -->
+        <div class="brief-section" style="margin-top:28px">
+          <div class="brief-section-title">Q1 2026 Operating Expense Breakdown</div>
+          <table class="brief-table">
+            <thead><tr><th>Category</th><th class="r">Q1 2026</th><th class="r">% of Total Opex</th><th class="r">Annualized</th></tr></thead>
+            <tbody>
+              ${F.pl2026.topExpenses.map(e => `
+                <tr>
+                  <td>${e.label}</td>
+                  <td class="r">${$(e.amount)}</td>
+                  <td class="r">${p(e.amount, F.pl2026.qtdExpenses)}</td>
+                  <td class="r">${$(e.amount*4)}</td>
+                </tr>`).join('')}
+              <tr class="total">
+                <td>Total Operating Expenses</td>
+                <td class="r">${$(F.pl2026.qtdExpenses)}</td>
+                <td class="r">100.0%</td>
+                <td class="r">${$(F.pl2026.qtdExpenses*4)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 3 — STRATEGIC ROADMAP ═══ -->
+      <div class="brief-page">
+        <div class="brief-page-header">
+          <span>INDUSTRY STANDARD · Strategic Roadmap &amp; Plan of Action</span>
+          <span>Confidential · April 2026</span>
+        </div>
+
+        <!-- Roadmap -->
+        <div class="brief-section">
+          <div class="brief-section-title">Plan of Action — 90-Day Roadmap</div>
+          <div class="brief-roadmap">
+            <div class="brief-roadmap-item">
+              <div class="brief-roadmap-phase">Days<br>1–30<br><span style="font-size:8px;opacity:.7;font-weight:400">Immediate</span></div>
+              <div class="brief-roadmap-content">
+                <div class="brief-roadmap-title">Stabilize Cash &amp; Vendor Relationships</div>
+                <div class="brief-roadmap-items">
+                  1. Issue written collection notice to Jefferson County for $${Math.round(F.ar.pastDue/1000)}K overdue A/R (JEFFCO-667 through JEFFCO-672) — target collection within 10 business days.<br>
+                  2. Upon A/R receipt, immediately remit $${Math.round(F.ap.pastDue/1000)}K past-due balance to PFG to protect primary supplier relationship.<br>
+                  3. Suspend or reduce partner distributions until Q2 earnings confirm run-rate — 2026 YTD distributions have exceeded net income by ~$6,300.<br>
+                  4. Establish a minimum cash reserve floor of $75,000 — do not distribute below this threshold.
+                </div>
+              </div>
+            </div>
+            <div class="brief-roadmap-item">
+              <div class="brief-roadmap-phase">Days<br>31–60<br><span style="font-size:8px;opacity:.7;font-weight:400">Optimize</span></div>
+              <div class="brief-roadmap-content">
+                <div class="brief-roadmap-title">Execute Vendor Optimization &amp; Begin Expansion Bids</div>
+                <div class="brief-roadmap-items">
+                  5. Execute vendor switch to Shaver ISP for top 23 items — documented savings of $1,146+/month ($13,750+/year) with no menu or quality changes required.<br>
+                  6. Negotiate 7-day payment terms with Jefferson County Sheriff's Office to reduce A/R days outstanding and improve cash predictability.<br>
+                  7. Submit MCDF re-bid proposal to Montgomery County — leverage prior operator credentials, established kitchen knowledge, and documented performance record.<br>
+                  8. Review staffing schedule at both facilities — salaries represent 53% of operating expenses ($219K Q1); identify scheduling efficiencies without service impact.
+                </div>
+              </div>
+            </div>
+            <div class="brief-roadmap-item">
+              <div class="brief-roadmap-phase">Days<br>61–90<br><span style="font-size:8px;opacity:.7;font-weight:400">Scale</span></div>
+              <div class="brief-roadmap-content">
+                <div class="brief-roadmap-title">Build Pipeline &amp; Formalize Operations</div>
+                <div class="brief-roadmap-items">
+                  9. Submit competitive bids for Shelby County and Etowah County detention facilities — both identified as active procurement targets on the bid radar.<br>
+                  10. Implement formal A/R collections policy: invoice net-7, automated follow-up at days 3 and 7, escalation to county liaison at day 10.<br>
+                  11. Document Standard Operating Procedures (SOPs) for procurement, meal production, and staffing — essential for any future acquisition due diligence or new contract onboarding.<br>
+                  12. Begin ADOC (Alabama Department of Corrections) statewide canteen research — identify RFP schedule and pre-qualification requirements.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12-Month Targets -->
+        <div class="brief-section" style="margin-top:28px">
+          <div class="brief-section-title">12-Month Performance Targets</div>
+          <div class="brief-targets-grid">
+            <div class="brief-target-card">
+              <div class="brief-target-label">Annual Revenue</div>
+              <div class="brief-target-value">$5.2M+</div>
+              <div class="brief-target-note">JeffCo + 1 new contract win</div>
+            </div>
+            <div class="brief-target-card">
+              <div class="brief-target-label">Gross Margin</div>
+              <div class="brief-target-value">46–48%</div>
+              <div class="brief-target-note">Maintain Q1 2026 gains</div>
+            </div>
+            <div class="brief-target-card">
+              <div class="brief-target-label">Net Margin</div>
+              <div class="brief-target-value">12%+</div>
+              <div class="brief-target-note">Up from 11.1% in Q1 2026</div>
+            </div>
+            <div class="brief-target-card">
+              <div class="brief-target-label">Cash Reserve</div>
+              <div class="brief-target-value">$150K</div>
+              <div class="brief-target-note">Minimum floor policy</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Initiative Summary -->
+        <div class="brief-two-col" style="margin-top:28px">
+          <div>
+            <div class="brief-section-title">Revenue Initiatives</div>
+            <ul class="brief-list">
+              <li><strong>MCDF Re-bid:</strong> ~$1.3M annualized at 2025 pace — highest probability, prior operator advantage</li>
+              <li><strong>Shelby County Bid:</strong> Active procurement target — estimated $800K–$1.2M annual contract</li>
+              <li><strong>Etowah County Bid:</strong> Upcoming solicitation — estimated $400K–$600K</li>
+              <li><strong>Calhoun County:</strong> On radar — contract renewal monitoring underway</li>
+              <li><strong>ADOC Statewide:</strong> Long-term strategic target — largest potential contract in state</li>
+            </ul>
+          </div>
+          <div>
+            <div class="brief-section-title">Profitability Initiatives</div>
+            <ul class="brief-list">
+              <li><strong>Shaver Vendor Switch:</strong> $13,750+/year on 23 documented items — no capex required</li>
+              <li><strong>Food Cost Controls:</strong> Maintain 47%+ gross margin through weekly waste tracking and portioning discipline</li>
+              <li><strong>Labor Efficiency:</strong> Review scheduling at both facilities — salary costs at 53% of opex is above industry average of 40–45%</li>
+              <li><strong>Forest Wood Produce:</strong> Contracted banana ($0.137/serving) and orange ($0.28/serving) pricing — saves ~$6,100/year vs uncontracted</li>
+              <li><strong>A/R Cycle:</strong> Reducing DSO from 19 to &lt;10 days frees ~$120K working capital</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PAGE 4 — ACQUISITION OVERVIEW ═══ -->
+      <div class="brief-page">
+        <div class="brief-page-header">
+          <span>INDUSTRY STANDARD · Acquisition &amp; Investment Overview</span>
+          <span>Confidential · April 2026</span>
+        </div>
+
+        <!-- Why this business -->
+        <div class="brief-section">
+          <div class="brief-section-title">Investment Highlights</div>
+          <div class="brief-thesis-grid">
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Government Contract Revenue</div>
+              <div class="brief-thesis-body">Primary revenue stream is a multi-year contract with Jefferson County Sheriff's Office — a government obligor. Recurring, predictable, and structurally protected from typical commercial market volatility. Collections are slow but reliable.</div>
+            </div>
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Rapidly Improving Margins</div>
+              <div class="brief-thesis-body">Gross margin improved from 38.8% (2025 FY) to 47.5% in Q1 2026 — a 8.7pp improvement in one year. Net margin rose from 8.7% to 11.1%. Demonstrates operational leverage and cost discipline, not a one-time event.</div>
+            </div>
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Growth Pipeline Visibility</div>
+              <div class="brief-thesis-body">9 Alabama counties on active bid radar. Re-bid of MCDF ($1.3M contract) represents the highest-probability near-term expansion, leveraging prior operator status. Statewide ADOC canteen represents a significant longer-term upside target.</div>
+            </div>
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Scalable Operating Model</div>
+              <div class="brief-thesis-body">Processes, vendor relationships, menu systems, and compliance documentation are in place. Adding a new county facility requires incremental staffing and procurement scale — not a full operational rebuild. The infrastructure already supports growth.</div>
+            </div>
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Documented Cost Savings Available</div>
+              <div class="brief-thesis-body">$13,750+/year in vendor savings (Shaver ISP switch) has been fully documented and is execution-ready. Additional produce savings from Forest Wood contract add ~$6,100/year. These are near-zero-risk profitability improvements available on Day 1.</div>
+            </div>
+            <div class="brief-thesis-card">
+              <div class="brief-thesis-head">Prior Operator Advantage at MCDF</div>
+              <div class="brief-thesis-body">Industry Standard operated the Montgomery County MCDF contract from January through June 2025, generating $669K in revenue. As the prior operator, the company possesses facility-specific knowledge, existing relationships, and a performance track record that competitors cannot replicate.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Factors -->
+        <div class="brief-section" style="margin-top:28px">
+          <div class="brief-section-title">Key Risk Factors &amp; Mitigants</div>
+          <table class="brief-table">
+            <thead><tr><th>Risk</th><th>Assessment</th><th>Mitigant</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600">Single-client concentration</td>
+                <td style="color:#ca8a04">Moderate</td>
+                <td>Jefferson County is a government obligor. Bid pipeline diversifies exposure over 12–24 months.</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Contract renewal risk</td>
+                <td style="color:#ca8a04">Moderate</td>
+                <td>Established multi-year relationship. Operational performance has been consistent. No known competitive threats.</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Cash position / distributions</td>
+                <td style="color:#dc2626">Elevated</td>
+                <td>Addressable immediately. Implement distribution policy tied to trailing earnings. Collect outstanding A/R ($152K).</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">A/P — PFG supplier relationship</td>
+                <td style="color:#dc2626">Elevated</td>
+                <td>Pay $62K overdue balance upon A/R collection. Actively pursuing Shaver ISP as a competitive alternative to reduce PFG dependency.</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Labor cost (53% of opex)</td>
+                <td style="color:#ca8a04">Moderate</td>
+                <td>Industry standard for institutional food service is 40–45%. Scheduling review planned. Modest efficiency gains achievable without headcount reduction.</td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Food cost inflation</td>
+                <td style="color:#16a34a">Low</td>
+                <td>Contracted pricing with PFG, Shaver ISP, and Forest Wood provides cost predictability. Gross margin improvements demonstrate effective management.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Valuation -->
+        <div class="brief-valuation">
+          <div class="brief-val-label">Indicative Valuation Range — Based on Annualized Earnings</div>
+          <div class="brief-val-range">${$(loVal)} – ${$(hiVal)}</div>
+          <div class="brief-val-basis">4× to 6× annualized net income of ${$(annNI)} (Q1 2026 pace) · Government contract premium applied</div>
+          <div class="brief-val-grid">
+            <div class="brief-val-col">
+              <div class="brief-val-col-label">Conservative (4×)</div>
+              <div class="brief-val-col-value">${$(Math.round(annNI*4/10000)*10000)}</div>
+            </div>
+            <div class="brief-val-col">
+              <div class="brief-val-col-label">Base Case (5×)</div>
+              <div class="brief-val-col-value">${$(Math.round(annNI*5/10000)*10000)}</div>
+            </div>
+            <div class="brief-val-col">
+              <div class="brief-val-col-label">Upside (6×)</div>
+              <div class="brief-val-col-value">${$(Math.round(annNI*6/10000)*10000)}</div>
+            </div>
+          </div>
+          <div class="brief-val-disclaimer">Indicative range only. Based on Q1 2026 annualized net income as EBITDA proxy. Actual valuation subject to full due diligence, contract terms, working capital adjustment, and buyer-specific synergies. Not a formal valuation opinion.</div>
+        </div>
+      </div>
+
+    </div><!-- /brief-doc -->
+  `;
+}
+
 /* ── Menu Order List ──────────────────────────────────────── */
 function renderMenuOrderList() {
   const container = document.getElementById('mol-container');
@@ -3692,6 +4172,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initBidTracker();
   renderFinancials();
+  renderBrief();
   renderMenuRotation();
   renderMenuOrderList();
   renderCafeAnalysis();
