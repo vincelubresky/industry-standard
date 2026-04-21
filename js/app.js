@@ -4344,8 +4344,8 @@ function renderManagerTab(facilityKey) {
             <span class="mgr-kpi-lbl">Weekly Food Budget</span>
           </div>
           <div class="mgr-kpi">
-            <span class="mgr-kpi-val">$${fp.targetCostPerMeal.toFixed(2)}</span>
-            <span class="mgr-kpi-lbl">Target / Meal</span>
+            <span class="mgr-kpi-val">$${fp.targetCostPerMeal.toFixed(2)}–$${fp.alertCostPerMeal.toFixed(2)}</span>
+            <span class="mgr-kpi-lbl">Target / Max per Meal</span>
           </div>
           <div class="mgr-kpi">
             <span class="mgr-kpi-val">${weeklyMeals.toLocaleString()}</span>
@@ -4355,8 +4355,8 @@ function renderManagerTab(facilityKey) {
       </div>
 
       <div class="mgr-rule-strip">
-        <div class="mgr-rule-item"><i class="fa-solid fa-circle-check"></i> Target ≤ $${fp.targetCostPerMeal.toFixed(2)}/meal</div>
-        <div class="mgr-rule-item mgr-rule-warn"><i class="fa-solid fa-triangle-exclamation"></i> Alert > $${fp.alertCostPerMeal.toFixed(2)}/meal</div>
+        <div class="mgr-rule-item"><i class="fa-solid fa-circle-check"></i> Aim for $${fp.targetCostPerMeal.toFixed(2)}/meal — cheaper is better</div>
+        <div class="mgr-rule-item mgr-rule-warn"><i class="fa-solid fa-triangle-exclamation"></i> Hard max $${fp.alertCostPerMeal.toFixed(2)}/meal — never exceed</div>
         <div class="mgr-rule-item"><i class="fa-solid fa-calendar-week"></i> 2-Week Rotation · Repeat cycle</div>
         <div class="mgr-rule-item"><i class="fa-solid fa-star"></i> Week 1 dinner: 2 Beef Patty + 1 Chicken · Week 2: 2 Chicken + 1 Beef</div>
       </div>
@@ -4395,7 +4395,7 @@ function renderManagerTab(facilityKey) {
         <div class="mgr-budget-card">
           <div class="mgr-budget-card-title"><i class="fa-solid fa-building-columns"></i> Total Weekly Food Budget</div>
           <div class="mgr-budget-total">$${fp.weeklyFoodBudget.toLocaleString()}</div>
-          <div class="mgr-budget-sub">${fp.population.toLocaleString()} population × 21 meals × $${fp.targetCostPerMeal.toFixed(2)} target = $${targetCostTotal} food cost</div>
+          <div class="mgr-budget-sub">${fp.population.toLocaleString()} pop × 21 meals · aim $${fp.targetCostPerMeal.toFixed(2)}/meal · max $${fp.alertCostPerMeal.toFixed(2)}/meal · ceiling = $${fp.weeklyFoodBudget.toLocaleString()}/wk</div>
         </div>
 
         <div class="mgr-budget-card">
@@ -4413,7 +4413,7 @@ function renderManagerTab(facilityKey) {
         <div class="mgr-rules-title"><i class="fa-solid fa-clipboard-check"></i> Manager Operating Rules</div>
         <ol class="mgr-rules-list">
           <li><strong>Order twice per month</strong> — split 28-day quantities into two equal orders, adjusted for actual usage.</li>
-          <li><strong>Never exceed $${fp.alertCostPerMeal.toFixed(2)}/meal</strong> — if a day's cost exceeds this, log it and report to the director by end of shift.</li>
+          <li><strong>Target $${fp.targetCostPerMeal.toFixed(2)}/meal, hard max $${fp.alertCostPerMeal.toFixed(2)}/meal</strong> — cheaper is always better. You have room to stretch 1–2 meals per night up to $${fp.alertCostPerMeal.toFixed(2)}, but the daily average must stay at or below $${fp.targetCostPerMeal.toFixed(2)}. If any meal exceeds $${fp.alertCostPerMeal.toFixed(2)}, log it and report to the director by end of shift.</li>
           <li><strong>Protein rotation is mandatory</strong> — Week 1: Beef Patty (Tue, Wed) + Chicken Fritter (Fri). Week 2: Chicken Fritter (Tue, Sat) + Beef Patty (Wed). Do not swap without prior approval.</li>
           <li><strong>No patties at lunch</strong> — lunch is sandwich protein only (bologna, salami, turkey, PB&amp;J). Reserve beef and chicken patties for dinner.</li>
           <li><strong>Verify market prices before each order</strong> — eggs, turkey, and milk are market-priced and can fluctuate. Get a quote from Forest Wood for milk every order cycle.</li>

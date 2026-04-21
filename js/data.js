@@ -1773,24 +1773,24 @@ const FACILITY_PARAMS = {
     label: "Birmingham Jail",
     population: 1150,
     meals: 21,          // 3 meals × 7 days
-    targetCostPerMeal: 0.62,
-    alertCostPerMeal:  0.75,
-    weeklyFoodBudget:  15000,   // pop × 21 × $0.62 ≈ $14,973
-    monthlyFoodBudget: 65000,
-    budgetByVendor: { shaver: 8500, bigDaddy: 2200, pfg: 3200, forestWood: 1100 },
-    budgetByCategory: { protein: 5400, vegetable: 2600, starch: 1800, bread: 2400, breakfast: 1500, dairy: 800, produce: 500, dry: 0 }
+    targetCostPerMeal: 0.62,   // aim here — cheaper is better
+    alertCostPerMeal:  0.75,   // hard max — do not exceed
+    weeklyFoodBudget:  18158,  // pop × 21 × $0.75 max ceiling
+    monthlyFoodBudget: 78750,
+    budgetByVendor: { shaver: 10200, bigDaddy: 2700, pfg: 3900, forestWood: 1358 },
+    budgetByCategory: { protein: 6500, vegetable: 3100, starch: 2200, bread: 2900, breakfast: 1800, dairy: 950, produce: 708, dry: 0 }
   },
   bessemer: {
     key: "bessemer",
     label: "Bessemer Jail",
     population: 350,
     meals: 21,
-    targetCostPerMeal: 0.62,
-    alertCostPerMeal:  0.75,
-    weeklyFoodBudget:  4600,    // pop × 21 × $0.62 ≈ $4,557
-    monthlyFoodBudget: 20000,
-    budgetByVendor: { shaver: 2600, bigDaddy: 680, pfg: 980, forestWood: 340 },
-    budgetByCategory: { protein: 1650, vegetable: 800, starch: 550, bread: 730, breakfast: 460, dairy: 240, produce: 170, dry: 0 }
+    targetCostPerMeal: 0.62,   // aim here — cheaper is better
+    alertCostPerMeal:  0.75,   // hard max — do not exceed
+    weeklyFoodBudget:  5513,   // pop × 21 × $0.75 max ceiling
+    monthlyFoodBudget: 23906,
+    budgetByVendor: { shaver: 3100, bigDaddy: 820, pfg: 1180, forestWood: 413 },
+    budgetByCategory: { protein: 1980, vegetable: 940, starch: 670, bread: 880, breakfast: 550, dairy: 290, produce: 203, dry: 0 }
   }
 };
 
