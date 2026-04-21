@@ -4272,37 +4272,67 @@ function renderManagerTab(facilityKey) {
     </div>`;
   }
 
-  // ── build order guide ─────────────────────────────────────
+  // ── build order guide (vendor comparison layout) ─────────
   function orderGuideSection(cat) {
-    const rows = cat.items.map(item => {
+    const rows = cat.items.flatMap(item => {
       const qty = scaledQty(item.cycle28);
-      const estCost = (item.casePrice && qty !== '—') ? '$' + (item.casePrice * qty).toLocaleString('en-US', {maximumFractionDigits:0}) : '—';
-      const portNote = item.portionCost ? `$${item.portionCost.toFixed(2)}/portion` : '—';
-      const prefBadge = item.preferred ? '<span class="mgr-badge-pref">✓ Preferred</span>' : '';
+      const estCost = (item.casePrice && qty !== '—')
+        ? '$' + (item.casePrice * qty).toLocaleString('en-US', {maximumFractionDigits:0})
+        : '—';
+      const prefBadge = item.preferred ? '<span class="mgr-badge-pref">✓ Pref</span>' : '';
       const vc = vendorColors[item.vendorKey] || '#64748b';
       const vl = vendorLabels[item.vendorKey] || item.vendor;
-      return `<tr>
-        <td><div class="mgr-item-name">${item.name}${prefBadge}</div><div class="mgr-item-use">${item.usedIn || ''}</div></td>
+      const hasAlts = item.alternates && item.alternates.length > 0;
+      const rs = hasAlts ? ` rowspan="${1 + item.alternates.length}"` : '';
+
+      const primaryRow = `<tr class="mgr-cmp-primary-row">
+        <td${rs} class="mgr-cmp-item-cell"><div class="mgr-item-name">${item.name}${prefBadge}</div><div class="mgr-item-use">${item.usedIn || ''}</div></td>
         <td><span class="mgr-vendor-tag" style="background:${vc}">${vl}</span></td>
         <td>${item.pack}</td>
-        <td>${item.portionSize}</td>
-        <td>${item.portionsPerCase ? item.portionsPerCase.toLocaleString() : '—'}</td>
-        <td>${item.casePrice ? '$' + item.casePrice.toFixed(2) : '—'}</td>
-        <td>${portNote}</td>
-        <td class="mgr-qty-cell">${qty}</td>
-        <td>${estCost}</td>
+        <td>${item.casePrice ? '<strong>$' + item.casePrice.toFixed(2) + '</strong>' : '—'}</td>
+        <td>${item.portionCost ? '$' + item.portionCost.toFixed(2) : '—'}</td>
+        <td><span class="mgr-cmp-primary-label">Primary</span></td>
+        <td${rs} class="mgr-qty-cell">${qty}</td>
+        <td${rs}>${estCost}</td>
       </tr>`;
+
+      const altRows = hasAlts ? item.alternates.map(alt => {
+        const avc = vendorColors[alt.vendorKey] || '#64748b';
+        const avl = vendorLabels[alt.vendorKey] || alt.vendor;
+        let savingsHtml = '';
+        if (item.casePrice && alt.casePrice) {
+          const diff = item.casePrice - alt.casePrice;
+          if (diff > 0) {
+            savingsHtml = `<span class="mgr-cmp-save-alt">Alt saves $${diff.toFixed(2)}/cs</span>`;
+          } else if (diff < 0) {
+            savingsHtml = `<span class="mgr-cmp-save-primary">Primary saves $${Math.abs(diff).toFixed(2)}/cs</span>`;
+          }
+        }
+        const noteText = alt.note || '';
+        const noteDisplay = savingsHtml
+          ? savingsHtml + (noteText ? `<div class="mgr-cmp-note-text">${noteText}</div>` : '')
+          : (noteText ? `<em class="mgr-cmp-note-text">${noteText}</em>` : '');
+        return `<tr class="mgr-cmp-alt-row">
+          <td><span class="mgr-vendor-tag" style="background:${avc}">${avl}</span></td>
+          <td>${alt.pack}</td>
+          <td>${alt.casePrice ? '$' + alt.casePrice.toFixed(2) : '<em class="mgr-cmp-quote">Quote</em>'}</td>
+          <td>${alt.portionCost ? '$' + alt.portionCost.toFixed(2) : '—'}</td>
+          <td>${noteDisplay}</td>
+        </tr>`;
+      }) : [];
+
+      return [primaryRow, ...altRows];
     }).join('');
+
     return `<div class="mgr-cat-block">
       <div class="mgr-cat-header" style="border-left-color:${cat.color}">
         <i class="fa-solid ${cat.icon}" style="color:${cat.color}"></i>
         <span>${cat.category}</span>
       </div>
       <div class="mgr-table-wrap">
-        <table class="mgr-order-table">
+        <table class="mgr-order-table mgr-cmp-table">
           <thead><tr>
-            <th>Item</th><th>Vendor</th><th>Pack</th><th>Portion Size</th>
-            <th>Portions/Case</th><th>Case Price</th><th>Cost/Portion</th>
+            <th>Item</th><th>Vendor</th><th>Pack</th><th>Case $</th><th>$/Portion</th><th>Note</th>
             <th>28-Day Cases<br><small>(${fp.population.toLocaleString()} pop)</small></th>
             <th>Est. 28-Day Cost</th>
           </tr></thead>
@@ -4566,6 +4596,24 @@ function renderManagerTabs() {
   renderManagerTab('bessemer');
 }
 
+/* ── Site-wide section accordions ────────────────────────── */
+function initSectionAccordions() {
+  document.querySelectorAll('.section-header').forEach(header => {
+    const section = header.closest('.section');
+    if (!section) return;
+    const btn = document.createElement('button');
+    btn.className = 'sec-collapse-btn no-print';
+    btn.setAttribute('aria-label', 'Toggle section');
+    btn.innerHTML = '<i class="fa-solid fa-chevron-up"></i>';
+    btn.addEventListener('click', () => {
+      section.classList.toggle('sec-collapsed');
+      const icon = btn.querySelector('i');
+      icon.style.transform = section.classList.contains('sec-collapsed') ? 'rotate(180deg)' : '';
+    });
+    header.appendChild(btn);
+  });
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -4586,6 +4634,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCafeAnalysis();
   renderPopulationAnalysis();
   renderCeoDashboard();
+  initSectionAccordions();
   initScrollSpy();
   initDropdowns();
   initCatalog();

@@ -627,6 +627,17 @@ body {
   flex-wrap: wrap;
 }
 
+/* Site-wide section collapse */
+.sec-collapse-btn {
+  background: none; border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 10px; cursor: pointer; color: var(--text-muted);
+  font-size: 12px; flex-shrink: 0; align-self: center;
+  transition: background .15s, color .15s;
+}
+.sec-collapse-btn:hover { background: var(--bg); color: var(--text); }
+.sec-collapse-btn i { transition: transform .2s; display: block; }
+.section.sec-collapsed > *:not(.section-header) { display: none !important; }
+
 .section-title-group {
   display: flex;
   align-items: center;
@@ -4630,6 +4641,30 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   font-size: 10px; font-weight: 700; color: white; white-space: nowrap;
 }
 .mgr-qty-cell { font-weight: 800; font-size: 13px; text-align: center; color: #1e40af; }
+
+/* Vendor comparison table */
+.mgr-cmp-table .mgr-cmp-item-cell { background: var(--surface); vertical-align: top; }
+.mgr-cmp-primary-row td { background: var(--surface) !important; }
+.mgr-cmp-alt-row td {
+  background: var(--bg) !important;
+  padding-top: 5px; padding-bottom: 5px;
+  border-top: 1px dashed var(--border);
+}
+.mgr-cmp-primary-label {
+  display: inline-block; padding: 1px 6px; border-radius: 3px;
+  background: #dbeafe; color: #1d4ed8; font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.mgr-cmp-quote { font-size: 10px; color: var(--text-muted); font-style: italic; }
+.mgr-cmp-note-text { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.mgr-cmp-save-alt {
+  display: inline-block; padding: 1px 6px; border-radius: 3px;
+  background: #dcfce7; color: #15803d; font-size: 9px; font-weight: 700;
+}
+.mgr-cmp-save-primary {
+  display: inline-block; padding: 1px 6px; border-radius: 3px;
+  background: #dbeafe; color: #1d4ed8; font-size: 9px; font-weight: 700;
+}
 
 /* Budget page */
 .mgr-budget-grid {
