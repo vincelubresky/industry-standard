@@ -1060,7 +1060,7 @@ const MENU_ROTATION = [
       { day: "Monday",
         breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",        sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
         lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Peas & Carrots","Cornbread","Cake"],                 cost: "$0.44", cal: 790 },
-        dinner:    { main: "Pinto Beans & Rice",                protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.36", cal: 940 } },
+        dinner:    { main: "Pinto Beans & Rice w/ Ground Beef",  protein: "Beef",            sides: ["Cornbread","Cake"],                                  cost: "$0.64", cal: 1060 } },
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
         lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Green Beans","Cornbread","Cake"],                    cost: "$0.42", cal: 790 },
@@ -1072,7 +1072,7 @@ const MENU_ROTATION = [
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",             protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.45", cal: 600 },
         lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Corn","Cornbread","Cake"],                           cost: "$0.44", cal: 810 },
-        dinner:    { main: "Northern Beans & Rice",             protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.36", cal: 940 } },
+        dinner:    { main: "Northern Beans & Rice w/ Ground Beef", protein: "Beef",          sides: ["Cornbread","Cake"],                                  cost: "$0.64", cal: 1060 } },
       { day: "Friday",
         breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
         lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Corn","Cornbread","Cake"],                          cost: "$0.46", cal: 810 },
@@ -1094,7 +1094,7 @@ const MENU_ROTATION = [
       { day: "Monday",
         breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
         lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Northern Beans","Cornbread","Cake"],                 cost: "$0.44", cal: 830 },
-        dinner:    { main: "Red Beans & Rice",                  protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.38", cal: 940 } },
+        dinner:    { main: "Red Beans & Rice w/ Chicken",        protein: "Chicken",         sides: ["Cornbread","Cake"],                                  cost: "$0.68", cal: 1030 } },
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
         lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Mixed Veg","Cornbread","Cake"],                      cost: "$0.44", cal: 800 },
@@ -1771,7 +1771,8 @@ const FACILITY_PARAMS = {
   birmingham: {
     key: "birmingham",
     label: "Birmingham Jail",
-    population: 1150,
+    population: 1125,   // avg; fluctuates up to 1,150
+    populationNote: "avg · up to 1,150",
     meals: 21,          // 3 meals × 7 days
     targetCostPerMeal: 0.62,   // aim here — cheaper is better
     alertCostPerMeal:  0.75,   // hard max — do not exceed

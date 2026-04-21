@@ -4197,6 +4197,12 @@ function printDoc(wrapId) {
 }
 
 /* ── Manager Tab ─────────────────────────────────────────── */
+function toggleMgrSection(id) {
+  const sec = document.getElementById(id);
+  if (!sec) return;
+  sec.classList.toggle('mgr-acc-open');
+}
+
 function renderManagerTab(facilityKey) {
   const fp = FACILITY_PARAMS[facilityKey];
   if (!fp) return;
@@ -4321,218 +4327,210 @@ function renderManagerTab(facilityKey) {
   el.innerHTML = `
   <div class="mgr-controls no-print">
     <button class="mgr-print-btn" onclick="printDoc('${facilityKey}-wrap')"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
-    <span class="mgr-hint">Prints in <strong>landscape</strong> — menu, order guide, and budget on separate pages</span>
+    <span class="mgr-hint">Prints in <strong>landscape</strong> — all sections included</span>
   </div>
 
   <div class="mgr-doc">
 
-    <!-- PAGE 1: Header + Menu Rotation -->
-    <div class="mgr-page">
-      <div class="mgr-header">
-        <div class="mgr-header-left">
-          <div class="mgr-facility-name">${fp.label.toUpperCase()}</div>
-          <div class="mgr-facility-sub">Industry Standard Food Service — Manager Operations Guide</div>
-          <div class="mgr-facility-date">Effective: April 2026 · Revised each rotation</div>
+    <!-- Overview bar — always visible -->
+    <div class="mgr-overview-bar">
+      <div class="mgr-overview-left">
+        <div class="mgr-facility-name">${fp.label.toUpperCase()}</div>
+        <div class="mgr-facility-sub">Industry Standard Food Service — Manager Operations Guide</div>
+        <div class="mgr-facility-date">Effective: April 2026 · Revised each rotation</div>
+      </div>
+      <div class="mgr-header-right">
+        <div class="mgr-kpi">
+          <span class="mgr-kpi-val">${fp.population.toLocaleString()}</span>
+          <span class="mgr-kpi-lbl">Population${fp.populationNote ? `<br><small class="mgr-kpi-note">${fp.populationNote}</small>` : ''}</span>
         </div>
-        <div class="mgr-header-right">
-          <div class="mgr-kpi">
-            <span class="mgr-kpi-val">${fp.population.toLocaleString()}</span>
-            <span class="mgr-kpi-lbl">Population</span>
-          </div>
-          <div class="mgr-kpi">
-            <span class="mgr-kpi-val">$${fp.weeklyFoodBudget.toLocaleString()}</span>
-            <span class="mgr-kpi-lbl">Weekly Food Budget</span>
-          </div>
-          <div class="mgr-kpi">
-            <span class="mgr-kpi-val">$${fp.targetCostPerMeal.toFixed(2)}–$${fp.alertCostPerMeal.toFixed(2)}</span>
-            <span class="mgr-kpi-lbl">Target / Max per Meal</span>
-          </div>
-          <div class="mgr-kpi">
-            <span class="mgr-kpi-val">${weeklyMeals.toLocaleString()}</span>
-            <span class="mgr-kpi-lbl">Meals / Week</span>
-          </div>
+        <div class="mgr-kpi">
+          <span class="mgr-kpi-val">$${fp.weeklyFoodBudget.toLocaleString()}</span>
+          <span class="mgr-kpi-lbl">Weekly Budget</span>
         </div>
-      </div>
-
-      <div class="mgr-rule-strip">
-        <div class="mgr-rule-item"><i class="fa-solid fa-circle-check"></i> Aim for $${fp.targetCostPerMeal.toFixed(2)}/meal — cheaper is better</div>
-        <div class="mgr-rule-item mgr-rule-warn"><i class="fa-solid fa-triangle-exclamation"></i> Hard max $${fp.alertCostPerMeal.toFixed(2)}/meal — never exceed</div>
-        <div class="mgr-rule-item"><i class="fa-solid fa-calendar-week"></i> 2-Week Rotation · Repeat cycle</div>
-        <div class="mgr-rule-item"><i class="fa-solid fa-star"></i> Week 1 dinner: 2 Beef Patty + 1 Chicken · Week 2: 2 Chicken + 1 Beef</div>
-      </div>
-
-      <div class="mgr-section-title"><i class="fa-solid fa-calendar-days"></i> Week 1 — Population Menu</div>
-      ${menuWeekTable(MENU_ROTATION[0])}
-
-      <div class="mgr-section-title" style="margin-top:28px"><i class="fa-solid fa-calendar-days"></i> Week 2 — Population Menu</div>
-      ${menuWeekTable(MENU_ROTATION[1])}
-    </div>
-
-    <!-- PAGE 2: Order Guide -->
-    <div class="mgr-page mgr-page-order">
-      <div class="mgr-page-heading">
-        <i class="fa-solid fa-boxes-stacked"></i>
-        Master Order Guide — ${fp.label}
-        <span class="mgr-page-heading-sub">28-day case quantities scaled to ${fp.population.toLocaleString()} population · Order every 2 weeks</span>
-      </div>
-      <div class="mgr-order-note">
-        <strong>How to use:</strong> The "28-Day Cases" column is your order quantity for a full 28-day cycle.
-        For a 2-week order, divide by 2. All prices are current as of April 2026 — verify market items (eggs, turkey, milk) before each order.
-        <strong>Preferred vendor items</strong> are marked ✓. Do not substitute preferred vendors without manager approval.
-      </div>
-      ${ORDER_GUIDE.map(orderGuideSection).join('')}
-    </div>
-
-    <!-- PAGE 3: Budget Parameters -->
-    <div class="mgr-page">
-      <div class="mgr-page-heading">
-        <i class="fa-solid fa-scale-balanced"></i>
-        Weekly Budget Parameters — ${fp.label}
-        <span class="mgr-page-heading-sub">Stay within these targets every week · Flag overages to the director before next order</span>
-      </div>
-
-      <div class="mgr-budget-grid">
-        <div class="mgr-budget-card">
-          <div class="mgr-budget-card-title"><i class="fa-solid fa-building-columns"></i> Total Weekly Food Budget</div>
-          <div class="mgr-budget-total">$${fp.weeklyFoodBudget.toLocaleString()}</div>
-          <div class="mgr-budget-sub">${fp.population.toLocaleString()} pop × 21 meals · aim $${fp.targetCostPerMeal.toFixed(2)}/meal · max $${fp.alertCostPerMeal.toFixed(2)}/meal · ceiling = $${fp.weeklyFoodBudget.toLocaleString()}/wk</div>
+        <div class="mgr-kpi">
+          <span class="mgr-kpi-val">$${fp.targetCostPerMeal.toFixed(2)}–$${fp.alertCostPerMeal.toFixed(2)}</span>
+          <span class="mgr-kpi-lbl">Target / Max Meal</span>
         </div>
-
-        <div class="mgr-budget-card">
-          <div class="mgr-budget-card-title"><i class="fa-solid fa-truck"></i> Budget by Vendor</div>
-          ${vendorRows}
-        </div>
-
-        <div class="mgr-budget-card">
-          <div class="mgr-budget-card-title"><i class="fa-solid fa-tags"></i> Budget by Category</div>
-          ${catRows}
-        </div>
-      </div>
-
-      <div class="mgr-rules-block">
-        <div class="mgr-rules-title"><i class="fa-solid fa-clipboard-check"></i> Manager Operating Rules</div>
-        <ol class="mgr-rules-list">
-          <li>
-            <strong>Vendor ordering schedule:</strong>
-            <ul class="mgr-rules-sub">
-              <li><strong>Shaver ISP — every 2 weeks.</strong> Use your 28-day quantities ÷ 2 per order. Review actual usage before placing and adjust for any heavier or lighter weeks. This is your primary dry/frozen goods vendor.</li>
-              <li><strong>PFG — every week.</strong> Weekly staples: eggs, turkey, rice, flour, pinto beans. Confirm market prices on eggs and turkey before each order — these fluctuate. Do not skip a PFG order without director approval.</li>
-              <li><strong>Big Daddy Foods — once a month or once every two months.</strong> Primarily beef patties and bulk proteins. Check your freezer inventory before ordering — Big Daddy cases are large and need adequate storage. Coordinate timing with Shaver orders to avoid overstocking the freezer.</li>
-              <li><strong>Forest Wood — quote every order.</strong> Milk and fresh produce. Get a written or verbal price confirmation before each order cycle.</li>
-            </ul>
-          </li>
-          <li><strong>Target $${fp.targetCostPerMeal.toFixed(2)}/meal, hard max $${fp.alertCostPerMeal.toFixed(2)}/meal</strong> — cheaper is always better. You have room to stretch 1–2 meals per night up to $${fp.alertCostPerMeal.toFixed(2)}, but the daily average must stay at or below $${fp.targetCostPerMeal.toFixed(2)}. If any meal exceeds $${fp.alertCostPerMeal.toFixed(2)}, log it and report to the director by end of shift.</li>
-          <li><strong>Protein rotation is mandatory</strong> — Week 1: Beef Patty (Tue, Sun) + Chicken Fritter (Fri). Week 2: Chicken Fritter (Tue, Sat) + Beef Patty (Wed). Do not swap without prior approval.</li>
-          <li><strong>No patties at lunch</strong> — lunch is PB&amp;J, Bologna, Salami, or Turkey with 2 slices bread only. Reserve beef and chicken patties for dinner.</li>
-          <li><strong>Preferred vendors are locked</strong> — switch only if a vendor is out of stock. Document any substitution on the food log and notify the director same day.</li>
-          <li><strong>Cornbread at every lunch and dinner</strong> — it is a budget filler and calorie anchor. Never remove it from the menu.</li>
-          <li><strong>Complete the Daily Food Log every day</strong> — log every item pulled from storage, quantities used, leftovers, waste, and temperatures. Turn in completed weekly logs to the director every Friday. See Page 4 of this document.</li>
-        </ol>
-      </div>
-
-      <div class="mgr-contact-block">
-        <div class="mgr-contact-title">Vendor Quick Reference</div>
-        <div class="mgr-contact-grid">
-          <div class="mgr-contact-item"><strong>Shaver ISP</strong><br>Every 2 weeks · Primary dry &amp; frozen<br>Budget: $${bv.shaver.toLocaleString()}/wk avg</div>
-          <div class="mgr-contact-item"><strong>PFG</strong><br>Every week · Eggs, turkey, rice, flour<br>Budget: $${bv.pfg.toLocaleString()}/wk</div>
-          <div class="mgr-contact-item"><strong>Big Daddy Foods</strong><br>Monthly or every 2 months · Patties<br>Budget: $${bv.bigDaddy.toLocaleString()}/wk avg</div>
-          <div class="mgr-contact-item"><strong>Forest Wood</strong><br>Quote every order · Milk &amp; produce<br>Budget: $${bv.forestWood.toLocaleString()}/wk avg</div>
+        <div class="mgr-kpi">
+          <span class="mgr-kpi-val">${weeklyMeals.toLocaleString()}</span>
+          <span class="mgr-kpi-lbl">Meals / Week</span>
         </div>
       </div>
     </div>
-
-    <!-- PAGE 4: Daily Food Log -->
-    <div class="mgr-page">
-      <div class="mgr-page-heading">
-        <i class="fa-solid fa-book-open"></i>
-        Daily Food Log — ${fp.label}
-        <span class="mgr-page-heading-sub">Complete every day · Every item pulled from storage must be logged · Turn in to director every Friday</span>
-      </div>
-
-      <div class="mgr-log-meta">
-        <div class="mgr-log-meta-field">Week: <span class="mgr-log-line"></span></div>
-        <div class="mgr-log-meta-field">Dates: <span class="mgr-log-line"></span></div>
-        <div class="mgr-log-meta-field">Manager: <span class="mgr-log-line"></span></div>
-        <div class="mgr-log-meta-field">Population Count: <span class="mgr-log-line"></span></div>
-      </div>
-
-      ${MENU_ROTATION.map(weekData => `
-      <div class="mgr-log-week-label"><i class="fa-solid fa-calendar-week"></i> ${weekData.label} Log</div>
-      <div class="mgr-log-scroll">
-        <table class="mgr-log-table">
-          <thead>
-            <tr>
-              <th>Day</th>
-              <th>Meal</th>
-              <th>Entrée / Main Item</th>
-              <th>Sides Served</th>
-              <th>Est.<br>Cost</th>
-              <th>Pop.<br>Count</th>
-              <th>Portions<br>Pulled</th>
-              <th>Portions<br>Served</th>
-              <th>Leftover</th>
-              <th>Waste</th>
-              <th>Temp<br>°F</th>
-              <th>Actual<br>Cost $</th>
-              <th>Init.</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${weekData.days.map(day => {
-              const mealRows = [
-                { code: 'B', data: day.breakfast },
-                { code: 'L', data: day.lunch },
-                { code: 'D', data: day.dinner }
-              ].map((m, i) => `<tr class="${m.code === 'D' ? 'mgr-log-dinner' : ''}${i === 0 ? ' mgr-log-day-first' : ''}">
-                ${i === 0 ? `<td class="mgr-log-day-cell" rowspan="3">${day.day.slice(0,3).toUpperCase()}</td>` : ''}
-                <td class="mgr-log-meal-code mgr-log-meal-${m.code.toLowerCase()}">${m.code}</td>
-                <td class="mgr-log-item-name">${m.data.main}</td>
-                <td class="mgr-log-sides-cell">${(m.data.sides||[]).join(' · ')}</td>
-                <td class="mgr-log-est-cost">${m.data.cost}</td>
-                <td class="mgr-log-pop">${fp.population.toLocaleString()}</td>
-                <td class="mgr-log-write"></td>
-                <td class="mgr-log-write"></td>
-                <td class="mgr-log-write"></td>
-                <td class="mgr-log-write"></td>
-                <td class="mgr-log-write">${m.code === 'B' || m.code === 'D' ? '___°' : ''}</td>
-                <td class="mgr-log-write"></td>
-                <td class="mgr-log-write mgr-log-init"></td>
-              </tr>`).join('');
-              return mealRows;
-            }).join('')}
-          </tbody>
-          <tfoot>
-            <tr class="mgr-log-total-row">
-              <td colspan="4"><strong>WEEKLY TOTALS / NOTES</strong></td>
-              <td></td><td></td>
-              <td class="mgr-log-write"></td>
-              <td class="mgr-log-write"></td>
-              <td class="mgr-log-write"></td>
-              <td class="mgr-log-write"></td>
-              <td></td>
-              <td class="mgr-log-write"></td>
-              <td></td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <div class="mgr-log-notes-block">
-        <div class="mgr-log-notes-label">Weekly Notes / Incidents / Substitutions:</div>
-        <div class="mgr-log-notes-lines">
-          <div class="mgr-log-notes-line"></div>
-          <div class="mgr-log-notes-line"></div>
-          <div class="mgr-log-notes-line"></div>
-        </div>
-      </div>
-      `).join('')}
-
-      <div class="mgr-log-footer">
-        <div class="mgr-log-sig"><strong>Manager Signature:</strong> <span class="mgr-log-line-long"></span> &nbsp;&nbsp; <strong>Date:</strong> <span class="mgr-log-line-short"></span></div>
-        <div class="mgr-log-sig"><strong>Director Review:</strong> <span class="mgr-log-line-long"></span> &nbsp;&nbsp; <strong>Date:</strong> <span class="mgr-log-line-short"></span></div>
-      </div>
+    <div class="mgr-rule-strip">
+      <div class="mgr-rule-item"><i class="fa-solid fa-circle-check"></i> Aim $${fp.targetCostPerMeal.toFixed(2)}/meal — cheaper is better</div>
+      <div class="mgr-rule-item mgr-rule-warn"><i class="fa-solid fa-triangle-exclamation"></i> Hard max $${fp.alertCostPerMeal.toFixed(2)}/meal — never exceed</div>
+      <div class="mgr-rule-item"><i class="fa-solid fa-calendar-week"></i> 2-Week Rotation · Repeat cycle</div>
+      <div class="mgr-rule-item"><i class="fa-solid fa-star"></i> Wk 1: 2 Beef + 1 Chicken · Wk 2: 2 Chicken + 1 Beef</div>
     </div>
 
-  </div>`;
+    <!-- Accordion sections -->
+    <div class="mgr-accordion">
+
+      <!-- Section 1: Menu Rotation (starts open) -->
+      <div class="mgr-acc-section mgr-acc-open" id="${facilityKey}-acc-menu">
+        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-menu')">
+          <span><i class="fa-solid fa-calendar-days"></i>&nbsp; 2-Week Menu Rotation</span>
+          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+        </button>
+        <div class="mgr-acc-body">
+          <div class="mgr-section-title"><i class="fa-solid fa-calendar-days"></i> Week 1 — Population Menu</div>
+          ${menuWeekTable(MENU_ROTATION[0])}
+          <div class="mgr-section-title" style="margin-top:24px"><i class="fa-solid fa-calendar-days"></i> Week 2 — Population Menu</div>
+          ${menuWeekTable(MENU_ROTATION[1])}
+        </div>
+      </div>
+
+      <!-- Section 2: Order Guide -->
+      <div class="mgr-acc-section" id="${facilityKey}-acc-order">
+        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-order')">
+          <span><i class="fa-solid fa-boxes-stacked"></i>&nbsp; Master Order Guide</span>
+          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+        </button>
+        <div class="mgr-acc-body">
+          <div class="mgr-order-note">
+            <strong>How to use:</strong> "28-Day Cases" is your order quantity for a full 28-day cycle. For a 2-week order, divide by 2.
+            Verify market prices (eggs, turkey, milk) before each order.
+            <strong>Preferred vendor items</strong> are marked ✓ — do not substitute without director approval.
+          </div>
+          ${ORDER_GUIDE.map(orderGuideSection).join('')}
+        </div>
+      </div>
+
+      <!-- Section 3: Budget & Operating Rules -->
+      <div class="mgr-acc-section" id="${facilityKey}-acc-budget">
+        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-budget')">
+          <span><i class="fa-solid fa-scale-balanced"></i>&nbsp; Budget Parameters &amp; Operating Rules</span>
+          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+        </button>
+        <div class="mgr-acc-body">
+          <div class="mgr-budget-grid">
+            <div class="mgr-budget-card">
+              <div class="mgr-budget-card-title"><i class="fa-solid fa-building-columns"></i> Total Weekly Food Budget</div>
+              <div class="mgr-budget-total">$${fp.weeklyFoodBudget.toLocaleString()}</div>
+              <div class="mgr-budget-sub">${fp.population.toLocaleString()} pop × 21 meals · aim $${fp.targetCostPerMeal.toFixed(2)}/meal · max $${fp.alertCostPerMeal.toFixed(2)}/meal · ceiling = $${fp.weeklyFoodBudget.toLocaleString()}/wk</div>
+            </div>
+            <div class="mgr-budget-card">
+              <div class="mgr-budget-card-title"><i class="fa-solid fa-truck"></i> Budget by Vendor</div>
+              ${vendorRows}
+            </div>
+            <div class="mgr-budget-card">
+              <div class="mgr-budget-card-title"><i class="fa-solid fa-tags"></i> Budget by Category</div>
+              ${catRows}
+            </div>
+          </div>
+          <div class="mgr-rules-block">
+            <div class="mgr-rules-title"><i class="fa-solid fa-clipboard-check"></i> Manager Operating Rules</div>
+            <ol class="mgr-rules-list">
+              <li>
+                <strong>Vendor ordering schedule:</strong>
+                <ul class="mgr-rules-sub">
+                  <li><strong>Shaver ISP — every 2 weeks.</strong> Use 28-day quantities ÷ 2 per order. Review actual usage before placing. Primary dry/frozen goods vendor.</li>
+                  <li><strong>PFG — every week.</strong> Staples: eggs, turkey, rice, flour, pinto beans. Confirm market prices on eggs and turkey each order — these fluctuate. Do not skip without director approval.</li>
+                  <li><strong>Big Daddy Foods — once a month or every two months.</strong> Beef patties and bulk proteins. Check freezer inventory first — cases are large. Coordinate with Shaver timing.</li>
+                  <li><strong>Forest Wood — quote every order.</strong> Milk and fresh produce. Get written or verbal price confirmation before each order cycle.</li>
+                </ul>
+              </li>
+              <li><strong>Target $${fp.targetCostPerMeal.toFixed(2)}/meal, hard max $${fp.alertCostPerMeal.toFixed(2)}/meal</strong> — cheaper is always better. Stretch 1–2 meals/night up to $${fp.alertCostPerMeal.toFixed(2)}, but the daily average must stay ≤ $${fp.targetCostPerMeal.toFixed(2)}. Exceed the max: log it and report by end of shift.</li>
+              <li><strong>Protein at every meal</strong> — every lunch and dinner must contain a protein. See menu rotation for approved combinations.</li>
+              <li><strong>Protein rotation is mandatory</strong> — Week 1: Beef Patty (Tue, Sun) + Chicken Fritter (Fri). Week 2: Chicken Fritter (Tue, Sat) + Beef Patty (Wed). No swaps without approval.</li>
+              <li><strong>No patties at lunch</strong> — lunch is PB&amp;J, Bologna, Salami, or Turkey with 2 slices bread only.</li>
+              <li><strong>Preferred vendors are locked</strong> — document any substitution on food log and notify director same day.</li>
+              <li><strong>Cornbread at every lunch and dinner</strong> — budget filler and calorie anchor. Never remove from menu.</li>
+              <li><strong>Complete the Daily Food Log every day</strong> — log every item pulled from storage. Turn in to director every Friday.</li>
+            </ol>
+          </div>
+          <div class="mgr-contact-block">
+            <div class="mgr-contact-title">Vendor Quick Reference</div>
+            <div class="mgr-contact-grid">
+              <div class="mgr-contact-item"><strong>Shaver ISP</strong><br>Every 2 weeks · Primary dry &amp; frozen<br>Budget: $${bv.shaver.toLocaleString()}/wk avg</div>
+              <div class="mgr-contact-item"><strong>PFG</strong><br>Every week · Eggs, turkey, rice, flour<br>Budget: $${bv.pfg.toLocaleString()}/wk</div>
+              <div class="mgr-contact-item"><strong>Big Daddy Foods</strong><br>Monthly or every 2 months · Patties<br>Budget: $${bv.bigDaddy.toLocaleString()}/wk avg</div>
+              <div class="mgr-contact-item"><strong>Forest Wood</strong><br>Quote every order · Milk &amp; produce<br>Budget: $${bv.forestWood.toLocaleString()}/wk avg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Daily Food Log -->
+      <div class="mgr-acc-section" id="${facilityKey}-acc-log">
+        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-log')">
+          <span><i class="fa-solid fa-book-open"></i>&nbsp; Daily Food Log</span>
+          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+        </button>
+        <div class="mgr-acc-body">
+          <div class="mgr-log-meta">
+            <div class="mgr-log-meta-field">Week: <span class="mgr-log-line"></span></div>
+            <div class="mgr-log-meta-field">Dates: <span class="mgr-log-line"></span></div>
+            <div class="mgr-log-meta-field">Manager: <span class="mgr-log-line"></span></div>
+            <div class="mgr-log-meta-field">Population Count: <span class="mgr-log-line"></span></div>
+          </div>
+          ${MENU_ROTATION.map(weekData => `
+          <div class="mgr-log-week-label"><i class="fa-solid fa-calendar-week"></i> ${weekData.label} Log</div>
+          <div class="mgr-log-scroll">
+            <table class="mgr-log-table">
+              <thead>
+                <tr>
+                  <th>Day</th><th>Meal</th><th>Entrée / Main Item</th><th>Sides Served</th>
+                  <th>Est.<br>Cost</th><th>Pop.<br>Count</th><th>Portions<br>Pulled</th>
+                  <th>Portions<br>Served</th><th>Leftover</th><th>Waste</th>
+                  <th>Temp<br>°F</th><th>Actual<br>Cost $</th><th>Init.</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${weekData.days.map(day => {
+                  const mealRows = [
+                    { code: 'B', data: day.breakfast },
+                    { code: 'L', data: day.lunch },
+                    { code: 'D', data: day.dinner }
+                  ].map((m, i) => `<tr class="${m.code === 'D' ? 'mgr-log-dinner' : ''}${i === 0 ? ' mgr-log-day-first' : ''}">
+                    ${i === 0 ? `<td class="mgr-log-day-cell" rowspan="3">${day.day.slice(0,3).toUpperCase()}</td>` : ''}
+                    <td class="mgr-log-meal-code mgr-log-meal-${m.code.toLowerCase()}">${m.code}</td>
+                    <td class="mgr-log-item-name">${m.data.main}</td>
+                    <td class="mgr-log-sides-cell">${(m.data.sides||[]).join(' · ')}</td>
+                    <td class="mgr-log-est-cost">${m.data.cost}</td>
+                    <td class="mgr-log-pop">${fp.population.toLocaleString()}</td>
+                    <td class="mgr-log-write"></td>
+                    <td class="mgr-log-write"></td>
+                    <td class="mgr-log-write"></td>
+                    <td class="mgr-log-write"></td>
+                    <td class="mgr-log-write">${m.code === 'B' || m.code === 'D' ? '___°' : ''}</td>
+                    <td class="mgr-log-write"></td>
+                    <td class="mgr-log-write mgr-log-init"></td>
+                  </tr>`).join('');
+                  return mealRows;
+                }).join('')}
+              </tbody>
+              <tfoot>
+                <tr class="mgr-log-total-row">
+                  <td colspan="4"><strong>WEEKLY TOTALS / NOTES</strong></td>
+                  <td></td><td></td>
+                  <td class="mgr-log-write"></td><td class="mgr-log-write"></td>
+                  <td class="mgr-log-write"></td><td class="mgr-log-write"></td>
+                  <td></td><td class="mgr-log-write"></td><td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="mgr-log-notes-block">
+            <div class="mgr-log-notes-label">Weekly Notes / Incidents / Substitutions:</div>
+            <div class="mgr-log-notes-lines">
+              <div class="mgr-log-notes-line"></div>
+              <div class="mgr-log-notes-line"></div>
+              <div class="mgr-log-notes-line"></div>
+            </div>
+          </div>
+          `).join('')}
+          <div class="mgr-log-footer">
+            <div class="mgr-log-sig"><strong>Manager Signature:</strong> <span class="mgr-log-line-long"></span> &nbsp;&nbsp; <strong>Date:</strong> <span class="mgr-log-line-short"></span></div>
+            <div class="mgr-log-sig"><strong>Director Review:</strong> <span class="mgr-log-line-long"></span> &nbsp;&nbsp; <strong>Date:</strong> <span class="mgr-log-line-short"></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- .mgr-accordion -->
+  </div><!-- .mgr-doc -->`;
 }
 
 function renderManagerTabs() {
