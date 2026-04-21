@@ -1775,10 +1775,10 @@ const FACILITY_PARAMS = {
     meals: 21,          // 3 meals × 7 days
     targetCostPerMeal: 0.62,   // aim here — cheaper is better
     alertCostPerMeal:  0.75,   // hard max — do not exceed
-    weeklyFoodBudget:  18158,  // pop × 21 × $0.75 max ceiling
-    monthlyFoodBudget: 78750,
-    budgetByVendor: { shaver: 10200, bigDaddy: 2700, pfg: 3900, forestWood: 1358 },
-    budgetByCategory: { protein: 6500, vegetable: 3100, starch: 2200, bread: 2900, breakfast: 1800, dairy: 950, produce: 708, dry: 0 }
+    weeklyFoodBudget:  17000,
+    monthlyFoodBudget: 73500,
+    budgetByVendor: { shaver: 9550, bigDaddy: 2530, pfg: 3650, forestWood: 1270 },
+    budgetByCategory: { protein: 6100, vegetable: 2900, starch: 2050, bread: 2700, breakfast: 1700, dairy: 890, produce: 660, dry: 0 }
   },
   bessemer: {
     key: "bessemer",
@@ -1787,10 +1787,10 @@ const FACILITY_PARAMS = {
     meals: 21,
     targetCostPerMeal: 0.62,   // aim here — cheaper is better
     alertCostPerMeal:  0.75,   // hard max — do not exceed
-    weeklyFoodBudget:  5513,   // pop × 21 × $0.75 max ceiling
-    monthlyFoodBudget: 23906,
-    budgetByVendor: { shaver: 3100, bigDaddy: 820, pfg: 1180, forestWood: 413 },
-    budgetByCategory: { protein: 1980, vegetable: 940, starch: 670, bread: 880, breakfast: 550, dairy: 290, produce: 203, dry: 0 }
+    weeklyFoodBudget:  5000,
+    monthlyFoodBudget: 21500,
+    budgetByVendor: { shaver: 2800, bigDaddy: 750, pfg: 1070, forestWood: 380 },
+    budgetByCategory: { protein: 1800, vegetable: 850, starch: 610, bread: 800, breakfast: 500, dairy: 260, produce: 180, dry: 0 }
   }
 };
 
