@@ -2598,10 +2598,10 @@ function renderBrief() {
   el.innerHTML = `
     <!-- Print Controls -->
     <div class="brief-controls no-print">
-      <button class="brief-print-btn" onclick="window.print()">
+      <button class="brief-print-btn" onclick="printDoc('brief-wrap')">
         <i class="fa-solid fa-print"></i> Print / Save as PDF
       </button>
-      <span class="brief-hint">In your browser's print dialog, select <strong>Save as PDF</strong> · Landscape or Portrait · Letter size</span>
+      <span class="brief-hint">In your browser's print dialog, select <strong>Save as PDF</strong> · Portrait · Letter size</span>
     </div>
 
     <div class="brief-doc">
@@ -4172,6 +4172,31 @@ function renderPopulationAnalysis() {
 }
 
 /* ── Manager Tab ─────────────────────────────────────────── */
+/* ── Print helper ─────────────────────────────────────────── */
+function printDoc(wrapId) {
+  const isManager = wrapId === 'birmingham-wrap' || wrapId === 'bessemer-wrap';
+
+  // Inject landscape @page for manager tabs (can't be scoped in CSS)
+  let pageStyle = null;
+  if (isManager) {
+    pageStyle = document.createElement('style');
+    pageStyle.id = '_print_page_style';
+    pageStyle.textContent = '@page { size: Letter landscape; margin: 0.45in; }';
+    document.head.appendChild(pageStyle);
+  }
+
+  document.body.setAttribute('data-printing-wrap', wrapId);
+
+  const cleanup = () => {
+    document.body.removeAttribute('data-printing-wrap');
+    if (pageStyle) pageStyle.remove();
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+  window.print();
+}
+
+/* ── Manager Tab ─────────────────────────────────────────── */
 function renderManagerTab(facilityKey) {
   const fp = FACILITY_PARAMS[facilityKey];
   if (!fp) return;
@@ -4295,8 +4320,8 @@ function renderManagerTab(facilityKey) {
 
   el.innerHTML = `
   <div class="mgr-controls no-print">
-    <button class="mgr-print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
-    <span class="mgr-hint">Use your browser's Print → Save as PDF for a clean manager copy</span>
+    <button class="mgr-print-btn" onclick="printDoc('${facilityKey}-wrap')"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+    <span class="mgr-hint">Prints in <strong>landscape</strong> — menu, order guide, and budget on separate pages</span>
   </div>
 
   <div class="mgr-doc">

@@ -4704,23 +4704,92 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   .mgr-contact-grid { grid-template-columns: 1fr; }
 }
 
-/* ── Print styles ── */
+/* ══════════════════════════════════════════════════════════
+   PRINT STYLES — Brief & Manager Tabs
+   Triggered via printDoc(wrapId) which sets data-printing-wrap
+   on body. Each section only prints when its wrap is targeted.
+   ══════════════════════════════════════════════════════════ */
 @media print {
-  .sidebar, .tab-bar, #tabBar,
-  .brief-controls, .mgr-controls,
-  .content > *:not(#brief-wrap):not(#birmingham-wrap):not(#bessemer-wrap) { display: none !important; }
-  #brief-wrap, #birmingham-wrap, #bessemer-wrap { display: block !important; }
-  .brief-doc, .mgr-doc { max-width: 100%; }
-  .brief-page, .mgr-page {
+  /* Force all colors to print */
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* ── Hide all chrome ── */
+  .sidebar, .tab-bar, #tabBar, .brief-controls, .mgr-controls,
+  .topbar, .hamburger, .topbar-actions,
+  body > *:not(#main) { display: none !important; }
+
+  /* ── Hide all content sections by default ── */
+  #main, .content > * { display: none !important; }
+
+  /* ── Brief: show only brief-wrap ── */
+  body[data-printing-wrap="brief-wrap"] #main  { display: block !important; }
+  body[data-printing-wrap="brief-wrap"] #brief-wrap { display: block !important; }
+
+  /* ── Birmingham: show only birmingham-wrap ── */
+  body[data-printing-wrap="birmingham-wrap"] #main { display: block !important; }
+  body[data-printing-wrap="birmingham-wrap"] #birmingham-wrap { display: block !important; }
+
+  /* ── Bessemer: show only bessemer-wrap ── */
+  body[data-printing-wrap="bessemer-wrap"] #main { display: block !important; }
+  body[data-printing-wrap="bessemer-wrap"] #bessemer-wrap { display: block !important; }
+
+  /* ── Brief page layout (portrait) ── */
+  body[data-printing-wrap="brief-wrap"] { margin: 0 !important; background: white !important; }
+  .brief-doc      { max-width: 100%; padding: 0; margin: 0; }
+  .brief-page {
     border: none !important; box-shadow: none !important;
-    border-radius: 0 !important; padding: 16px 0 !important;
+    border-radius: 0 !important; padding: 20px 0 !important;
     margin: 0 !important; page-break-after: always;
   }
-  .brief-page:last-child, .mgr-page:last-child { page-break-after: auto; }
-  .main-layout { display: block !important; }
-  body { background: white !important; padding: 0 !important; margin: 0 !important; }
-  .brief-confidential { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .mgr-vendor-tag, .mgr-badge-pref, .mgr-qty-cell { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .brief-page:last-child { page-break-after: auto; }
+
+  /* ── Manager page layout (landscape) ── */
+  body[data-printing-wrap="birmingham-wrap"],
+  body[data-printing-wrap="bessemer-wrap"] {
+    margin: 0 !important; background: white !important;
+  }
+
+  body[data-printing-wrap="birmingham-wrap"] .mgr-doc,
+  body[data-printing-wrap="bessemer-wrap"]   .mgr-doc {
+    max-width: 100%; padding: 0 4px; margin: 0;
+  }
+
+  body[data-printing-wrap="birmingham-wrap"] .mgr-page,
+  body[data-printing-wrap="bessemer-wrap"]   .mgr-page {
+    border: none !important; box-shadow: none !important;
+    border-radius: 0 !important; padding: 0 !important;
+    margin: 0 !important; page-break-after: always;
+  }
+  body[data-printing-wrap="birmingham-wrap"] .mgr-page:last-child,
+  body[data-printing-wrap="bessemer-wrap"]   .mgr-page:last-child { page-break-after: auto; }
+
+  /* ── Table print fixes ── */
+  .mgr-menu-table,
+  .mgr-order-table { font-size: 9.5pt !important; min-width: 0 !important; width: 100% !important; }
+  .mgr-menu-table th, .mgr-menu-table td,
+  .mgr-order-table th, .mgr-order-table td { padding: 4px 6px !important; }
+  .mgr-menu-scroll, .mgr-table-wrap { overflow: visible !important; }
+  .mgr-order-table tr { page-break-inside: avoid; }
+  .mgr-menu-table  tr { page-break-inside: avoid; }
+  .mgr-cat-block        { page-break-inside: avoid; margin-bottom: 10px; }
+  .mgr-meal-main  { font-size: 9pt !important; }
+  .mgr-meal-sides { font-size: 7.5pt !important; }
+  .mgr-meal-meta  { font-size: 7.5pt !important; }
+  .mgr-menu-scroll { overflow: visible !important; }
+
+  /* ── Manager header in print ── */
+  .mgr-header { padding-bottom: 10px; margin-bottom: 12px; }
+  .mgr-kpi-val  { font-size: 14pt !important; }
+  .mgr-facility-name { font-size: 18pt !important; }
+  .mgr-budget-grid { grid-template-columns: 1fr 1fr 1fr !important; }
+  .mgr-contact-grid { grid-template-columns: repeat(4,1fr) !important; }
+  .mgr-rules-block, .mgr-contact-block { page-break-inside: avoid; }
+
+  /* ── Color badge print accuracy ── */
+  .mgr-vendor-tag    { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .mgr-badge-pref    { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .mgr-qty-cell      { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .brief-confidential{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
 
