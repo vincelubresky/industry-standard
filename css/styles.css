@@ -4769,6 +4769,7 @@ tbody td { padding:13px 18px; font-size:13.5px; }
 .mgr-log-meal-d { color: #7c3aed; }
 .mgr-log-dinner { background: rgba(124,58,237,.04); }
 .mgr-log-item-name { font-weight: 600; min-width: 140px; }
+.mgr-log-ingredients { font-size: 9.5px; color: var(--text-muted); font-style: italic; margin-top: 3px; line-height: 1.4; }
 .mgr-log-sides-cell { font-size: 10px; color: var(--text-muted); min-width: 120px; }
 .mgr-log-est-cost { text-align: center; font-weight: 700; color: #16a34a; white-space: nowrap; }
 .mgr-log-pop { text-align: center; color: var(--text-muted); }
@@ -4908,11 +4909,40 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   .mgr-qty-cell      { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .brief-confidential{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-  /* ── Accordion: force all sections open for print ── */
-  .mgr-acc-body      { display: block !important; }
-  .mgr-acc-header    { display: none !important; }
-  .mgr-acc-section   { border: none !important; margin-bottom: 0 !important; }
+  /* ── Accordion: force all sections open for full-doc print ── */
+  body[data-printing-wrap] .mgr-acc-body    { display: block !important; }
+  body[data-printing-wrap] .mgr-acc-header  { display: none !important; }
+  body[data-printing-wrap] .mgr-acc-section { border: none !important; margin-bottom: 0 !important; }
+
+  /* ── Per-section print: show overview bar + target section only ── */
+  body[data-printing-section] #brief-wrap,
+  body[data-printing-section] #birmingham-wrap,
+  body[data-printing-section] #bessemer-wrap { display: none !important; }
+
+  body[data-printing-section^="birmingham"] #birmingham-wrap { display: block !important; }
+  body[data-printing-section^="bessemer"]   #bessemer-wrap   { display: block !important; }
+
+  /* hide all accordion sections in the shown wrap, then reveal just the target */
+  body[data-printing-section^="birmingham"] #birmingham-wrap .mgr-acc-section,
+  body[data-printing-section^="bessemer"]   #bessemer-wrap   .mgr-acc-section { display: none !important; }
+
+  body[data-printing-section="birmingham-menu"]   #birmingham-acc-menu,
+  body[data-printing-section="bessemer-menu"]     #bessemer-acc-menu   { display: block !important; }
+  body[data-printing-section="birmingham-order"]  #birmingham-acc-order,
+  body[data-printing-section="bessemer-order"]    #bessemer-acc-order  { display: block !important; }
+  body[data-printing-section="birmingham-budget"] #birmingham-acc-budget,
+  body[data-printing-section="bessemer-budget"]   #bessemer-acc-budget { display: block !important; }
+  body[data-printing-section="birmingham-log"]    #birmingham-acc-log,
+  body[data-printing-section="bessemer-log"]      #bessemer-acc-log    { display: block !important; }
+
+  /* force the body of the revealed section open */
+  body[data-printing-section] .mgr-acc-body    { display: block !important; }
+  body[data-printing-section] .mgr-acc-header  { display: none !important; }
+
   .mgr-overview-bar  { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* ingredient list in print */
+  .mgr-log-ingredients { font-size: 7pt !important; }
 }
 
 /* ── Manager accordion ──────────────────────────────────── */
@@ -4946,9 +4976,19 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   width: 100%;
   display: flex;
   align-items: center;
+  background: var(--card-bg);
+  border: none;
+  transition: background 0.15s;
+}
+.mgr-acc-section.mgr-acc-open > .mgr-acc-header { background: rgba(30,58,95,.07); }
+
+.mgr-acc-toggle {
+  flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
-  background: var(--card-bg);
+  background: none;
   border: none;
   cursor: pointer;
   font-size: 0.95rem;
@@ -4956,10 +4996,8 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   color: var(--text);
   text-align: left;
   gap: 12px;
-  transition: background 0.15s;
 }
-.mgr-acc-header:hover { background: var(--hover-bg, rgba(0,0,0,.04)); }
-.mgr-acc-section.mgr-acc-open > .mgr-acc-header { background: rgba(30,58,95,.07); }
+.mgr-acc-toggle:hover { opacity: .8; }
 
 .mgr-acc-chevron {
   font-size: 0.8rem;
@@ -4968,6 +5006,25 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   flex-shrink: 0;
 }
 .mgr-acc-section.mgr-acc-open .mgr-acc-chevron { transform: rotate(180deg); }
+
+.mgr-sec-pdf-btn {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  margin: 6px 12px 6px 0;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.mgr-sec-pdf-btn:hover { background: #b91c1c; }
 
 .mgr-acc-body {
   display: none;

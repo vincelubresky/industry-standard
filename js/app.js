@@ -4203,6 +4203,22 @@ function toggleMgrSection(id) {
   sec.classList.toggle('mgr-acc-open');
 }
 
+function printMgrSection(facilityKey, sectionKey) {
+  const attr = facilityKey + '-' + sectionKey;
+  document.body.setAttribute('data-printing-section', attr);
+  const style = document.createElement('style');
+  style.id = 'mgr-section-print-style';
+  style.textContent = '@page { size: Letter landscape; margin: 0.5in 0.4in; }';
+  document.head.appendChild(style);
+  window.print();
+  window.addEventListener('afterprint', function cleanup() {
+    document.body.removeAttribute('data-printing-section');
+    const s = document.getElementById('mgr-section-print-style');
+    if (s) s.remove();
+    window.removeEventListener('afterprint', cleanup);
+  });
+}
+
 function renderManagerTab(facilityKey) {
   const fp = FACILITY_PARAMS[facilityKey];
   if (!fp) return;
@@ -4370,10 +4386,13 @@ function renderManagerTab(facilityKey) {
 
       <!-- Section 1: Menu Rotation (starts open) -->
       <div class="mgr-acc-section mgr-acc-open" id="${facilityKey}-acc-menu">
-        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-menu')">
-          <span><i class="fa-solid fa-calendar-days"></i>&nbsp; 2-Week Menu Rotation</span>
-          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
-        </button>
+        <div class="mgr-acc-header">
+          <button class="mgr-acc-toggle" onclick="toggleMgrSection('${facilityKey}-acc-menu')">
+            <span><i class="fa-solid fa-calendar-days"></i>&nbsp; 2-Week Menu Rotation</span>
+            <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+          </button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','menu')" title="Print this section as PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        </div>
         <div class="mgr-acc-body">
           <div class="mgr-section-title"><i class="fa-solid fa-calendar-days"></i> Week 1 — Population Menu</div>
           ${menuWeekTable(MENU_ROTATION[0])}
@@ -4384,10 +4403,13 @@ function renderManagerTab(facilityKey) {
 
       <!-- Section 2: Order Guide -->
       <div class="mgr-acc-section" id="${facilityKey}-acc-order">
-        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-order')">
-          <span><i class="fa-solid fa-boxes-stacked"></i>&nbsp; Master Order Guide</span>
-          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
-        </button>
+        <div class="mgr-acc-header">
+          <button class="mgr-acc-toggle" onclick="toggleMgrSection('${facilityKey}-acc-order')">
+            <span><i class="fa-solid fa-boxes-stacked"></i>&nbsp; Master Order Guide</span>
+            <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+          </button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','order')" title="Print this section as PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        </div>
         <div class="mgr-acc-body">
           <div class="mgr-order-note">
             <strong>How to use:</strong> "28-Day Cases" is your order quantity for a full 28-day cycle. For a 2-week order, divide by 2.
@@ -4400,10 +4422,13 @@ function renderManagerTab(facilityKey) {
 
       <!-- Section 3: Budget & Operating Rules -->
       <div class="mgr-acc-section" id="${facilityKey}-acc-budget">
-        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-budget')">
-          <span><i class="fa-solid fa-scale-balanced"></i>&nbsp; Budget Parameters &amp; Operating Rules</span>
-          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
-        </button>
+        <div class="mgr-acc-header">
+          <button class="mgr-acc-toggle" onclick="toggleMgrSection('${facilityKey}-acc-budget')">
+            <span><i class="fa-solid fa-scale-balanced"></i>&nbsp; Budget Parameters &amp; Operating Rules</span>
+            <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+          </button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','budget')" title="Print this section as PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        </div>
         <div class="mgr-acc-body">
           <div class="mgr-budget-grid">
             <div class="mgr-budget-card">
@@ -4455,10 +4480,13 @@ function renderManagerTab(facilityKey) {
 
       <!-- Section 4: Daily Food Log -->
       <div class="mgr-acc-section" id="${facilityKey}-acc-log">
-        <button class="mgr-acc-header" onclick="toggleMgrSection('${facilityKey}-acc-log')">
-          <span><i class="fa-solid fa-book-open"></i>&nbsp; Daily Food Log</span>
-          <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
-        </button>
+        <div class="mgr-acc-header">
+          <button class="mgr-acc-toggle" onclick="toggleMgrSection('${facilityKey}-acc-log')">
+            <span><i class="fa-solid fa-book-open"></i>&nbsp; Daily Food Log</span>
+            <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
+          </button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','log')" title="Print this section as PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+        </div>
         <div class="mgr-acc-body">
           <div class="mgr-log-meta">
             <div class="mgr-log-meta-field">Week: <span class="mgr-log-line"></span></div>
@@ -4487,7 +4515,7 @@ function renderManagerTab(facilityKey) {
                   ].map((m, i) => `<tr class="${m.code === 'D' ? 'mgr-log-dinner' : ''}${i === 0 ? ' mgr-log-day-first' : ''}">
                     ${i === 0 ? `<td class="mgr-log-day-cell" rowspan="3">${day.day.slice(0,3).toUpperCase()}</td>` : ''}
                     <td class="mgr-log-meal-code mgr-log-meal-${m.code.toLowerCase()}">${m.code}</td>
-                    <td class="mgr-log-item-name">${m.data.main}</td>
+                    <td class="mgr-log-item-name">${m.data.main}${m.data.ingredients && m.data.ingredients.length ? `<div class="mgr-log-ingredients">${m.data.ingredients.join(' · ')}</div>` : ''}</td>
                     <td class="mgr-log-sides-cell">${(m.data.sides||[]).join(' · ')}</td>
                     <td class="mgr-log-est-cost">${m.data.cost}</td>
                     <td class="mgr-log-pop">${fp.population.toLocaleString()}</td>
