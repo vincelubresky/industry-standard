@@ -1930,6 +1930,7 @@ function renderFinancials() {
   if (typeof FINANCIALS === 'undefined') return;
   _renderFinSnapshot();
   _renderFinPL();
+  _renderFinCashFlow();
   _renderFinAR();
   _renderFinAP();
 }
@@ -1938,50 +1939,121 @@ function _renderFinSnapshot() {
   const el = document.getElementById('fin-snapshot');
   if (!el) return;
   const F = FINANCIALS;
+
+  const $k = n => '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
   const netWC = F.ar.total - F.ap.total;
+  const annualizedRev = F.pl2026.qtdRevenue * 4;
+  const gm2026 = F.pl2026.grossMarginPct * 100;
+  const gm2025 = F.pl2025.grossMarginPct * 100;
+  const gmDelta = (gm2026 - gm2025).toFixed(1);
+  const nm2026 = (F.pl2026.netIncome / F.pl2026.qtdRevenue * 100).toFixed(1);
+  const nm2025 = (F.pl2025.netIncome / F.pl2025.annualRevenue * 100).toFixed(1);
+  const nmDelta = (parseFloat(nm2026) - parseFloat(nm2025)).toFixed(1);
+  const jeffcoGrowth = ((annualizedRev - F.pl2025.jeffcoRevenue) / F.pl2025.jeffcoRevenue * 100).toFixed(1);
+  // DSO: A/R / daily revenue (Q1 / 90 days)
+  const dso = Math.round(F.ar.total / (F.pl2026.qtdRevenue / 90));
+  // DPO: A/P / daily COGS (Q1 / 90 days)
+  const dpo = Math.round(F.ap.total / (F.pl2026.qtdCogs / 90));
+
+  const riskMap = { high: { cls: 'high', tag: 'ACTION REQUIRED' }, med: { cls: 'watch', tag: 'WATCH' }, low: { cls: 'pos', tag: 'POSITIVE' } };
 
   el.innerHTML = `
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title-group">
-          <div class="section-icon" style="background:rgba(34,197,94,0.12)"><i class="fa-solid fa-gauge-simple-high" style="color:#22c55e"></i></div>
-          <div>
-            <div class="section-title">Financial Snapshot</div>
-            <div class="section-subtitle">Industry Standard · As of ${F.asOf}</div>
-          </div>
-        </div>
+    <!-- Executive banner -->
+    <div class="fin-exec-banner">
+      <div>
+        <div class="fin-exec-banner-title">Industry Standard · Financial Overview</div>
+        <div class="fin-exec-banner-sub">Jefferson County Jail · Food Service Management · P&amp;L, A/R &amp; A/P as of ${F.asOf}</div>
       </div>
+      <div class="fin-exec-banner-date">As of ${F.asOf}</div>
+    </div>
 
-      <!-- KPI cards -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
-        ${[
-          { label: 'Cash on Hand',       val: '$'+F.cash.balance.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),   sub: F.cash.accountName,          color: '#22c55e', icon: 'fa-building-columns' },
-          { label: 'A/R Outstanding',    val: '$'+F.ar.total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),         sub: '$'+F.ar.pastDue.toLocaleString('en-US',{maximumFractionDigits:0})+' past due', color: '#f59e0b', icon: 'fa-arrow-down-to-bracket' },
-          { label: 'A/P Outstanding',    val: '$'+F.ap.total.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0}),         sub: '$'+F.ap.pastDue.toLocaleString('en-US',{maximumFractionDigits:0})+' past due', color: '#ef4444', icon: 'fa-arrow-up-from-bracket' },
-          { label: 'Net Working Capital',val: (netWC >= 0 ? '+' : '') + '$'+Math.abs(netWC).toLocaleString('en-US',{maximumFractionDigits:0}), sub: 'A/R minus A/P',             color: netWC >= 0 ? '#22c55e' : '#ef4444', icon: 'fa-scale-balanced' }
-        ].map(k => `
-          <div class="card" style="border-top:3px solid ${k.color}">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-              <div style="font-size:12px;color:var(--text-400);font-weight:600;text-transform:uppercase;letter-spacing:.05em">${k.label}</div>
-              <i class="fa-solid ${k.icon}" style="color:${k.color};opacity:.6"></i>
-            </div>
-            <div style="font-size:26px;font-weight:800;color:var(--text-100);margin:6px 0 2px">${k.val}</div>
-            <div style="font-size:11px;color:var(--text-400)">${k.sub}</div>
-          </div>`).join('')}
+    <!-- Hero KPIs — top-line metrics -->
+    <div class="fin-hero-grid">
+      <div class="fin-hero-card blue">
+        <div class="fin-hero-label">Revenue Run-Rate</div>
+        <div class="fin-hero-value">${$k(annualizedRev)}</div>
+        <div class="fin-hero-sub">Q1 2026 · Annualized</div>
+        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> Core JeffCo +${jeffcoGrowth}% YoY</div>
       </div>
+      <div class="fin-hero-card ${parseFloat(gmDelta) >= 5 ? 'green' : 'amber'}">
+        <div class="fin-hero-label">Gross Margin</div>
+        <div class="fin-hero-value">${gm2026.toFixed(1)}%</div>
+        <div class="fin-hero-sub">Q1 2026 · vs 38.8% in 2025</div>
+        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> +${gmDelta}pp improvement</div>
+      </div>
+      <div class="fin-hero-card ${parseFloat(nm2026) >= 10 ? 'green' : 'amber'}">
+        <div class="fin-hero-label">Net Margin</div>
+        <div class="fin-hero-value">${nm2026}%</div>
+        <div class="fin-hero-sub">Q1 2026 · vs ${nm2025}% in 2025</div>
+        <div class="fin-hero-delta pos"><i class="fa-solid fa-arrow-trend-up" style="font-size:9px"></i> +${nmDelta}pp improvement</div>
+      </div>
+      <div class="fin-hero-card ${F.cash.balance < 75000 ? 'amber' : 'green'}">
+        <div class="fin-hero-label">Cash on Hand</div>
+        <div class="fin-hero-value">${$k(F.cash.balance)}</div>
+        <div class="fin-hero-sub">${F.cash.accountName}</div>
+        <div class="fin-hero-delta neu"><i class="fa-solid fa-minus" style="font-size:9px"></i> Flat despite net income</div>
+      </div>
+    </div>
 
-      <!-- Alerts -->
-      <div style="display:flex;flex-direction:column;gap:8px">
-        ${F.alerts.map(a => `
-          <div style="display:flex;gap:12px;align-items:flex-start;background:var(--bg-2);border-radius:8px;padding:10px 14px;border-left:3px solid ${a.color}">
-            <i class="fa-solid ${a.icon}" style="color:${a.color};margin-top:2px;flex-shrink:0"></i>
+    <!-- Working Capital row -->
+    <div class="fin-wc-grid">
+      <div class="fin-wc-card" style="border-top:3px solid #f59e0b">
+        <div class="fin-wc-label">Accounts Receivable</div>
+        <div class="fin-wc-value" style="color:#f59e0b">${$k(F.ar.total)}</div>
+        <div class="fin-wc-sub"><span style="color:#ef4444;font-weight:700">${$k(F.ar.pastDue)} past due</span> · ${$k(F.ar.current)} current</div>
+      </div>
+      <div class="fin-wc-card" style="border-top:3px solid #ef4444">
+        <div class="fin-wc-label">Accounts Payable</div>
+        <div class="fin-wc-value" style="color:#ef4444">${$k(F.ap.total)}</div>
+        <div class="fin-wc-sub"><span style="color:#ef4444;font-weight:700">${$k(F.ap.pastDue)} past due to PFG</span> · ${$k(F.ap.current)} current</div>
+      </div>
+      <div class="fin-wc-card" style="border-top:3px solid ${netWC >= 0 ? '#22c55e' : '#ef4444'}">
+        <div class="fin-wc-label">Net Working Capital</div>
+        <div class="fin-wc-value" style="color:${netWC >= 0 ? '#22c55e' : '#ef4444'}">${netWC >= 0 ? '+' : '-'}${$k(Math.abs(netWC))}</div>
+        <div class="fin-wc-sub">A/R minus A/P · ${netWC >= 0 ? 'Positive — thin margin' : 'Negative — act now'}</div>
+      </div>
+    </div>
+
+    <!-- Quick ratios -->
+    <div class="fin-ratios-grid">
+      <div class="fin-ratio-card">
+        <div class="fin-ratio-label">Days Sales Outstanding</div>
+        <div class="fin-ratio-value">${dso} days</div>
+        <div class="fin-ratio-context">Target &lt;30 · Healthy collection rate</div>
+      </div>
+      <div class="fin-ratio-card">
+        <div class="fin-ratio-label">Days Payable Outstanding</div>
+        <div class="fin-ratio-value">${dpo} days</div>
+        <div class="fin-ratio-context">PFG bills running 11+ days late</div>
+      </div>
+      <div class="fin-ratio-card">
+        <div class="fin-ratio-label">2025 Full-Year Revenue</div>
+        <div class="fin-ratio-value">${$k(F.pl2025.annualRevenue)}</div>
+        <div class="fin-ratio-context">Incl. $669K MCDF (ended Jun '25)</div>
+      </div>
+      <div class="fin-ratio-card">
+        <div class="fin-ratio-label">Gross Margin Trend</div>
+        <div class="fin-ratio-value" style="color:#22c55e">+${gmDelta}pp</div>
+        <div class="fin-ratio-context">38.8% (2025 FY) → 47.5% (Q1 2026)</div>
+      </div>
+    </div>
+
+    <!-- Priority actions / risk register -->
+    <div class="fin-section-label">Priority Actions &amp; Key Insights</div>
+    <div class="fin-risk-register">
+      ${F.alerts.map(a => {
+        const r = riskMap[a.severity];
+        return `
+          <div class="fin-risk-item ${r.cls}">
+            <span class="fin-risk-tag">${r.tag}</span>
             <div>
-              <span style="font-size:12px;font-weight:700;color:var(--text-100)">${a.label} &nbsp;</span>
-              <span style="font-size:12px;color:var(--text-300)">${a.detail}</span>
+              <div class="fin-risk-title">${a.label}</div>
+              <div class="fin-risk-body">${a.detail}</div>
             </div>
-          </div>`).join('')}
-      </div>
-    </div>`;
+          </div>`;
+      }).join('')}
+    </div>
+  `;
 }
 
 function _renderFinPL() {
@@ -1989,11 +2061,11 @@ function _renderFinPL() {
   if (!el) return;
   const F = FINANCIALS;
 
-  function pct(n, d) { return d ? ((n/d)*100).toFixed(1)+'%' : '—'; }
-  function fmt(n) { return '$'+Math.round(n).toLocaleString('en-US'); }
-
+  const pct = (n, d) => d ? ((n/d)*100).toFixed(1)+'%' : '—';
+  const fmt = n => '$'+Math.round(n).toLocaleString('en-US');
   const months25 = F.pl2025.months;
   const months26 = F.pl2026.months;
+  const maxExp = Math.max(...F.pl2026.topExpenses.map(e => e.amount));
 
   el.innerHTML = `
     <div class="section">
@@ -2001,56 +2073,76 @@ function _renderFinPL() {
         <div class="section-title-group">
           <div class="section-icon" style="background:rgba(59,130,246,0.12)"><i class="fa-solid fa-chart-line" style="color:var(--accent)"></i></div>
           <div>
-            <div class="section-title">Profit & Loss</div>
-            <div class="section-subtitle">Monthly trend · 2025 full year vs 2026 Q1</div>
+            <div class="section-title">Profit &amp; Loss</div>
+            <div class="section-subtitle">Year-over-year comparison · Monthly trend · Operating expense breakdown</div>
           </div>
         </div>
       </div>
 
-      <!-- Year totals comparison -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
-        <div class="card" style="border-top:3px solid var(--text-400)">
-          <div style="font-size:11px;font-weight:700;color:var(--text-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2025 Full Year</div>
+      <!-- YoY comparison cards -->
+      <div class="fin-comp-grid">
+        <div class="fin-comp-card">
+          <div class="fin-comp-year" style="color:var(--text-400)">2025 Full Year</div>
           ${[
-            ['Total Revenue',    fmt(F.pl2025.annualRevenue), ''],
-            ['  Jefferson Co.',  fmt(F.pl2025.jeffcoRevenue), '(active)'],
-            ['  MCDF',           fmt(F.pl2025.mcdfRevenue),   '(ended Jun 2025)'],
-            ['Gross Profit',     fmt(F.pl2025.grossProfit),   pct(F.pl2025.grossProfit, F.pl2025.annualRevenue)+' margin'],
-            ['Total Expenses',   fmt(F.pl2025.annualExpenses),''],
-            ['Net Income',       fmt(F.pl2025.netIncome),     pct(F.pl2025.netIncome, F.pl2025.annualRevenue)+' margin'],
-            ['Partner Distrib.', '-$'+F.pl2025.partnerDistributions.toLocaleString(), ''],
+            ['Revenue',           fmt(F.pl2025.annualRevenue), ''],
+            ['  Jefferson Co.',   fmt(F.pl2025.jeffcoRevenue), 'active'],
+            ['  MCDF',            fmt(F.pl2025.mcdfRevenue),   'ended Jun 2025'],
+            ['COGS',              fmt(F.pl2025.annualCogs),    pct(F.pl2025.annualCogs, F.pl2025.annualRevenue)+' of rev'],
+            ['Gross Profit',      fmt(F.pl2025.grossProfit),   pct(F.pl2025.grossProfit, F.pl2025.annualRevenue)+' margin'],
+            ['Operating Expenses',fmt(F.pl2025.annualExpenses),pct(F.pl2025.annualExpenses, F.pl2025.annualRevenue)+' of rev'],
+            ['Net Income',        fmt(F.pl2025.netIncome),     pct(F.pl2025.netIncome, F.pl2025.annualRevenue)+' margin'],
+            ['Partner Distrib.',  '($'+F.pl2025.partnerDistributions.toLocaleString()+')', '71% of net income'],
           ].map(([l,v,n]) => `
-            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--text-300)">${l}</span>
-              <span style="font-weight:700;color:var(--text-100)">${v} <span style="font-weight:400;color:var(--text-400);font-size:11px">${n}</span></span>
+            <div class="fin-comp-row">
+              <span class="fin-comp-row-label">${l}</span>
+              <span class="fin-comp-row-val">${v}<span class="fin-comp-row-note">${n}</span></span>
             </div>`).join('')}
         </div>
-        <div class="card" style="border-top:3px solid var(--accent)">
-          <div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2026 Q1 (Jan–Mar)</div>
+        <div class="fin-comp-card" style="border-top:3px solid var(--accent)">
+          <div class="fin-comp-year" style="color:var(--accent)">2026 Q1 (Jan–Mar) · Annualized: ${fmt(F.pl2026.qtdRevenue * 4)}</div>
           ${[
-            ['Total Revenue',   fmt(F.pl2026.qtdRevenue),  ''],
-            ['  Birmingham',    fmt(F.pl2026.birmRevenue), ''],
-            ['  Bessemer',      fmt(F.pl2026.besRevenue),  ''],
-            ['Gross Profit',    fmt(F.pl2026.grossProfit), pct(F.pl2026.grossProfit, F.pl2026.qtdRevenue)+' margin'],
-            ['Total Expenses',  fmt(F.pl2026.qtdExpenses), ''],
-            ['Net Income',      fmt(F.pl2026.netIncome),   pct(F.pl2026.netIncome, F.pl2026.qtdRevenue)+' margin'],
-            ['YTD Distrib.',    '-$212,586', '(exceeds net income)'],
+            ['Revenue (Q1)',      fmt(F.pl2026.qtdRevenue),   'JeffCo only'],
+            ['  Birmingham',      fmt(F.pl2026.birmRevenue),  ''],
+            ['  Bessemer',        fmt(F.pl2026.besRevenue),   ''],
+            ['COGS (Q1)',         fmt(F.pl2026.qtdCogs),      pct(F.pl2026.qtdCogs, F.pl2026.qtdRevenue)+' of rev'],
+            ['Gross Profit',      fmt(F.pl2026.grossProfit),  pct(F.pl2026.grossProfit, F.pl2026.qtdRevenue)+' margin ▲'],
+            ['Operating Expenses',fmt(F.pl2026.qtdExpenses),  pct(F.pl2026.qtdExpenses, F.pl2026.qtdRevenue)+' of rev'],
+            ['Net Income',        fmt(F.pl2026.netIncome),    pct(F.pl2026.netIncome, F.pl2026.qtdRevenue)+' margin ▲'],
+            ['YTD Distrib.',      '($212,586)',               'exceeds Q1 net income'],
           ].map(([l,v,n]) => `
-            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px">
-              <span style="color:var(--text-300)">${l}</span>
-              <span style="font-weight:700;color:var(--text-100)">${v} <span style="font-weight:400;color:var(--text-400);font-size:11px">${n}</span></span>
+            <div class="fin-comp-row">
+              <span class="fin-comp-row-label">${l}</span>
+              <span class="fin-comp-row-val">${v}<span class="fin-comp-row-note">${n}</span></span>
             </div>`).join('')}
         </div>
       </div>
 
-      <!-- Monthly P&L tables -->
-      <div style="font-size:12px;font-weight:700;color:var(--text-300);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2025 Monthly Detail</div>
+      <!-- Q1 2026 expense breakdown -->
+      <div class="fin-section-label">Q1 2026 — Operating Expense Breakdown</div>
+      <div class="card" style="padding:18px 20px;margin-bottom:20px">
+        <div class="fin-bar-list">
+          ${F.pl2026.topExpenses.map(e => `
+            <div class="fin-bar-item">
+              <span class="fin-bar-label">${e.label}</span>
+              <div class="fin-bar-track"><div class="fin-bar-fill" style="width:${Math.round(e.amount/maxExp*100)}%"></div></div>
+              <span class="fin-bar-amount">${fmt(e.amount)}</span>
+            </div>`).join('')}
+          <div class="fin-bar-item" style="margin-top:6px;border-top:1px solid var(--border);padding-top:10px">
+            <span class="fin-bar-label" style="font-weight:700;color:var(--text-200)">Total Expenses</span>
+            <div class="fin-bar-track"><div class="fin-bar-fill" style="width:100%;background:var(--text-300)"></div></div>
+            <span class="fin-bar-amount" style="font-weight:700">${fmt(F.pl2026.qtdExpenses)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2025 monthly table -->
+      <div class="fin-section-label">2025 Monthly P&amp;L</div>
       <div class="table-wrap" style="margin-bottom:20px">
         <table class="cafe-ing-table">
           <thead><tr><th>Month</th><th class="right">Revenue</th><th class="right">COGS</th><th class="right">Gross Profit</th><th class="right">GP%</th><th class="right">Expenses</th><th class="right">Net Income</th><th class="right">Net%</th></tr></thead>
           <tbody>
             ${months25.map(m => `
-              <tr style="${m.netIncome < 0 ? 'background:rgba(239,68,68,0.06)' : ''}">
+              <tr style="${m.netIncome < 0 ? 'background:rgba(239,68,68,0.05)' : ''}">
                 <td style="font-weight:600">${m.month}</td>
                 <td class="right">${fmt(m.revenue)}</td>
                 <td class="right">${fmt(m.cogs)}</td>
@@ -2067,7 +2159,7 @@ function _renderFinPL() {
               <td class="right">${fmt(F.pl2025.annualRevenue)}</td>
               <td class="right">${fmt(F.pl2025.annualCogs)}</td>
               <td class="right">${fmt(F.pl2025.grossProfit)}</td>
-              <td class="right">${pct(F.pl2025.grossProfit,F.pl2025.annualRevenue)}</td>
+              <td class="right" style="color:#22c55e">${pct(F.pl2025.grossProfit,F.pl2025.annualRevenue)}</td>
               <td class="right">${fmt(F.pl2025.annualExpenses)}</td>
               <td class="right" style="color:#22c55e">${fmt(F.pl2025.netIncome)}</td>
               <td class="right">${pct(F.pl2025.netIncome,F.pl2025.annualRevenue)}</td>
@@ -2076,7 +2168,8 @@ function _renderFinPL() {
         </table>
       </div>
 
-      <div style="font-size:12px;font-weight:700;color:var(--text-300);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">2026 Q1 Monthly Detail</div>
+      <!-- 2026 Q1 monthly table -->
+      <div class="fin-section-label">2026 Monthly P&amp;L (Q1)</div>
       <div class="table-wrap">
         <table class="cafe-ing-table">
           <thead><tr><th>Month</th><th class="right">Revenue</th><th class="right">COGS</th><th class="right">Gross Profit</th><th class="right">GP%</th><th class="right">Expenses</th><th class="right">Net Income</th><th class="right">Net%</th><th>Note</th></tr></thead>
@@ -2255,6 +2348,120 @@ function _renderFinAP() {
               <td></td>
             </tr>
           </tfoot>
+        </table>
+      </div>
+    </div>`;
+}
+
+function _renderFinCashFlow() {
+  const el = document.getElementById('fin-cashflow');
+  if (!el) return;
+  const F = FINANCIALS;
+  const fmt = n => (n < 0 ? '(' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US') + (n < 0 ? ')' : '');
+
+  const { y2025, ytd2026 } = F.cashFlow;
+  const dist2025Pct = Math.round(Math.abs(y2025.distributions) / y2025.netIncome * 100);
+  const dist2026Pct = Math.round(Math.abs(ytd2026.distributions) / ytd2026.netIncome * 100);
+  const distOver2026 = ytd2026.distributions + ytd2026.netIncome; // negative = distributions exceed earnings
+
+  el.innerHTML = `
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-group">
+          <div class="section-icon" style="background:rgba(34,197,94,0.12)"><i class="fa-solid fa-water" style="color:#22c55e"></i></div>
+          <div>
+            <div class="section-title">Cash Flow</div>
+            <div class="section-subtitle">Operating cash generation · Partner distributions · Net cash position</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fin-cf-grid">
+        <!-- 2025 -->
+        <div class="fin-cf-card">
+          <div class="fin-cf-year" style="color:var(--text-400)">2025 Full Year</div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Net Income</span>
+            <span style="font-weight:700;color:#22c55e">${fmt(y2025.netIncome)}</span>
+          </div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Operating Cash Flow</span>
+            <span style="font-weight:700;color:var(--text-100)">${fmt(y2025.operatingCF)}</span>
+          </div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Partner Distributions</span>
+            <span style="font-weight:700;color:#ef4444">${fmt(y2025.distributions)}</span>
+          </div>
+          <div class="fin-cf-row" style="border-bottom:none;padding-top:10px;margin-top:6px;border-top:2px solid var(--border)">
+            <span class="fin-cf-label" style="font-weight:700;color:var(--text-200)">Ending Cash</span>
+            <span style="font-weight:900;font-size:18px;color:var(--text-100)">${fmt(y2025.cashEnd)}</span>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:11px;color:var(--text-400);margin-bottom:6px">Distributions as % of Net Income</div>
+            <div style="background:var(--bg-2);border-radius:4px;height:10px;overflow:hidden;margin-bottom:4px">
+              <div style="background:#ef4444;height:10px;border-radius:4px;width:${Math.min(dist2025Pct,100)}%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--text-400)">${dist2025Pct}% distributed · $${Math.round((y2025.netIncome + y2025.distributions)/1000)}K retained</div>
+          </div>
+        </div>
+
+        <!-- 2026 YTD -->
+        <div class="fin-cf-card" style="border-top:3px solid ${distOver2026 < 0 ? '#f59e0b' : 'var(--accent)'}">
+          <div class="fin-cf-year" style="color:var(--accent)">2026 YTD (through April)</div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Net Income</span>
+            <span style="font-weight:700;color:#22c55e">${fmt(ytd2026.netIncome)}</span>
+          </div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Operating Cash Flow</span>
+            <span style="font-weight:700;color:var(--text-100)">${fmt(ytd2026.operatingCF)}</span>
+          </div>
+          <div class="fin-cf-row">
+            <span class="fin-cf-label">Partner Distributions</span>
+            <span style="font-weight:700;color:#ef4444">${fmt(ytd2026.distributions)}</span>
+          </div>
+          <div class="fin-cf-row" style="border-bottom:none;padding-top:10px;margin-top:6px;border-top:2px solid var(--border)">
+            <span class="fin-cf-label" style="font-weight:700;color:var(--text-200)">Ending Cash</span>
+            <span style="font-weight:900;font-size:18px;color:var(--text-100)">${fmt(ytd2026.cashEnd)}</span>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:11px;color:var(--text-400);margin-bottom:6px">Distributions as % of Net Income</div>
+            <div style="background:var(--bg-2);border-radius:4px;height:10px;overflow:hidden;margin-bottom:4px">
+              <div style="background:#ef4444;height:10px;border-radius:4px;width:100%"></div>
+            </div>
+            ${distOver2026 < 0
+              ? `<div style="font-size:11px;font-weight:700;color:#f59e0b">⚠ Distributions exceed net income by $${Math.abs(Math.round(distOver2026)).toLocaleString('en-US')} — drawing down reserves</div>`
+              : `<div style="font-size:11px;color:var(--text-400)">${dist2026Pct}% distributed</div>`
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Year-over-year cash summary -->
+      <div class="fin-section-label">Cash Position Summary</div>
+      <div class="table-wrap">
+        <table class="cafe-ing-table">
+          <thead>
+            <tr><th>Period</th><th class="right">Net Income</th><th class="right">Operating CF</th><th class="right">Distributions</th><th class="right">Distrib. Rate</th><th class="right">Ending Cash</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:600">2025 Full Year</td>
+              <td class="right" style="color:#22c55e">${fmt(y2025.netIncome)}</td>
+              <td class="right">${fmt(y2025.operatingCF)}</td>
+              <td class="right" style="color:#ef4444">${fmt(y2025.distributions)}</td>
+              <td class="right">${dist2025Pct}% of NI</td>
+              <td class="right" style="font-weight:700">${fmt(y2025.cashEnd)}</td>
+            </tr>
+            <tr style="background:rgba(59,130,246,0.04)">
+              <td style="font-weight:600">2026 YTD (Apr)</td>
+              <td class="right" style="color:#22c55e">${fmt(ytd2026.netIncome)}</td>
+              <td class="right">${fmt(ytd2026.operatingCF)}</td>
+              <td class="right" style="color:#ef4444">${fmt(ytd2026.distributions)}</td>
+              <td class="right" style="${distOver2026 < 0 ? 'color:#f59e0b;font-weight:700' : ''}">${dist2026Pct}% of NI${distOver2026 < 0 ? ' ⚠' : ''}</td>
+              <td class="right" style="font-weight:700">${fmt(ytd2026.cashEnd)}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>`;
