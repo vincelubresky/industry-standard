@@ -1060,11 +1060,11 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
         lunch:     { main: "Bologna Sandwich",                 protein: "Bologna",         sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.42", cal: 780 },
-        dinner:    { main: "Pasta w/ Meat Sauce",              protein: "Sausage",         sides: ["Cornbread","Mixed Veg"],                        cost: "$0.48", cal: 980 } },
+        dinner:    { main: "Beef Patty & Brown Gravy",         protein: "Beef",            sides: ["Cornbread","Mixed Veg"],                        cost: "$0.58", cal: 940 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
         lunch:     { main: "PB&J Sandwich",                    protein: "Peanut Butter",   sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.54", cal: 840 },
-        dinner:    { main: "Mac & Cheese + Bologna",           protein: "Bologna",         sides: ["Cornbread"],                                    cost: "$0.38", cal: 900 } },
+        dinner:    { main: "Beef Patty & Brown Gravy",         protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.55", cal: 920 } },
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",            protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.45", cal: 600 },
         lunch:     { main: "Salami Sandwich",                  protein: "Salami",          sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.46", cal: 800 },
@@ -1075,12 +1075,12 @@ const MENU_ROTATION = [
         dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Chicken Fritter Sandwich",         protein: "Chicken",         sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.54", cal: 860 },
-        dinner:    { main: "Beef Patty & Brown Gravy",         protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.52", cal: 920 } },
+        lunch:     { main: "Turkey Sandwich",                  protein: "Turkey",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.52", cal: 820 },
+        dinner:    { main: "Mashed Potatoes & Gravy + Sausage",protein: "Sausage",         sides: ["Cornbread"],                                    cost: "$0.45", cal: 920 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Beef Patty Sandwich",              protein: "Beef",            sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.56", cal: 860 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.55", cal: 1020 } }
+        lunch:     { main: "Salami Sandwich",                  protein: "Salami",          sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.46", cal: 800 },
+        dinner:    { main: "Red Beans & Rice + Sausage",       protein: "Sausage",         sides: ["Cornbread"],                                    cost: "$0.40", cal: 900 } }
     ]
   },
   {
@@ -1093,11 +1093,11 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
         lunch:     { main: "Bologna Sandwich",                 protein: "Bologna",         sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.42", cal: 780 },
-        dinner:    { main: "Pasta w/ Meat Sauce",              protein: "Sausage",         sides: ["Cornbread","Green Beans"],                      cost: "$0.48", cal: 980 } },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
         lunch:     { main: "Turkey Sandwich",                  protein: "Turkey",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.52", cal: 820 },
-        dinner:    { main: "Mac & Cheese + Salami",            protein: "Salami",          sides: ["Cornbread"],                                    cost: "$0.40", cal: 900 } },
+        dinner:    { main: "Beef Patty & Brown Gravy",         protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.55", cal: 920 } },
       { day: "Thursday",
         breakfast: { main: "Grits + 2 Boiled Eggs",            protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.45", cal: 600 },
         lunch:     { main: "PB&J Sandwich",                    protein: "Peanut Butter",   sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.54", cal: 840 },
@@ -1108,12 +1108,12 @@ const MENU_ROTATION = [
         dinner:    { main: "Mashed Potatoes & Gravy + Sausage",protein: "Sausage",        sides: ["Cornbread"],                                    cost: "$0.45", cal: 920 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",          protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Beef Patty Sandwich",              protein: "Beef",            sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.56", cal: 860 },
+        lunch:     { main: "Turkey Sandwich",                  protein: "Turkey",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.52", cal: 820 },
         dinner:    { main: "Chicken Fritter & Gravy over Rice",protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.55", cal: 1020 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",         protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Chicken Fritter Sandwich",         protein: "Chicken",         sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.54", cal: 860 },
-        dinner:    { main: "Beef Patty & Brown Gravy + Rice",  protein: "Beef",            sides: ["Cornbread"],                                    cost: "$0.52", cal: 940 } }
+        lunch:     { main: "Salami Sandwich",                  protein: "Salami",          sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.46", cal: 800 },
+        dinner:    { main: "Red Beans & Rice + Sausage",       protein: "Sausage",         sides: ["Cornbread"],                                    cost: "$0.40", cal: 900 } }
     ]
   }
 ];
@@ -1758,6 +1758,127 @@ const MENU_ORDER_LIST = {
     }
   ]
 };
+
+// ============================================================
+//  FACILITY PARAMS — per-manager budget & population targets
+// ============================================================
+const FACILITY_PARAMS = {
+  birmingham: {
+    key: "birmingham",
+    label: "Birmingham Jail",
+    population: 1150,
+    meals: 21,          // 3 meals × 7 days
+    targetCostPerMeal: 0.62,
+    alertCostPerMeal:  0.75,
+    weeklyFoodBudget:  15000,   // pop × 21 × $0.62 ≈ $14,973
+    monthlyFoodBudget: 65000,
+    budgetByVendor: { shaver: 8500, bigDaddy: 2200, pfg: 3200, forestWood: 1100 },
+    budgetByCategory: { protein: 5400, vegetable: 2600, starch: 1800, bread: 2400, breakfast: 1500, dairy: 800, produce: 500, dry: 0 }
+  },
+  bessemer: {
+    key: "bessemer",
+    label: "Bessemer Jail",
+    population: 350,
+    meals: 21,
+    targetCostPerMeal: 0.62,
+    alertCostPerMeal:  0.75,
+    weeklyFoodBudget:  4600,    // pop × 21 × $0.62 ≈ $4,557
+    monthlyFoodBudget: 20000,
+    budgetByVendor: { shaver: 2600, bigDaddy: 680, pfg: 980, forestWood: 340 },
+    budgetByCategory: { protein: 1650, vegetable: 800, starch: 550, bread: 730, breakfast: 460, dairy: 240, produce: 170, dry: 0 }
+  }
+};
+
+// ============================================================
+//  ORDER GUIDE — Master catalog for manager ordering
+//  portionsPerCase: calculated from pack weight / portion size
+//  cycle28: cases needed per 28-day rotation for 300 inmates (from MENU_ORDER_LIST)
+//  portionCost: casePrice / portionsPerCase
+// ============================================================
+const ORDER_GUIDE = [
+  // ── PROTEINS ────────────────────────────────────────────────
+  { category: "Proteins",           icon: "fa-drumstick-bite", color: "#ef4444",
+    items: [
+      { name: "Sausage Patty FC 1 oz",         vendor: "Shaver",      vendorKey: "shaver",    pack: "40 LB",        portionSize: "2 oz",      portionsPerCase: 320,  casePrice: 82.54, portionCost: 0.26, preferred: true,  cycle28: 15, usedIn: "Breakfast — Grits+Sausage, Eggs+Sausage" },
+      { name: "Hot Link Sausage FC",            vendor: "Shaver",      vendorKey: "shaver",    pack: "6/5 LB",       portionSize: "2 oz",      portionsPerCase: 240,  casePrice: 61.08, portionCost: 0.25, preferred: true,  cycle28: 24, usedIn: "Lunch/Dinner — Beans & Rice, Pasta" },
+      { name: "Bologna Chicken Logs",           vendor: "Shaver",      vendorKey: "shaver",    pack: "3/8 LB",       portionSize: "2 oz",      portionsPerCase: 192,  casePrice: 39.02, portionCost: 0.20, preferred: true,  cycle28: 15, usedIn: "Lunch sandwich" },
+      { name: "Salami Chicken Logs",            vendor: "Shaver",      vendorKey: "shaver",    pack: "2/10 LB",      portionSize: "2 oz",      portionsPerCase: 160,  casePrice: 31.82, portionCost: 0.20, preferred: true,  cycle28: 8,  usedIn: "Lunch sandwich, Dinner side" },
+      { name: "Chicken Patty Breaded FC 3 oz",  vendor: "Shaver",      vendorKey: "shaver",    pack: "40 LB",        portionSize: "3 oz",      portionsPerCase: 213,  casePrice: 86.29, portionCost: 0.40, preferred: true,  cycle28: 12, usedIn: "Weekend — Chicken Fritter Sandwich, Fritter & Gravy" },
+      { name: "Burger Patty TVP 3.2 oz",        vendor: "Big Daddy",   vendorKey: "bigDaddy",  pack: "100 ct / 20 LB",portionSize: "1 patty",  portionsPerCase: 100,  casePrice: 45.00, portionCost: 0.45, preferred: true,  cycle28: 24, usedIn: "Weekend — Beef Patty Dinner, Beef Patty Sandwich" },
+      { name: "Turkey Deli",                    vendor: "PFG",         vendorKey: "pfg",       pack: "2/10 LB",      portionSize: "2 oz",      portionsPerCase: 160,  casePrice: 52.00, portionCost: 0.33, preferred: false, cycle28: 23, usedIn: "Lunch — Turkey Sandwich", note: "Market price — verify weekly" },
+      { name: "Shell Eggs Grade A",             vendor: "PFG",         vendorKey: "pfg",       pack: "15 doz",       portionSize: "2 eggs",    portionsPerCase: 90,   casePrice: 28.50, portionCost: 0.32, preferred: false, cycle28: 67, usedIn: "Breakfast — Boiled Eggs, Scrambled Eggs", note: "Market price — verify weekly" }
+    ]
+  },
+  // ── VEGETABLES ──────────────────────────────────────────────
+  { category: "Vegetables",         icon: "fa-leaf", color: "#22c55e",
+    items: [
+      { name: "Peas & Carrots Frozen",          vendor: "Shaver",      vendorKey: "shaver",    pack: "30 LB",        portionSize: "4 oz",      portionsPerCase: 120,  casePrice: 29.77, portionCost: 0.25, preferred: true,  cycle28: 53, usedIn: "Side — 21 meal appearances/cycle" },
+      { name: "Green Beans Cut Frozen",         vendor: "Shaver",      vendorKey: "shaver",    pack: "30 LB",        portionSize: "4 oz",      portionsPerCase: 120,  casePrice: 33.06, portionCost: 0.28, preferred: true,  cycle28: 45, usedIn: "Side — 18 meal appearances/cycle" },
+      { name: "Mixed Vegetables Blend",         vendor: "Shaver",      vendorKey: "shaver",    pack: "30 LB",        portionSize: "4 oz",      portionsPerCase: 120,  casePrice: 26.75, portionCost: 0.22, preferred: true,  cycle28: 43, usedIn: "Side — 17 meal appearances/cycle" },
+      { name: "Carrots Sliced Frozen",          vendor: "Shaver",      vendorKey: "shaver",    pack: "20 LB",        portionSize: "4 oz",      portionsPerCase: 80,   casePrice: 14.34, portionCost: 0.18, preferred: true,  cycle28: 24, usedIn: "Side" },
+      { name: "Okra Cut Breaded",               vendor: "Shaver",      vendorKey: "shaver",    pack: "20 LB",        portionSize: "3 oz",      portionsPerCase: 107,  casePrice: 26.77, portionCost: 0.25, preferred: true,  cycle28: 0,  usedIn: "Side — optional rotation" },
+      { name: "Diced Tomatoes",                 vendor: "Shaver",      vendorKey: "shaver",    pack: "6/#10",        portionSize: "2 oz",      portionsPerCase: 576,  casePrice: 30.36, portionCost: 0.05, preferred: true,  cycle28: 4,  usedIn: "Pasta sauce base" },
+      { name: "Tomato Sauce",                   vendor: "Shaver",      vendorKey: "shaver",    pack: "6/#10",        portionSize: "2 oz",      portionsPerCase: 576,  casePrice: 28.89, portionCost: 0.05, preferred: true,  cycle28: 6,  usedIn: "Pasta w/ Meat Sauce" },
+      { name: "Cream of Mushroom Soup",         vendor: "PFG",         vendorKey: "pfg",       pack: "12 ct",        portionSize: "2 oz",      portionsPerCase: 480,  casePrice: 54.94, portionCost: 0.11, preferred: false, cycle28: 2,  usedIn: "Casserole base — PFG $5.56/cs cheaper than Shaver" }
+    ]
+  },
+  // ── STARCHES ────────────────────────────────────────────────
+  { category: "Starches",           icon: "fa-wheat-awn", color: "#f59e0b",
+    items: [
+      { name: "Rice White Parboiled",           vendor: "PFG",         vendorKey: "pfg",       pack: "50 LB",        portionSize: "3 oz dry",  portionsPerCase: 267,  casePrice: 26.38, portionCost: 0.10, preferred: true,  cycle28: 8,  usedIn: "Beans & Rice, Chicken & Rice" },
+      { name: "Pasta Elbow Macaroni",           vendor: "Shaver",      vendorKey: "shaver",    pack: "2/10 LB",      portionSize: "2 oz dry",  portionsPerCase: 160,  casePrice: 13.10, portionCost: 0.08, preferred: true,  cycle28: 12, usedIn: "Mac & Cheese" },
+      { name: "Pasta Rotini",                   vendor: "Shaver",      vendorKey: "shaver",    pack: "2/10 LB",      portionSize: "2 oz dry",  portionsPerCase: 160,  casePrice: 13.73, portionCost: 0.09, preferred: true,  cycle28: 19, usedIn: "Pasta w/ Meat Sauce lunch" },
+      { name: "Potato Flakes Dehydrated",       vendor: "Shaver",      vendorKey: "shaver",    pack: "40 LB",        portionSize: "3 oz dry",  portionsPerCase: 213,  casePrice: 51.62, portionCost: 0.24, preferred: true,  cycle28: 5,  usedIn: "Mashed Potatoes" },
+      { name: "Great Northern Beans Dry",       vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "2 oz dry",  portionsPerCase: 400,  casePrice: 39.00, portionCost: 0.10, preferred: true,  cycle28: 5,  usedIn: "Northern Beans & Rice" },
+      { name: "Pinto Beans Dry",                vendor: "PFG",         vendorKey: "pfg",       pack: "50 LB",        portionSize: "2 oz dry",  portionsPerCase: 400,  casePrice: 25.67, portionCost: 0.06, preferred: true,  cycle28: 4,  usedIn: "Pinto Beans & Rice — PFG $3.48/bag cheaper than Shaver" }
+    ]
+  },
+  // ── BREAD & BAKERY ──────────────────────────────────────────
+  { category: "Bread & Bakery",     icon: "fa-bread-slice", color: "#d97706",
+    items: [
+      { name: "Bread White Sliced",             vendor: "Shaver",      vendorKey: "shaver",    pack: "12/28 oz",     portionSize: "2 slices",  portionsPerCase: 168,  casePrice: 29.06, portionCost: 0.17, preferred: true,  cycle28: 128,usedIn: "Breakfast 2 sl + Dinner sandwich 2 sl — every day" },
+      { name: "Cornbread Mix Southern",         vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "2 oz",      portionsPerCase: 400,  casePrice: 39.02, portionCost: 0.10, preferred: true,  cycle28: 32, usedIn: "Lunch ×2 + Dinner ×1 — every day" },
+      { name: "All-Purpose Flour",              vendor: "PFG",         vendorKey: "pfg",       pack: "50 LB",        portionSize: "N/A",       portionsPerCase: null, casePrice: 20.44, portionCost: null, preferred: true,  cycle28: 2,  usedIn: "Baking base — PFG $3.17/bag cheaper" },
+      { name: "Yellow Cake Mix",                vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "2 oz",      portionsPerCase: 400,  casePrice: 40.42, portionCost: 0.10, preferred: true,  cycle28: 42, usedIn: "Dessert — every lunch & dinner" },
+      { name: "Coffee Cake Mix",                vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "2 oz",      portionsPerCase: 400,  casePrice: 42.88, portionCost: 0.11, preferred: false, cycle28: 0,  usedIn: "Dessert rotation option" },
+      { name: "Strawberry Cake Mix",            vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "2 oz",      portionsPerCase: 400,  casePrice: 44.63, portionCost: 0.11, preferred: false, cycle28: 0,  usedIn: "Dessert rotation option" }
+    ]
+  },
+  // ── BREAKFAST ITEMS ─────────────────────────────────────────
+  { category: "Breakfast",          icon: "fa-sun", color: "#eab308",
+    items: [
+      { name: "Grits Quick White",              vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "1 oz dry",  portionsPerCase: 800,  casePrice: 28.00, portionCost: 0.04, preferred: true,  cycle28: 7,  usedIn: "Breakfast — Mon, Thu, Fri" },
+      { name: "Oats Quick",                     vendor: "Shaver",      vendorKey: "shaver",    pack: "50 LB",        portionSize: "1.5 oz dry",portionsPerCase: 533,  casePrice: 28.33, portionCost: 0.05, preferred: true,  cycle28: 5,  usedIn: "Breakfast — Tue, Sat" },
+      { name: "Jelly Assorted PC",              vendor: "Shaver",      vendorKey: "shaver",    pack: "200 ea",       portionSize: "1 packet",  portionsPerCase: 200,  casePrice: 9.53,  portionCost: 0.05, preferred: true,  cycle28: 42, usedIn: "Breakfast — every day (1 packet per person)" },
+      { name: "Drink Mix Grape",                vendor: "Shaver",      vendorKey: "shaver",    pack: "1000/1 gm",    portionSize: "1 packet",  portionsPerCase: 1000, casePrice: 20.63, portionCost: 0.02, preferred: true,  cycle28: 9,  usedIn: "Breakfast beverage — every day" },
+      { name: "Granulated Sugar",               vendor: "PFG",         vendorKey: "pfg",       pack: "50 LB",        portionSize: "0.5 oz",    portionsPerCase: 1600, casePrice: 35.14, portionCost: 0.02, preferred: true,  cycle28: 1,  usedIn: "Baking, beverage" }
+    ]
+  },
+  // ── DAIRY & REFRIGERATED ────────────────────────────────────
+  { category: "Dairy",              icon: "fa-droplet", color: "#38bdf8",
+    items: [
+      { name: "Margarine Solid",                vendor: "Shaver",      vendorKey: "shaver",    pack: "30/1 LB",      portionSize: "0.5 oz",    portionsPerCase: 960,  casePrice: 38.46, portionCost: 0.04, preferred: true,  cycle28: 4,  usedIn: "Baking, cornbread, service" },
+      { name: "Cheese Sauce",                   vendor: "Shaver",      vendorKey: "shaver",    pack: "6/#10",        portionSize: "2 oz",      portionsPerCase: 576,  casePrice: 48.12, portionCost: 0.08, preferred: true,  cycle28: 8,  usedIn: "Mac & Cheese" },
+      { name: "Milk (carton)",                  vendor: "Forest Wood", vendorKey: "forestWood",pack: "By case",      portionSize: "1 carton",  portionsPerCase: null, casePrice: null,  portionCost: 0.60, preferred: true,  cycle28: null,usedIn: "Breakfast beverage", note: "Quote from Forest Wood each order" }
+    ]
+  },
+  // ── FRESH PRODUCE ───────────────────────────────────────────
+  { category: "Fresh Produce",      icon: "fa-apple-whole", color: "#84cc16",
+    items: [
+      { name: "Bananas",                        vendor: "Forest Wood", vendorKey: "forestWood",pack: "40 LB",        portionSize: "1 banana",  portionsPerCase: 160,  casePrice: 21.95, portionCost: 0.14, preferred: true,  cycle28: null,usedIn: "Fruit side" },
+      { name: "Oranges (138-count)",            vendor: "Forest Wood", vendorKey: "forestWood",pack: "1 case",       portionSize: "1 orange",  portionsPerCase: 138,  casePrice: 37.95, portionCost: 0.28, preferred: true,  cycle28: null,usedIn: "Fruit side" }
+    ]
+  },
+  // ── DRY GOODS & PANTRY ──────────────────────────────────────
+  { category: "Dry Goods & Pantry", icon: "fa-jar", color: "#a78bfa",
+    items: [
+      { name: "Fry Oil Clear",                  vendor: "Shaver",      vendorKey: "shaver",    pack: "35 LB",        portionSize: "N/A",       portionsPerCase: null, casePrice: 35.07, portionCost: null, preferred: true,  cycle28: 10, usedIn: "Cooking oil — all fried items" },
+      { name: "Gravy Mix Country",              vendor: "Shaver",      vendorKey: "shaver",    pack: "6/3 LB",       portionSize: "2 oz dry",  portionsPerCase: 288,  casePrice: 37.82, portionCost: 0.13, preferred: true,  cycle28: 11, usedIn: "Mashed Potatoes & Gravy, Chicken & Gravy" },
+      { name: "Onion Powder",                   vendor: "Shaver",      vendorKey: "shaver",    pack: "6/1 LB",       portionSize: "N/A",       portionsPerCase: null, casePrice: 24.64, portionCost: null, preferred: true,  cycle28: 1,  usedIn: "Seasoning — saves $2.35/lb vs PFG" },
+      { name: "Garlic Powder",                  vendor: "Shaver",      vendorKey: "shaver",    pack: "6/1 LB",       portionSize: "N/A",       portionsPerCase: null, casePrice: 24.02, portionCost: null, preferred: true,  cycle28: 1,  usedIn: "Seasoning — saves $2.15/lb vs PFG" }
+    ]
+  }
+];
 
 // ============================================================
 //  CAFÉ ANALYSIS DATA

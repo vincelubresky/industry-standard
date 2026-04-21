@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=16">
+  <link rel="stylesheet" href="css/styles.css?v=17">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
@@ -141,6 +141,12 @@
     </button>
     <button class="tab-btn" data-tab="brief" onclick="switchTab('brief')">
       <i class="fa-solid fa-file-contract"></i>Brief
+    </button>
+    <button class="tab-btn" data-tab="birmingham" onclick="switchTab('birmingham')">
+      <i class="fa-solid fa-clipboard-list"></i>Birmingham
+    </button>
+    <button class="tab-btn" data-tab="bessemer" onclick="switchTab('bessemer')">
+      <i class="fa-solid fa-clipboard-list"></i>Bessemer
     </button>
   </div>
 
@@ -1490,6 +1496,14 @@
     <div id="brief-container"></div>
   </div><!-- /brief-wrap -->
 
+  <div id="birmingham-wrap" style="display:none">
+    <div id="birmingham-container"></div>
+  </div><!-- /birmingham-wrap -->
+
+  <div id="bessemer-wrap" style="display:none">
+    <div id="bessemer-container"></div>
+  </div><!-- /bessemer-wrap -->
+
   <!-- ══════════════════════════════════════
        EXECUTIVE DASHBOARD
   ══════════════════════════════════════ -->
@@ -1734,7 +1748,7 @@
      ══════════════════════════════════════ -->
 <div id="print-menu-wrap"></div>
 
-<script src="js/data.js?v=16"></script>
-<script src="js/app.js?v=16"></script>
+<script src="js/data.js?v=17"></script>
+<script src="js/app.js?v=17"></script>
 </body>
 </html>

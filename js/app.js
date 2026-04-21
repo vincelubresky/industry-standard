@@ -710,6 +710,12 @@ function switchTab(tab, persist = true) {
   const briefWrap = document.getElementById('brief-wrap');
   if (briefWrap) briefWrap.style.display = (tab === 'brief') ? 'block' : 'none';
 
+  // Show/hide manager tabs
+  const bhamWrap = document.getElementById('birmingham-wrap');
+  if (bhamWrap) bhamWrap.style.display = (tab === 'birmingham') ? 'block' : 'none';
+  const bessWrap = document.getElementById('bessemer-wrap');
+  if (bessWrap) bessWrap.style.display = (tab === 'bessemer') ? 'block' : 'none';
+
   // Show/hide menus
   const menusWrap = document.getElementById('menus-wrap');
   if (menusWrap) menusWrap.style.display = (tab === 'menus') ? 'block' : 'none';
@@ -741,6 +747,12 @@ function switchTab(tab, persist = true) {
   });
   document.querySelectorAll('.nav-section-label[data-tab="brief"], .nav-item[data-tab="brief"]').forEach(el => {
     el.style.display = (tab === 'brief') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="birmingham"], .nav-item[data-tab="birmingham"]').forEach(el => {
+    el.style.display = (tab === 'birmingham') ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-section-label[data-tab="bessemer"], .nav-item[data-tab="bessemer"]').forEach(el => {
+    el.style.display = (tab === 'bessemer') ? '' : 'none';
   });
 
   // Sync active nav item
@@ -4159,6 +4171,252 @@ function renderPopulationAnalysis() {
   renderPopulationMenu();
 }
 
+/* ── Manager Tab ─────────────────────────────────────────── */
+function renderManagerTab(facilityKey) {
+  const fp = FACILITY_PARAMS[facilityKey];
+  if (!fp) return;
+  const el = document.getElementById(facilityKey + '-container');
+  if (!el) return;
+
+  const scaleFactor = fp.population / 300;
+  const daysOfWeek = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const mealKeys   = ['breakfast','lunch','dinner'];
+  const mealLabels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner' };
+  const vendorColors = { shaver:'#2563eb', bigDaddy:'#16a34a', pfg:'#dc2626', forestWood:'#7c3aed' };
+  const vendorLabels = { shaver:'Shaver ISP', bigDaddy:'Big Daddy', pfg:'PFG', forestWood:'Forest Wood' };
+
+  // ── helper: format cycle qty scaled to this facility ──────
+  function scaledQty(cycle28) {
+    if (!cycle28) return '—';
+    return Math.ceil(cycle28 * scaleFactor);
+  }
+  // ── helper: budget bar ────────────────────────────────────
+  function budgetBar(spent, budget, label) {
+    const pct = Math.min(100, Math.round((spent / budget) * 100));
+    const color = pct >= 90 ? '#ef4444' : pct >= 75 ? '#f59e0b' : '#16a34a';
+    return `<div class="mgr-budget-row">
+      <span class="mgr-budget-label">${label}</span>
+      <div class="mgr-budget-track"><div class="mgr-budget-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="mgr-budget-val">$${budget.toLocaleString()}</span>
+    </div>`;
+  }
+
+  // ── build menu grid ───────────────────────────────────────
+  function menuWeekTable(weekData) {
+    const rows = mealKeys.map(mk => {
+      const cells = daysOfWeek.map(d => {
+        const day = weekData.days.find(x => x.day === d);
+        if (!day) return '<td>—</td>';
+        const meal = day[mk];
+        const costClass = parseFloat((meal.cost||'0').replace('$','')) > fp.alertCostPerMeal ? 'mgr-cost-hi' : '';
+        return `<td>
+          <div class="mgr-meal-main">${meal.main}</div>
+          <div class="mgr-meal-sides">${(meal.sides||[]).join(' · ')}</div>
+          <div class="mgr-meal-meta"><span class="mgr-cost ${costClass}">${meal.cost}</span><span class="mgr-cal">${meal.cal} cal</span></div>
+        </td>`;
+      }).join('');
+      return `<tr><th>${mealLabels[mk]}</th>${cells}</tr>`;
+    }).join('');
+    return `<div class="mgr-menu-scroll">
+      <table class="mgr-menu-table">
+        <thead><tr><th></th>${daysOfWeek.map(d=>`<th>${d}</th>`).join('')}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
+
+  // ── build order guide ─────────────────────────────────────
+  function orderGuideSection(cat) {
+    const rows = cat.items.map(item => {
+      const qty = scaledQty(item.cycle28);
+      const estCost = (item.casePrice && qty !== '—') ? '$' + (item.casePrice * qty).toLocaleString('en-US', {maximumFractionDigits:0}) : '—';
+      const portNote = item.portionCost ? `$${item.portionCost.toFixed(2)}/portion` : '—';
+      const prefBadge = item.preferred ? '<span class="mgr-badge-pref">✓ Preferred</span>' : '';
+      const vc = vendorColors[item.vendorKey] || '#64748b';
+      const vl = vendorLabels[item.vendorKey] || item.vendor;
+      return `<tr>
+        <td><div class="mgr-item-name">${item.name}${prefBadge}</div><div class="mgr-item-use">${item.usedIn || ''}</div></td>
+        <td><span class="mgr-vendor-tag" style="background:${vc}">${vl}</span></td>
+        <td>${item.pack}</td>
+        <td>${item.portionSize}</td>
+        <td>${item.portionsPerCase ? item.portionsPerCase.toLocaleString() : '—'}</td>
+        <td>${item.casePrice ? '$' + item.casePrice.toFixed(2) : '—'}</td>
+        <td>${portNote}</td>
+        <td class="mgr-qty-cell">${qty}</td>
+        <td>${estCost}</td>
+      </tr>`;
+    }).join('');
+    return `<div class="mgr-cat-block">
+      <div class="mgr-cat-header" style="border-left-color:${cat.color}">
+        <i class="fa-solid ${cat.icon}" style="color:${cat.color}"></i>
+        <span>${cat.category}</span>
+      </div>
+      <div class="mgr-table-wrap">
+        <table class="mgr-order-table">
+          <thead><tr>
+            <th>Item</th><th>Vendor</th><th>Pack</th><th>Portion Size</th>
+            <th>Portions/Case</th><th>Case Price</th><th>Cost/Portion</th>
+            <th>28-Day Cases<br><small>(${fp.population.toLocaleString()} pop)</small></th>
+            <th>Est. 28-Day Cost</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  // ── budget breakdown ──────────────────────────────────────
+  const bv = fp.budgetByVendor;
+  const bc = fp.budgetByCategory;
+  const vendorRows = Object.entries(bv).map(([k,v]) => {
+    const vc = vendorColors[k] || '#64748b';
+    const vl = vendorLabels[k] || k;
+    return `<div class="mgr-budget-vendor">
+      <span class="mgr-vendor-dot" style="background:${vc}"></span>
+      <span class="mgr-budget-vendor-name">${vl}</span>
+      <span class="mgr-budget-vendor-amt">$${v.toLocaleString()}/wk</span>
+      <div class="mgr-budget-track">
+        <div class="mgr-budget-fill" style="width:${Math.round(v/fp.weeklyFoodBudget*100)}%;background:${vc}"></div>
+      </div>
+    </div>`;
+  }).join('');
+  const catLabels = {protein:'Protein',vegetable:'Vegetable',starch:'Starch',bread:'Bread & Bakery',breakfast:'Breakfast',dairy:'Dairy',produce:'Fresh Produce',dry:'Dry Goods'};
+  const catRows = Object.entries(bc).map(([k,v]) => {
+    if (!v) return '';
+    return `<div class="mgr-budget-cat">
+      <span class="mgr-budget-cat-name">${catLabels[k]||k}</span>
+      <div class="mgr-budget-track"><div class="mgr-budget-fill" style="width:${Math.round(v/fp.weeklyFoodBudget*100)}%;background:#3b82f6"></div></div>
+      <span class="mgr-budget-cat-amt">$${v.toLocaleString()}</span>
+    </div>`;
+  }).filter(Boolean).join('');
+
+  const weeklyMeals = fp.population * 21;
+  const targetCostTotal = (fp.targetCostPerMeal * weeklyMeals).toLocaleString('en-US', {maximumFractionDigits:0});
+
+  el.innerHTML = `
+  <div class="mgr-controls no-print">
+    <button class="mgr-print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+    <span class="mgr-hint">Use your browser's Print → Save as PDF for a clean manager copy</span>
+  </div>
+
+  <div class="mgr-doc">
+
+    <!-- PAGE 1: Header + Menu Rotation -->
+    <div class="mgr-page">
+      <div class="mgr-header">
+        <div class="mgr-header-left">
+          <div class="mgr-facility-name">${fp.label.toUpperCase()}</div>
+          <div class="mgr-facility-sub">Industry Standard Food Service — Manager Operations Guide</div>
+          <div class="mgr-facility-date">Effective: April 2026 · Revised each rotation</div>
+        </div>
+        <div class="mgr-header-right">
+          <div class="mgr-kpi">
+            <span class="mgr-kpi-val">${fp.population.toLocaleString()}</span>
+            <span class="mgr-kpi-lbl">Population</span>
+          </div>
+          <div class="mgr-kpi">
+            <span class="mgr-kpi-val">$${fp.weeklyFoodBudget.toLocaleString()}</span>
+            <span class="mgr-kpi-lbl">Weekly Food Budget</span>
+          </div>
+          <div class="mgr-kpi">
+            <span class="mgr-kpi-val">$${fp.targetCostPerMeal.toFixed(2)}</span>
+            <span class="mgr-kpi-lbl">Target / Meal</span>
+          </div>
+          <div class="mgr-kpi">
+            <span class="mgr-kpi-val">${weeklyMeals.toLocaleString()}</span>
+            <span class="mgr-kpi-lbl">Meals / Week</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mgr-rule-strip">
+        <div class="mgr-rule-item"><i class="fa-solid fa-circle-check"></i> Target ≤ $${fp.targetCostPerMeal.toFixed(2)}/meal</div>
+        <div class="mgr-rule-item mgr-rule-warn"><i class="fa-solid fa-triangle-exclamation"></i> Alert > $${fp.alertCostPerMeal.toFixed(2)}/meal</div>
+        <div class="mgr-rule-item"><i class="fa-solid fa-calendar-week"></i> 2-Week Rotation · Repeat cycle</div>
+        <div class="mgr-rule-item"><i class="fa-solid fa-star"></i> Week 1 dinner: 2 Beef Patty + 1 Chicken · Week 2: 2 Chicken + 1 Beef</div>
+      </div>
+
+      <div class="mgr-section-title"><i class="fa-solid fa-calendar-days"></i> Week 1 — Population Menu</div>
+      ${menuWeekTable(MENU_ROTATION[0])}
+
+      <div class="mgr-section-title" style="margin-top:28px"><i class="fa-solid fa-calendar-days"></i> Week 2 — Population Menu</div>
+      ${menuWeekTable(MENU_ROTATION[1])}
+    </div>
+
+    <!-- PAGE 2: Order Guide -->
+    <div class="mgr-page mgr-page-order">
+      <div class="mgr-page-heading">
+        <i class="fa-solid fa-boxes-stacked"></i>
+        Master Order Guide — ${fp.label}
+        <span class="mgr-page-heading-sub">28-day case quantities scaled to ${fp.population.toLocaleString()} population · Order every 2 weeks</span>
+      </div>
+      <div class="mgr-order-note">
+        <strong>How to use:</strong> The "28-Day Cases" column is your order quantity for a full 28-day cycle.
+        For a 2-week order, divide by 2. All prices are current as of April 2026 — verify market items (eggs, turkey, milk) before each order.
+        <strong>Preferred vendor items</strong> are marked ✓. Do not substitute preferred vendors without manager approval.
+      </div>
+      ${ORDER_GUIDE.map(orderGuideSection).join('')}
+    </div>
+
+    <!-- PAGE 3: Budget Parameters -->
+    <div class="mgr-page">
+      <div class="mgr-page-heading">
+        <i class="fa-solid fa-scale-balanced"></i>
+        Weekly Budget Parameters — ${fp.label}
+        <span class="mgr-page-heading-sub">Stay within these targets every week · Flag overages to the director before next order</span>
+      </div>
+
+      <div class="mgr-budget-grid">
+        <div class="mgr-budget-card">
+          <div class="mgr-budget-card-title"><i class="fa-solid fa-building-columns"></i> Total Weekly Food Budget</div>
+          <div class="mgr-budget-total">$${fp.weeklyFoodBudget.toLocaleString()}</div>
+          <div class="mgr-budget-sub">${fp.population.toLocaleString()} population × 21 meals × $${fp.targetCostPerMeal.toFixed(2)} target = $${targetCostTotal} food cost</div>
+        </div>
+
+        <div class="mgr-budget-card">
+          <div class="mgr-budget-card-title"><i class="fa-solid fa-truck"></i> Budget by Vendor</div>
+          ${vendorRows}
+        </div>
+
+        <div class="mgr-budget-card">
+          <div class="mgr-budget-card-title"><i class="fa-solid fa-tags"></i> Budget by Category</div>
+          ${catRows}
+        </div>
+      </div>
+
+      <div class="mgr-rules-block">
+        <div class="mgr-rules-title"><i class="fa-solid fa-clipboard-check"></i> Manager Operating Rules</div>
+        <ol class="mgr-rules-list">
+          <li><strong>Order twice per month</strong> — split 28-day quantities into two equal orders, adjusted for actual usage.</li>
+          <li><strong>Never exceed $${fp.alertCostPerMeal.toFixed(2)}/meal</strong> — if a day's cost exceeds this, log it and report to the director by end of shift.</li>
+          <li><strong>Protein rotation is mandatory</strong> — Week 1: Beef Patty (Tue, Wed) + Chicken Fritter (Fri). Week 2: Chicken Fritter (Tue, Sat) + Beef Patty (Wed). Do not swap without prior approval.</li>
+          <li><strong>No patties at lunch</strong> — lunch is sandwich protein only (bologna, salami, turkey, PB&amp;J). Reserve beef and chicken patties for dinner.</li>
+          <li><strong>Verify market prices before each order</strong> — eggs, turkey, and milk are market-priced and can fluctuate. Get a quote from Forest Wood for milk every order cycle.</li>
+          <li><strong>Preferred vendors are locked</strong> — switch only if a vendor is out of stock. Document any substitution on the order log and notify the director.</li>
+          <li><strong>Cornbread at every lunch and dinner</strong> — it is a budget filler and calorie anchor. Never remove it from the menu.</li>
+          <li><strong>Log actual cost per meal daily</strong> — use the weekly food cost form. Turn in completed forms to the director every Friday.</li>
+        </ol>
+      </div>
+
+      <div class="mgr-contact-block">
+        <div class="mgr-contact-title">Quick Reference</div>
+        <div class="mgr-contact-grid">
+          <div class="mgr-contact-item"><strong>Shaver ISP</strong><br>Primary vendor · Place order online or by phone<br>Budget: $${bv.shaver.toLocaleString()}/wk</div>
+          <div class="mgr-contact-item"><strong>Big Daddy Foods</strong><br>Burger patties + bulk proteins<br>Budget: $${bv.bigDaddy.toLocaleString()}/wk</div>
+          <div class="mgr-contact-item"><strong>PFG</strong><br>Rice, flour, pinto beans, eggs, turkey<br>Budget: $${bv.pfg.toLocaleString()}/wk</div>
+          <div class="mgr-contact-item"><strong>Forest Wood</strong><br>Milk &amp; fresh produce · Quote each order<br>Budget: $${bv.forestWood.toLocaleString()}/wk</div>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+function renderManagerTabs() {
+  renderManagerTab('birmingham');
+  renderManagerTab('bessemer');
+}
+
 /* ── Init ─────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
@@ -4173,6 +4431,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBidTracker();
   renderFinancials();
   renderBrief();
+  renderManagerTabs();
   renderMenuRotation();
   renderMenuOrderList();
   renderCafeAnalysis();
