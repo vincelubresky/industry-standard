@@ -1046,45 +1046,45 @@ const FINANCIALS = {
    Edit here — grid re-renders instantly.
    ============================================================ */
 const MENU_ROTATION = [
-  // LUNCH  = sandwich + veg side + cornbread + cake
-  //          5-item rotation: Bologna · Salami · Peanut Butter · Jelly · Turkey (least)
-  //          Spread: each of bologna/salami/PB/jelly = 3×, turkey = 2× across both weeks
-  // DINNER = hot entrée + cornbread always
+  // LUNCH  = protein + 2 slices bread + side + cornbread + cake
+  //          4-item rotation: Bologna · Salami · PB&J · Turkey (least)
+  //          Spread over 14 days: Bologna ×4 · Salami ×4 · PB&J ×4 · Turkey ×2
+  //          Sides vary: green beans · peas & carrots · mixed veg · carrots · corn ·
+  //            broccoli · okra · pasta salad · mashed potatoes · pinto beans · northern beans
+  // DINNER = hot entrée + cornbread + 1 veg side + cake or cookie (every dinner)
   //          Patty rotation — Week 1: 2 beef + 1 chicken · Week 2: 1 beef + 2 chicken
-  //          Non-patty entrées: Lasagna, Spaghetti, Chicken Casserole, Cheesy Chicken Bake,
-  //          Red Beans, Black Bean & Rice, Pinto Beans, Northern Beans
   {
     week: 1, label: "Week 1",
     // Dinner patties → Tue: Beef · Fri: Chicken · Sun: Beef  (2 beef + 1 chicken)
     days: [
       { day: "Monday",
-        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",        sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.52", cal: 640 },
-        lunch:     { main: "Bologna Sandwich",                  protein: "Bologna",         sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.42", cal: 780 },
-        dinner:    { main: "Pinto Beans & Rice",                 protein: "Beans",           sides: ["Cornbread"],                                    cost: "$0.28", cal: 860 } },
+        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",        sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
+        lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Peas & Carrots","Cornbread","Cake"],                 cost: "$0.44", cal: 790 },
+        dinner:    { main: "Pinto Beans & Rice",                protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.36", cal: 940 } },
       { day: "Tuesday",
-        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Peanut Butter Sandwich",            protein: "Peanut Butter",   sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.38", cal: 760 },
-        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Mixed Veg"],                        cost: "$0.58", cal: 940 } },
+        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
+        lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Green Beans","Cornbread","Cake"],                    cost: "$0.42", cal: 790 },
+        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Carrots","Cake"],                        cost: "$0.66", cal: 1020 } },
       { day: "Wednesday",
-        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Salami Sandwich",                   protein: "Salami",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.44", cal: 790 },
-        dinner:    { main: "Lasagna w/ Ground Beef",            protein: "Beef",            sides: ["Cornbread","Green Beans"],                      cost: "$0.62", cal: 980 } },
+        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.55", cal: 710 },
+        lunch:     { main: "Salami, 2 Slices Bread",            protein: "Salami",          sides: ["Pasta Salad","Cornbread","Cake"],                    cost: "$0.48", cal: 820 },
+        dinner:    { main: "Lasagna w/ Ground Beef",            protein: "Beef",            sides: ["Cornbread","Green Beans","Cookie"],                  cost: "$0.70", cal: 1060 } },
       { day: "Thursday",
-        breakfast: { main: "Grits + 2 Boiled Eggs",             protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.45", cal: 600 },
-        lunch:     { main: "Jelly Sandwich",                    protein: "Jelly",           sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.28", cal: 700 },
-        dinner:    { main: "Northern Beans & Rice",              protein: "Beans",           sides: ["Cornbread"],                                    cost: "$0.28", cal: 860 } },
+        breakfast: { main: "Grits + 2 Boiled Eggs",             protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.45", cal: 600 },
+        lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Corn","Cornbread","Cake"],                           cost: "$0.44", cal: 810 },
+        dinner:    { main: "Northern Beans & Rice",             protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.36", cal: 940 } },
       { day: "Friday",
-        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.52", cal: 640 },
-        lunch:     { main: "Bologna Sandwich",                  protein: "Bologna",         sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.42", cal: 780 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
+        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
+        lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Broccoli","Cornbread","Cake"],                       cost: "$0.46", cal: 800 },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread","Mixed Veg","Cake"],                      cost: "$0.62", cal: 1110 } },
       { day: "Saturday",
-        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Turkey Sandwich",                   protein: "Turkey",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.52", cal: 820 },
-        dinner:    { main: "Chicken & Rice Casserole",          protein: "Chicken",         sides: ["Cornbread","Peas & Carrots"],                   cost: "$0.60", cal: 950 } },
+        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
+        lunch:     { main: "Turkey, 2 Slices Bread",            protein: "Turkey",          sides: ["Mashed Potatoes","Cornbread","Cake"],                cost: "$0.58", cal: 870 },
+        dinner:    { main: "Chicken & Rice Casserole",          protein: "Chicken",         sides: ["Cornbread","Okra","Cookie"],                         cost: "$0.68", cal: 1040 } },
       { day: "Sunday",
-        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Salami Sandwich",                   protein: "Salami",          sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.44", cal: 790 },
-        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Mixed Veg"],                        cost: "$0.58", cal: 940 } }
+        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.55", cal: 710 },
+        lunch:     { main: "Salami, 2 Slices Bread",            protein: "Salami",          sides: ["Pinto Beans","Cornbread","Cake"],                    cost: "$0.46", cal: 840 },
+        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Peas & Carrots","Cake"],                 cost: "$0.66", cal: 1020 } }
     ]
   },
   {
@@ -1092,33 +1092,33 @@ const MENU_ROTATION = [
     // Dinner patties → Tue: Chicken · Wed: Beef · Sat: Chicken  (1 beef + 2 chicken)
     days: [
       { day: "Monday",
-        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.52", cal: 640 },
-        lunch:     { main: "Peanut Butter Sandwich",            protein: "Peanut Butter",   sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.38", cal: 760 },
-        dinner:    { main: "Red Beans & Rice",                   protein: "Beans",           sides: ["Cornbread"],                                    cost: "$0.30", cal: 860 } },
+        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
+        lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Northern Beans","Cornbread","Cake"],                 cost: "$0.44", cal: 830 },
+        dinner:    { main: "Red Beans & Rice",                  protein: "Beans",           sides: ["Cornbread","Cake"],                                  cost: "$0.38", cal: 940 } },
       { day: "Tuesday",
-        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Jelly Sandwich",                    protein: "Jelly",           sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.28", cal: 700 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
+        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
+        lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Mixed Veg","Cornbread","Cake"],                      cost: "$0.44", cal: 800 },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread","Corn","Cake"],                           cost: "$0.62", cal: 1110 } },
       { day: "Wednesday",
-        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Bologna Sandwich",                  protein: "Bologna",         sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.42", cal: 780 },
-        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Mixed Veg"],                        cost: "$0.58", cal: 940 } },
+        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.55", cal: 710 },
+        lunch:     { main: "PB&J, 2 Slices Bread",             protein: "Peanut Butter",   sides: ["Carrots","Cornbread","Cake"],                        cost: "$0.42", cal: 800 },
+        dinner:    { main: "Beef Patty & Brown Gravy",          protein: "Beef",            sides: ["Cornbread","Broccoli","Cookie"],                     cost: "$0.68", cal: 1040 } },
       { day: "Thursday",
-        breakfast: { main: "Grits + 2 Boiled Eggs",             protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.45", cal: 600 },
-        lunch:     { main: "Salami Sandwich",                   protein: "Salami",          sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.44", cal: 790 },
-        dinner:    { main: "Spaghetti w/ Meat Sauce",           protein: "Beef",            sides: ["Cornbread","Green Beans"],                      cost: "$0.52", cal: 980 } },
+        breakfast: { main: "Grits + 2 Boiled Eggs",             protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.45", cal: 600 },
+        lunch:     { main: "Salami, 2 Slices Bread",            protein: "Salami",          sides: ["Green Beans","Cornbread","Cake"],                    cost: "$0.46", cal: 800 },
+        dinner:    { main: "Spaghetti w/ Meat Sauce",           protein: "Beef",            sides: ["Cornbread","Green Beans","Cake"],                    cost: "$0.60", cal: 1060 } },
       { day: "Friday",
-        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.52", cal: 640 },
-        lunch:     { main: "Peanut Butter Sandwich",            protein: "Peanut Butter",   sides: ["Green Beans","Cornbread","Cake"],               cost: "$0.38", cal: 760 },
-        dinner:    { main: "Cheesy Chicken Bake + Rice",        protein: "Chicken",         sides: ["Cornbread","Peas & Carrots"],                   cost: "$0.62", cal: 960 } },
+        breakfast: { main: "Grits + Sausage Patty",             protein: "Sausage",         sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.52", cal: 640 },
+        lunch:     { main: "Salami, 2 Slices Bread",            protein: "Salami",          sides: ["Pasta Salad","Cornbread","Cake"],                    cost: "$0.48", cal: 820 },
+        dinner:    { main: "Cheesy Chicken Bake + Rice",        protein: "Chicken",         sides: ["Cornbread","Peas & Carrots","Cake"],                 cost: "$0.72", cal: 1040 } },
       { day: "Saturday",
-        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.48", cal: 620 },
-        lunch:     { main: "Turkey Sandwich",                   protein: "Turkey",          sides: ["Peas & Carrots","Cornbread","Cake"],            cost: "$0.52", cal: 820 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread"],                                    cost: "$0.52", cal: 1020 } },
+        breakfast: { main: "Oatmeal + 2 Boiled Eggs",           protein: "Eggs",            sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.48", cal: 620 },
+        lunch:     { main: "Turkey, 2 Slices Bread",            protein: "Turkey",          sides: ["Okra","Cornbread","Cake"],                           cost: "$0.56", cal: 850 },
+        dinner:    { main: "Chicken Fritter & Gravy over Rice", protein: "Chicken",         sides: ["Cornbread","Carrots","Cookie"],                      cost: "$0.62", cal: 1110 } },
       { day: "Sunday",
-        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],             cost: "$0.55", cal: 710 },
-        lunch:     { main: "Jelly Sandwich",                    protein: "Jelly",           sides: ["Mixed Veg","Cornbread","Cake"],                 cost: "$0.28", cal: 700 },
-        dinner:    { main: "Black Bean & Rice Bowl w/ Ground Beef", protein: "Beef",        sides: ["Cornbread"],                                    cost: "$0.58", cal: 950 } }
+        breakfast: { main: "Eggs Scrambled + Sausage",          protein: "Eggs & Sausage",  sides: ["Bread (2 sl)","Jelly","Drink Mix"],                  cost: "$0.55", cal: 710 },
+        lunch:     { main: "Bologna, 2 Slices Bread",           protein: "Bologna",         sides: ["Mashed Potatoes","Cornbread","Cake"],                cost: "$0.48", cal: 850 },
+        dinner:    { main: "Black Bean & Rice Bowl w/ Ground Beef", protein: "Beef",        sides: ["Cornbread","Mixed Veg","Cake"],                      cost: "$0.66", cal: 1040 } }
     ]
   }
 ];
