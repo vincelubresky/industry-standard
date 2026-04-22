@@ -682,7 +682,7 @@ function switchTab(tab, persist = true) {
   if (calcSection) calcSection.style.display = (tab === 'calculator') ? 'block' : 'none';
 
   document.querySelectorAll('.report-section').forEach(s => {
-    s.style.display = (tab === 'report') ? 'block' : 'none';
+    s.style.display = (tab === 'financials') ? 'block' : 'none';
   });
 
   document.querySelectorAll('.cafe-section').forEach(s => {
@@ -716,19 +716,9 @@ function switchTab(tab, persist = true) {
   const bessWrap = document.getElementById('bessemer-wrap');
   if (bessWrap) bessWrap.style.display = (tab === 'bessemer') ? 'block' : 'none';
 
-  // Show/hide menus
-  const menusWrap = document.getElementById('menus-wrap');
-  if (menusWrap) menusWrap.style.display = (tab === 'menus') ? 'block' : 'none';
-
   // Show/hide tab-specific nav labels and items
-  document.querySelectorAll('.nav-section-label[data-tab="report"], .nav-item[data-tab="report"]').forEach(el => {
-    el.style.display = (tab === 'report') ? '' : 'none';
-  });
   document.querySelectorAll('.nav-section-label[data-tab="bids"], .nav-item[data-tab="bids"]').forEach(el => {
     el.style.display = (tab === 'bids') ? '' : 'none';
-  });
-  document.querySelectorAll('.nav-section-label[data-tab="menus"], .nav-item[data-tab="menus"]').forEach(el => {
-    el.style.display = (tab === 'menus') ? '' : 'none';
   });
   document.querySelectorAll('.nav-section-label[data-tab="cafe"], .nav-item[data-tab="cafe"]').forEach(el => {
     el.style.display = (tab === 'cafe') ? '' : 'none';
@@ -761,8 +751,8 @@ function switchTab(tab, persist = true) {
     const el = document.querySelector('.nav-item[data-tab="calculator"]');
     if (el) el.classList.add('active');
   }
-  if (tab === 'report') {
-    const el = document.querySelector('.nav-item[href="#report-overview"]');
+  if (tab === 'financials') {
+    const el = document.querySelector('.nav-item[href="#fin-snapshot"]');
     if (el) el.classList.add('active');
   }
   if (tab === 'bids') {
@@ -786,8 +776,8 @@ function switchTab(tab, persist = true) {
     if (el) el.classList.add('active');
   }
 
-  // Render report charts when switching to report tab
-  if (tab === 'report') setTimeout(renderReportCharts, 80);
+  // Render report charts when switching to financials tab
+  if (tab === 'financials') setTimeout(renderReportCharts, 80);
 
   // Scroll to top on switch
   window.scrollTo({ top: 0, behavior: 'smooth' });

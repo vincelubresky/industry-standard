@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css?v=28">
+  <link rel="stylesheet" href="css/styles.css?v=29">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.7.0/jspdf.plugin.autotable.min.js"></script>
@@ -40,21 +40,13 @@
     <a href="#monthly-savings" class="nav-item" data-tab="analysis"><i class="fa-solid fa-piggy-bank"></i>Monthly Savings<span class="nav-badge amber">$1K+</span></a>
     <a href="#priority-actions" class="nav-item" data-tab="analysis"><i class="fa-solid fa-bullseye"></i>Priority Actions<span class="nav-badge red">12</span></a>
     <a href="#full-catalog" class="nav-item" data-tab="analysis"><i class="fa-solid fa-book-open"></i>Shaver Catalog</a>
+    <a href="#protein-sourcing" class="nav-item" data-tab="analysis"><i class="fa-solid fa-tag"></i>Protein Sourcing</a>
+    <a href="#meal-ideas" class="nav-item" data-tab="analysis"><i class="fa-solid fa-lightbulb"></i>Meal Ideas Library</a>
+    <a href="#bd-invoice" class="nav-item" data-tab="analysis"><i class="fa-solid fa-file-invoice-dollar"></i>Big Daddy Invoice</a>
     <div class="nav-section-label">Documents</div>
     <a href="population-menu.html" target="_blank" class="nav-item"><i class="fa-solid fa-utensils"></i>Printable Menu <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <a href="vendor-order-guide.html" target="_blank" class="nav-item"><i class="fa-solid fa-file-invoice-dollar"></i>Vendor Order Guide <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
     <a href="shaver-order-list.html" target="_blank" class="nav-item"><i class="fa-solid fa-clipboard-list"></i>Shaver Order List <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px;margin-left:2px;opacity:0.5"></i></a>
-    <div class="nav-section-label" data-tab="menus">Menus</div>
-    <a href="#menu-rotation" class="nav-item" data-tab="menus"><i class="fa-solid fa-calendar-week"></i>2-Week Rotation</a>
-    <a href="#meal-ideas" class="nav-item" data-tab="menus"><i class="fa-solid fa-lightbulb"></i>Meal Ideas Library</a>
-    <a href="#protein-sourcing" class="nav-item" data-tab="menus"><i class="fa-solid fa-tag"></i>Protein Sourcing</a>
-    <a href="#bd-invoice" class="nav-item" data-tab="menus"><i class="fa-solid fa-file-invoice-dollar"></i>Big Daddy Invoice</a>
-    <div class="nav-section-label" data-tab="report">Weekly Report</div>
-    <a href="#report-overview"  class="nav-item" data-tab="report"><i class="fa-solid fa-gauge-high"></i>Overview</a>
-    <a href="#report-revenue"   class="nav-item" data-tab="report"><i class="fa-solid fa-dollar-sign"></i>Revenue</a>
-    <a href="#report-cogs"      class="nav-item" data-tab="report"><i class="fa-solid fa-boxes-stacked"></i>COGS</a>
-    <a href="#report-net"       class="nav-item" data-tab="report"><i class="fa-solid fa-chart-line"></i>Net Margins</a>
-    <a href="#report-payroll"   class="nav-item" data-tab="report"><i class="fa-solid fa-users"></i>Payroll &amp; Net</a>
     <div class="nav-section-label" data-tab="ceo">Executive View</div>
     <a href="#ceo-summary"    class="nav-item" data-tab="ceo"><i class="fa-solid fa-gauge-high"></i>Summary</a>
     <a href="#ceo-scorecard"  class="nav-item" data-tab="ceo"><i class="fa-solid fa-table-cells-large"></i>Profitability Scorecard</a>
@@ -80,6 +72,12 @@
     <a href="#fin-cashflow"  class="nav-item" data-tab="financials"><i class="fa-solid fa-water"></i>Cash Flow</a>
     <a href="#fin-ar"        class="nav-item" data-tab="financials"><i class="fa-solid fa-arrow-down-to-bracket"></i>A/R Aging</a>
     <a href="#fin-ap"        class="nav-item" data-tab="financials"><i class="fa-solid fa-arrow-up-from-bracket"></i>A/P Aging</a>
+    <div class="nav-section-label" data-tab="financials">Weekly Report</div>
+    <a href="#report-overview"  class="nav-item" data-tab="financials"><i class="fa-solid fa-gauge-high"></i>Overview</a>
+    <a href="#report-revenue"   class="nav-item" data-tab="financials"><i class="fa-solid fa-dollar-sign"></i>Revenue</a>
+    <a href="#report-cogs"      class="nav-item" data-tab="financials"><i class="fa-solid fa-boxes-stacked"></i>COGS</a>
+    <a href="#report-net"       class="nav-item" data-tab="financials"><i class="fa-solid fa-chart-line"></i>Net Margins</a>
+    <a href="#report-payroll"   class="nav-item" data-tab="financials"><i class="fa-solid fa-users"></i>Payroll &amp; Net</a>
     <div class="nav-section-label" data-tab="bids">Bid Tracker</div>
     <a href="#bids-won"      class="nav-item" data-tab="bids"><i class="fa-solid fa-circle-check"></i>Active Contracts<span class="nav-badge" style="background:rgba(34,197,94,0.2);color:#22c55e">1</span></a>
     <a href="#bids-open"     class="nav-item" data-tab="bids"><i class="fa-solid fa-exclamation-circle"></i>Verify Now<span class="nav-badge amber">1</span></a>
@@ -118,10 +116,7 @@
     <button class="tab-btn active" data-tab="ceo" onclick="switchTab('ceo')">
       <i class="fa-solid fa-gauge-high"></i>Summary
     </button>
-    <button class="tab-btn" data-tab="menus" onclick="switchTab('menus')">
-      <i class="fa-solid fa-utensils"></i>Menu
-    </button>
-    <button class="tab-btn" data-tab="report" onclick="switchTab('report')">
+    <button class="tab-btn" data-tab="financials" onclick="switchTab('financials')">
       <i class="fa-solid fa-chart-line"></i>Financials
     </button>
     <button class="tab-btn" data-tab="cafe" onclick="switchTab('cafe')">
@@ -135,9 +130,6 @@
     </button>
     <button class="tab-btn" data-tab="analysis" onclick="switchTab('analysis')">
       <i class="fa-solid fa-arrows-rotate"></i>Vendors
-    </button>
-    <button class="tab-btn" data-tab="financials" onclick="switchTab('financials')">
-      <i class="fa-solid fa-chart-line"></i>Financials
     </button>
     <button class="tab-btn" data-tab="brief" onclick="switchTab('brief')">
       <i class="fa-solid fa-file-contract"></i>Brief
@@ -989,6 +981,56 @@
 
   </section>
 
+  <!-- Protein Sourcing (moved from Menus tab) -->
+  <section class="section analysis-section" style="display:none" id="protein-sourcing">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:rgba(59,130,246,.12)"><i class="fa-solid fa-tag" style="color:var(--accent)"></i></div>
+        <div>
+          <div class="section-title">Protein Sourcing — Vendor Comparison</div>
+          <div class="section-subtitle">PFG (current) · Shaver ISP · Big Daddy Bulk — per-serving cost for each protein in rotation</div>
+        </div>
+      </div>
+    </div>
+    <div id="pfgSummaryContainer"></div>
+    <div id="proteinVendorsContainer"></div>
+  </section>
+
+  <!-- Meal Ideas Library (moved from Menus tab) -->
+  <section class="section analysis-section" style="display:none" id="meal-ideas">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon amber"><i class="fa-solid fa-lightbulb"></i></div>
+        <div>
+          <div class="section-title">Meal Ideas Library</div>
+          <div class="section-subtitle">Ideas to pull from for future rotation cycles</div>
+        </div>
+      </div>
+    </div>
+    <div id="mealIdeasContainer"></div>
+  </section>
+
+  <!-- Big Daddy Invoice (moved from Menus tab) -->
+  <section class="section analysis-section" style="display:none" id="bd-invoice">
+    <div class="section-header">
+      <div class="section-title-group">
+        <div class="section-icon" style="background:rgba(245,158,11,.12)"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--amber)"></i></div>
+        <div>
+          <div class="section-title">Big Daddy Foods — Invoice Detail</div>
+          <div class="section-subtitle">S.O. BA24865 · 4/9/2026 · Every price computed at 2 oz · 3 oz · 4 oz servings · annual savings vs PFG &amp; Shaver</div>
+        </div>
+      </div>
+    </div>
+    <div class="bd-inmate-bar">
+      <i class="fa-solid fa-users" style="color:var(--amber)"></i>
+      <span>Annual savings calculated for</span>
+      <input type="number" id="bdInmateInput" value="1400" min="1" max="9999" class="bd-inmate-input">
+      <span>inmates</span>
+      <span class="bd-inmate-hint">&nbsp;&mdash; adjust to match your facility population</span>
+    </div>
+    <div id="bdInvoiceContainer"></div>
+  </section>
+
   <div style="height:40px"></div>
 
   <!-- ══════════════════════════════════════
@@ -1407,56 +1449,6 @@
       <div id="menuGrid"></div>
     </section>
 
-    <!-- Meal Ideas Library -->
-    <section class="section" id="meal-ideas">
-      <div class="section-header">
-        <div class="section-title-group">
-          <div class="section-icon amber"><i class="fa-solid fa-lightbulb"></i></div>
-          <div>
-            <div class="section-title">Meal Ideas Library</div>
-            <div class="section-subtitle">Ideas to pull from for future rotation cycles</div>
-          </div>
-        </div>
-      </div>
-      <div id="mealIdeasContainer"></div>
-    </section>
-
-    <!-- Protein Sourcing -->
-    <section class="section" id="protein-sourcing">
-      <div class="section-header">
-        <div class="section-title-group">
-          <div class="section-icon" style="background:rgba(59,130,246,.12)"><i class="fa-solid fa-tag" style="color:var(--accent)"></i></div>
-          <div>
-            <div class="section-title">Protein Sourcing — Vendor Comparison</div>
-            <div class="section-subtitle">PFG (current) · Shaver ISP · Big Daddy Bulk — per-serving cost for each protein in rotation</div>
-          </div>
-        </div>
-      </div>
-      <div id="pfgSummaryContainer"></div>
-      <div id="proteinVendorsContainer"></div>
-    </section>
-
-    <!-- Big Daddy Invoice Detail -->
-    <section class="section" id="bd-invoice">
-      <div class="section-header">
-        <div class="section-title-group">
-          <div class="section-icon" style="background:rgba(245,158,11,.12)"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--amber)"></i></div>
-          <div>
-            <div class="section-title">Big Daddy Foods — Invoice Detail</div>
-            <div class="section-subtitle">S.O. BA24865 · 4/9/2026 · Every price computed at 2 oz · 3 oz · 4 oz servings · annual savings vs PFG &amp; Shaver</div>
-          </div>
-        </div>
-      </div>
-      <div class="bd-inmate-bar">
-        <i class="fa-solid fa-users" style="color:var(--amber)"></i>
-        <span>Annual savings calculated for</span>
-        <input type="number" id="bdInmateInput" value="1400" min="1" max="9999" class="bd-inmate-input">
-        <span>inmates</span>
-        <span class="bd-inmate-hint">&nbsp;&mdash; adjust to match your facility population</span>
-      </div>
-      <div id="bdInvoiceContainer"></div>
-    </section>
-
   </div><!-- /menus-wrap -->
 
   <div id="bid-tracker-wrap">
@@ -1748,7 +1740,7 @@
      ══════════════════════════════════════ -->
 <div id="print-menu-wrap"></div>
 
-<script src="js/data.js?v=28"></script>
-<script src="js/app.js?v=28"></script>
+<script src="js/data.js?v=29"></script>
+<script src="js/app.js?v=29"></script>
 </body>
 </html>
