@@ -1055,7 +1055,7 @@ const MENU_ROTATION = [
   //          Patty rotation — Week 1: 2 beef + 1 chicken · Week 2: 1 beef + 2 chicken
   {
     week: 1, label: "Week 1",
-    // Dinner patties → Tue: Beef · Fri: Chicken · Sun: Beef  (2 beef + 1 chicken)
+    // Dinner patties → Tue: Chicken Patty · Fri: Chicken Patty · Sun: Beef  (1 beef + 2 chicken patty)
     days: [
       { day: "Monday",
         breakfast: { main: "Grits + Sausage Patty",              protein: "Sausage",        ingredients: ["Grits","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                        sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.52", cal: 640 },
@@ -1064,7 +1064,7 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Bread","Jelly Packets","Drink Mix"],                                               sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.48", cal: 620 },
         lunch:     { main: "PB&J, 2 Slices Bread",              protein: "Peanut Butter",  ingredients: ["Peanut Butter","Jelly","Bread","Instant Mashed Potatoes","Green Beans","Cake Mix"],             sides: ["Mashed Potatoes","Green Beans","Cake"],       cost: "$0.42", cal: 790 },
-        dinner:    { main: "Beef Patty & Brown Gravy",           protein: "Beef",           ingredients: ["Beef Patties","Brown Gravy Mix","Cornbread Mix","Carrots","Cake Mix"],                              sides: ["Cornbread","Carrots","Cake"],                 cost: "$0.66", cal: 1020 } },
+        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Carrots","Cake Mix"],                          sides: ["Cornbread","Carrots","Cake"],                 cost: "$0.65", cal: 1010 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",           protein: "Eggs & Sausage", ingredients: ["Eggs","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                      sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.55", cal: 710 },
         lunch:     { main: "Salami, 2 Slices Bread",             protein: "Salami",         ingredients: ["Salami","Bread","Northern Beans","Peas & Carrots","Cake Mix"],                                sides: ["Northern Beans","Peas & Carrots","Cake"],     cost: "$0.48", cal: 820 },
@@ -1076,7 +1076,7 @@ const MENU_ROTATION = [
       { day: "Friday",
         breakfast: { main: "Grits + Sausage Patty",              protein: "Sausage",        ingredients: ["Grits","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                    sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.52", cal: 640 },
         lunch:     { main: "Bologna, 2 Slices Bread",            protein: "Bologna",        ingredients: ["Bologna","Bread","Instant Mashed Potatoes","Carrots","Cake Mix"],                              sides: ["Mashed Potatoes","Carrots","Cake"],           cost: "$0.46", cal: 810 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice",  protein: "Chicken",        ingredients: ["Chicken Fritters","Brown Gravy Mix","Rice","Cornbread Mix","Mixed Vegetables","Cake Mix"],         sides: ["Cornbread","Mixed Veg","Cake"],               cost: "$0.62", cal: 1110 } },
+        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Mixed Vegetables","Cake Mix"],               sides: ["Cornbread","Mixed Veg","Cake"],               cost: "$0.65", cal: 1010 } },
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Bread","Jelly Packets","Drink Mix"],                                             sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.48", cal: 620 },
         lunch:     { main: "Turkey, 2 Slices Bread",             protein: "Turkey",         ingredients: ["Turkey","Bread","Northern Beans","Corn","Cake Mix"],                                          sides: ["Northern Beans","Corn","Cake"],               cost: "$0.58", cal: 870 },
@@ -1089,7 +1089,7 @@ const MENU_ROTATION = [
   },
   {
     week: 2, label: "Week 2",
-    // Dinner patties → Tue: Chicken · Wed: Beef · Sat: Chicken  (1 beef + 2 chicken)
+    // Dinner patties → Tue: Chicken Patty · Wed: Beef · Sat: Chicken Patty  (1 beef + 2 chicken patty)
     days: [
       { day: "Monday",
         breakfast: { main: "Grits + Sausage Patty",              protein: "Sausage",        ingredients: ["Grits","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                    sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.52", cal: 640 },
@@ -1098,7 +1098,7 @@ const MENU_ROTATION = [
       { day: "Tuesday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Bread","Jelly Packets","Drink Mix"],                                           sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.48", cal: 620 },
         lunch:     { main: "Bologna, 2 Slices Bread",            protein: "Bologna",        ingredients: ["Bologna","Bread","Pasta","Green Beans","Cake Mix"],                                           sides: ["Pasta Salad","Green Beans","Cake"],           cost: "$0.44", cal: 800 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice",  protein: "Chicken",        ingredients: ["Chicken Fritters","Brown Gravy Mix","Rice","Cornbread Mix","Corn","Cake Mix"],                  sides: ["Cornbread","Corn","Cake"],                    cost: "$0.62", cal: 1110 } },
+        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Corn","Cake Mix"],                          sides: ["Cornbread","Corn","Cake"],                    cost: "$0.65", cal: 1010 } },
       { day: "Wednesday",
         breakfast: { main: "Eggs Scrambled + Sausage",           protein: "Eggs & Sausage", ingredients: ["Eggs","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                  sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.55", cal: 710 },
         lunch:     { main: "PB&J, 2 Slices Bread",              protein: "Peanut Butter",  ingredients: ["Peanut Butter","Jelly","Bread","Instant Mashed Potatoes","Corn","Cake Mix"],                   sides: ["Mashed Potatoes","Corn","Cake"],              cost: "$0.42", cal: 800 },
@@ -1114,7 +1114,7 @@ const MENU_ROTATION = [
       { day: "Saturday",
         breakfast: { main: "Oatmeal + 2 Boiled Eggs",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Bread","Jelly Packets","Drink Mix"],                                         sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.48", cal: 620 },
         lunch:     { main: "Turkey, 2 Slices Bread",             protein: "Turkey",         ingredients: ["Turkey","Bread","Pasta","Peas & Carrots","Cake Mix"],                                        sides: ["Pasta Salad","Peas & Carrots","Cake"],        cost: "$0.56", cal: 850 },
-        dinner:    { main: "Chicken Fritter & Gravy over Rice",  protein: "Chicken",        ingredients: ["Chicken Fritters","Brown Gravy Mix","Rice","Cornbread Mix","Carrots","Cookie Mix"],           sides: ["Cornbread","Carrots","Cookie"],               cost: "$0.62", cal: 1110 } },
+        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Carrots","Cookie Mix"],                    sides: ["Cornbread","Carrots","Cookie"],               cost: "$0.65", cal: 1010 } },
       { day: "Sunday",
         breakfast: { main: "Eggs Scrambled + Sausage",           protein: "Eggs & Sausage", ingredients: ["Eggs","Sausage Patties","Bread","Jelly Packets","Drink Mix"],                                sides: ["Bread (2 sl)","Jelly","Drink Mix"],           cost: "$0.55", cal: 710 },
         lunch:     { main: "Bologna, 2 Slices Bread",            protein: "Bologna",        ingredients: ["Bologna","Bread","Instant Mashed Potatoes","Green Beans","Cake Mix"],                        sides: ["Mashed Potatoes","Green Beans","Cake"],       cost: "$0.48", cal: 850 },
@@ -1813,7 +1813,7 @@ const ORDER_GUIDE = [
         alternates: [{ vendor: "PFG",        vendorKey: "pfg",      pack: "3/8 LB", portionSize: "2 oz",  portionsPerCase: 192, casePrice: null,  portionCost: null, note: "Quote — compare before ordering" }] },
       { name: "Salami Chicken Logs",          vendor: "Shaver",     vendorKey: "shaver",     pack: "2/10 LB",       portionSize: "2 oz",     portionsPerCase: 160, casePrice: 31.82, portionCost: 0.20, preferred: true,  cycle28: 8,  usedIn: "Lunch sandwich",
         alternates: [{ vendor: "PFG",        vendorKey: "pfg",      pack: "2/10 LB",portionSize: "2 oz",  portionsPerCase: 160, casePrice: null,  portionCost: null, note: "Quote — compare before ordering" }] },
-      { name: "Chicken Patty Breaded FC 3 oz",vendor: "Shaver",     vendorKey: "shaver",     pack: "40 LB",         portionSize: "3 oz",     portionsPerCase: 213, casePrice: 86.29, portionCost: 0.40, preferred: true,  cycle28: 12, usedIn: "Chicken Fritter Sandwich, Fritter & Gravy",
+      { name: "Chicken Patty Breaded FC 3 oz",vendor: "Shaver",     vendorKey: "shaver",     pack: "40 LB",         portionSize: "3 oz",     portionsPerCase: 213, casePrice: 86.29, portionCost: 0.40, preferred: true,  cycle28: 16, usedIn: "Dinner — Chicken Patty & Brown Gravy (W1 Tue+Fri · W2 Tue+Sat)",
         alternates: [{ vendor: "Big Daddy",  vendorKey: "bigDaddy", pack: "40 LB",  portionSize: "3 oz",  portionsPerCase: 213, casePrice: null,  portionCost: null, note: "Quote — Big Daddy alt option" }] },
       { name: "Burger Patty TVP 3.2 oz",      vendor: "Big Daddy",  vendorKey: "bigDaddy",   pack: "100 ct / 20 LB",portionSize: "1 patty",  portionsPerCase: 100, casePrice: 45.00, portionCost: 0.45, preferred: true,  cycle28: 24, usedIn: "Beef Patty Dinner",
         alternates: [{ vendor: "Shaver",     vendorKey: "shaver",   pack: "40 LB",  portionSize: "1 patty",portionsPerCase: 100, casePrice: null,  portionCost: null, note: "Quote — Shaver beef patty option" }] },
