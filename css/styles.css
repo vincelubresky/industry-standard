@@ -3223,10 +3223,44 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   body.mgr-section-printing #mgr-section-print-wrap {
     display: block !important;
     font-family: 'Inter', Arial, sans-serif;
-    color: #111;
+    color: #000 !important;
     background: #fff;
     padding: 0;
     margin: 0;
+  }
+
+  /* Force all text black and readable */
+  body.mgr-section-printing #mgr-section-print-wrap *,
+  body.mgr-section-printing #mgr-section-print-wrap td,
+  body.mgr-section-printing #mgr-section-print-wrap th,
+  body.mgr-section-printing #mgr-section-print-wrap span,
+  body.mgr-section-printing #mgr-section-print-wrap div,
+  body.mgr-section-printing #mgr-section-print-wrap p {
+    color: #000 !important;
+    font-weight: 600 !important;
+  }
+
+  /* Table headers: dark background with white text */
+  body.mgr-section-printing #mgr-section-print-wrap th {
+    background: #1a1a1a !important;
+    color: #fff !important;
+    font-weight: 700 !important;
+  }
+
+  /* Table rows: clear borders */
+  body.mgr-section-printing #mgr-section-print-wrap td,
+  body.mgr-section-printing #mgr-section-print-wrap th {
+    border: 1px solid #555 !important;
+  }
+
+  /* Strip backgrounds that wash out text */
+  body.mgr-section-printing #mgr-section-print-wrap [style*="background"],
+  body.mgr-section-printing #mgr-section-print-wrap [class*="badge"],
+  body.mgr-section-printing #mgr-section-print-wrap [class*="tag"],
+  body.mgr-section-printing #mgr-section-print-wrap [class*="chip"] {
+    background: transparent !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
   }
 
   /* Force accordion body open in cloned content */
