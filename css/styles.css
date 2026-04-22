@@ -3267,6 +3267,15 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   body.mgr-section-printing .mgr-acc-body    { display: block !important; }
   body.mgr-section-printing .mgr-acc-header  { display: none  !important; }
 
+  /* One week per page — break before Week 2 title */
+  body.mgr-section-printing .mgr-menu-scroll + .mgr-section-title {
+    page-break-before: always;
+    margin-top: 0 !important;
+  }
+  /* Keep each week's title + table together */
+  body.mgr-section-printing .mgr-section-title,
+  body.mgr-section-printing .mgr-menu-scroll { page-break-inside: avoid; }
+
   /* Reuse manager print table/layout rules */
   body.mgr-section-printing .mgr-menu-table,
   body.mgr-section-printing .mgr-order-table { font-size: 9.5pt !important; min-width: 0 !important; width: 100% !important; }
