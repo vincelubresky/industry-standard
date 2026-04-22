@@ -3208,8 +3208,42 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
    PRINT LAYOUT — 4-Week Menu Rotation
    ============================================================ */
 
-/* Hide print container on screen */
-#print-menu-wrap { display: none; }
+/* Hide print containers on screen */
+#print-menu-wrap,
+#mgr-section-print-wrap { display: none; }
+
+/* ── Manager section print ──────────────────────────────── */
+@media print {
+  /* When body has .mgr-section-printing: hide app, show section clone */
+  body.mgr-section-printing .app,
+  body.mgr-section-printing #app-shell { display: none !important; }
+
+  /* #mgr-section-print-wrap is a direct body child — specificity 0,1,1,1
+     beats body > *:not(#main) at 0,1,0,1 so it wins even under that rule */
+  body.mgr-section-printing #mgr-section-print-wrap {
+    display: block !important;
+    font-family: 'Inter', Arial, sans-serif;
+    color: #111;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Force accordion body open in cloned content */
+  body.mgr-section-printing .mgr-acc-body    { display: block !important; }
+  body.mgr-section-printing .mgr-acc-header  { display: none  !important; }
+
+  /* Reuse manager print table/layout rules */
+  body.mgr-section-printing .mgr-menu-table,
+  body.mgr-section-printing .mgr-order-table { font-size: 9.5pt !important; min-width: 0 !important; width: 100% !important; }
+  body.mgr-section-printing .mgr-menu-scroll,
+  body.mgr-section-printing .mgr-table-wrap,
+  body.mgr-section-printing .mgr-log-scroll  { overflow: visible !important; }
+  body.mgr-section-printing .mgr-log-table   { font-size: 8.5pt !important; min-width: 0 !important; width: 100% !important; }
+  body.mgr-section-printing .mgr-log-table thead th { background: #1e3a5f !important; color: white !important; }
+  body.mgr-section-printing .mgr-header { padding-bottom: 10px; margin-bottom: 12px; }
+  body.mgr-section-printing * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
 
 @media print {
   /* Force color output in print */

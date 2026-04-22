@@ -4194,15 +4194,32 @@ function toggleMgrSection(id) {
 }
 
 function printMgrSection(facilityKey, sectionKey) {
-  const attr = facilityKey + '-' + sectionKey;
-  document.body.setAttribute('data-printing-section', attr);
+  const sectionEl = document.getElementById(facilityKey + '-acc-' + sectionKey);
+  if (!sectionEl) return;
+  const accBody = sectionEl.querySelector('.mgr-acc-body');
+  if (!accBody) return;
+
+  const printWrap = document.getElementById('mgr-section-print-wrap');
+  if (!printWrap) return;
+
+  // Build print content: facility header + section body clone
+  const facilityWrap = document.getElementById(facilityKey + '-wrap');
+  const header = facilityWrap ? facilityWrap.querySelector('.mgr-header') : null;
+  printWrap.innerHTML = '';
+  if (header) printWrap.appendChild(header.cloneNode(true));
+  printWrap.appendChild(accBody.cloneNode(true));
+
   const style = document.createElement('style');
   style.id = 'mgr-section-print-style';
   style.textContent = '@page { size: Letter landscape; margin: 0.5in 0.4in; }';
   document.head.appendChild(style);
+
+  document.body.classList.add('mgr-section-printing');
   window.print();
+
   window.addEventListener('afterprint', function cleanup() {
-    document.body.removeAttribute('data-printing-section');
+    document.body.classList.remove('mgr-section-printing');
+    printWrap.innerHTML = '';
     const s = document.getElementById('mgr-section-print-style');
     if (s) s.remove();
     window.removeEventListener('afterprint', cleanup);
