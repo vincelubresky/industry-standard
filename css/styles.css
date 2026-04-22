@@ -4879,8 +4879,9 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   #main, .content > * { display: none !important; }
 
   /* ── Un-hide .app container (direct body child, not #main) ── */
-  body[data-printing-wrap] .app,
-  body[data-printing-section] .app { display: block !important; }
+  /* #app-shell ID gives specificity 0,1,1,1 — beats body > *:not(#main) at 0,1,0,1 */
+  body[data-printing-wrap] #app-shell,
+  body[data-printing-section] #app-shell { display: block !important; }
 
   /* ── Brief: show only brief-wrap ── */
   body[data-printing-wrap="brief-wrap"] #main  { display: block !important; }
