@@ -4982,6 +4982,9 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   body[data-printing-wrap] .mgr-acc-section { border: none !important; margin-bottom: 0 !important; }
 
   /* ── Per-section print: show overview bar + target section only ── */
+  /* Must un-hide #main first — it's hidden by the generic rule above */
+  body[data-printing-section] #main { display: block !important; }
+
   body[data-printing-section] #brief-wrap,
   body[data-printing-section] #birmingham-wrap,
   body[data-printing-section] #bessemer-wrap { display: none !important; }
