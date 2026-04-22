@@ -856,13 +856,13 @@ const BIDS = {
    Source: QuickBooks export — as of April 20, 2026
    ============================================================ */
 const FINANCIALS = {
-  asOf: "April 20, 2026",
+  asOf: "April 22, 2026",
 
   // ── Cash Position ────────────────────────────────────────
   cash: {
-    balance: 52616.72,
+    balance: 205616.72,
     accountName: "Renasant Checking (5537)",
-    note: "Beginning 2026: $53,957. Near-flat despite $206K YTD net income — $212K in partner distributions YTD."
+    note: "$153,000 deposited April 21, 2026. Previous balance $52,617 + deposit = $205,617 current."
   },
 
   // ── A/R Aging (as of Apr 20, 2026) ──────────────────────

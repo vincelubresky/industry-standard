@@ -4204,6 +4204,38 @@ tbody td { padding:13px 18px; font-size:13.5px; }
 @media (max-width: 900px) { .fin-kpi-grid { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 600px) { .fin-kpi-grid { grid-template-columns: 1fr; } }
 
+/* ── Financials page accordions ─────────────────────────────── */
+.fin-acc-section {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.fin-acc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; background: var(--surface);
+  cursor: pointer; user-select: none;
+  transition: background .15s;
+}
+.fin-acc-header:hover { background: var(--bg); }
+.fin-acc-title {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 14px; color: var(--text);
+}
+.fin-acc-title i { color: var(--accent); font-size: 15px; }
+.fin-acc-chevron {
+  color: var(--text-muted); font-size: 12px;
+  transition: transform .2s;
+}
+.fin-acc-section.fin-acc-open .fin-acc-chevron { transform: rotate(180deg); }
+.fin-acc-body { display: none; padding: 20px; }
+.fin-acc-section.fin-acc-open .fin-acc-body { display: block; }
+@media print {
+  .fin-acc-section { border: none; margin-bottom: 0; }
+  .fin-acc-header { display: none; }
+  .fin-acc-body { display: block !important; padding: 0; }
+}
+
 /* ── CFO Financial Dashboard ─────────────────────────────────── */
 .fin-exec-banner {
   background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(59,130,246,0.02) 100%);

@@ -1969,7 +1969,7 @@ function _renderFinSnapshot() {
     { label: 'Revenue (Core)',  status: 'amber', value: '+'+jeffcoGrowth+'% YoY',  note: 'JeffCo contract growing; headline down due to MCDF loss' },
     { label: 'Gross Margin',    status: 'green', value: gm2026.toFixed(1)+'%',      note: 'Up 8.7pp YoY — strongest quarter on record' },
     { label: 'Net Margin',      status: 'green', value: nm2026.toFixed(1)+'%',      note: 'Up '+nmDelta+'pp vs 2025 full year' },
-    { label: 'Cash Position',   status: 'amber', value: $k(F.cash.balance),         note: 'Thin — flat despite strong earnings due to distributions' },
+    { label: 'Cash Position',   status: 'green', value: $k(F.cash.balance),         note: '$153K deposited Apr 21 — position improved materially' },
     { label: 'A/R Collections', status: 'amber', value: $k(F.ar.pastDue)+' late',   note: 'Jefferson County 5–12 days past due; follow up immediately' },
     { label: 'A/P Status',      status: 'red',   value: $k(F.ap.pastDue)+' overdue',note: 'PFG invoices 11+ days past due — primary supplier risk' },
     { label: 'Distributions',   status: distOver < 0 ? 'red' : 'amber',
@@ -1983,15 +1983,15 @@ function _renderFinSnapshot() {
 
   // CEO action items
   const actions = [
+    { urgency: 'ACTION',      color: '#f59e0b', bg: 'rgba(245,158,11,0.08)',  icon: 'fa-circle-check',
+      title: 'Reconcile $153K deposit against A/R — confirm which invoices are cleared',
+      body: `$153,000 deposited April 21. Confirm with Jefferson County which invoices (JEFFCO-667 through JEFFCO-672) this payment covers and update A/R records accordingly. The overdue balance prior to deposit was ${$k(F.ar.pastDue)}.` },
     { urgency: 'URGENT',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',  icon: 'fa-circle-exclamation',
-      title: 'Collect overdue A/R from Jefferson County',
-      body: `${$k(F.ar.pastDue)} across invoices JEFFCO-667 through JEFFCO-672 is 5–12 days past due. Issue formal collection notice. Cash is needed to service the overdue PFG balance.` },
-    { urgency: 'URGENT',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',  icon: 'fa-circle-exclamation',
-      title: 'Settle overdue A/P with PFG',
-      body: `${$k(F.ap.pastDue)} owed to PFG is 11+ days past due. PFG is the company's primary food supplier — a payment dispute could disrupt operations. Collect from Jefferson County first, then remit.` },
+      title: 'Settle overdue A/P with PFG now',
+      body: `${$k(F.ap.pastDue)} owed to PFG is past due. Cash position is now ${$k(F.cash.balance)} — funds are available. Pay PFG immediately to protect the primary supplier relationship.` },
     { urgency: 'REVIEW',      color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', icon: 'fa-triangle-exclamation',
       title: 'Review 2026 partner distribution schedule',
-      body: `YTD distributions of ${$k(F.cashFlow.ytd2026.distributions)} exceed YTD net income of ${$k(F.cashFlow.ytd2026.netIncome)} by $${Math.abs(Math.round(distOver)).toLocaleString()}. With only $${Math.round(F.cash.balance/1000)}K cash on hand, continued over-distribution is a liquidity risk. Consider suspending or reducing draws until Q2 earnings are confirmed.` },
+      body: `YTD distributions of ${$k(F.cashFlow.ytd2026.distributions)} exceed YTD net income of ${$k(F.cashFlow.ytd2026.netIncome)} by $${Math.abs(Math.round(distOver)).toLocaleString()}. Cash is healthier now but monitor closely as Q2 progresses.` },
     { urgency: 'OPPORTUNITY', color: '#3b82f6', bg: 'rgba(59,130,246,0.08)', icon: 'fa-bullseye',
       title: 'Re-bid Montgomery County (MCDF) contract',
       body: `Industry Standard operated MCDF from Jan–Jun 2025, generating ${$k(F.pl2025.mcdfRevenue)} before the contract ended. As prior operator, the company holds institutional knowledge and relationships that are a competitive advantage. A successful re-bid would add ~$1.3M annualized revenue (based on 2025 pace).` },
@@ -2024,10 +2024,10 @@ function _renderFinSnapshot() {
       <p class="fin-narrative-body" style="margin-top:8px">
         Profitability has improved substantially: gross margin expanded from
         <strong>${gm2025.toFixed(1)}% in 2025 to ${gm2026.toFixed(1)}% in Q1 2026</strong>, and net margin improved from
-        ${nm2025.toFixed(1)}% to ${nm2026.toFixed(1)}%. The two critical near-term issues are overdue receivables
-        from Jefferson County (${$k(F.ar.pastDue)}) and overdue payables to primary supplier PFG (${$k(F.ap.pastDue)}),
-        both of which require immediate follow-up. Partner distributions in 2026 YTD have outpaced earnings,
-        applying additional pressure on a thin cash position of ${$k(F.cash.balance)}.
+        ${nm2025.toFixed(1)}% to ${nm2026.toFixed(1)}%. A $153,000 payment deposited April 21 has improved the
+        cash position to ${$k(F.cash.balance)}. The remaining near-term priority is settling the overdue
+        payables to primary supplier PFG (${$k(F.ap.pastDue)}) to prevent any supply disruption.
+        Partner distributions in 2026 YTD have outpaced earnings — monitor closely as Q2 progresses.
       </p>
     </div>
 
@@ -4586,6 +4586,39 @@ function renderManagerTabs() {
   renderManagerTab('bessemer');
 }
 
+/* ── Financials page accordions ──────────────────────────── */
+function toggleFinAccordion(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('fin-acc-open');
+}
+
+function initFinAccordions() {
+  const sections = [
+    { id: 'fin-snapshot',  title: 'Executive Overview',   icon: 'fa-gauge-simple-high', open: true  },
+    { id: 'fin-pl',        title: 'P&L Trend',            icon: 'fa-chart-line',         open: false },
+    { id: 'fin-cashflow',  title: 'Cash Flow',            icon: 'fa-water',              open: false },
+    { id: 'fin-ar',        title: 'A/R Aging',            icon: 'fa-arrow-down-to-bracket', open: false },
+    { id: 'fin-ap',        title: 'A/P Aging',            icon: 'fa-arrow-up-from-bracket', open: false },
+  ];
+  sections.forEach(s => {
+    const el = document.getElementById(s.id);
+    if (!el || !el.innerHTML.trim()) return;
+    const bodyHtml = el.innerHTML;
+    const accId = s.id + '-acc';
+    el.innerHTML = `
+      <div class="fin-acc-section${s.open ? ' fin-acc-open' : ''}" id="${accId}">
+        <div class="fin-acc-header no-print" onclick="toggleFinAccordion('${accId}')">
+          <div class="fin-acc-title">
+            <i class="fa-solid ${s.icon}"></i>
+            <span>${s.title}</span>
+          </div>
+          <i class="fa-solid fa-chevron-down fin-acc-chevron"></i>
+        </div>
+        <div class="fin-acc-body">${bodyHtml}</div>
+      </div>`;
+  });
+}
+
 /* ── Site-wide section accordions ────────────────────────── */
 function initSectionAccordions() {
   document.querySelectorAll('.section-header').forEach(header => {
@@ -4617,6 +4650,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initBidTracker();
   renderFinancials();
+  initFinAccordions();
   renderBrief();
   renderManagerTabs();
   renderMenuRotation();
