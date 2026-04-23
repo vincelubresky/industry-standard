@@ -3276,15 +3276,35 @@ td .savings-val + .small { display: block; font-size: 10px; color: var(--text-mu
   body.mgr-section-printing .mgr-section-title,
   body.mgr-section-printing .mgr-menu-scroll { page-break-inside: avoid; }
 
-  /* Reuse manager print table/layout rules */
-  body.mgr-section-printing .mgr-menu-table,
-  body.mgr-section-printing .mgr-order-table { font-size: 11pt !important; min-width: 0 !important; width: 100% !important; }
+  /* ── Menu table layout ── */
+  body.mgr-section-printing .mgr-menu-table { font-size: 11pt !important; min-width: 0 !important; width: 100% !important; }
   body.mgr-section-printing .mgr-menu-table th,
   body.mgr-section-printing .mgr-menu-table td { padding: 8px 10px !important; vertical-align: top; }
   body.mgr-section-printing .mgr-meal-main  { font-size: 11pt !important; font-weight: 700 !important; }
   body.mgr-section-printing .mgr-meal-sub   { font-size: 9pt  !important; }
   body.mgr-section-printing .mgr-meal-sides { font-size: 9pt  !important; }
   body.mgr-section-printing .mgr-meal-meta  { font-size: 9pt  !important; }
+
+  /* ── Order guide layout: fill pages, no forced category breaks ── */
+  body.mgr-section-printing .mgr-order-table {
+    font-size: 8.5pt !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    border-collapse: collapse;
+  }
+  body.mgr-section-printing .mgr-order-table th,
+  body.mgr-section-printing .mgr-order-table td { padding: 4px 6px !important; vertical-align: top; }
+  body.mgr-section-printing .mgr-order-table thead { display: table-header-group; } /* repeat on each page */
+  body.mgr-section-printing .mgr-order-table tr   { page-break-inside: avoid; }
+
+  /* Allow categories to flow across pages — only keep header attached to its first row */
+  body.mgr-section-printing .mgr-cat-block  { page-break-inside: auto !important; margin-bottom: 8px !important; }
+  body.mgr-section-printing .mgr-cat-header { page-break-after: avoid; margin-bottom: 2px !important; }
+
+  /* Order note at top: compact */
+  body.mgr-section-printing .mgr-order-note { font-size: 8pt !important; padding: 6px 8px !important; margin-bottom: 8px !important; }
+
+  /* ── Shared overflow + log ── */
   body.mgr-section-printing .mgr-menu-scroll,
   body.mgr-section-printing .mgr-table-wrap,
   body.mgr-section-printing .mgr-log-scroll  { overflow: visible !important; }
@@ -5037,7 +5057,9 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   .mgr-menu-scroll, .mgr-table-wrap { overflow: visible !important; }
   .mgr-order-table tr { page-break-inside: avoid; }
   .mgr-menu-table  tr { page-break-inside: avoid; }
-  .mgr-cat-block        { page-break-inside: avoid; margin-bottom: 10px; }
+  .mgr-cat-block        { page-break-inside: auto;  margin-bottom: 8px; }
+  .mgr-cat-header       { page-break-after: avoid; }
+  .mgr-order-table thead { display: table-header-group; }
   .mgr-meal-main  { font-size: 9pt !important; }
   .mgr-meal-sub   { font-size: 7.5pt !important; }
   .mgr-meal-sides { font-size: 7.5pt !important; }
