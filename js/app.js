@@ -4193,7 +4193,8 @@ function toggleMgrSection(id) {
   sec.classList.toggle('mgr-acc-open');
 }
 
-function printMgrSection(facilityKey, sectionKey) {
+function printMgrSection(facilityKey, sectionKey, opts) {
+  opts = opts || {};
   const sectionEl = document.getElementById(facilityKey + '-acc-' + sectionKey);
   if (!sectionEl) return;
   const accBody = sectionEl.querySelector('.mgr-acc-body');
@@ -4209,6 +4210,8 @@ function printMgrSection(facilityKey, sectionKey) {
   if (header) printWrap.appendChild(header.cloneNode(true));
   printWrap.appendChild(accBody.cloneNode(true));
 
+  if (opts.noPricing) printWrap.classList.add('mgr-print-no-pricing');
+
   const style = document.createElement('style');
   style.id = 'mgr-section-print-style';
   style.textContent = '@page { size: Letter landscape; margin: 0.5in 0.4in; }';
@@ -4219,6 +4222,7 @@ function printMgrSection(facilityKey, sectionKey) {
 
   window.addEventListener('afterprint', function cleanup() {
     document.body.classList.remove('mgr-section-printing');
+    printWrap.classList.remove('mgr-print-no-pricing');
     printWrap.innerHTML = '';
     const s = document.getElementById('mgr-section-print-style');
     if (s) s.remove();
@@ -4429,7 +4433,8 @@ function renderManagerTab(facilityKey) {
             <span><i class="fa-solid fa-calendar-days"></i>&nbsp; 2-Week Menu Rotation</span>
             <i class="fa-solid fa-chevron-down mgr-acc-chevron"></i>
           </button>
-          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','menu')" title="Print this section as PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','menu')" title="Print with pricing"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+          <button class="mgr-sec-pdf-btn no-print" onclick="printMgrSection('${facilityKey}','menu',{noPricing:true})" title="Print without pricing"><i class="fa-solid fa-file-pdf"></i> No Prices</button>
         </div>
         <div class="mgr-acc-body">
           <div class="mgr-section-title"><i class="fa-solid fa-calendar-days"></i> Week 1 — Population Menu</div>
