@@ -4265,6 +4265,7 @@ function renderManagerTab(facilityKey) {
         const costClass = parseFloat((meal.cost||'0').replace('$','')) > fp.alertCostPerMeal ? 'mgr-cost-hi' : '';
         return `<td>
           <div class="mgr-meal-main">${meal.main}</div>
+          ${meal.sub ? `<div class="mgr-meal-sub">${meal.sub}</div>` : ''}
           <div class="mgr-meal-sides">${(meal.sides||[]).join(' · ')}</div>
           <div class="mgr-meal-meta"><span class="mgr-cost ${costClass}">${meal.cost}</span><span class="mgr-cal">${meal.cal} cal</span></div>
         </td>`;

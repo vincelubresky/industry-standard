@@ -4692,7 +4692,8 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   min-width: 110px;
 }
 .mgr-menu-table tr:nth-child(even) td { background: var(--bg); }
-.mgr-meal-main { font-weight: 600; font-size: 12px; color: var(--text); margin-bottom: 3px; line-height: 1.3; }
+.mgr-meal-main { font-weight: 600; font-size: 12px; color: var(--text); margin-bottom: 2px; line-height: 1.3; }
+.mgr-meal-sub  { font-size: 10px; color: var(--text-muted); font-style: italic; margin-bottom: 3px; }
 .mgr-meal-sides { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
 .mgr-meal-meta { display: flex; gap: 6px; align-items: center; }
 .mgr-cost { font-size: 11px; font-weight: 700; color: #16a34a; }
@@ -5029,6 +5030,7 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   .mgr-menu-table  tr { page-break-inside: avoid; }
   .mgr-cat-block        { page-break-inside: avoid; margin-bottom: 10px; }
   .mgr-meal-main  { font-size: 9pt !important; }
+  .mgr-meal-sub   { font-size: 7.5pt !important; }
   .mgr-meal-sides { font-size: 7.5pt !important; }
   .mgr-meal-meta  { font-size: 7.5pt !important; }
   .mgr-menu-scroll { overflow: visible !important; }
