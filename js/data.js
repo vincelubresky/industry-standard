@@ -9,6 +9,7 @@ const DATA = {
     prepared: "April 11, 2026",
     sources: [
       "PFG Invoice #6776963 (04/07/26)",
+      "PFG Invoice #6794592 (04/28/26) — $14,964.20",
       "Shaver ISP Price List (03/01/26–03/31/26)"
     ],
     preparedBy: "Industry Standard"
@@ -1177,6 +1178,94 @@ const VENDOR_SOURCES = {
   bigDaddy:   { key: "bigDaddy",   name: "Big Daddy",    fullName: "Big Daddy Foods, Inc.",       doc: "Sales Order BA24865",      date: "April 9, 2026"    },
   forestWood: { key: "forestWood", name: "Forest Wood",  fullName: "Forest Wood (current milk vendor)", doc: "Verbal/Written Quote",  date: "April 2026"       }
 };
+
+/* ============================================================
+   PFG INVOICE HISTORY
+   Compiled record of PFG deliveries — used for trend analysis,
+   price drift tracking, and order-cycle reporting.
+   Enter newest invoices at the END of the array.
+   ============================================================ */
+const PFG_INVOICES = [
+  {
+    invoiceNo: "6776963",
+    date: "2026-04-07",
+    label: "Apr 7, 2026",
+    total: null,
+    note: "Source for the initial Shaver-vs-PFG price comparison tables (switchToShaver / keepWithPFG). Line-item detail not retained; only extracted prices flow through DATA.switchToShaver and DATA.keepWithPFG.",
+    lineItems: []
+  },
+  {
+    invoiceNo: "6794592",
+    date: "2026-04-28",
+    label: "Apr 28, 2026",
+    deliverTo: { name: "Industry Standard", line1: "809 Richard Arrington Jr", city: "Birmingham", state: "AL", zip: "35203-2301" },
+    billTo:    { name: "Industry Standard", line1: "1628 29th Ct S",          city: "Homewood",   state: "AL", zip: "35209-2417" },
+    customerNo: "55058284",
+    salesRep: "251 — Dave Parsons",
+    salesRepPhone: "205-254-6369",
+    route: "2L82",
+    stop: 1,
+    driver: "Raynor Walters",
+    visitId: "34798553",
+    terms: "NET 30 DAYS",
+    branch: "Performance Foodservice Nashville",
+    weightLb: 10928.42,
+    cube: 400,
+    cases: { dry: 161, refrigerated: 32, frozen: 216, total: 409 },
+    categoryTotals: { dry: 5654.37, refrigerated: 1671.14, frozen: 7638.69 },
+    subTotal: 14964.20,
+    tax: 0.00,
+    deposits: 0.00,
+    total: 14964.20,
+    lineItems: [
+      // ---- DRY ----
+      { cat: "dry", item: "343406",  qty: 1,  pack: 6,    size: "1 LB",    desc: "WEST CRK BASE SOUP BEEF LS",          unitPrice: 40.06, extension: 40.06   },
+      { cat: "dry", item: "950880",  qty: 1,  pack: 72,   size: "1.25 OZ", desc: "JFG COFFEE SPECIAL BLND",             unitPrice: 66.43, extension: 66.43   },
+      { cat: "dry", item: "264684",  qty: 1,  pack: 1,    size: "5 LB",    desc: "ROMA GARLIC PWDR",                    unitPrice: 30.77, extension: 30.77   },
+      { cat: "dry", item: "82122",   qty: 1,  pack: 6,    size: "17 OZ",   desc: "PAM PAN COATING CANOLA WATER",        unitPrice: 27.62, extension: 27.62, hazmat: "UN1950 — flammable aerosol, no air freight" },
+      { cat: "dry", item: "317670",  qty: 2,  pack: 6,    size: "#10 CN",  desc: "SLVR SRC SAUCE CHEESE CHED TFF",      unitPrice: 55.06, extension: 110.12  },
+      { cat: "dry", item: "27817",   qty: 2,  pack: 12,   size: "50 OZ",   desc: "CAMPBLLS SOUP CREAM OF MUSHROOM TF",  unitPrice: 54.94, extension: 109.88  },
+      { cat: "dry", item: "897414",  qty: 8,  pack: 1,    size: "35 LB",   desc: "SLVR SRC OIL SOY CLR FRY TFF",        unitPrice: 37.23, extension: 297.84  },
+      { cat: "dry", item: "878209",  qty: 5,  pack: 6,    size: "#10 CN",  desc: "WEST CRK SAUCE TOMATO FCY",           unitPrice: 29.67, extension: 148.35  },
+      { cat: "dry", item: "878218",  qty: 2,  pack: 6,    size: "#10 CN",  desc: "WEST CRK TOMATO DICED IN JUICE",      unitPrice: 30.94, extension: 61.88   },
+      { cat: "dry", item: "492810",  qty: 7,  pack: 1,    size: "50 LB",   desc: "PEAK TBC BEAN GREAT NRTHRN",          unitPrice: 56.05, extension: 392.35  },
+      { cat: "dry", item: "102158",  qty: 5,  pack: 1,    size: "50 LB",   desc: "CLSC GRN RICE PARBOILED",             unitPrice: 26.38, extension: 131.90  },
+      { cat: "dry", item: "324896",  qty: 2,  pack: 1,    size: "50 LB",   desc: "WEST CRK SUGAR GRANULATED EXTRA FI",  unitPrice: 35.98, extension: 71.96   },
+      { cat: "dry", item: "1073316", qty: 7,  pack: 1,    size: "50 LB",   desc: "GOOD SRC GRITS WHI",                  unitPrice: 47.32, extension: 331.24  },
+      { cat: "dry", item: "655907",  qty: 5,  pack: 1,    size: "50 LB",   desc: "CONTIGO BEAN PINTO TRIPLE CLEANED",   unitPrice: 25.67, extension: 128.35  },
+      { cat: "dry", item: "499449",  qty: 10, pack: 1,    size: "50 LB",   desc: "OLD TYME CAKE MIX YLW",               unitPrice: 42.77, extension: 427.70  },
+      { cat: "dry", item: "203795",  qty: 6,  pack: 1,    size: "40 LB",   desc: "ORGNPTT POTATO FLAKES DEHYDRATED",    unitPrice: 59.35, extension: 356.10  },
+      { cat: "dry", item: "955589",  qty: 6,  pack: 1,    size: "50 LB",   desc: "BCKEYOAT OATS REG OLD FSHND",         unitPrice: 35.15, extension: 210.90  },
+      { cat: "dry", item: "499256",  qty: 12, pack: 1,    size: "50 LB",   desc: "OLD TYME COFFEE CAKE MIX",            unitPrice: 45.04, extension: 540.48  },
+      { cat: "dry", item: "612712",  qty: 10, pack: 1,    size: "50 LB",   desc: "OLDTYMLL CAKE MIX STRWBRY",           unitPrice: 46.13, extension: 461.30  },
+      { cat: "dry", item: "233339",  qty: 9,  pack: 2,    size: "10 LB",   desc: "ASSOLUTI PASTA ROTINI BULK",          unitPrice: 23.84, extension: 214.56  },
+      { cat: "dry", item: "201338",  qty: 2,  pack: 4,    size: "1 GA",    desc: "WEST CRK DRESSING ITAL GLDN TFF",     unitPrice: 52.49, extension: 104.98  },
+      { cat: "dry", item: "633748",  qty: 1,  pack: 200,  size: ".38 OZ",  desc: "GAMESA U CRACKER SALADITAS",          unitPrice: 14.62, extension: 14.62   },
+      { cat: "dry", item: "438991",  qty: 2,  pack: 6,    size: "16 OZ",   desc: "WEST CRK GRAVY MIX BRWN CNTRY STYL",  unitPrice: 29.92, extension: 59.84   },
+      { cat: "dry", item: "807263",  qty: 30, pack: 12,   size: "12 OZ",   desc: "HRTG OVN COOKIE OATMEAL",             unitPrice: 22.34, extension: 670.20  },
+      { cat: "dry", item: "326558",  qty: 1,  pack: 1,    size: "5 LB",    desc: "ROMA ONION PWDR",                     unitPrice: 32.26, extension: 32.26   },
+      { cat: "dry", item: "54157",   qty: 2,  pack: 200,  size: ".5 OZ",   desc: "SMUCKERS JELLY VAR #4 TFF",           unitPrice: 19.20, extension: 38.40   },
+      { cat: "dry", item: "102962",  qty: 4,  pack: 1000, size: "1 GM",    desc: "GOOD SRC DRINK MIX GRAPE PWDR",       unitPrice: 49.95, extension: 199.80  },
+      { cat: "dry", item: "251644",  qty: 9,  pack: 2,    size: "10 LB",   desc: "LUIGI PASTA MACARONI ELBOW",          unitPrice: 20.53, extension: 184.77  },
+      { cat: "dry", item: "267996",  qty: 7,  pack: 2,    size: "10 LB",   desc: "ROMA PASTA ZITI IMP TFF",             unitPrice: 21.77, extension: 152.39  },
+      { cat: "dry", item: "330286",  qty: 1,  pack: 6,    size: "1 LB",    desc: "WEST CRK BASE SOUP CHICKEN RSTD",     unitPrice: 37.32, extension: 37.32   },
+      // ---- REFRIGERATED ----
+      { cat: "refrigerated", item: "518672", qty: 3,  pack: 30, size: "1 LB",   desc: "WEST CRK MARGARINE SOLIDS TFF",     unitPrice: 40.73,    extension: 122.19  },
+      { cat: "refrigerated", item: "890828", qty: 16, pack: 2,  size: "9 LB",   desc: "SLVR SRC TURKEY BRST SMKD SKNLS",   unitPrice: 3.5808,   extension: 1068.73, catchWeightLb: 298.46, perLb: true },
+      { cat: "refrigerated", item: "517901", qty: 13, pack: 1,  size: "30 DZ",  desc: "NTRSBST EGG WHI MED AA LOOSE",      unitPrice: 36.94,    extension: 480.22  },
+      // ---- FROZEN ----
+      { cat: "frozen", item: "365212", qty: 36, pack: 1,   size: "20 LB",   desc: "PACKER CHICKEN BRST FRITTER BNLS",   unitPrice: 43.48, extension: 1565.28 },
+      { cat: "frozen", item: "611363", qty: 15, pack: 3,   size: "10 LB",   desc: "PACKER SALAMI TURKEY LOG",           unitPrice: 60.22, extension: 903.30  },
+      { cat: "frozen", item: "993228", qty: 8,  pack: 1,   size: "20 LB",   desc: "SLVR SRC VEG BLND 4 WAY IQF GRD B", unitPrice: 22.03, extension: 176.24  },
+      { cat: "frozen", item: "433203", qty: 19, pack: 216, size: "2.25 OZ", desc: "HRTG OVN BISCUIT DGH BUTTERMILK",   unitPrice: 51.57, extension: 979.83  },
+      { cat: "frozen", item: "993247", qty: 16, pack: 1,   size: "20 LB",   desc: "WEST CRK PEAS & CARROT",            unitPrice: 22.35, extension: 357.60  },
+      { cat: "frozen", item: "634573", qty: 19, pack: 278, size: "1.15 OZ", desc: "SWGRTYS SAUSAGE PATTY CHICKEN FC",  unitPrice: 61.54, extension: 1169.26 },
+      { cat: "frozen", item: "993270", qty: 24, pack: 1,   size: "20 LB",   desc: "WEST CRK CARROT SLCD SMTH MED",     unitPrice: 22.43, extension: 538.32  },
+      { cat: "frozen", item: "398680", qty: 60, pack: 10,  size: "24 OZ",   desc: "NAT OWN BREAD PULLMAN WHL GRAIN W", unitPrice: 24.90, extension: 1494.00 },
+      { cat: "frozen", item: "993318", qty: 19, pack: 1,   size: "20 LB",   desc: "WEST CRK BEAN GRN CUT REG IQF",     unitPrice: 23.94, extension: 454.86  }
+    ]
+  }
+];
 
 /* ============================================================
    PROTEIN VENDOR COMPARISON
