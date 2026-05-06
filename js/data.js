@@ -1047,20 +1047,20 @@ const FINANCIALS = {
    Edit here — grid re-renders instantly.
    ============================================================ */
 const MENU_ROTATION = [
-  // ── Week 1 (revised 2026-05-06) ──
+  // ── Both weeks (revised 2026-05-06) ──
   // BREAKFAST = sausage patty + 1 hardboiled egg + biscuit + jelly + cake + drink mix
-  //          STANDARDIZED — same 6 components every Mon–Sun in Week 1
+  //          STANDARDIZED across all 14 days (Mon–Sun, both weeks)
   // LUNCH  = protein + 2 slices bread (4 on PB&J days) + 2 sides + cake
   //          Sunday lunch reduced to 1 veg side + cake (no pasta salad)
-  //          4-item rotation: Bologna · Salami · PB&J · Turkey
+  //          4-item protein rotation: Bologna · Salami · PB&J · Turkey
+  //          Spread over 14 days: Bologna ×4 · Salami ×4 · PB&J ×4 · Turkey ×2
   // DINNER = entrée + cornbread (or bread) + sides + cake or cookie
-  //          Bread (2 sl) on Sat (Beef Patty) instead of cornbread
+  //          Bread (2 sl) on W1 Sat (Beef Patty) and W2 Thu (Spaghetti) instead of cornbread
   //          Tue/Fri/Sun patties no longer carry brown gravy
-  //          Sunday sides = northern beans + green beans (no pasta salad)
-  //
-  // ── Week 2 (unchanged for now — pending revision) ──
-  // Still using the prior format: varied breakfasts (grits/oatmeal/scrambled rotations
-  // with hardboiled egg side), original lunches, original dinners.
+  //          Sun (both weeks): no pasta salad, 2 veg sides, no gravy
+  //          Patty rotation — Week 1: 2 chicken + 1 beef · Week 2: 1 chicken + 2 beef
+  // Side rotation rules: no item repeats day-after-day across either meal,
+  //   and lunch sides never overlap with same-day dinner sides.
   {
     week: 1, label: "Week 1",
     // Dinner patties → Tue: Chicken Patty (no gravy) · Fri: Chicken Patty (no gravy) · Sat: Beef Patty (w/ gravy) · Sun: Chicken Patty (no gravy)
@@ -1097,37 +1097,36 @@ const MENU_ROTATION = [
   },
   {
     week: 2, label: "Week 2",
-    // Dinner patties → Tue: Chicken Patty · Wed: Beef · Sat: Chicken Patty · Sun: Beef Patty
-    // Weekend = always patty + pasta salad (easy staff, minimal waste — pasta salad saves to next day)
+    // Dinner patties → Tue: Chicken Patty (no gravy) · Wed: Beef Patty (w/ gravy) · Sat: Chicken Patty (w/ gravy) · Sun: Beef Patty (no gravy)
     days: [
       { day: "Monday",
-        breakfast: { main: "Grits + Sausage Patty",              protein: "Sausage",        ingredients: ["Grits","Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                    sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.52", cal: 640 },
-        lunch:     { main: "PB&J",    sub: "Four Slices of Bread",              protein: "Peanut Butter",  ingredients: ["Peanut Butter","Jelly","Bread","Pinto Beans","Peas & Carrots","Cake Mix"],                      sides: ["Pinto Beans","Peas & Carrots","Cake"],       cost: "$0.44", cal: 830 },
-        dinner:    { main: "Red Beans & Rice w/ Chicken",        protein: "Chicken",        ingredients: ["Red Beans","Rice","Chicken","Cornbread Mix","Cake Mix"],                                          sides: ["Cornbread","Cake"],                           cost: "$0.68", cal: 1030 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "PB&J",    sub: "Four Slices of Bread", protein: "Peanut Butter", ingredients: ["Peanut Butter","Jelly","Bread","Pinto Beans","Peas & Carrots","Cake Mix"],                      sides: ["Pinto Beans","Peas & Carrots","Cake"],                      cost: "$0.44", cal: 830 },
+        dinner:    { main: "Red Beans & Rice w/ Chicken",          protein: "Chicken",       ingredients: ["Red Beans","Rice","Chicken","Cornbread Mix","Carrots","Cake Mix"],                              sides: ["Cornbread","Carrots","Cake"],                               cost: "$0.72", cal: 1080 } },
       { day: "Tuesday",
-        breakfast: { main: "Oatmeal + Hardboiled Egg",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                           sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.48", cal: 620 },
-        lunch:     { main: "Bologna", sub: "Two Slices of Bread",            protein: "Bologna",        ingredients: ["Bologna","Bread","Pasta","Green Beans","Cake Mix"],                                           sides: ["Pasta Salad","Green Beans","Cake"],           cost: "$0.44", cal: 800 },
-        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Corn","Cake Mix"],                          sides: ["Cornbread","Corn","Cake"],                    cost: "$0.65", cal: 1010 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "Bologna", sub: "Two Slices of Bread",  protein: "Bologna",       ingredients: ["Bologna","Bread","Pasta","Green Beans","Cake Mix"],                                              sides: ["Pasta Salad","Green Beans","Cake"],                         cost: "$0.44", cal: 800 },
+        dinner:    { main: "Chicken Patty",                        protein: "Chicken",       ingredients: ["Chicken Patties","Cornbread Mix","Mixed Vegetables","Rice","Cake Mix"],                          sides: ["Cornbread","Mixed Veg","Rice","Cake"],                      cost: "$0.65", cal: 1110 } },
       { day: "Wednesday",
-        breakfast: { main: "Eggs Scrambled + Sausage",           protein: "Eggs & Sausage", ingredients: ["Eggs","Sausage Patties","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                  sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.55", cal: 710 },
-        lunch:     { main: "PB&J",    sub: "Four Slices of Bread",              protein: "Peanut Butter",  ingredients: ["Peanut Butter","Jelly","Bread","Instant Mashed Potatoes","Corn","Cake Mix"],                   sides: ["Mashed Potatoes","Corn","Cake"],              cost: "$0.42", cal: 800 },
-        dinner:    { main: "Beef Patty & Brown Gravy",           protein: "Beef",           ingredients: ["Beef Patties","Brown Gravy Mix","Cornbread Mix","Corn","Cookie Mix"],                          sides: ["Cornbread","Corn","Cookie"],                  cost: "$0.68", cal: 1040 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "PB&J",    sub: "Four Slices of Bread", protein: "Peanut Butter", ingredients: ["Peanut Butter","Jelly","Bread","Instant Mashed Potatoes","Corn","Cake Mix"],                     sides: ["Mashed Potatoes","Corn","Cake"],                            cost: "$0.42", cal: 800 },
+        dinner:    { main: "Beef Patty & Brown Gravy",             protein: "Beef",          ingredients: ["Beef Patties","Brown Gravy Mix","Cornbread Mix","Pinto Beans","Cookie Mix"],                      sides: ["Cornbread","Pinto Beans","Cookie"],                         cost: "$0.70", cal: 1080 } },
       { day: "Thursday",
-        breakfast: { main: "Grits + Hardboiled Egg",              protein: "Eggs",           ingredients: ["Grits","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                            sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.45", cal: 600 },
-        lunch:     { main: "Salami",  sub: "Two Slices of Bread",             protein: "Salami",         ingredients: ["Salami","Bread","Northern Beans","Carrots","Cake Mix"],                                       sides: ["Northern Beans","Carrots","Cake"],            cost: "$0.46", cal: 800 },
-        dinner:    { main: "Spaghetti w/ Meat Sauce",            protein: "Beef",           ingredients: ["Ground Beef","Spaghetti Noodles","Tomato Sauce","Bread","Green Beans","Cake Mix"],             sides: ["Bread (2 sl)","Green Beans","Cake"],          cost: "$0.60", cal: 1060 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "Salami",  sub: "Two Slices of Bread",  protein: "Salami",        ingredients: ["Salami","Bread","Northern Beans","Carrots","Cake Mix"],                                          sides: ["Northern Beans","Carrots","Cake"],                          cost: "$0.46", cal: 800 },
+        dinner:    { main: "Spaghetti w/ Meat Sauce",              protein: "Beef",          ingredients: ["Ground Beef","Spaghetti Noodles","Tomato Sauce","Bread","Green Beans","Cake Mix"],                sides: ["Bread (2 sl)","Green Beans","Cake"],                        cost: "$0.60", cal: 1060 } },
       { day: "Friday",
-        breakfast: { main: "Grits + Sausage Patty",              protein: "Sausage",        ingredients: ["Grits","Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.52", cal: 640 },
-        lunch:     { main: "Salami",  sub: "Two Slices of Bread",             protein: "Salami",         ingredients: ["Salami","Bread","Pinto Beans","Mixed Vegetables","Cake Mix"],                                sides: ["Pinto Beans","Mixed Veg","Cake"],             cost: "$0.48", cal: 820 },
-        dinner:    { main: "Cheesy Chicken Bake + Rice",         protein: "Chicken",        ingredients: ["Chicken","Rice","Cheese Sauce","Cornbread Mix","Peas & Carrots","Cake Mix"],                  sides: ["Cornbread","Peas & Carrots","Cake"],          cost: "$0.72", cal: 1040 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "Salami",  sub: "Two Slices of Bread",  protein: "Salami",        ingredients: ["Salami","Bread","Pinto Beans","Mixed Vegetables","Cake Mix"],                                    sides: ["Pinto Beans","Mixed Veg","Cake"],                           cost: "$0.48", cal: 820 },
+        dinner:    { main: "Cheesy Chicken Bake + Rice",           protein: "Chicken",       ingredients: ["Chicken","Rice","Cheese Sauce","Cornbread Mix","Corn","Cake Mix"],                                sides: ["Cornbread","Corn","Cake"],                                  cost: "$0.72", cal: 1040 } },
       { day: "Saturday",
-        breakfast: { main: "Oatmeal + Hardboiled Egg",            protein: "Eggs",           ingredients: ["Oatmeal","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                         sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.48", cal: 620 },
-        lunch:     { main: "Turkey",  sub: "Two Slices of Bread",             protein: "Turkey",         ingredients: ["Turkey","Bread","Pasta","Peas & Carrots","Cake Mix"],                                        sides: ["Pasta Salad","Peas & Carrots","Cake"],        cost: "$0.56", cal: 850 },
-        dinner:    { main: "Chicken Patty & Brown Gravy",        protein: "Chicken",        ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Rotini Pasta","Cookie Mix"],              sides: ["Cornbread","Pasta Salad","Cookie"],           cost: "$0.65", cal: 1010 } },
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "Turkey",  sub: "Two Slices of Bread",  protein: "Turkey",        ingredients: ["Turkey","Bread","Pasta","Peas & Carrots","Cake Mix"],                                             sides: ["Pasta Salad","Peas & Carrots","Cake"],                      cost: "$0.56", cal: 850 },
+        dinner:    { main: "Chicken Patty & Brown Gravy",          protein: "Chicken",       ingredients: ["Chicken Patties","Brown Gravy Mix","Cornbread Mix","Northern Beans","Carrots","Cookie Mix"],      sides: ["Cornbread","Northern Beans","Carrots","Cookie"],            cost: "$0.69", cal: 1090 } },
       { day: "Sunday",
-        breakfast: { main: "Eggs Scrambled + Sausage",           protein: "Eggs & Sausage", ingredients: ["Eggs","Sausage Patties","Biscuit","Jelly Packets","Cake Mix","Drink Mix"],                                sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"],           cost: "$0.55", cal: 710 },
-        lunch:     { main: "Bologna", sub: "Two Slices of Bread",            protein: "Bologna",        ingredients: ["Bologna","Bread","Instant Mashed Potatoes","Green Beans","Cake Mix"],                        sides: ["Mashed Potatoes","Green Beans","Cake"],       cost: "$0.48", cal: 850 },
-        dinner:    { main: "Beef Patty & Brown Gravy",           protein: "Beef",           ingredients: ["Beef Patties","Brown Gravy Mix","Cornbread Mix","Rotini Pasta","Cake Mix"],                  sides: ["Cornbread","Pasta Salad","Cake"],             cost: "$0.66", cal: 1020 } }
+        breakfast: { main: "Sausage Patty + Hardboiled Egg",   protein: "Sausage & Egg", ingredients: ["Sausage Patties","Eggs","Biscuit","Jelly Packets","Cake Mix","Drink Mix"], sides: ["Hardboiled Egg","Biscuit","Jelly","Cake","Drink Mix"], cost: "$0.83", cal: 740 },
+        lunch:     { main: "Bologna", sub: "Two Slices of Bread",  protein: "Bologna",       ingredients: ["Bologna","Bread","Green Beans","Cake Mix"],                                                       sides: ["Green Beans","Cake"],                                       cost: "$0.40", cal: 730 },
+        dinner:    { main: "Beef Patty",                           protein: "Beef",          ingredients: ["Beef Patties","Cornbread Mix","Pinto Beans","Mixed Vegetables","Cake Mix"],                       sides: ["Cornbread","Pinto Beans","Mixed Veg","Cake"],               cost: "$0.66", cal: 1040 } }
     ]
   }
 ];
