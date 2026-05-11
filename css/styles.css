@@ -5224,4 +5224,60 @@ tbody td { padding:13px 18px; font-size:13.5px; }
   font-weight: 400;
 }
 
+/* ════════════════════════════════════════════════════════════
+   Vendors tab overrides (2026-05-11)
+   Scope: #overview section only (Vendors tab → Overview)
+   Appended; do not modify existing rules above.
+   ════════════════════════════════════════════════════════════ */
+
+/* Strip the hero of its card-like background, border, gradient halos, and
+   excess padding so it reads as a plain page header. */
+#overview .overview-hero,
+#overview.overview-hero {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 0 8px 0 !important;
+  margin-bottom: 28px !important;
+  overflow: visible !important;
+}
+#overview .overview-hero::before,
+#overview .overview-hero::after { display: none !important; }
+
+/* Wider gap between stat cards. */
+#overview .stats-grid {
+  gap: 28px !important;
+}
+
+/* Three-card variant — override the global 4-column rule for this grid. */
+#overview .stats-grid.stats-grid-3 {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+/* Replace the border with a subtle elevation so card edges read against the
+   page background. Card bg stays at --bg-card (one step lighter than --bg-body
+   in both themes). */
+#overview .stat-card {
+  border: 1px solid transparent !important;
+  box-shadow:
+    0 1px 2px rgba(33,41,52,0.04),
+    0 4px 12px rgba(33,41,52,0.06) !important;
+}
+[data-theme="dark"] #overview .stat-card {
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.35),
+    0 4px 16px rgba(0,0,0,0.45) !important;
+}
+#overview .stat-card:hover {
+  border-color: var(--border-strong) !important;
+  box-shadow:
+    0 2px 4px rgba(33,41,52,0.06),
+    0 8px 20px rgba(33,41,52,0.10) !important;
+}
+[data-theme="dark"] #overview .stat-card:hover {
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.45),
+    0 8px 24px rgba(0,0,0,0.55) !important;
+}
+
 
